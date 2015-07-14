@@ -1,10 +1,12 @@
 package org.harper.otms.auth.entity;
 
-public class User {
+import org.harper.otms.common.dao.Entity;
+
+public class User extends Entity {
 
 	private String name;
 
 	private String password;
-	
+
 	private String email;
 }

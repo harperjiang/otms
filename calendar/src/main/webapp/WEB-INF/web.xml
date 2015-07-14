@@ -4,4 +4,12 @@
 
 <web-app>
   <display-name>Otms Calendar</display-name>
+  <servlet>
+  	<servlet-name>SSIServlet</servlet-name>
+  	<servlet-class>org.apache.catalina.ssi.SSIServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>SSIServlet</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
 </web-app>

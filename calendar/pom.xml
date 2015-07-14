@@ -40,13 +40,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.harper</groupId>
-			<artifactId>auth</artifactId>
+			<artifactId>common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.harper</groupId>
-			<artifactId>common</artifactId>
+			<artifactId>auth</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

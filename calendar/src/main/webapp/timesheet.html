@@ -7,10 +7,10 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/timesheet.js"></script>
+<script type="text/javascript" src="scripts/ui/timesheet.js"></script>
 <script>
 	$(document).ready(function() {
-		var timesheet = new Timesheet($("#container"));
+		var timesheet = new otms.ui.timesheet.Timesheet($("#container"));
 		
 		// TODO Load data from server
 		

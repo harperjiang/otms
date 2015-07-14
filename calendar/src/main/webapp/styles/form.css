@@ -1,0 +1,98 @@
+@CHARSET "UTF-8";
+
+.centerpanel {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.form_title {
+	font-size: 30px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.form {
+	width: 400px;
+	font-size: 20px;
+}
+
+.form input[type="text"],.form input[type='password'] {
+	display: block;
+	height: 35px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	padding-left: 10px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.form textarea {
+	display: block;
+	height: 100px;
+	resize: none;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	padding-left: 10px;
+	padding-top: 10px;
+	padding-bottom: 2px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	border-color: lightgray;
+}
+
+.form input[type='text'].timeinput {
+	display: inline-block;
+	width: 200px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.form input[type='text'].timeinput2 {
+	display: inline-block;
+	width: 110px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+.form label {
+	font-size: 16px;
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.form label.timelabel2 {
+	width: 75px;
+	margin-right: 5px;
+}
+
+.form_section {
+	font-size: 16px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	color: #5397ff;
+}
+
+.form_row {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.form_row label {
+	font-size: 16px;
+	display: inline-block;
+}
+
+.form select {
+	font-size: 15px;
+	border-color: #999;
+}

@@ -1,3 +1,27 @@
-div {
-	font-family: helvetica;
+div,input,textarea,button {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
+		"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: #54b4f5;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+#header {
+	height: 120px;
+	background-color: #ddd;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#footer {
+	height: 120px;
+	background-color: #ddd;
+	text-align: center;
 }

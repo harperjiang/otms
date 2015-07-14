@@ -6,15 +6,43 @@
 <link rel="stylesheet" type="text/css" href="styles/all.css" />
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
-<script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/calendar.js"></script>
+<script type="text/javascript" src="scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/ui/dialog.js"></script>
+<script type="text/javascript" src="scripts/ui/calendar.js"></script>
 <script>
-	$(document).ready(function() {
-		var calendar = new Calendar($('#container'));
-	});
+	$(document).ready(
+			function() {
+				var calendar = new otms.ui.calendar.Calendar($('#container'));
+				calendar.onAddButton = function() {
+					// Go to setup meeting page
+					window.sessionStorage.removeItem('eventId');
+					window.location = 'meeting.html';
+				};
+				calendar.onEventClick = function(obj, event) {
+					// Show a dialog
+					var dialog = new otms.ui.calendar.ChooseEventDialog(
+							$('#container'));
+					var eventId = obj.eventId;
+					dialog.onConfirm = function() {
+						var checked = dialog.panel.find(
+								'input[name="modify_type"]:checked').val();
+						window.sessionStorage.setItem('eventId', eventId);
+						if (checked == 'meeting') {
+							window.location = 'lesson.html';
+						} else {
+							window.location = 'lesson_item.html';
+						}
+					};
+					dialog.show();
+				};
+			});
 </script>
 </head>
 <body>
-	<div id="container"></div>
+	<!--#include virtual="header.html" -->
+	<div id="container" class="centerpanel"></div>
+
+	<!--#include virtual="footer.html" -->
 </body>
 </html>

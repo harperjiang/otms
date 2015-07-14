@@ -1,5 +1,7 @@
 package org.harper.otms.calendar.entity;
 
-public class CalendarEntry {
+import org.harper.otms.common.dao.Entity;
+
+public class CalendarEntry extends Entity {
 
 }

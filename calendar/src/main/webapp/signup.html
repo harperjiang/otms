@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sign Up</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script type="text/javascript" src="scripts/moment.js"></script>
+<script type="text/javascript"
+	src="scripts/moment-timezone-with-data-2010-2020.js"></script>
+
+<script src="scripts/jquery-ui.js"></script>
+<script>
+	$(function() {
+		// Load timezone data
+		var select = $('#timezone_select');
+		var tzList = moment.tz.names();
+		for (var i = 0; i < tzList.length; i++) {
+			var option = $(document.createElement("option"));
+			option.attr('value', tzList[i])
+			var tz = moment.tz(tzList[i]);
+			option.append(tzList[i] + "(" + tz.format('Z') + ")");
+			select.append(option);
+		}
+	});
+</script>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+
+	<div class="form centerpanel">
+		<div class="form_title">Sign Up</div>
+		<input type="text" name="username" placeholder="Username" /> <input
+			type="text" name="email" placeholder="Email Address" /> <input
+			name="password" type="password" placeholder="Password" />
+		<div class="form_row">
+			<label style="margin-bottom: 10px">Local TimeZone:</label><select
+				id="timezone_select"></select>
+		</div>
+		<div class="form_row">
+			<div>
+				<label style='width: 80px'>I am </label> <label><input
+					type="radio" name="role" value="client" checked /> looking for a
+					tutor</label>
+			</div>
+			<div>
+				<label style='width: 80px'>&nbsp;</label> <label><input
+					type="radio" name="role" value="tutor"> willing to teach
+					students</label>
+			</div>
+
+		</div>
+		<div class="form_row">
+			<input name="agree" id="agree_checkbox" type="checkbox"
+				style="display: inline-block; width: 30px" /><label
+				style="width: 350px" for="agree_checkbox">I accept to the
+				terms and user agreements</label>
+		</div>
+		<div>
+			<button class="btn_large">Sign Up</button>
+		</div>
+	</div>
+
+
+
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

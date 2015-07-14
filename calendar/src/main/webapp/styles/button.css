@@ -1,0 +1,55 @@
+.btn_large {
+	-webkit-border-radius: 4;
+	-moz-border-radius: 4;
+	border-radius: 4px;
+	color: #ffffff;
+	font-size: 20px;
+	background: #54b4f5;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	border-style: none;
+}
+
+.btn_large:hover {
+	background: #2982ba;
+	text-decoration: none;
+}
+
+.btn_large_danger {
+	-webkit-border-radius: 4;
+	-moz-border-radius: 4;
+	border-radius: 4px;
+	color: #ffffff;
+	font-size: 20px;
+	background: #fa7373;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	border-style: none;
+}
+
+.btn_large_danger:hover {
+	background: #c71010;
+	text-decoration: none;
+}
+
+.btn_danger {
+	-webkit-border-radius: 4;
+	-moz-border-radius: 4;
+	border-radius: 4px;
+	color: #ffffff;
+	font-size: 16px;
+	background: #fa7373;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	border-style: none;
+}
+
+.btn_danger:hover {
+	background: #c71010;
+	text-decoration: none;
+}
+
+.external_login_button {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
