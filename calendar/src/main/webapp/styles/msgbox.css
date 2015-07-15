@@ -1,0 +1,60 @@
+.msgbox_hidden {
+	display: none;
+}
+
+.msgbox_error,.msgbox_info,.msgbox_warning,.msgbox_success {
+	min-height: 20px;
+	margin: 0px;
+	padding: 2px 4px;
+	font-weight: bold;
+	font-size: 13px;
+	padding: 7px 0px 5px 5px;
+	-moz-border-radius: 6px 6px 6px 6px;
+}
+
+.msgbox_error {
+	border: solid 1px #FBD3C6;
+	background: #FDE4E1;
+	color: #B10009;
+}
+
+.msgbox_success {
+	border: solid 1px #ADDE5C;
+	background: #DFF2BF;
+	color: #008000;
+}
+
+.msgbox_info {
+	border: solid 1px #46B6EC;
+	background: #BDE5F8;
+	color: #00529B;
+}
+
+.msgbox_warning {
+	border: solid 1px #FDDD5B;
+	background: #FEEFB3;
+	color: #9F6000;
+}
+
+.msgbox_icon {
+	width: 16px;
+	height: 20px;
+	float: left;
+	margin: 0px 7px;
+}
+
+.msgbox_error #msgbox_icon {
+	background: url("images/icon-msgbox-error.png") no-repeat;
+}
+
+.msgbox_success #msgbox_icon {
+	background: url("images/icon-msgbox-success.png") no-repeat;
+}
+
+.msgbox_info #msgbox_icon {
+	background: url("images/icon-msgbox-info.png") no-repeat;
+}
+
+.msgbox_warning #msgbox_icon {
+	background: url("images/icon-msgbox-warning.png") no-repeat;
+}

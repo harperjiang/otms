@@ -3,5 +3,6 @@
 @IMPORT url("form.css");
 @IMPORT url("dialog.css");
 @IMPORT url('validator.css');
+@IMPORT url('msgbox.css');
 @IMPORT url("timesheet.css");
 @IMPORT url("calendar.css");

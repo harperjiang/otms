@@ -2,25 +2,23 @@ package org.harper.otms.calendar.entity;
 
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.harper.otms.auth.entity.User;
 
+@Entity
+@Table(name="tutor")
 public class Tutor extends User {
 
-	private TimeZone timezone;
-
+	@Embedded
 	private Timesheet timesheet = new Timesheet();
-
+	
+	@Transient
 	private List<Date> holidays;
-
-	public TimeZone getTimezone() {
-		return timezone;
-	}
-
-	public void setTimezone(TimeZone timezone) {
-		this.timezone = timezone;
-	}
 
 	public Timesheet getTimesheet() {
 		return timesheet;

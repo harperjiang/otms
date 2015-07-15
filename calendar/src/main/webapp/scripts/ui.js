@@ -21,6 +21,8 @@ otms.namespace = function(namespace) {
 	}
 };
 
+otms.namespace('otms.ui');
+
 otms.extend = function(base, cons, extend) {
 	cons.prototype = Object.create(base.prototype);
 	cons.prototype.constructor = cons;
@@ -32,6 +34,61 @@ otms.extend = function(base, cons, extend) {
 
 otms.isEmpty = function(str) {
 	return str == undefined || str == null || str === '';
+};
+
+otms.get = function(object, key) {
+	var parts = key.split('.');
+	var current = object;
+	for (var i = 0; i < parts.length; i++) {
+		var part = parts[i];
+		var index = parseInt(part);
+		if (current === undefined)
+			return undefined;
+		// In get value case, keep going down
+		if (isNaN(index)) {
+			current = current[part];
+		} else {
+			current = current[index];
+		}
+	}
+	return current;
+};
+
+otms.set = function(object, key, value) {
+	// debugger;
+	var parts = key.split('.');
+	var current = object;
+	for (var i = 0; i < parts.length; i++) {
+		var part = parts[i];
+
+		var index = parseInt(part);
+
+		if (i == parts.length - 1) {
+			// Set value and coming to the last one
+			if (isNaN(index)) {
+				current[part] = value;
+			} else {
+				current[index] = value;
+			}
+		} else {
+			// In get value case, keep going down
+			var next = isNaN(index) ? current[part] : current[index];
+			if (next == undefined) {
+				if (isNaN(parseInt(parts[i + 1]))) {
+					// Next is a key
+					next = {};
+				} else {
+					next = [];
+				}
+				if (isNaN(index)) {
+					current[part] = next;
+				} else {
+					current[index] = next;
+				}
+			}
+			current = next;
+		}
+	}
 };
 
 otms.UIUtil = {};

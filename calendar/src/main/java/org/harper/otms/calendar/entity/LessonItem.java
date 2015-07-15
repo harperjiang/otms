@@ -12,9 +12,8 @@ import javax.persistence.TemporalType;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
-@Table(name = "calendar_snapshot")
-public class CalendarSnapshot extends Entity {
-
+@Table(name = "lesson_item")
+public class LessonItem extends Entity {
 	@Column(name = "event_date")
 	@Temporal(TemporalType.DATE)
 	private Date date;
@@ -26,18 +25,14 @@ public class CalendarSnapshot extends Entity {
 	private int stopTime;
 
 	@OneToOne
-	@JoinColumn(name = "tutor_id")
-	private Tutor tutor;
+	@JoinColumn(name = "lesson_id")
+	private Lesson lesson;
 
-	@OneToOne
-	@JoinColumn(name = "client_id")
-	private Client client;
+	@Column(name = "title")
+	private String title;
 
-	@Column(name = "tutor_comment")
-	private String tutorComment;
-
-	@Column(name = "client_comment")
-	private String clientComment;
+	@Column(name = "description")
+	private String description;
 
 	public Date getDate() {
 		return date;
@@ -63,36 +58,28 @@ public class CalendarSnapshot extends Entity {
 		this.stopTime = stopTime;
 	}
 
-	public Tutor getTutor() {
-		return tutor;
+	public Lesson getLesson() {
+		return lesson;
 	}
 
-	public void setTutor(Tutor tutor) {
-		this.tutor = tutor;
+	public void setLesson(Lesson lesson) {
+		this.lesson = lesson;
 	}
 
-	public Client getClient() {
-		return client;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public String getTutorComment() {
-		return tutorComment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setTutorComment(String tutorComment) {
-		this.tutorComment = tutorComment;
-	}
-
-	public String getClientComment() {
-		return clientComment;
-	}
-
-	public void setClientComment(String clientComment) {
-		this.clientComment = clientComment;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

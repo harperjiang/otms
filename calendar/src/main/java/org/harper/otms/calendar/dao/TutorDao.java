@@ -5,4 +5,6 @@ import org.harper.otms.common.dao.Dao;
 
 public interface TutorDao extends Dao<Tutor> {
 
+	Tutor findByName(String tutorName);
+
 }

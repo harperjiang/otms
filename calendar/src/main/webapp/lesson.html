@@ -8,7 +8,10 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
 <script>
 	function switch_div(checkbox) {
 		if (checkbox.checked) {
@@ -22,7 +25,7 @@
 
 	function enter_modify_mode() {
 		$('#form_title_div').empty();
-		$('#form_title_div').append('Modify Meeting');
+		$('#form_title_div').append('Modify Lesson');
 		$('#delete_btn').css('display', 'initial');
 	}
 
@@ -40,27 +43,26 @@
 		window.beanManager = new otms.validator.BeanManager();
 		var bm = window.beanManager;
 		bm.reg('title', $('#title_input'));
-		bm.reg('tutor', $('#tutor_input'));
+		bm.reg('tutorName', $('#tutor_input'));
 		bm.reg('description', $('#meetingdesc_text'));
-		bm.reg('timeFrom', $('#timefrom_input'));
-		bm.reg('timeTo', $('#timeto_input'));
+		bm.reg('fromTime', $('#timefrom_input'));
+		bm.reg('toTime', $('#timeto_input'));
 		bm.reg('repeat', $('#repeat_checkbox'));
 
-		bm.reg('repeatDateFrom', $('#repeat_datefrom_input'));
-		bm.reg('repeatDateTo', $('#repeat_dateto_input'));
+		bm.reg('repeatFromDate', $('#repeat_datefrom_input'));
+		bm.reg('repeatToDate', $('#repeat_dateto_input'));
 
-		bm.reg('repeatSunday', $('#repeat_sunday_check'));
-		bm.reg('repeatMonday', $('#repeat_monday_check'));
-		bm.reg('repeatTuesday', $('#repeat_tuesday_check'));
-		bm.reg('repeatWednesday', $('#repeat_wednesday_check'));
-		bm.reg('repeatThursday', $('#repeat_thursday_check'));
-		bm.reg('repeatFriday', $('#repeat_friday_check'));
-		bm.reg('repeatSaturday', $('#repeat_saturday_check'));
+		bm.reg('weekrepeat.0', $('#repeat_sunday_check'));
+		bm.reg('weekrepeat.1', $('#repeat_monday_check'));
+		bm.reg('weekrepeat.2', $('#repeat_tuesday_check'));
+		bm.reg('weekrepeat.3', $('#repeat_wednesday_check'));
+		bm.reg('weekrepeat.4', $('#repeat_thursday_check'));
+		bm.reg('weekrepeat.5', $('#repeat_friday_check'));
+		bm.reg('weekrepeat.6', $('#repeat_saturday_check'));
 
 		bm.reg('oneoffDate', $('#oneoff_date_input'));
 
 		bm.validate = function(bean, vresult) {
-			debugger;
 			// First check vresult
 			for ( var key in vresult) {
 				if (vresult[key] == false) {
@@ -68,7 +70,7 @@
 						continue;
 					}
 					if (!bean.repeat
-							&& [ 'repeatDateFrom', 'repeatDateTo' ]
+							&& [ 'repeatFromDate', 'repeatToDate' ]
 									.includes(key)) {
 						continue;
 					}
@@ -77,17 +79,16 @@
 			}
 
 			// From time must be smaller than to time
-			if (bean.timeFrom.total >= bean.timeTo.total) {
-				this.fail([ 'timeFrom', 'timeTo' ],
+			if (bean.fromTime.total >= bean.toTime.total) {
+				this.fail([ 'fromTime', 'toTime' ],
 						'From time must be earlier than to time');
 				return false;
 			}
 			if (bean.repeat) {
 				// From date must be smaller than to date
-
 				if (bean.repeatFromDate.getTime() >= bean.repeatToDate
 						.getTime()) {
-					this.fail([ 'repeatDateFrom', 'repeatDateTo' ],
+					this.fail([ 'repeatFromDate', 'repeatToDate' ],
 							'From time must be earlier than to time');
 					return false;
 				}
@@ -103,7 +104,7 @@
 				res += bean.repeatSaturday;
 
 				if (res == 0) {
-					this.fail([ 'repeatSunday' ],
+					this.fail([ 'weekrepeat.0' ],
 							'Choose at least one day to repeat');
 					return false;
 				}
@@ -120,13 +121,16 @@
 			// TODO Load data from server
 		}
 
-		$('#confirm_btn').click(function(event) {
-			var bean = beanManager.getBean();
-			// Call Server
-			if (bean != null) {
-
-			}
-		});
+		$('#confirm_btn').click(
+				function(event) {
+					var bean = beanManager.getBean();
+					// Call Server
+					debugger;
+					if (bean != null) {
+						CalendarService.setupLesson(bean, otms.ui.MessageBox
+								.handler($('#form_errormsg_panel')));
+					}
+				});
 
 		$('#delete_btn').click(function(event) {
 
@@ -137,6 +141,7 @@
 <body>
 	<!--#include virtual="header.html" -->
 	<div class="form centerpanel">
+		<div id='form_errormsg_panel'></div>
 		<div id='form_title_div' class='form_title'>Setup Lesson</div>
 		<div class="form_section">Lesson Information</div>
 		<input type="text" id='title_input' placeholder="Lesson Title"><input

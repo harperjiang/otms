@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<import resource="env.xml" />
+
+	<!-- Dao Definition -->
+
+	<bean id="tutorDao" class="org.harper.otms.calendar.dao.jpa.JpaTutorDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
+	<bean id="clientDao" class="org.harper.otms.calendar.dao.jpa.JpaClientDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
+	<bean id="lessonDao" class="org.harper.otms.calendar.dao.jpa.JpaLessonDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
+
+	<!-- Service definition -->
+	<bean id="calendarService"
+		class="org.harper.otms.calendar.service.impl.DefaultCalendarService">
+		<property name="tutorDao" ref="tutorDao" />
+		<property name="clientDao" ref="clientDao" />
+		<property name="lessonDao" ref="lessonDao" />
+	</bean>
+
+
+</beans>

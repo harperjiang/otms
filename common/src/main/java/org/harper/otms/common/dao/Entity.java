@@ -1,5 +1,6 @@
 package org.harper.otms.common.dao;
 
+
 public class Entity {
 
 	private int id = -1;

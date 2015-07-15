@@ -37,6 +37,10 @@ otms.validator.ValidatorBase.prototype.force = function(message) {
 };
 
 otms.validator.ValidatorBase.prototype.check = function(value) {
+	if(this.control.attr('type') == 'checkbox') {
+		return this.value(this.control.is(':checked'));
+	}
+	
 	return this.value(value);
 };
 
@@ -118,7 +122,7 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 
 				var smresult = content.match(single);
 				if (smresult != null) {
-					var num = parseInt(smresult[0]);
+					var num = parseInt(smresult[1]);
 					if (withApm ? (num <= 12) : (num <= 23)) {
 						// Form a time
 						return this.value(otms.DateUtil.time(num, 0, am));
@@ -129,8 +133,8 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 
 				var tmresult = content.match(twoparts);
 				if (tmresult != null) {
-					var hour = parseInt(tmresult[0]);
-					var min = parseInt(tmresult[1]);
+					var hour = parseInt(tmresult[1]);
+					var min = parseInt(tmresult[2]);
 					if ((withApm ? (hour <= 12) : (hour <= 23)) && (min < 60)) {
 						// Form a time
 						return this.value(otms.DateUtil.time(hour, min, am));
@@ -157,9 +161,9 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 
 				var wyresult = content.match(withyear);
 				if (wyresult != null) {
-					var month = parseInt(wyresult[0]);
-					var date = parseInt(wyresult[1]);
-					var year = parseInt(wyresult[2]);
+					var month = parseInt(wyresult[1]);
+					var date = parseInt(wyresult[2]);
+					var year = parseInt(wyresult[3]);
 
 					if (month >= 13 && date >= 32) {
 						return this.message('Incorrect date value');
@@ -172,8 +176,8 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 				}
 				var mdresult = content.match(monthdate);
 				if (mdresult != null) {
-					var month = parseInt(mdresult[0]);
-					var date = parseInt(mdresult[1]);
+					var month = parseInt(mdresult[1]);
+					var date = parseInt(mdresult[2]);
 
 					if (month >= 13 && date >= 32) {
 						return this.message('Incorrect date value');
@@ -221,7 +225,7 @@ otms.validator.BeanManager.prototype.getBean = function() {
 		if (!validator.checked) {
 			validator.trigger();
 		}
-		bean[key] = validator.value();
+		otms.set(bean, key, validator.value());
 		vresult[key] = validator.success;
 	}
 	return (this.validate(bean, vresult) ? bean : null);
