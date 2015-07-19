@@ -91,11 +91,30 @@ otms.set = function(object, key, value) {
 	}
 };
 
+otms.uuid = function() {
+	function s4() {
+		return Math.floor((1 + Math.random()) * 0x10000).toString(16)
+				.substring(1);
+	}
+	return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4()
+			+ s4() + s4();
+};
+
 otms.UIUtil = {};
 
 otms.UIUtil.hidden = function(element) {
 	return (element.offsetParent === null);
 
+};
+
+otms.FormatUtil = {};
+
+otms.FormatUtil.padding = function(input, padding, length) {
+	var string = String(input);
+	while (string.length < length) {
+		string = padding + string;
+	}
+	return string;
 };
 
 otms.DateUtil = {};
@@ -114,9 +133,87 @@ otms.DateUtil.time = function(hour, min, am) {
 		'total' : hour * 60 + min
 	};
 };
+
+otms.DateUtil.formattime = function(time) {
+	var hour = 0;
+	var min = 0;
+	switch (typeof (time)) {
+	case "number":
+		hour = Math.round(time / 60);
+		min = time % 60;
+		break;
+	case "object":
+		hour = time.hour;
+		min = time.minute;
+		break;
+	default:
+		break;
+	}
+
+	var am = true;
+	if (hour >= 12) {
+		am = false;
+	}
+	if (hour > 12) {
+		hour -= 12;
+	}
+	if (hour == 0) {
+		hour = 12;
+	}
+	var minstr = (min == 0) ? "" : otms.FormatUtil.padding(min, "0", 2);
+	if (minstr.length > 0) {
+		minstr = ":" + minstr;
+	}
+	return hour + minstr + (am ? "am" : "pm");
+};
+
 otms.DateUtil.date = function(month, date, year) {
 	if (year === undefined) {
 		year = new Date().getFullYear();
 	}
 	return new Date(year, month - 1, date);
+};
+
+otms.DateUtil.formatdate = function(date) {
+	return otms.FormatUtil.padding((date.getMonth() + 1), "0", 2) + "/"
+			+ otms.FormatUtil.padding(date.getDate(), "0", 2) + "/"
+			+ date.getFullYear();
+};
+
+otms.DateUtil.truncate = function(input) {
+	var date = new Date(input);
+	date.setHours(0);
+	date.setMinutes(0);
+	date.setSeconds(0);
+	date.setMilliseconds(0);
+	return date;
+};
+
+otms.DateUtil.weekdayAbb = [ 'Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa' ];
+
+otms.DateUtil.formatweekday = function(input) {
+	var sum = 0;
+	for (var i = 0; i < 7; i++) {
+		sum += ((input[i] ? 1 : 0) << i);
+	}
+	if (sum == 65) {
+		return "weekend";
+	}
+	if (sum == 62) {
+		return "weekday";
+	}
+	if (sum == 42) {
+		return "MWF";
+	}
+	if (sum == 20) {
+		return "Tu,Th";
+	}
+	var val = "";
+	for (var i = 0; i < 7; i++) {
+		if (input[i]) {
+			val += otms.DateUtil.weekdayAbb[i];
+			val += ",";
+		}
+	}
+	return val.slice(0, val.length - 1);
 };

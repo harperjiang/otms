@@ -24,7 +24,6 @@ otms.validator.ValidatorBase.prototype.trigger = function() {
 		control.attr('title', this.oldTooltip);
 		this.success = true;
 	}
-	this.checked = true;
 };
 
 otms.validator.ValidatorBase.prototype.force = function(message) {
@@ -37,10 +36,14 @@ otms.validator.ValidatorBase.prototype.force = function(message) {
 };
 
 otms.validator.ValidatorBase.prototype.check = function(value) {
-	if(this.control.attr('type') == 'checkbox') {
+	this.checked = true;
+	if (this.control.attr('type') == 'checkbox') {
 		return this.value(this.control.is(':checked'));
 	}
-	
+	if (this.control.attr('type') == 'radio') {
+		// Find the selected one
+		return this.value(this.control.filter(':checked').val());
+	}
 	return this.value(value);
 };
 
@@ -56,6 +59,19 @@ otms.validator.ValidatorBase.prototype.value = function(arg) {
 	return true;
 };
 
+otms.validator.ValidatorBase.prototype.assign = function(newval) {
+	if(otms.isEmpty(newval))
+		return;
+	var tagName = this.control.prop('tagName');
+	if ($.inArray(tagName, [ 'input', 'select', 'textarea' ]) != -1) {
+		this.control.val(newval);
+	}
+	if ($.inArray(tagName, [ 'span', 'div' ])) {
+		this.control.empty();
+		this.control.append(newval);
+	}
+};
+
 otms.validator.ValidatorBase.prototype.message = function(arg) {
 	if (arg === undefined)
 		return this.msg;
@@ -64,34 +80,73 @@ otms.validator.ValidatorBase.prototype.message = function(arg) {
 };
 
 // Use Regular Expression to validate input
-otms.validator.RegexValidator = function(target, regex) {
-	var validator = this;
-	this.target = target;
-	this.regex = regex;
+otms.validator.RegexValidator = otms.extend(otms.validator.ValidatorBase,
+		function(val, exp) {
+			otms.validator.ValidatorBase.call(this, val);
+			this.exp = exp;
+		}, {
+			check : function(content) {
+				this.checked = true;
+				if (new RegExp(this.exp).test(content)) {
+					return this.value(content);
+				}
+				return this.message('Incorrect data format');
+			}
+		});
 
-	this.check = function(event) {
-		var cregex = new RegExp(regex);
-		var content = this.target.val();
-
-		if (!cregex.test(content)) {
-			this.target.addClass('validate_fail');
-		} else {
-			this.target.removeClass('validate_fail');
-		}
-	};
-
-	this.target.focusout(function(event) {
-		validator.check(event);
-	});
-};
+otms.validator.EmailValidator = otms.extend(otms.validator.RegexValidator,
+		function(val) {
+			otms.validator.RegexValidator.call(this, val,
+					'^[\\w\\d_\\.]+@[\\w\\d]+\\.[\\w]+$');
+		}, {});
 
 otms.validator.NonemptyValidator = otms.extend(otms.validator.ValidatorBase,
 		function(val) {
 			otms.validator.ValidatorBase.call(this, val);
 		}, {
 			check : function(content) {
-				if (content == undefined || content == '') {
+				this.checked = true;
+				if (otms.isEmpty(content)) {
 					return this.message('The field cannot be left empty');
+				}
+				return this.value(content);
+			}
+		});
+
+otms.validator.PasswordSymbol = [ '~', '`', '!', '@', '#', '$', '%', '^', '&',
+		'*', '(', ')', '-', '_', '+', '=', '[', ']', '\\', '|', '/', ':', ';',
+		'"', '\'', '<', '>', ',', '.', '?' ];
+otms.validator.PasswordValidator = otms.extend(otms.validator.ValidatorBase,
+		function(val) {
+			otms.validator.ValidatorBase.call(this, val);
+		}, {
+			check : function(content) {
+				this.checked = true;
+				if (otms.isEmpty(content)) {
+					return this.message('The field cannot be left empty');
+				}
+				if (content.length < 8) {
+					return this.message('Password should contain'
+							+ 'at least 8 characters');
+				}
+				var hasSymbol = false, hasLetter = false, hasNumber = false;
+				for (var i = 0, len = content.length; i < len; i++) {
+					var char = content[i];
+					var charcode = content.charCodeAt(i);
+					if ($.inArray(char, otms.validator.PasswordSymbol) != -1) {
+						hasSymbol = true;
+					}
+					if (charcode <= 57 && charcode >= 48) {
+						hasNumber = true;
+					}
+					if ((charcode >= 65 && charcode <= 90)
+							|| (charcode >= 97 && charcode <= 122)) {
+						hasLetter = true;
+					}
+				}
+				if (!(hasSymbol && hasLetter && hasNumber)) {
+					return this.message('Password should contain '
+							+ 'letter, number and symbols');
 				}
 				return this.value(content);
 			}
@@ -105,6 +160,7 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 			otms.validator.ValidatorBase.call(this, val);
 		}, {
 			check : function(content) {
+				this.checked = true;
 				if (otms.isEmpty(content)) {
 					return this.message('The field cannot be left empty');
 				}
@@ -143,6 +199,9 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 					}
 				}
 				return this.message('Incorrect time format');
+			},
+			assign : function(value) {
+				this.control.val(otms.DateUtil.formattime(value));
 			}
 		});
 
@@ -152,6 +211,7 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 			otms.validator.ValidatorBase.call(this, val);
 		}, {
 			check : function(content) {
+				this.checked = true;
 				if (otms.isEmpty(content)) {
 					return this.message('The field cannot be left empty');
 				}
@@ -189,6 +249,9 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 				}
 
 				return this.message('Incorrect date format');
+			},
+			assign : function(value) {
+				this.control.val(otms.DateUtil.formatdate(value));
 			}
 		});
 
@@ -229,4 +292,15 @@ otms.validator.BeanManager.prototype.getBean = function() {
 		vresult[key] = validator.success;
 	}
 	return (this.validate(bean, vresult) ? bean : null);
+};
+
+otms.validator.BeanManager.prototype.setBean = function(bean) {
+	// Set data to each validator
+	for ( var key in this.components) {
+		var comp = this.components[key];
+		if (otms.UIUtil.hidden(comp.val()))
+			continue;
+		var validator = comp.prop('validator');
+		validator.assign(otms.get(bean, key));
+	}
 };

@@ -8,10 +8,11 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
-<script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
 <script>
 	function switch_div(checkbox) {
 		if (checkbox.checked) {
@@ -42,36 +43,37 @@
 		// Install Bean Manager
 		window.beanManager = new otms.validator.BeanManager();
 		var bm = window.beanManager;
-		bm.reg('title', $('#title_input'));
-		bm.reg('tutorName', $('#tutor_input'));
-		bm.reg('description', $('#meetingdesc_text'));
-		bm.reg('fromTime', $('#timefrom_input'));
-		bm.reg('toTime', $('#timeto_input'));
-		bm.reg('repeat', $('#repeat_checkbox'));
+		bm.reg('lesson.title', $('#title_input'));
+		bm.reg('lesson.tutorName', $('#tutor_input'));
+		bm.reg('lesson.description', $('#meetingdesc_text'));
+		bm.reg('lesson.fromTime', $('#timefrom_input'));
+		bm.reg('lesson.toTime', $('#timeto_input'));
+		bm.reg('lesson.repeat', $('#repeat_checkbox'));
 
-		bm.reg('repeatFromDate', $('#repeat_datefrom_input'));
-		bm.reg('repeatToDate', $('#repeat_dateto_input'));
+		bm.reg('lesson.repeatFromDate', $('#repeat_datefrom_input'));
+		bm.reg('lesson.repeatToDate', $('#repeat_dateto_input'));
 
-		bm.reg('weekrepeat.0', $('#repeat_sunday_check'));
-		bm.reg('weekrepeat.1', $('#repeat_monday_check'));
-		bm.reg('weekrepeat.2', $('#repeat_tuesday_check'));
-		bm.reg('weekrepeat.3', $('#repeat_wednesday_check'));
-		bm.reg('weekrepeat.4', $('#repeat_thursday_check'));
-		bm.reg('weekrepeat.5', $('#repeat_friday_check'));
-		bm.reg('weekrepeat.6', $('#repeat_saturday_check'));
+		bm.reg('lesson.weekrepeat.0', $('#repeat_sunday_check'));
+		bm.reg('lesson.weekrepeat.1', $('#repeat_monday_check'));
+		bm.reg('lesson.weekrepeat.2', $('#repeat_tuesday_check'));
+		bm.reg('lesson.weekrepeat.3', $('#repeat_wednesday_check'));
+		bm.reg('lesson.weekrepeat.4', $('#repeat_thursday_check'));
+		bm.reg('lesson.weekrepeat.5', $('#repeat_friday_check'));
+		bm.reg('lesson.weekrepeat.6', $('#repeat_saturday_check'));
 
-		bm.reg('oneoffDate', $('#oneoff_date_input'));
+		bm.reg('lesson.oneoffDate', $('#oneoff_date_input'));
 
 		bm.validate = function(bean, vresult) {
+			debugger;
 			// First check vresult
 			for ( var key in vresult) {
 				if (vresult[key] == false) {
-					if (key == 'oneoffDate' && bean.repeat) {
+					if (key == 'lesson.oneoffDate' && bean.lesson.repeat) {
 						continue;
 					}
-					if (!bean.repeat
-							&& [ 'repeatFromDate', 'repeatToDate' ]
-									.includes(key)) {
+					if (!bean.lesson.repeat
+							&& $.inArray(key, [ "lesson.repeatFromDate",
+									"lesson.repeatToDate" ]) != -1) {
 						continue;
 					}
 					return false;
@@ -79,33 +81,48 @@
 			}
 
 			// From time must be smaller than to time
-			if (bean.fromTime.total >= bean.toTime.total) {
-				this.fail([ 'fromTime', 'toTime' ],
+			if (bean.lesson.fromTime.total >= bean.lesson.toTime.total) {
+				this.fail([ 'lesson.fromTime', 'lesson.toTime' ],
 						'From time must be earlier than to time');
 				return false;
 			}
-			if (bean.repeat) {
+			var today = new Date();
+			if (bean.lesson.repeat) {
+				// If from date is older than today
+				if (bean.lesson.repeatFromDate.getTime() <= today.getTime()) {
+					this.fail([ 'lesson.repeatFromDate' ],
+							'Please specify a future time');
+					return false;
+				}
 				// From date must be smaller than to date
-				if (bean.repeatFromDate.getTime() >= bean.repeatToDate
+				if (bean.lesson.repeatFromDate.getTime() >= bean.lesson.repeatToDate
 						.getTime()) {
-					this.fail([ 'repeatFromDate', 'repeatToDate' ],
+					this.fail(
+							[ 'lesson.repeatFromDate', 'lesson.repeatToDate' ],
 							'From time must be earlier than to time');
 					return false;
 				}
 				// Check at least one day when repeat
 
 				var res = 0;
-				res += bean.repeatSunday;
-				res += bean.repeatMonday;
-				res += bean.repeatTuesday;
-				res += bean.repeatWednesday;
-				res += bean.repeatThursday;
-				res += bean.repeatFriday;
-				res += bean.repeatSaturday;
+				res += bean.lesson.repeatSunday;
+				res += bean.lesson.repeatMonday;
+				res += bean.lesson.repeatTuesday;
+				res += bean.lesson.repeatWednesday;
+				res += bean.lesson.repeatThursday;
+				res += bean.lesson.repeatFriday;
+				res += bean.lesson.repeatSaturday;
 
 				if (res == 0) {
-					this.fail([ 'weekrepeat.0' ],
+					otms.ui.MessageBox.warning($('#form_errormsg_panel'),
 							'Choose at least one day to repeat');
+					return false;
+				}
+			} else {
+				debugger;
+				if (bean.lesson.oneoffDate.getTime() <= today.getTime()) {
+					this.fail([ 'lesson.oneoffDate' ],
+							'Please specify a future time');
 					return false;
 				}
 			}
@@ -114,40 +131,65 @@
 		};
 
 		// Check storage for input parameter
-		var eventId = window.sessionStorage.getItem('eventId');
-		window.sessionStorage.removeItem('eventId');
-		if (eventId != undefined) {
+		var lessonId = sessionStorage.getItem('lesson.id');
+		sessionStorage.removeItem('lesson.id');
+		if (lessonId != undefined) {
 			enter_modify_mode();
 			// TODO Load data from server
+
 		}
 
+		var confirmCallback = function(success) {
+			if (success) {
+				// Display a confirmation page
+				$('#main_panel').css('display', 'none');
+				$('#confirm_panel').css('display', 'block');
+			} else {
+				$('#confirm_btn').removeAttr('disabled');
+			}
+		};
 		$('#confirm_btn').click(
 				function(event) {
 					var bean = beanManager.getBean();
 					// Call Server
-					debugger;
 					if (bean != null) {
-						CalendarService.setupLesson(bean, otms.ui.MessageBox
-								.handler($('#form_errormsg_panel')));
+						$(this).prop('disabled', 'true');
+						// Get current client id
+						// bean.clientId = sessionStorage.getItem("clientId");
+						bean.clientId = 2;
+						LessonService.setupLesson(bean, otms.ui.MessageBox
+								.handler($('#form_errormsg_panel'),
+										confirmCallback));
+					} else {
+						otms.ui.MessageBox.warning($('#form_errormsg_panel'),
+								'Validation Failed');
 					}
 				});
 
+		var deleteCallback = function(success) {
+
+		};
+
 		$('#delete_btn').click(function(event) {
 
+		});
+
+		$('#jump_btn').click(function(event) {
+			window.location = 'calendar.html';
 		});
 	});
 </script>
 </head>
 <body>
 	<!--#include virtual="header.html" -->
-	<div class="form centerpanel">
+	<div id="main_panel" class="form centerpanel">
 		<div id='form_errormsg_panel'></div>
 		<div id='form_title_div' class='form_title'>Setup Lesson</div>
 		<div class="form_section">Lesson Information</div>
 		<input type="text" id='title_input' placeholder="Lesson Title"><input
 			type="text" id='tutor_input' placeholder="Your tutor id">
 		<textarea id='meetingdesc_text' placeholder="Lesson Description"></textarea>
-		<div class="form_section">Lesson Time (your local time)</div>
+		<div class="form_section">Lesson Time ( your local time )</div>
 		<div class='form_row'>
 			<div style='display: inline-block; width: 49%'>
 				<label class='timelabel2'>From:</label> <input type='text'
@@ -198,12 +240,24 @@
 		</div>
 		<div id='oneoff_option_div' style='display: none'>
 			<label>Meet On:</label> <input type='text' id='oneoff_date_input'
-				placeholder='01/01/2015' class='timeinput' />
+				placeholder='01/31/2015' class='timeinput' />
 		</div>
 		<div class="form_row">
 			<button class="btn_large" id='confirm_btn'>Confirm</button>
 			<button class="btn_danger" id='delete_btn'
-				style='margin-left: 20px; display: none;'>Delete Lesson</button>
+				style='margin-left: 20px; display: none;'>Cancel Lesson</button>
+		</div>
+	</div>
+
+	<div id="confirm_panel" class="form centerpanel" style="display: none;">
+		<div class="form_title">Lesson Setup Success!</div>
+		<div class="form_row">We have sent your lesson request to your
+			tutor. You will receive a notification when he/she confirms your
+			lesson request.</div>
+		<div class="form_row">The lesson will automatically be added to
+			your calendar when confirmed by your tutor.</div>
+		<div class="form_row">
+			<button class="btn_large" id='jump_btn'>Go to my calendar</button>
 		</div>
 	</div>
 	<!--#include virtual="footer.html" -->

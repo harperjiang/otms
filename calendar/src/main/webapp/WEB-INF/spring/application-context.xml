@@ -6,7 +6,9 @@
 	<import resource="env.xml" />
 
 	<!-- Dao Definition -->
-
+	<bean id="userDao" class="org.harper.otms.auth.dao.jpa.JpaUserDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
 	<bean id="tutorDao" class="org.harper.otms.calendar.dao.jpa.JpaTutorDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
@@ -16,14 +18,46 @@
 	<bean id="lessonDao" class="org.harper.otms.calendar.dao.jpa.JpaLessonDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
-
+	<bean id="lessonItemDao" class="org.harper.otms.calendar.dao.jpa.JpaLessonItemDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
+	<bean id="snapshotDao" class="org.harper.otms.calendar.dao.jpa.JpaSnapshotDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
+	<bean id="actionLogDao" class="org.harper.otms.calendar.dao.jpa.JpaActionLogDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
 	<!-- Service definition -->
 	<bean id="calendarService"
 		class="org.harper.otms.calendar.service.impl.DefaultCalendarService">
 		<property name="tutorDao" ref="tutorDao" />
 		<property name="clientDao" ref="clientDao" />
 		<property name="lessonDao" ref="lessonDao" />
+		<property name="userDao" ref="userDao" />
+		<property name="lessonItemDao" ref="lessonItemDao" />
+		<property name="snapshotDao" ref="snapshotDao" />
 	</bean>
 
+	<bean id="lessonService"
+		class="org.harper.otms.calendar.service.impl.DefaultLessonService">
+		<property name="tutorDao" ref="tutorDao" />
+		<property name="clientDao" ref="clientDao" />
+		<property name="lessonDao" ref="lessonDao" />
+		<property name="lessonItemDao" ref="lessonItemDao" />
+		<property name="snapshotDao" ref="snapshotDao" />
+		<property name="userDao" ref="userDao" />
+		<property name="actionLogDao" ref="actionLogDao" />
+	</bean>
 
+	<bean id="userService"
+		class="org.harper.otms.calendar.service.impl.DefaultUserService">
+		<property name="tutorDao" ref="tutorDao" />
+		<property name="clientDao" ref="clientDao" />
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<bean id="clientService"
+		class="org.harper.otms.calendar.service.impl.DefaultClientService">
+		<property name="clientDao" ref="clientDao" />
+	</bean>
 </beans>

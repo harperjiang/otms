@@ -91,6 +91,7 @@
 	font-size: 12px;
 	height: 14px;
 	cursor: pointer;
+	overflow: hidden;
 }
 
 .calendar_item a {

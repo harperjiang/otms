@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import org.eclipse.persistence.queries.ScrollableCursor;
 
@@ -59,8 +60,8 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 	}
 
 	public T save(T object) {
-		if (-1 == object.getId()) {
-			// Pre-acquire object id
+		if (0 == object.getId()) {
+			// Pre-acquire object id if using table sequence
 			getEntityManager().persist(object);
 		} else {
 			object = getEntityManager().merge(object);
@@ -120,5 +121,24 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 		public void remove() {
 			throw new UnsupportedOperationException("Not supported");
 		}
+	}
+
+	protected T getSingleResult(TypedQuery<T> query) {
+		try {
+			return query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	protected String bindingExp(int length) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("(");
+		for (int i = 0; i < length; i++) {
+			sb.append("?").append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		sb.append(")");
+		return sb.toString();
 	}
 }

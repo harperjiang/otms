@@ -1,9 +1,8 @@
 package org.harper.otms.common.dao;
 
-
 public class Entity {
 
-	private int id = -1;
+	private int id;
 
 	public int getId() {
 		return id;

@@ -19,6 +19,9 @@ otms.ui.MessageBox.warning = function(component, message) {
 };
 
 otms.ui.MessageBox.showMessageWithClass = function(component, message, style) {
+	var sessionid = otms.uuid();
+	component.prop('dialogSessionId', sessionid);
+
 	component.empty();
 	component.removeClass();
 	component.addClass(style);
@@ -28,39 +31,108 @@ otms.ui.MessageBox.showMessageWithClass = function(component, message, style) {
 	icondiv.addClass('msgbox_icon');
 	component.append(icondiv);
 
-	component.append(message);
+	var msgdiv = $(document.createElement('div'));
+	msgdiv.attr('id', 'msgbox_msg');
+	msgdiv.addClass('msgbox_msg');
+	msgdiv.append(message);
+	component.append(msgdiv);
 
 	component.click(function(event) {
 		component.animate({
-			'height' : '0px'
+			'opacity' : '0',
+			'height' : '0'
 		}, 300, function() {
 			component.removeClass();
 			component.attr('style', '');
 			component.addClass('msgbox_hidden');
+			component.removeProp('dialogSessionId');
 		});
 	});
-	// Hide the dialog after 5 sec
-	setTimeout(function() {
-		component.animate({
-			'height' : '0px'
-		}, 300, function() {
-			component.removeClass();
-			component.attr('style', '');
-			component.addClass('msgbox_hidden');
-		});
-	}, 5000);
+	/*
+	 * // Hide the dialog after 5 sec if session id doesn't change
+	 * setTimeout(function() { if (sessionid !=
+	 * component.prop('dialogSessionId')) { return; } component.animate({
+	 * 'opacity' : '0', 'height' : '0' }, 300, function() {
+	 * component.removeClass(); component.attr('style', '');
+	 * component.addClass('msgbox_hidden'); }); }, 3000);
+	 */
 };
 
-otms.ui.MessageBox.handler = function(container) {
+otms.ui.MessageBox.handler = function(container, mycallback) {
 	return {
-		callback : function(data) {
-			debugger;
+		callback : function(response) {
 			console.log(response);
-			otms.ui.MessageBox.success(container, 'Operation Succeed');
+			if (response.success) {
+				otms.ui.MessageBox.success(container, 'Operation Succeed');
+				if (mycallback != undefined) {
+					mycallback(true, response);
+				}
+			} else {
+				var errorMsg = response.errorMessage;
+				if (response.errorCode != undefined) {
+					errorMsg = otms.ErrorMsg.msg(response.errorCode);
+				}
+				if (errorMsg === undefined) {
+					errorMsg = 'Server Error';
+				}
+				otms.ui.MessageBox.error(container, errorMsg);
+				if (mycallback != undefined) {
+					mycallback(false);
+				}
+			}
+
 		},
 		errorHandler : function(errorString, exception) {
-			otms.ui.MessageBox.error(container,
-					otms.isEmpty(errorString) ? 'Server Error' : errorString);
+			try {
+				console.log(errorString);
+				console.log(exception);
+				otms.ui.MessageBox.error(container,
+						otms.isEmpty(errorString) ? 'Server Error'
+								: errorString);
+			} finally {
+				if (mycallback != undefined) {
+					mycallback(false);
+				}
+			}
+		}
+	};
+};
+
+otms.ui.MessageBox.errhandler = function(container, mycallback) {
+	return {
+		callback : function(response) {
+			console.log(response);
+			if (response.success) {
+				if (mycallback != undefined) {
+					mycallback(true, response);
+				}
+			} else {
+				var errorMsg = response.errorMessage;
+				if (response.errorCode != undefined) {
+					errorMsg = otms.ErrorMsg.msg(response.errorCode);
+				}
+				if (errorMsg === undefined) {
+					errorMsg = 'Server Error';
+				}
+				otms.ui.MessageBox.error(container, errorMsg);
+				if (mycallback != undefined) {
+					mycallback(false);
+				}
+			}
+
+		},
+		errorHandler : function(errorString, exception) {
+			try {
+				console.log(errorString);
+				console.log(exception);
+				otms.ui.MessageBox.error(container,
+						otms.isEmpty(errorString) ? 'Server Error'
+								: errorString);
+			} finally {
+				if (mycallback != undefined) {
+					mycallback(false);
+				}
+			}
 		}
 	};
 };

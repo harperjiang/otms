@@ -10,10 +10,16 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
 	$(function() {
-
+		$('#signin_btn').click(
+				function(event) {
+					otms.ui.MessageBox.info($('#form_errmsg_panel'),
+							'Test information');
+				});
 	});
 </script>
 </head>
@@ -21,6 +27,7 @@
 	<!--#include virtual="header.html" -->
 
 	<div class="form centerpanel">
+		<div id="form_errmsg_panel"></div>
 		<div class="form_title">Sign In</div>
 
 		<input id="username" type="text" name="username"
@@ -28,7 +35,7 @@
 			name="password" placeholder="Password" />
 
 		<div>
-			<button class="btn_large">Sign In</button>
+			<button id="signin_btn" class="btn_large">Sign In</button>
 			<div style="display: inline-block; margin-left: 20px;">
 				<a href="forgetpass.html">Forget password?</a>
 			</div>

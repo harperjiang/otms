@@ -7,6 +7,14 @@ public class ResponseDto extends Dto {
 	private String errorMessage;
 
 	private int errorCode;
+	
+	public ResponseDto() {
+		
+	}
+	
+	public ResponseDto(int err) {
+		setErrorCode(err);
+	}
 
 	public int getErrorCode() {
 		return errorCode;
@@ -14,6 +22,7 @@ public class ResponseDto extends Dto {
 
 	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
+		this.success = false;
 	}
 
 	public boolean isSuccess() {

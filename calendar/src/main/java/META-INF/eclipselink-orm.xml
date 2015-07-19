@@ -3,22 +3,33 @@
 	xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_5.xsd">
+
 	<converter name="timezoneConverter" auto-apply="true"
-	class="org.harper.otms.common.dao.TimezoneConverter" />
+		class="org.harper.otms.common.dao.TimezoneConverter" />
+	<table-generator name="userseq" table="seq_num"
+		pk-column-name="name" pk-column-value="user" value-column-name="value"
+		allocation-size="25" />
+
+	<entity class="org.harper.otms.auth.entity.User">
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="TABLE" generator="userseq" />
+			</id>
+		</attributes>
+	</entity>
+
 	<entity class="org.harper.otms.calendar.entity.Tutor">
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="IDENTITY" />
 			</id>
 		</attributes>
-
 	</entity>
 	<entity class="org.harper.otms.calendar.entity.Client">
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="IDENTITY" />
 			</id>
 		</attributes>
 	</entity>
@@ -46,11 +57,19 @@
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.CalendarSnapshot">
+	<entity class="org.harper.otms.calendar.entity.Snapshot">
 		<attributes>
 			<id name="id">
 				<column name="id" />
 				<generated-value strategy="IDENTITY" />
+			</id>
+		</attributes>
+	</entity>
+	
+	<entity class="org.harper.otms.calendar.entity.ActionLog">
+		<attributes>
+			<id name="id">
+				<column name="id" />
 			</id>
 		</attributes>
 	</entity>

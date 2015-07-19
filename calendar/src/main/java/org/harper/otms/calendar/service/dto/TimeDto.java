@@ -6,6 +6,15 @@ public class TimeDto {
 
 	private int minute;
 
+	public TimeDto() {
+		
+	}
+	
+	public TimeDto(int val) {
+		this();
+		set(val);
+	}
+	
 	public int getHour() {
 		return hour;
 	}
@@ -24,6 +33,11 @@ public class TimeDto {
 
 	public int total() {
 		return hour * 60 + minute;
+	}
+
+	public void set(int val) {
+		this.hour = val / 60;
+		this.minute = val % 60;
 	}
 
 }

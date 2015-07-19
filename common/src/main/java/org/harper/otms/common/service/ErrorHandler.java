@@ -19,14 +19,16 @@ public class ErrorHandler {
 			logger.warn("DataException captured in service method", de);
 			MethodSignature signature = (MethodSignature) pjp.getSignature();
 			Method method = signature.getMethod();
-			Object dto = method.getReturnType().newInstance();
-			if (dto instanceof ResponseDto) {
-				((ResponseDto) dto).setErrorCode(de.getErrorCode());
-				((ResponseDto) dto).setSuccess(false);
-				return dto;
+			Class<?> returnType = method.getReturnType();
+			if (null != returnType) {
+				Object dto = returnType.newInstance();
+				if (dto instanceof ResponseDto) {
+					((ResponseDto) dto).setErrorCode(de.getErrorCode());
+					((ResponseDto) dto).setSuccess(false);
+					return dto;
+				}
 			}
-			throw new RuntimeException("Return type is not a ResultDto:"
-					+ dto.getClass());
+			throw new RuntimeException("Return type is not a ResponseDto");
 		} catch (Exception e) {
 			logger.warn("Error captured in service method", e);
 			MethodSignature signature = (MethodSignature) pjp.getSignature();

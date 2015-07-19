@@ -15,7 +15,8 @@ public class JpaTutorDao extends JpaDao<Tutor> implements TutorDao {
 	public Tutor findByName(String tutorName) {
 		CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Tutor> cq = cb.createQuery(Tutor.class);
-		Predicate p = cb.equal(cq.from(Tutor.class).get("name"), tutorName);
+		Predicate p = cb.equal(cq.from(Tutor.class).get("user").get("name"),
+				tutorName);
 		cq.where(p);
 		try {
 			return getEntityManager().createQuery(cq).getSingleResult();

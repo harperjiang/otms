@@ -3,13 +3,24 @@
 }
 
 .msgbox_error,.msgbox_info,.msgbox_warning,.msgbox_success {
-	min-height: 20px;
 	margin: 0px;
-	padding: 2px 4px;
 	font-weight: bold;
 	font-size: 13px;
-	padding: 7px 0px 5px 5px;
 	-moz-border-radius: 6px 6px 6px 6px;
+	height: 36px;
+	margin-bottom:10px;
+}
+
+.msgbox_icon {
+	width: 16px;
+	height: 16px;
+	float: left;
+	margin:10px 10px 0px 10px;
+}
+
+#msgbox_msg {
+	float: left;
+	margin: 5px 6px 0px 6px;
 }
 
 .msgbox_error {
@@ -34,13 +45,6 @@
 	border: solid 1px #FDDD5B;
 	background: #FEEFB3;
 	color: #9F6000;
-}
-
-.msgbox_icon {
-	width: 16px;
-	height: 20px;
-	float: left;
-	margin: 0px 7px;
 }
 
 .msgbox_error #msgbox_icon {

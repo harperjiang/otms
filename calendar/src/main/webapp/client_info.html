@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Client Information</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/calendar.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/ClientService.js'></script>
+<script>
+	$(function() {
+		debugger;
+		var clientId = sessionStorage.getItem("client_id");
+		sessionStorage.removeItem("client_id");
+		if (undefined == clientId) {
+			// Display invalid access 
+			otms.ui.MessageBox.warning($('#errmsg_panel'), 'Invalid Access');
+			setTimeout(function() {
+				window.location = 'index.html';
+			}, 2000);
+		}
+
+		otms.namespace('otms.clientInfoPage');
+
+		
+		var vbm = new otms.validator.BeanManager();
+		vbm.reg('displayName', $('#name_span'));
+		vbm.reg('username', $('#username_span'));
+		vbm.reg('timezone', $('#timezone_span'));
+		vbm.reg('description', $('#desc_span'));
+		vbm.reg('pictureUrl', $('#profile_img'));
+		vbm.reg('statement', $('#ps_span'));
+		vbm.reg('audioText', $('#eel_span'));
+		vbm.reg('audioUrl', $('#audio_frame'));
+		otms.clientInfoPage.viewbm = vbm;
+
+		otms.ui.calendar.loadTzSelect($('#timezone_select')));
+		
+		new NonemptyValidator($('#name_input'));
+	
+		var ebm = new otms.validator.BeanManager();
+		ebm.reg('displayName', $('#name_input'));
+		ebm.reg('username', $('#username_span'));
+		ebm.reg('timezone', $('#timezone_select'));
+		ebm.reg('description', $('#desc_input'));
+		ebm.reg('pictureUrl', $('#profile_img'));
+		ebm.reg('statement', $('#ps_text'));
+		ebm.reg('audioText', $('#eel_span'));
+		ebm.reg('audioUrl', $('#audio_frame'));
+		otms.clientInfoPage.editbm = ebm;
+		
+		ebm.validate = function(bean, vresult) {
+			return true;
+		};
+		
+		$('#confirm_btn').click(function() {
+			var bean = ebm.getBean();
+			if(null != bean) {
+				ClientService.setupClient(bean,otms.ui.MessageBox.handler($('#errmsg_panel')));
+			}
+		});
+
+		var req = otms.auth.req({
+			'clientId' : clientId
+		});
+		var callback = function(success, data) {
+			if (success) {
+				var clientInfo = data.clientInfo;
+				if(otms.auth.currentUser() == clientInfo.clientId) {
+					// Can edit
+					$('#profile_view_page').css('display','none');
+					$('#profile_view_page').css('display','block');
+					
+					otms.clientInfoPage.editbm.setBean(clientInfo);
+				} else {
+					// Noneditable
+					otms.clientInfoPage.viewbm.setBean(clientInfo);
+				}
+				vbm.setBean(data.clientInfo);
+			}
+		};
+		ClientService.getClientInfo(req, otms.ui.MessageBox.errhandler(
+				$('#errmsg_panel'), callback));
+	});
+</script>
+<style>
+.profile_container {
+	padding: 20px;
+	width: 700px;
+	overflow: auto;
+}
+
+.profile_picture {
+	width: 120px;
+	height: 120px;
+	display: inline-block;
+}
+
+.profile_block {
+	margin: 10px;
+	font-size: 16px;
+	overflow: auto;
+}
+
+.profile_block_title {
+	font-size: 20px;
+	font-weight: bold;
+	color: #66adff;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.profile_row {
+	margin-bottom: 10px;
+	line-height: 160%;
+}
+</style>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+	<div class='profile_container centerpanel' style='display: none;'>
+		<div id="errmsg_panel"></div>
+		<div id="profile_view_page">
+			<div class="profile_block">
+				<div style="margin-right: 20px; float: left;">
+					<div class="profile_picture">
+						<img id="profile_img" src="resource/default_profile.jpg"
+							width="100%" height="100%" />
+					</div>
+				</div>
+				<div style="float: left; min-height: 120px;">
+					<div class='profile_row'>
+						<span id="name_span" style="font-size: 25px; font-weight: bold">&nbsp;</span>
+					</div>
+					<div class="profile_row">
+						<span id="desc_span">&nbsp;</span>
+					</div>
+					<div class="profile_row">
+						<div style="display: inline-block; width: 250px">
+							username: <span id="username_span" style="font-weight: bold">&nbsp;</span>
+						</div>
+						<div style="display: inline-block; width: 250px">
+							timezone: <span id="timezone_span" style="font-weight: bold">&nbsp;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="profile_block">
+				<div class="profile_block_title">Personal Statement</div>
+				<div class="profile_row">
+					<span id="ps_span">&nbsp;</span>
+				</div>
+			</div>
+			<div class="profile_block">
+				<div class="profile_block_title">English Efficiency Level</div>
+				<div class="profile_row">
+					<span id="eel_span">&nbsp;</span>
+				</div>
+				<div class="profile_row">
+					<iframe id="audio_frame" width="560" height="40"
+						src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe>
+				</div>
+			</div>
+		</div>
+		<div id="profile_edit_page" style="display: none;">
+			<div class="profile_block">
+				<div style="margin-right: 20px; float: left;">
+					<div class="profile_picture">
+						<img id="profile_img" src="resource/default_profile.jpg"
+							width="100%" height="100%" />
+					</div>
+				</div>
+				<div style="float: left; min-height: 120px;">
+					<div class='profile_row'>
+						<input id="name_input" type='text'
+							style="font-size: 25px; font-weight: bold" />
+					</div>
+					<div class="profile_row">
+						<input id="desc_input" type='text' />
+					</div>
+					<div class="profile_row">
+						<div style="display: inline-block; width: 250px">
+							username: <span id="username_span" style="font-weight: bold">&nbsp;</span>
+						</div>
+						<div style="display: inline-block; width: 250px">
+							timezone: <select id="timezone_select"></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="profile_block">
+				<div class="profile_block_title">Personal Statement</div>
+				<div class="profile_row">
+					<textarea id="ps_text"></textarea>
+				</div>
+			</div>
+			<div class="profile_block">
+				<div class="profile_block_title">English Efficiency Level</div>
+				<div class="profile_row">
+					<span id="eel_span">&nbsp;</span>
+				</div>
+				<div class="profile_row">
+					<input type='text' id="audiourl_input" />
+				</div>
+			</div>
+			<div class="profile_block">
+				<button id="confirm_btn" class="btn_large">Confirm</button>
+			</div>
+		</div>
+	</div>
+
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

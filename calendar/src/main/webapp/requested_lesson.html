@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Requested Tasks</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script>
+	function client_clicked(client_id) {
+		sessionStorage.setItem("client_id", client_id);
+		window.location = 'client_info.html';
+	};
+
+	function hide_button() {
+		$('#button_div').detach();
+		otms.reqLessonPage.currentItem = undefined;
+	};
+
+	function show_button(stub) {
+
+		var buttonDiv = otms.reqLessonPage.buttonDiv;
+		if (buttonDiv == undefined) {
+			buttonDiv = $(document.createElement('div'));
+			buttonDiv.attr('id', 'button_div');
+			buttonDiv.addClass('list_row_button_div');
+			buttonDiv.append("&nbsp;");
+
+			var confirmBtn = $(document.createElement('button'));
+			confirmBtn.addClass('btn_small');
+			confirmBtn.attr('id', 'confirm_btn');
+			confirmBtn.append("Accept");
+			buttonDiv.append(confirmBtn);
+			buttonDiv.prop('confirmBtn', confirmBtn);
+
+			var rejectBtn = $(document.createElement('button'));
+			rejectBtn.addClass('btn_small_danger');
+			rejectBtn.attr('id', 'reject_btn');
+			rejectBtn.append("Reject");
+			buttonDiv.append(rejectBtn);
+			buttonDiv.prop('rejectBtn', rejectBtn);
+
+			otms.reqLessonPage.buttonDiv = buttonDiv;
+
+			$('#list_container').append(buttonDiv);
+
+			//$(document).on('mouseleave', '#button_div', hide_button);
+
+			var callback = function(success, data) {
+				if (success)
+					otms.reqLessonPage.list.model.reload();
+			};
+
+			$(document).on(
+					'click',
+					'#confirm_btn',
+					function() {
+						var item = otms.reqLessonPage.currentItem;
+						var req = otms.auth.req({
+							'currentUser' : 27,
+							"lessonId" : item.lessonId,
+							"toStatus" : 'VALID'
+						});
+						detach();
+						LessonService.changeLessonStatus(req,
+								otms.ui.MessageBox.handler($('#errmsg_panel'),
+										callback));
+					});
+
+			$(document).on(
+					'click',
+					'#reject_btn',
+					function() {
+						var item = otms.reqLessonPage.currentItem;
+						var req = otms.auth.req({
+							'currentUser' : 27,
+							"lessonId" : item.lessonId,
+							"toStatus" : 'INVALID'
+						});
+						detach();
+						LessonService.changeLessonStatus(req,
+								otms.ui.MessageBox.handler($('#errmsg_panel'),
+										callback));
+					});
+
+		} else {
+			// First hide the buttonDiv
+			hide_button();
+			$('.list_content').append(buttonDiv);
+		}
+
+		var item = stub.prop('dataItem');
+		otms.reqLessonPage.currentItem = item;
+		// Display a div that contains button;
+
+		var stubwidth = stub.prop('offsetWidth');
+		var stubheight = stub.prop('offsetHeight');
+		var stubpos = stub.offset();
+
+		buttonDiv.css('height', stubheight);
+
+		// Button Div width
+		var widthexp = 160;
+		var btnheight = 26;
+
+		buttonDiv.css('top', stubpos.top);
+		buttonDiv.css('left', stubpos.left + stubwidth);
+
+		var confirmBtn = buttonDiv.prop('confirmBtn');
+		confirmBtn.css('margin-top', (stubheight - btnheight) / 2);
+		confirmBtn.css('margin-left', 10);
+
+		var rejectBtn = buttonDiv.prop('rejectBtn');
+		rejectBtn.css('margin-top', (stubheight - btnheight) / 2);
+		rejectBtn.css('margin-left', 10);
+
+		buttonDiv.css('width', 0);
+
+		buttonDiv.animate({
+			'left' : stubpos.left - widthexp + stubwidth,
+			'width' : widthexp
+		}, 100);
+	};
+
+	$(function() {
+
+		otms.namespace('otms.reqLessonPage');
+
+		var list = new otms.ui.list.List($('#list_container'));
+		list.setTitle('Requested Lessons');
+		list.setRenderer(function(container, item) {
+			var content = $(document.createElement('div'));
+			content.addClass('list_row_content');
+			container.append(content);
+
+			var titleSpan = $(document.createElement('span'));
+			titleSpan.addClass('list_row_title');
+			titleSpan.append(item.title);
+			content.append(titleSpan);
+
+			content.append(", requested by ");
+
+			var link = $(document.createElement('a'));
+			link.attr('onclick', 'client_clicked(' + item.clientId + ')');
+			link.append(item.clientName);
+			content.append(link);
+
+			content.append('. ');
+			// Time info
+			var timeSpan = $(document.createElement("span"));
+			timeSpan.addClass('list_row_time');
+			timeSpan.append(otms.DateUtil.formattime(item.fromTime));
+			timeSpan.append(" to ");
+			timeSpan.append(otms.DateUtil.formattime(item.toTime));
+			timeSpan.append(", ");
+			if (item.repeat) {
+				timeSpan.append(otms.DateUtil.formatdate(item.repeatFromDate));
+				timeSpan.append(" to ");
+				timeSpan.append(otms.DateUtil.formatdate(item.repeatToDate));
+
+				timeSpan.append(", every ");
+
+				timeSpan.append(otms.DateUtil.formatweekday(item.weekrepeat));
+			} else {
+				timeSpan.append(otms.DateUtil.formatdate(item.oneoffDate));
+			}
+			content.append(timeSpan);
+
+			// Button Operation Div
+			/* 			var buttonDiv = $(document.createElement('div'));
+			 buttonDiv.addClass('list_row_buttonstub_div');
+			 
+			 buttonDiv.append("&nbsp;");
+
+			 container.append(buttonDiv);  */
+			container.prop('dataItem', item);
+		});
+
+		otms.reqLessonPage.list = list;
+
+		list.model.reload = function() {
+			var model = this;
+			var callback = function(success, data) {
+				if (success) {
+					// Update data to page
+					model.setData(data.lessons);
+					// Add events to dynamic button divs
+					$(document).on('mouseenter', '.list_row', function(event) {
+						show_button($(this));
+					});
+				}
+			};
+			var param = otms.auth.req({
+				'currentUser' : 27
+			});
+			LessonService.getRequestedLessons(param, otms.ui.MessageBox
+					.errhandler($('#errmsg_panel'), callback));
+		};
+
+		$(document).on('mouseleave', '.list_content', function(event) {
+			hide_button();
+		});
+
+		list.model.reload();
+
+	});
+</script>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+	<div id="errmsg_panel" class="centerpanel"></div>
+	<div id="list_container" class="centerpanel"></div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

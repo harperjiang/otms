@@ -1,5 +1,7 @@
 package org.harper.otms.calendar.entity;
 
+import java.util.TimeZone;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Inheritance;
@@ -10,9 +12,9 @@ import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
 @Table(name = "calendar_entry")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="calendar_type")
-public class CalendarEntry extends Entity {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "calendar_type")
+public abstract class CalendarEntry extends Entity {
 
 	@Column(name = "start_time")
 	private int startTime;
@@ -36,4 +38,12 @@ public class CalendarEntry extends Entity {
 		this.stopTime = stopTime;
 	}
 
+	/**
+	 * This function treats all date/time as a time from Zone-from and convert
+	 * it to Zone-to
+	 * 
+	 * @param from
+	 * @param to
+	 */
+	public abstract void convert(TimeZone from, TimeZone to);
 }

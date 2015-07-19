@@ -1,12 +1,20 @@
 package org.harper.otms.calendar.entity;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.harper.otms.common.dao.Entity;
 
@@ -14,8 +22,9 @@ import org.harper.otms.common.dao.Entity;
 @Table(name = "lesson")
 public class Lesson extends Entity {
 
+	// Invalid represents (CANCELLED, DELETED, EXPIRED, REJECTED)
 	public static enum Status {
-		REQUESTED, REJECTED, VALID, CANCELING, CANCELED
+		REQUESTED, VALID, INVALID
 	}
 
 	@OneToOne
@@ -39,9 +48,17 @@ public class Lesson extends Entity {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
+	@Column(name = "request_date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date requestDate;
+
 	@OneToOne(orphanRemoval = true, cascade = { CascadeType.ALL })
 	@JoinColumn(name = "calendar")
 	private CalendarEntry calendar;
+
+	@OneToMany(mappedBy = "lesson")
+	@MapKey(name = "maskDate")
+	private Map<Date, LessonItem> items = new HashMap<Date, LessonItem>();
 
 	public Tutor getTutor() {
 		return tutor;
@@ -97,6 +114,18 @@ public class Lesson extends Entity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Map<Date, LessonItem> getItems() {
+		return items;
+	}
+
+	public Date getRequestDate() {
+		return requestDate;
+	}
+
+	public void setRequestDate(Date requestDate) {
+		this.requestDate = requestDate;
 	}
 
 }

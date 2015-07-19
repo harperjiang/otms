@@ -4,21 +4,36 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Embedded;
-import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.harper.otms.auth.entity.User;
+import org.harper.otms.common.dao.Entity;
 
-@Entity
-@Table(name="tutor")
-public class Tutor extends User {
+@javax.persistence.Entity
+@Table(name = "tutor")
+public class Tutor extends Entity {
+
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@Embedded
 	private Timesheet timesheet = new Timesheet();
-	
+
 	@Transient
 	private List<Date> holidays;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+		this.setId(user.getId());
+	}
 
 	public Timesheet getTimesheet() {
 		return timesheet;

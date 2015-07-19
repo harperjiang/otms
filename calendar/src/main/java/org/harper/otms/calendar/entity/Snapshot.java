@@ -1,6 +1,7 @@
 package org.harper.otms.calendar.entity;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -12,8 +13,8 @@ import javax.persistence.TemporalType;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
-@Table(name = "calendar_snapshot")
-public class CalendarSnapshot extends Entity {
+@Table(name = "snapshot")
+public class Snapshot extends Entity {
 
 	@Column(name = "event_date")
 	@Temporal(TemporalType.DATE)
@@ -32,6 +33,12 @@ public class CalendarSnapshot extends Entity {
 	@OneToOne
 	@JoinColumn(name = "client_id")
 	private Client client;
+
+	@Column(name = "title")
+	private String title;
+
+	@Column(name = "description")
+	private String description;
 
 	@Column(name = "tutor_comment")
 	private String tutorComment;
@@ -93,6 +100,34 @@ public class CalendarSnapshot extends Entity {
 
 	public void setClientComment(String clientComment) {
 		this.clientComment = clientComment;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void convert(TimeZone from, TimeZone to) {
+		OneoffEntry entry = new OneoffEntry();
+		entry.setDate(date);
+		entry.setStartTime(startTime);
+		entry.setStopTime(stopTime);
+		entry.convert(from, to);
+
+		setDate(entry.getDate());
+		setStartTime(entry.getStartTime());
+		setStopTime(entry.getStopTime());
 	}
 
 }

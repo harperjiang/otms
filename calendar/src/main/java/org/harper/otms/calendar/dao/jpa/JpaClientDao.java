@@ -6,5 +6,4 @@ import org.harper.otms.common.dao.JpaDao;
 
 public class JpaClientDao extends JpaDao<Client> implements ClientDao {
 
-	
 }

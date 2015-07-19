@@ -7,9 +7,29 @@
 
 		<create creator="spring" javascript="CalendarService">
 			<param name="beanName" value="calendarService" />
-			<include method="setupLesson" />
+			<include method="getEvents" />
 		</create>
 
+		<create creator="spring" javascript="UserService">
+			<param name="beanName" value="userService" />
+			<include method="createUser" />
+		</create>
+
+		<create creator="spring" javascript="ClientService">
+			<param name="beanName" value="clientService" />
+			<include method="getClientInfo" />
+			<include method="setupClient" />
+		</create>
+
+		<create creator="spring" javascript="LessonService">
+			<param name="beanName" value="lessonService" />
+			<include method="setupLesson" />
+			<include method="getRequestedLessons" />
+			<include method="getLesson" />
+			<include method="getLessonItem" />
+			<include method="getSnapshot" />
+			<include method="changeLessonStatus" />
+		</create>
 
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
 

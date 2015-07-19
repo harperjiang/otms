@@ -13,7 +13,14 @@
 
 .form {
 	width: 400px;
-	font-size: 20px;
+	min-height: 500px;
+	font-size: 16px;
+	margin-top: 20px;
+	line-height: 150%;
+}
+
+.form_short {
+	min-height: 0px;
 }
 
 .form input[type="text"],.form input[type='password'] {
@@ -79,7 +86,8 @@
 	font-size: 16px;
 	margin-top: 15px;
 	margin-bottom: 15px;
-	color: #5397ff;
+	color: #66adff;
+	font-weight: bold;
 }
 
 .form_row {
@@ -94,5 +102,6 @@
 
 .form select {
 	font-size: 15px;
+	height: 30px;
 	border-color: #999;
 }
