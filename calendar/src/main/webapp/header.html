@@ -1,1 +1,35 @@
-<div id="header">This is the header</div>
+<div id="header">
+	<div class="topbar">
+		<div class="topbar_rightitem" id="before_login_panel">
+			<a href="login.html">Sign In</a>
+		</div>
+		<div class="topbar_rightitem" id="after_login_panel">
+			<a id="topbar_username_link" href="dashboard.html">username</a> <a
+				id="topbar_signout_link" href="logout.html">Sign Out</a>
+		</div>
+	</div>
+	<div class="navbar">
+		<ul>
+			<li><a href="dashboard.html"><span>Home</span></a></li>
+			<li><a href="find_tutor.html"><span>Find a tutor</span></a></li>
+			<li><a href="intro.html"><span>Lesson Introduction</span></a></li>
+			<li><a href="help.html"><span>Help</span></a></li>
+		</ul>
+	</div>
+</div>
+<script>
+	otms.namespace('otms.headerPage');
+	otms.headerPage.refreshLoginOption = function() {
+		if (otms.auth.isLoggedin()) {
+			$('#before_login_panel').css('display', 'none');
+			$('#after_login_panel').css('display', 'block');
+			$('#topbar_username_link').empty();
+			$('#topbar_username_link').append(otms.auth.username());
+		} else {
+			$('#before_login_panel').css('display', 'block');
+			$('#after_login_panel').css('display', 'none');
+		}
+	}
+
+	otms.headerPage.refreshLoginOption();
+</script>

@@ -10,12 +10,12 @@ import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonResponseDto;
-import org.harper.otms.calendar.service.dto.GetSnapshotDto;
-import org.harper.otms.calendar.service.dto.GetSnapshotResponseDto;
 import org.harper.otms.calendar.service.dto.MakeLessonItemDto;
 import org.harper.otms.calendar.service.dto.MakeLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.SetupLessonDto;
 import org.harper.otms.calendar.service.dto.SetupLessonResponseDto;
+import org.harper.otms.calendar.service.dto.TriggerLessonDto;
+import org.harper.otms.calendar.service.dto.TriggerLessonResponseDto;
 
 public interface LessonService {
 
@@ -34,14 +34,6 @@ public interface LessonService {
 	 * @return
 	 */
 	GetLessonItemResponseDto getLessonItem(GetLessonItemDto request);
-
-	/**
-	 * Retrieve snapshot
-	 * 
-	 * @param request
-	 * @return
-	 */
-	GetSnapshotResponseDto getSnapshot(GetSnapshotDto request);
 
 	/**
 	 * Make a lesson item from its lesson
@@ -65,15 +57,15 @@ public interface LessonService {
 	 */
 	GetRequestedLessonResponseDto getRequestedLessons(
 			GetRequestedLessonDto request);
-	
-	
+
 	/**
 	 * 
 	 * @param request
 	 * @return
 	 */
-	ChangeLessonStatusResponseDto changeLessonStatus(ChangeLessonStatusDto request);
-	
+	ChangeLessonStatusResponseDto changeLessonStatus(
+			ChangeLessonStatusDto request);
+
 	/**
 	 * Both client and tutor can propose the cancellation of a meeting. Client
 	 * can directly cancel a meeting Tutor always need to get approval from
@@ -91,8 +83,9 @@ public interface LessonService {
 	void confirmCancel(ConfirmCancelDto request);
 
 	/**
-	 * Clear finished calendar item and mark it as snapshots
+	 * Trigger a given lesson at specific time. This is generally achieved via a
+	 * scheduler service and is not intended to be invoked by user
 	 */
-	void updateSnapshot();
+	TriggerLessonResponseDto triggerLesson(TriggerLessonDto request);
 
 }

@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.service.util;
+package org.harper.otms.auth.service.util;
 
 import org.springframework.util.DigestUtils;
 

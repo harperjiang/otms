@@ -11,16 +11,16 @@
 	src="scripts/moment-timezone-with-data-2010-2020.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
-<script type='text/javascript' src='dwr/interface/UserService.js'></script>
+<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script>
 	$(function() {
 		// Load timezone data
-		otms.ui.calendar.loadTzSelect($('#timezone_select'));
-		
+		otms.loadTzSelect($('#timezone_select'));
 
 		// Setup Validator
 		new otms.validator.NonemptyValidator($('#name_input'));
@@ -63,8 +63,9 @@
 					$(this).attr('disabled', 'true');
 					var bean = window.beanManager.getBean();
 					if (bean != null) {
-						UserService.createUser(bean, otms.ui.MessageBox
-								.handler($('#form_errmsg_panel'), callback));
+						ProfileService.createUser(otms.auth.req(bean),
+								otms.ui.MessageBox.handler(
+										$('#form_errmsg_panel'), callback));
 					} else {
 						$(this).removeAttr('disabled');
 					}
@@ -80,7 +81,7 @@
 <body>
 	<!--#include virtual="header.html" -->
 
-	<div id="signup_info_panel" class="form centerpanel">
+	<div id="signup_info_panel" class="form login_form centerpanel">
 		<div id='form_errmsg_panel'></div>
 		<div class="form_title">Sign Up</div>
 		<input type="text" id="name_input" placeholder="Username" /> <input

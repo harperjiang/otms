@@ -2,6 +2,7 @@ package org.harper.otms.calendar.service.util;
 
 import static org.junit.Assert.*;
 
+import org.harper.otms.auth.service.util.PasswordUtil;
 import org.junit.Test;
 
 public class PasswordUtilTest {

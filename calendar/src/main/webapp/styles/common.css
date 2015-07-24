@@ -1,4 +1,4 @@
-div,input,textarea,button,select {
+* {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
 		"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
@@ -13,15 +13,16 @@ a:hover {
 }
 
 #header {
-	height: 120px;
-	background-color: #ddd;
-	font-size: 30px;
-	font-weight: bold;
-	text-align: center;
+	
 }
 
 #footer {
 	height: 120px;
 	background-color: #ddd;
 	text-align: center;
+}
+
+.text_hl {
+	background-color: rgba(210, 210, 210, 0.6);
+	padding: 10px;
 }

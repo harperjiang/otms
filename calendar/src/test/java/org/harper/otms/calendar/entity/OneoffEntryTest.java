@@ -1,11 +1,13 @@
 package org.harper.otms.calendar.entity;
 
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.harper.otms.calendar.service.util.DateUtil;
-import org.junit.Test;
 import org.junit.Assert;
+import org.junit.Test;
 
 public class OneoffEntryTest extends OneoffEntry {
 
@@ -13,17 +15,18 @@ public class OneoffEntryTest extends OneoffEntry {
 	public void testConvert() {
 		OneoffEntry entry = new OneoffEntry();
 
-		Date current = DateUtil.truncate(new Date());
-		entry.setDate(current);
-		entry.setStartTime(510);
-		entry.setStopTime(550);
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		entry.setFromTime(format
+				.parse("2015-06-01 03:00", new ParsePosition(0)));
+		entry.setToTime(format.parse("2015-06-01 07:00", new ParsePosition(0)));
 
 		entry.convert(TimeZone.getTimeZone("US/Eastern"),
 				TimeZone.getTimeZone("US/Central"));
 
-		Assert.assertEquals(current, entry.getDate());
-		Assert.assertEquals(450, entry.getStartTime());
-		Assert.assertEquals(490, entry.getStopTime());
-	}
+		Date expFrom = format.parse("2015-06-01 02:00", new ParsePosition(0));
+		Date expTo = format.parse("2015-06-01 06:00", new ParsePosition(0));
 
+		Assert.assertEquals(expFrom, entry.getFromTime());
+		Assert.assertEquals(expTo, entry.getToTime());
+	}
 }

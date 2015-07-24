@@ -1,5 +1,6 @@
 package org.harper.otms.calendar.dao.jpa;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,71 +10,87 @@ import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.entity.Lesson;
 import org.harper.otms.calendar.entity.Lesson.Status;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.dao.JpaDao;
 
 public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public List<Lesson> findWithin(User user, Date fromDate, Date toDate,
-			Status[] status) {
-
-		StringBuilder oneoffSql = new StringBuilder();
-
-		oneoffSql.append("select l.* from lesson l")
+	protected List<Lesson> findOneoffLessonWithin(User user, Date fromDate,
+			Date toDate, Status status) {
+		StringBuilder sql = new StringBuilder("select l.* from lesson l")
 				.append(" join calendar_entry ce")
-				.append(" on ce.id = l.calendar").append(" where l.status in ")
-				.append(bindingExp(status.length)).append(" and ");
+				.append(" on ce.id = l.calendar").append(" where l.status = ?")
+				.append(" and ce.calendar_type = 'ONEOFF' and");
+
 		if ("tutor".equals(user.getType())) {
-			oneoffSql.append("l.tutor_id = ?");
+			sql.append(" l.tutor_id = ?");
 		} else {
-			oneoffSql.append("l.client_id = ?");
+			sql.append(" l.client_id = ?");
 		}
+		sql.append(" and ce.oneoff_to_time >= ? and ce.oneoff_from_time <= ?");
+		Query query = getEntityManager().createNativeQuery(sql.toString(),
+				Lesson.class);
+		query.setParameter(1, status.name());
+		query.setParameter(2, user.getId());
+		query.setParameter(3, fromDate);
+		query.setParameter(4, toDate);
 
-		StringBuilder repeatSql = new StringBuilder(oneoffSql);
+		return query.getResultList();
+	}
 
-		oneoffSql.append(" and ce.calendar_type = 'ONEOFF'");
+	@SuppressWarnings("unchecked")
+	protected List<Lesson> findRepeatedLessonWithin(User user, Date fromDate,
+			Date toDate, Status status) {
+		StringBuilder sql = new StringBuilder("select l.* from lesson l")
+				.append(" join calendar_entry ce")
+				.append(" on ce.id = l.calendar").append(" where l.status = ?")
+				.append(" and ce.calendar_type = 'REPEAT' and");
 
-		repeatSql.append(" and ce.calendar_type = 'REPEAT'");
-
-		oneoffSql.append(" and (ce.oneoff_date between ? and ?)");
-		repeatSql.append(" and ce.repeat_start_date <= ?").append(
-				" and ce.repeat_stop_date >= ?");
-
-		Query oneoffQuery = getEntityManager().createNativeQuery(
-				oneoffSql.toString(), Lesson.class);
-		Query repeatQuery = getEntityManager().createNativeQuery(
-				repeatSql.toString(), Lesson.class);
-		int counter = 1;
-		for (Status sta : status) {
-			oneoffQuery.setParameter(counter, sta.name());
-			repeatQuery.setParameter(counter, sta.name());
-			counter += 1;
+		if ("tutor".equals(user.getType())) {
+			sql.append(" l.tutor_id = ?");
+		} else {
+			sql.append(" l.client_id = ?");
 		}
+		sql.append(" and ce.repeat_stop_date >= ? and ce.repeat_start_date <= ?");
+		Query query = getEntityManager().createNativeQuery(sql.toString(),
+				Lesson.class);
+		query.setParameter(1, status.name());
+		query.setParameter(2, user.getId());
+		query.setParameter(3, DateUtil.truncate(fromDate));
+		query.setParameter(4, DateUtil.dayend(toDate));
 
-		oneoffQuery.setParameter(counter, user.getId())
-				.setParameter(counter + 1, fromDate)
-				.setParameter(counter + 2, toDate).getResultList();
+		return query.getResultList();
+	}
 
-		repeatQuery.setParameter(counter, user.getId())
-				.setParameter(counter + 1, toDate)
-				.setParameter(counter + 2, fromDate).getResultList();
-
-		List<Lesson> oneoffLessons = oneoffQuery.getResultList();
-		List<Lesson> repeatLessons = repeatQuery.getResultList();
+	@Override
+	public List<Lesson> findWithin(User user, Date fromDate, Date toDate,
+			Status status) {
+		if (fromDate.after(toDate)) {
+			return new ArrayList<Lesson>();
+		}
+		List<Lesson> oneoffLessons = findOneoffLessonWithin(user, fromDate,
+				toDate, status);
+		List<Lesson> repeatLessons = findRepeatedLessonWithin(user, fromDate,
+				toDate, status);
 
 		oneoffLessons.addAll(repeatLessons);
 		return oneoffLessons;
 	}
 
 	@Override
-	public List<Lesson> findRequested(Tutor tutor) {
-		String sql = "select l from Lesson l " + "where l.tutor = :tutor "
-				+ "and l.status = :stat order by l.requestDate";
-
+	public List<Lesson> findRequested(User user) {
+		String sql = null;
+		if ("tutor".equals(user.getType())) {
+			sql = "select l from Lesson l " + "where l.tutor.id = :userid "
+					+ "and l.status = :stat order by l.requestDate";
+		} else {
+			sql = "select l from Lesson l " + "where l.client.id = :userid "
+					+ "and l.status = :stat order by l.requestDate";
+		}
 		return getEntityManager().createQuery(sql, Lesson.class)
-				.setParameter("tutor", tutor)
+				.setParameter("userid", user.getId())
 				.setParameter("stat", Status.REQUESTED).getResultList();
 	}
+
 }

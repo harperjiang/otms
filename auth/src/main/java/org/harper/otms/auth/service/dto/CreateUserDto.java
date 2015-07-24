@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.service.dto;
+package org.harper.otms.auth.service.dto;
 
 import org.harper.otms.common.dto.RequestDto;
 

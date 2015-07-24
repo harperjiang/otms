@@ -56,7 +56,7 @@ public class Lesson extends Entity {
 	@JoinColumn(name = "calendar")
 	private CalendarEntry calendar;
 
-	@OneToMany(mappedBy = "lesson")
+	@OneToMany(mappedBy = "lesson",cascade={CascadeType.ALL})
 	@MapKey(name = "maskDate")
 	private Map<Date, LessonItem> items = new HashMap<Date, LessonItem>();
 

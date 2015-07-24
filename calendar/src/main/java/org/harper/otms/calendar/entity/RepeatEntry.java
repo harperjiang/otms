@@ -27,6 +27,28 @@ public class RepeatEntry extends CalendarEntry {
 	@Temporal(TemporalType.DATE)
 	private Date stopDate;
 
+	@Column(name = "repeat_from_time")
+	private int fromTime;
+
+	@Column(name = "repeat_to_time")
+	private int toTime;
+
+	public int getFromTime() {
+		return fromTime;
+	}
+
+	public void setFromTime(int fromTime) {
+		this.fromTime = fromTime;
+	}
+
+	public int getToTime() {
+		return toTime;
+	}
+
+	public void setToTime(int toTime) {
+		this.toTime = toTime;
+	}
+
 	/**
 	 * Use a crontab like pattern
 	 */
@@ -77,11 +99,11 @@ public class RepeatEntry extends CalendarEntry {
 	@Override
 	public void convert(TimeZone from, TimeZone to) {
 
-		Date startTs = DateUtil.form(getStartDate(), getStartTime());
+		Date startTs = DateUtil.form(getStartDate(), getFromTime());
 
-		Date stopStartTs = DateUtil.form(getStopDate(), getStartTime());
+		Date stopStartTs = DateUtil.form(getStopDate(), getFromTime());
 
-		Date stopTs = DateUtil.form(getStartDate(), getStopTime());
+		Date stopTs = DateUtil.form(getStartDate(), getToTime());
 
 		Date newStartTs = DateUtil.convert(startTs, from, to);
 		Date newStopTs = DateUtil.convert(stopTs, from, to);
@@ -90,8 +112,8 @@ public class RepeatEntry extends CalendarEntry {
 
 		setStartDate(DateUtil.truncate(newStartTs));
 		setStopDate(DateUtil.truncate(newStopStartTs));
-		setStartTime(DateUtil.extract(newStartTs));
-		setStopTime(DateUtil.extract(newStopTs));
+		setFromTime(DateUtil.extract(newStartTs));
+		setToTime(DateUtil.extract(newStopTs));
 
 		int offset = DateUtil.offset(newStartTs, startTs);
 
@@ -106,45 +128,77 @@ public class RepeatEntry extends CalendarEntry {
 
 	public static class DateExpression {
 
-		private String[] weekExp;
+		private boolean[] week;
 
 		public DateExpression(String exp) {
 			this.parse(exp);
 		}
 
 		void parse(String exp) {
-			weekExp = exp.split("\t")[2].split(",");
+			String[] weekExp = exp.split("\t")[2].split(",");
+			week = new boolean[weekExp.length];
+			for (int i = 0; i < weekExp.length; i++) {
+				if ("1".equals(weekExp[i])) {
+					week[i] = true;
+				} else {
+					week[i] = false;
+				}
+			}
 		}
 
 		public boolean match(Date date) {
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			return "1".equals(weekExp[cal.get(Calendar.DAY_OF_WEEK) - 1]);
+			return week[cal.get(Calendar.DAY_OF_WEEK) - 1];
 		}
 
 		public void shift(int offset) {
-			String[] newparts = new String[weekExp.length];
-			for (int i = 0; i < weekExp.length; i++) {
+			boolean[] newparts = new boolean[week.length];
+			for (int i = 0; i < week.length; i++) {
 				int nof = i + offset;
 				while (nof < 0) {
-					nof += weekExp.length;
+					nof += week.length;
 				}
-				newparts[nof % weekExp.length] = weekExp[i];
+				newparts[nof % week.length] = week[i];
 			}
-			weekExp = newparts;
+			week = newparts;
 		}
 
 		@Override
 		public String toString() {
-			return MessageFormat.format("\t\t{0}", String.join(",", weekExp));
+			StringBuilder str = new StringBuilder();
+			for (boolean w : week) {
+				str.append(w ? "1" : "0").append(",");
+			}
+			str.deleteCharAt(str.length() - 1);
+			return MessageFormat.format("\t\t{0}", str.toString());
 		}
 
 		public boolean[] getWeek() {
-			boolean[] wee = new boolean[weekExp.length];
-			for (int i = 0; i < weekExp.length; i++) {
-				wee[i] = "1".equals(weekExp[i]);
-			}
-			return wee;
+			return week;
 		}
+	}
+
+	static final String[] CRON_WEEK = { "SUN", "MON", "TUE", "WED", "THU",
+			"FRI", "SAT" };
+
+	// Follow Quartz format
+	public String cronExp() {
+		int hour = getFromTime() / 60;
+		int min = getFromTime() % 60;
+
+		boolean[] weeks = new DateExpression(getDateExpression()).getWeek();
+		StringBuilder week = new StringBuilder();
+		for (int i = 0; i < 7; i++) {
+			if (weeks[i]) {
+				week.append(CRON_WEEK[i]).append(",");
+			}
+		}
+		week.deleteCharAt(week.length() - 1);
+
+		String cron = MessageFormat.format("0 {0} {1} ? * {2} *", min, hour,
+				week.toString());
+
+		return cron;
 	}
 }

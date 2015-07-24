@@ -3,7 +3,7 @@
 	display: none;
 	z-index: 2;
 	border-style: solid;
-	border-color: gray;
+	border-color: #ddd;
 	border-width: 1px;
 }
 

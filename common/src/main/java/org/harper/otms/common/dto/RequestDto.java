@@ -1,11 +1,10 @@
 package org.harper.otms.common.dto;
 
-
 public class RequestDto extends Dto {
 
 	// Token information
 
-	private int currentUser = 1;
+	private int currentUser;
 
 	private String token;
 
@@ -25,4 +24,7 @@ public class RequestDto extends Dto {
 		this.token = token;
 	}
 
+	public boolean needValidation() {
+		return true;
+	}
 }

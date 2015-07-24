@@ -18,12 +18,13 @@
 	function snapshot_mode() {
 		otms.lessonItemPage.snapshotMode = true;
 		$('#title_panel').empty();
-		$('#title_panel').append('View Snapshot');
+		$('#title_panel').append('View History Record');
 		$('#title_input').prop('readonly', 'true');
 		$('#desc_text').prop('readonly', 'true');
 		$('#timefrom_input').prop('readonly', 'true');
 		$('#timeto_input').prop('readonly', 'true');
 		$('#date_input').prop('readonly', 'true');
+		$('#confirm_btn').css('display', 'none');
 		$('#delete_btn').css('display', 'none');
 	};
 
@@ -46,60 +47,33 @@
 		bm.reg('fromTime', $('#timefrom_input'));
 		bm.reg('toTime', $('#timeto_input'));
 
-		bm.validate = function(bean, vresult) {
-			return true;
-		};
-		debugger;
 		otms.lessonItemPage.bm = bm;
 
 		// Check storage for input parameter
-		var eventId = sessionStorage.getItem('lessonItem.id');
-		var eventType = sessionStorage.getItem('lessonItem.type');
+		var eventId = otms.getPageParam('otms.lessonItemPage.id');
 
-		sessionStorage.removeItem("lessonItem.id");
-		sessionStorage.removeItem("lessonItem.type");
-	
 		if (eventId != undefined) {
 			// Load data from server
-			switch (eventType) {
-			case 'lesson_item':
-				var req = otms.auth.req({
-					'lessonItemId' : eventId
-				});
-				var callback = function(success, data) {
-					if (success) {
-						bm.setBean(data.lessonItem);
+			var req = otms.auth.req({
+				'lessonItemId' : eventId
+			});
+			var callback = function(success, data) {
+				if (success) {
+					bm.setBean(data.lessonItem);
+					debugger;
+					if (data.lessonItem.status == 'SNAPSHOT') {
+						snapshot_mode();
 					}
-				};
-				LessonService.getLessonItem(req, otms.ui.MessageBox.errhandler(
-						$('#errmsg_panel'), callback));
-
-				break;
-			case 'snapshot':
-				snapshot_mode();
-				var req = otms.auth.req({
-					'snapshotId' : eventId
-				});
-				var callback = function(success, data) {
-					if (success) {
-						bm.setBean(data.snapshot);
-					}
-				};
-				LessonService.getSnapshot(req, otms.ui.MessageBox.errhandler(
-						$('#errmsg_panel'), callback));
-				break;
-			default:
-				break;
-			}
-			$('#confirm_btn').removeAttr('disabled');
-			$('#delete_btn').removeAttr('disabled');
+				}
+			};
+			LessonService.getLessonItem(req, otms.ui.MessageBox.shan(callback));
 		} else {
 			// Display warning
 			otms.ui.MessageBox.warning($('#errmsg_panel'),
 					'Invalid access. Will now go to front page');
 			setTimeout(function() {
 				window.location = 'index.html';
-			}, 4000);
+			}, 2000);
 		}
 
 		$('#confirm_btn').click(function(event) {
@@ -114,32 +88,48 @@
 </head>
 <body>
 	<!--#include virtual="header.html" -->
-	<div class="form centerpanel">
-		<div id='errmsg_panel'></div>
-		<div id="title_panel" class='form_title'>Modify Lesson Item</div>
-		<div class="form_section">Lesson Information</div>
-		<input type="text" id='title_input' placeholder="Lesson Title"><input
-			type="text" id='tutor_input' placeholder="Your tutor id" disabled>
-		<textarea id="desc_text" placeholder="Lesson Description"></textarea>
-		<div class="form_section">Lesson Time (your local time)</div>
-		<div class='form_row'>
-			<div style='display: inline-block; width: 49%'>
-				<label class='timelabel2'>From:</label> <input type='text'
-					placeholder='08:00' id='timefrom_input' class='timeinput2' />
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div id="title_panel" class='page_title'>Modify Lesson Item</div>
+			<div class="page_block">
+				<div class="page_block_title">Lesson Information</div>
+				<div class="page_row">
+					<input type="text" id='title_input' placeholder="Lesson Title">
+				</div>
+				<div class="page_row">
+					<input type="text" id='tutor_input' placeholder="Your tutor id"
+						readonly="readonly">
+				</div>
+				<div class="page_row">
+					<textarea id="desc_text" placeholder="Lesson Description"></textarea>
+				</div>
 			</div>
-			<div style='display: inline-block; width: 49%'>
-				<label class='timelabel2'>To:</label> <input type='text'
-					placeholder='09:00' id='timeto_input' class='timeinput2' />
+			<div class="page_block">
+				<div class="page_block_title">Lesson Time (your local time)</div>
+				<div class='page_row'>
+					<div style='display: inline-block; width: 49%'>
+						<label class='timelabel2'>From:</label> <input type='text'
+							placeholder='08:00' id='timefrom_input' class='timeinput2' />
+					</div>
+					<div style='display: inline-block; width: 49%'>
+						<label class='timelabel2'>To:</label> <input type='text'
+							placeholder='09:00' id='timeto_input' class='timeinput2' />
+					</div>
+				</div>
+				<div class='page_row'>
+					<label>Meet On:</label> <input type='text' id='date_input'
+						placeholder='01/01/2015' class='timeinput' />
+				</div>
 			</div>
-		</div>
-		<div class='form_row'>
-			<label>Meet On:</label> <input type='text' id='date_input'
-				placeholder='01/01/2015' class='timeinput' />
-		</div>
-		<div class="form_row">
-			<button id="confirm_btn" class="btn_large" disabled>Confirm</button>
-			<button id="delete_btn" class="btn_danger" style='margin-left: 20px;'
-				disabled>Delete Lesson Item</button>
+			<div class="page_block">
+				<div class="page_row">
+					<button id="confirm_btn" class="btn_large">Confirm</button>
+					<button id="delete_btn" class="btn_danger"
+						style='margin-left: 20px;'>Delete Lesson Item</button>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--#include virtual="footer.html" -->

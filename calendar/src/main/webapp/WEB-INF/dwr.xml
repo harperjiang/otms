@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr//dwr30.dtd">
 <dwr>
+	<init>
+		<converter class="org.harper.otms.common.dwr.DateConverter"
+			id="mydate" />
+	</init>
+
 	<allow>
 		<!-- filter class="org.directwebremoting.filter.ExtraLatencyAjaxFilter"> 
 			<param name="delay" value="200" /> </filter -->
+
+		<create creator="spring" javascript="AuthService">
+			<param name="beanName" value="authService" />
+			<include method="login" />
+		</create>
 
 		<create creator="spring" javascript="CalendarService">
 			<param name="beanName" value="calendarService" />
 			<include method="getEvents" />
 		</create>
 
-		<create creator="spring" javascript="UserService">
-			<param name="beanName" value="userService" />
-			<include method="createUser" />
+		<create creator="spring" javascript="ProfileService">
+			<param name="beanName" value="profileService" />
+			<include method="registerUser" />
 		</create>
 
 		<create creator="spring" javascript="ClientService">
@@ -29,9 +39,13 @@
 			<include method="getLessonItem" />
 			<include method="getSnapshot" />
 			<include method="changeLessonStatus" />
+			<include method="triggerLesson" />
 		</create>
 
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
+		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
+
+		<convert converter="mydate" match="java.util.Date" />
 
 		<!-- this is a bad idea for live, but can be useful in testing -->
 		<convert converter="exception" match="java.lang.Exception" />

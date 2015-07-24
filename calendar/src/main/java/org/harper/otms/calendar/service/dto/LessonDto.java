@@ -15,6 +15,8 @@ public class LessonDto {
 
 	int lessonId;
 
+	String status;
+
 	String tutorName;
 
 	int tutorId;
@@ -49,6 +51,7 @@ public class LessonDto {
 		setClientId(lesson.getClient().getId());
 		setTutorName(lesson.getTutor().getUser().getName());
 		setTutorId(lesson.getTutor().getId());
+		setStatus(lesson.getStatus().name());
 		// Convert the dates to GMT
 		// All time should be converted and stored in UTC
 		lesson.getCalendar().convert(TimeZone.getTimeZone("UTC"),
@@ -62,18 +65,22 @@ public class LessonDto {
 
 			setWeekrepeat(new DateExpression(entry.getDateExpression())
 					.getWeek());
+
+			setFromTime(new TimeDto(entry.getFromTime()));
+			setToTime(new TimeDto(entry.getToTime()));
 		} else {
 			OneoffEntry entry = (OneoffEntry) lesson.getCalendar();
-			setOneoffDate(entry.getDate());
+			setOneoffDate(DateUtil.truncate(entry.getFromTime()));
+
+			setFromTime(new TimeDto(DateUtil.extract(entry.getFromTime())));
+			setToTime(new TimeDto(DateUtil.extract(entry.getToTime())));
 		}
-		setFromTime(new TimeDto(lesson.getCalendar().getStartTime()));
-		setToTime(new TimeDto(lesson.getCalendar().getStopTime()));
 	}
 
 	public void to(Lesson lesson, User owner) {
 		lesson.setTitle(getTitle());
 		lesson.setDescription(getDescription());
-
+		lesson.setStatus(Lesson.Status.valueOf(getStatus()));
 		// Convert the dates to GMT
 		if (isRepeat()) {
 			RepeatEntry entry = new RepeatEntry();
@@ -81,15 +88,19 @@ public class LessonDto {
 			entry.setStopDate(getRepeatToDate());
 
 			entry.setDateExpression(DateUtil.weekRepeat(getWeekrepeat()));
+
+			entry.setFromTime(getFromTime().total());
+			entry.setToTime(getToTime().total());
+
 			lesson.setCalendar(entry);
 		} else {
 			OneoffEntry entry = new OneoffEntry();
-			entry.setDate(getOneoffDate());
+			entry.setFromTime(DateUtil.form(getOneoffDate(), getFromTime()
+					.total()));
+			entry.setToTime(DateUtil.form(getOneoffDate(), getToTime().total()));
 			lesson.setCalendar(entry);
 		}
 		CalendarEntry entry = lesson.getCalendar();
-		entry.setStartTime(getFromTime().total());
-		entry.setStopTime(getToTime().total());
 
 		// All time should be converted and stored in UTC
 		entry.convert(owner.getTimezone(), TimeZone.getTimeZone("UTC"));
@@ -205,6 +216,14 @@ public class LessonDto {
 
 	public void setTutorId(int tutorId) {
 		this.tutorId = tutorId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

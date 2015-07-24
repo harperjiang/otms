@@ -8,6 +8,7 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
@@ -24,13 +25,45 @@
 		}
 	};
 
+	function enter_tutor_view() {
+		$('#form_title_div').empty();
+		$('#form_title_div').append('View Lesson Info');
+		$('#client_input').css('display', 'inline');
+		$('#tutor_input').css('display', 'none');
+	}
+
 	function enter_modify_mode() {
 		$('#form_title_div').empty();
 		$('#form_title_div').append('Modify Lesson');
-		$('#delete_btn').css('display', 'initial');
+		$('#delete_btn').css('display', 'inline');
+		$('#tutor_input').attr('readonly', 'readonly');
+	}
+
+	function enter_readonly_mode() {
+		$('#title_input').attr('readonly', 'readonly');
+		$('#tutor_input').attr('readonly', 'readonly');
+		$('#meetingdesc_text').attr('readonly', 'readonly');
+		$('#timefrom_input').attr('readonly', 'readonly');
+		$('#timeto_input').attr('readonly', 'readonly');
+		$('#repeat_checkbox').attr('readonly', 'readonly');
+
+		$('#repeat_datefrom_input').attr('readonly', 'readonly');
+		$('#repeat_dateto_input').attr('readonly', 'readonly');
+
+		$('#repeat_sunday_check').attr('readonly', 'readonly');
+		$('#repeat_monday_check').attr('readonly', 'readonly');
+		$('#repeat_tuesday_check').attr('readonly', 'readonly');
+		$('#repeat_wednesday_check').attr('readonly', 'readonly');
+		$('#repeat_thursday_check').attr('readonly', 'readonly');
+		$('#repeat_friday_check').attr('readonly', 'readonly');
+		$('#repeat_saturday_check').attr('readonly', 'readonly');
+
+		$('#oneoff_date_input').attr('readonly', 'readonly');
 	}
 
 	$(function() {
+
+		otms.namespace('otms.lessonPage');
 		// Install validator
 		new otms.validator.NonemptyValidator($('#title_input'));
 		new otms.validator.NonemptyValidator($('#tutor_input'));
@@ -41,10 +74,10 @@
 		new otms.validator.DateValidator($('#oneoff_date_input'));
 
 		// Install Bean Manager
-		window.beanManager = new otms.validator.BeanManager();
-		var bm = window.beanManager;
+		var bm = new otms.validator.BeanManager();
 		bm.reg('lesson.title', $('#title_input'));
 		bm.reg('lesson.tutorName', $('#tutor_input'));
+		bm.reg('lesson.clientName', $('#client_input'));
 		bm.reg('lesson.description', $('#meetingdesc_text'));
 		bm.reg('lesson.fromTime', $('#timefrom_input'));
 		bm.reg('lesson.toTime', $('#timeto_input'));
@@ -63,8 +96,9 @@
 
 		bm.reg('lesson.oneoffDate', $('#oneoff_date_input'));
 
+		otms.lessonPage.bm = bm;
+
 		bm.validate = function(bean, vresult) {
-			debugger;
 			// First check vresult
 			for ( var key in vresult) {
 				if (vresult[key] == false) {
@@ -88,8 +122,10 @@
 			}
 			var today = new Date();
 			if (bean.lesson.repeat) {
+				var firstRun = otms.DateUtil.form(bean.lesson.repeatFromDate,
+						bean.lesson.fromTime);
 				// If from date is older than today
-				if (bean.lesson.repeatFromDate.getTime() <= today.getTime()) {
+				if (firstRun.getTime() <= today.getTime()) {
 					this.fail([ 'lesson.repeatFromDate' ],
 							'Please specify a future time');
 					return false;
@@ -114,13 +150,14 @@
 				res += bean.lesson.repeatSaturday;
 
 				if (res == 0) {
-					otms.ui.MessageBox.warning($('#form_errormsg_panel'),
+					otms.ui.MessageBox.warning($('#errmsg_panel'),
 							'Choose at least one day to repeat');
 					return false;
 				}
 			} else {
-				debugger;
-				if (bean.lesson.oneoffDate.getTime() <= today.getTime()) {
+				var firstRun = otms.DateUtil.form(bean.lesson.oneoffDate,
+						bean.lesson.fromTime);
+				if (firstRun <= today.getTime()) {
 					this.fail([ 'lesson.oneoffDate' ],
 							'Please specify a future time');
 					return false;
@@ -129,16 +166,36 @@
 
 			return true;
 		};
-
 		// Check storage for input parameter
-		var lessonId = sessionStorage.getItem('lesson.id');
-		sessionStorage.removeItem('lesson.id');
+		var lessonId = otms.getPageParam('otms.lessonPage.id');
 		if (lessonId != undefined) {
 			enter_modify_mode();
 			// TODO Load data from server
+			var callback = function(success, data) {
+				if (success) {
+					bm.setBean(data);
+					if (data.lesson.status == 'INVALID') {
+						enter_readonly_mode();
+					}
+					if(otms.auth.userType() == 'tutor') {
+						enter_readonly_mode();
+						enter_tutor_view();
+					}
+				}
 
+			};
+			LessonService.getLesson(otms.auth.req({
+				"lessonId" : lessonId
+			}), otms.ui.MessageBox.shan(callback));
+		} else {
+			// If tutor name is from other pages
+			var tutorName = otms.getPageParam('otms.lessonPage.tutorName');
+			if (tutorName != undefined) {
+				// Preset tutorName, not modifiable
+				$('#tutor_input').val(tutorName);
+				$('#tutor_input').attr('readonly', 'readonly');
+			}
 		}
-
 		var confirmCallback = function(success) {
 			if (success) {
 				// Display a confirmation page
@@ -150,18 +207,14 @@
 		};
 		$('#confirm_btn').click(
 				function(event) {
-					var bean = beanManager.getBean();
+					var bean = bm.getBean();
 					// Call Server
 					if (bean != null) {
 						$(this).prop('disabled', 'true');
-						// Get current client id
-						// bean.clientId = sessionStorage.getItem("clientId");
-						bean.clientId = 2;
-						LessonService.setupLesson(bean, otms.ui.MessageBox
-								.handler($('#form_errormsg_panel'),
-										confirmCallback));
+						LessonService.setupLesson(otms.auth.req(bean),
+								otms.ui.MessageBox.han(confirmCallback));
 					} else {
-						otms.ui.MessageBox.warning($('#form_errormsg_panel'),
+						otms.ui.MessageBox.warning($('#errmsg_panel'),
 								'Validation Failed');
 					}
 				});
@@ -182,82 +235,103 @@
 </head>
 <body>
 	<!--#include virtual="header.html" -->
-	<div id="main_panel" class="form centerpanel">
-		<div id='form_errormsg_panel'></div>
-		<div id='form_title_div' class='form_title'>Setup Lesson</div>
-		<div class="form_section">Lesson Information</div>
-		<input type="text" id='title_input' placeholder="Lesson Title"><input
-			type="text" id='tutor_input' placeholder="Your tutor id">
-		<textarea id='meetingdesc_text' placeholder="Lesson Description"></textarea>
-		<div class="form_section">Lesson Time ( your local time )</div>
-		<div class='form_row'>
-			<div style='display: inline-block; width: 49%'>
-				<label class='timelabel2'>From:</label> <input type='text'
-					placeholder='8:00' id='timefrom_input' class='timeinput2'
-					title='Example: 08:30 11AM 2pm' />
-			</div>
-			<div style='display: inline-block; width: 49%'>
-				<label class='timelabel2'>To:</label> <input type='text'
-					placeholder='8:30' id='timeto_input' class='timeinput2'
-					title='Example: 08:30 11AM 2pm' />
-			</div>
-		</div>
-
-		<div class='form_row'>
-			<label>Repeated lesson?<input id='repeat_checkbox'
-				type="checkbox" checked onclick='switch_div(this)'></label>
-		</div>
-		<div id='repeat_option_div'>
-			<div class='form_row'>
-				<div style='display: inline-block; width: 49%'>
-					<label class='timelabel2'>Start Date:</label> <input type='text'
-						id='repeat_datefrom_input' placeholder='mm/dd/year'
-						class='timeinput2' />
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div id="main_panel">
+				<div id='form_title_div' class='page_title'>Setup Lesson</div>
+				<div class="page_block">
+					<div class="page_block_title">Lesson Information</div>
+					<div class="page_row">
+						<input type="text" id='title_input' placeholder="Lesson Title">
+					</div>
+					<div class="page_row">
+						<input type="text" id='tutor_input' placeholder="Your tutor id">
+						<input type="text" id='client_input' placeholder="Your client id"
+							style="display: none">
+					</div>
+					<div class="page_row">
+						<textarea id='meetingdesc_text' placeholder="Lesson Description"></textarea>
+					</div>
 				</div>
-				<div style='display: inline-block; width: 49%'>
-					<label class='timelabel2'>Stop Date:</label> <input type='text'
-						id='repeat_dateto_input' placeholder='mm/dd/year'
-						class='timeinput2' />
+				<div class="page_block">
+					<div class="page_block_title">Lesson Time ( your local time )</div>
+					<div class='page_row'>
+						<div style='display: inline-block;'>
+							<label class='timelabel2'>From:</label> <input type='text'
+								placeholder='8:00' id='timefrom_input' class='timeinput2'
+								title='Example: 08:30 11AM 2pm' />
+						</div>
+						<div style='display: inline-block;'>
+							<label class='timelabel2'>To:</label> <input type='text'
+								placeholder='8:30' id='timeto_input' class='timeinput2'
+								title='Example: 08:30 11AM 2pm' />
+						</div>
+					</div>
+
+					<div class='page_row'>
+						<label>Repeated lesson?<input id='repeat_checkbox'
+							type="checkbox" checked onclick='switch_div(this)'></label>
+					</div>
+					<div id='repeat_option_div'>
+						<div class='page_row'>
+							<div style='display: inline-block;'>
+								<label class='timelabel2'>Start Date:</label> <input type='text'
+									id='repeat_datefrom_input' placeholder='mm/dd/year'
+									class='timeinput2' />
+							</div>
+							<div style='display: inline-block;'>
+								<label class='timelabel2'>Stop Date:</label> <input type='text'
+									id='repeat_dateto_input' placeholder='mm/dd/year'
+									class='timeinput2' />
+							</div>
+						</div>
+						<div class="page_row">
+							<label>Repeat every</label>
+							<div>
+								<label style='width: 120px;'><input type='checkbox'
+									id='repeat_sunday_check'>Sunday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_monday_check' checked>Monday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_tuesday_check' checked>Tuesday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_wednesday_check' checked>Wednesday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_thursday_check' checked>Thursday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_friday_check' checked>Friday</label> <label
+									style='width: 120px;'><input type='checkbox'
+									id='repeat_saturday_check'>Saturday</label>
+							</div>
+						</div>
+					</div>
+					<div id='oneoff_option_div' style='display: none'>
+						<div class="page_row">
+							<label>Meet On:</label> <input type='text' id='oneoff_date_input'
+								placeholder='01/31/2015' class='timeinput' />
+						</div>
+					</div>
+				</div>
+				<div class="form_row">
+					<button class="btn_large" id='confirm_btn'>Confirm</button>
+					<button class="btn_danger" id='delete_btn'
+						style='margin-left: 20px; display: none;'>Cancel Lesson</button>
 				</div>
 			</div>
-			<label>Repeat every</label>
-			<div>
-				<label style='width: 120px;'><input type='checkbox'
-					id='repeat_sunday_check'>Sunday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_monday_check' checked>Monday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_tuesday_check' checked>Tuesday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_wednesday_check' checked>Wednesday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_thursday_check' checked>Thursday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_friday_check' checked>Friday</label> <label
-					style='width: 120px;'><input type='checkbox'
-					id='repeat_saturday_check'>Saturday</label>
+		</div>
+		<div id="confirm_panel" class="form centerpanel"
+			style="display: none;">
+			<div class="form_title">Lesson Setup Success!</div>
+			<div class="form_row">We have sent your lesson request to your
+				tutor. You will receive a notification when he/she confirms your
+				lesson request.</div>
+			<div class="form_row">The lesson will automatically be added to
+				your calendar when confirmed by your tutor.</div>
+			<div class="form_row">
+				<button class="btn_large" id='jump_btn'>Go to my calendar</button>
 			</div>
-		</div>
-		<div id='oneoff_option_div' style='display: none'>
-			<label>Meet On:</label> <input type='text' id='oneoff_date_input'
-				placeholder='01/31/2015' class='timeinput' />
-		</div>
-		<div class="form_row">
-			<button class="btn_large" id='confirm_btn'>Confirm</button>
-			<button class="btn_danger" id='delete_btn'
-				style='margin-left: 20px; display: none;'>Cancel Lesson</button>
-		</div>
-	</div>
-
-	<div id="confirm_panel" class="form centerpanel" style="display: none;">
-		<div class="form_title">Lesson Setup Success!</div>
-		<div class="form_row">We have sent your lesson request to your
-			tutor. You will receive a notification when he/she confirms your
-			lesson request.</div>
-		<div class="form_row">The lesson will automatically be added to
-			your calendar when confirmed by your tutor.</div>
-		<div class="form_row">
-			<button class="btn_large" id='jump_btn'>Go to my calendar</button>
 		</div>
 	</div>
 	<!--#include virtual="footer.html" -->

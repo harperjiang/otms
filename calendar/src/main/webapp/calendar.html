@@ -10,9 +10,10 @@
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
-<script type="text/javascript" src="scripts/ui/dialog.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/ui/dialog.js"></script>
 <script type="text/javascript" src="scripts/ui/calendar.js"></script>
 <script>
 	$(document).ready(
@@ -32,24 +33,22 @@
 					var event = obj.eventData;
 					if (event.type === 'lesson') {
 						dialog.onConfirm = function() {
+							debugger;
 							var checked = dialog.panel.find(
 									'input[name="modify_type"]:checked').val();
 							if (checked == 'meeting') {
-								sessionStorage.setItem('lesson.id', event.id);
+								sessionStorage.setItem('otms.lessonPage.id', event.id);
 								window.location = 'lesson.html';
 							} else {
-								sessionStorage.setItem('lessonItem.id',
+								sessionStorage.setItem('otms.lessonItemPage.id',
 										event.id);
-								sessionStorage.setItem('lessonItem.type',
-										event.type);
 								window.location = 'lesson_item.html';
 							}
 						};
 						dialog.show();
 					} else {
 						// Show lesson_item page
-						sessionStorage.setItem('lessonItem.id', event.id);
-						sessionStorage.setItem('lessonItem.type', event.type);
+						sessionStorage.setItem('otms.lessonItemPage.id', event.id);
 						window.location = 'lesson_item.html';
 					}
 				};
@@ -60,12 +59,15 @@
 					var callback = function(success, data) {
 						if (success) {
 							model.setData(data);
+						} else {
+							// Make sure a correct calendar is displayed even on error
+							model.setData([]);
 						}
 					};
-					CalendarService.getEvents({
+					CalendarService.getEvents(otms.auth.req({
 						'fromDate' : fromDate,
 						'toDate' : toDate
-					}, otms.ui.MessageBox.errhandler($('#errmsg_panel'),
+					}), otms.ui.MessageBox.errhandler($('#errmsg_panel'),
 							callback));
 
 				};
@@ -76,9 +78,15 @@
 </head>
 <body>
 	<!--#include virtual="header.html" -->
-	<div id="errmsg_panel"></div>
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div class="page_title">My Calendar</div>
+			<div id="container" class="centerpanel"></div>
+		</div>
+	</div>
 
-	<div id="container" class="centerpanel"></div>
 
 	<!--#include virtual="footer.html" -->
 </body>

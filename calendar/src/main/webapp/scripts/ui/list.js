@@ -26,19 +26,11 @@ otms.ui.list.List = function(container) {
 otms.ui.list.List.prototype.initialize = function() {
 	this.container.addClass('list_container');
 
-	this.titlePanel = $(document.createElement('div'));
-	this.titlePanel.addClass('list_title');
-	this.container.append(this.titlePanel);
-
 	this.contentPanel = $(document.createElement('div'));
 	this.contentPanel.addClass('list_content');
 	this.container.append(this.contentPanel);
 };
 
-otms.ui.list.List.prototype.setTitle = function(title) {
-	this.titlePanel.empty();
-	this.titlePanel.append(title);
-};
 
 otms.ui.list.List.prototype.setRenderer = function(renderer) {
 	this.renderer = renderer;

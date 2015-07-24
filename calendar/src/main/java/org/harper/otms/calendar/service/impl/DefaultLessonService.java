@@ -1,5 +1,6 @@
 package org.harper.otms.calendar.service.impl;
 
+import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -12,12 +13,14 @@ import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.dao.LessonItemDao;
 import org.harper.otms.calendar.dao.SnapshotDao;
 import org.harper.otms.calendar.dao.TutorDao;
+import org.harper.otms.calendar.entity.ActionLog;
+import org.harper.otms.calendar.entity.CalendarEntry;
 import org.harper.otms.calendar.entity.Client;
 import org.harper.otms.calendar.entity.Lesson;
 import org.harper.otms.calendar.entity.Lesson.Status;
-import org.harper.otms.calendar.entity.ActionLog;
 import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.Snapshot;
+import org.harper.otms.calendar.entity.OneoffEntry;
+import org.harper.otms.calendar.entity.RepeatEntry;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.ErrorCode;
 import org.harper.otms.calendar.service.LessonService;
@@ -31,18 +34,29 @@ import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonResponseDto;
-import org.harper.otms.calendar.service.dto.GetSnapshotDto;
-import org.harper.otms.calendar.service.dto.GetSnapshotResponseDto;
 import org.harper.otms.calendar.service.dto.LessonDto;
 import org.harper.otms.calendar.service.dto.LessonItemDto;
 import org.harper.otms.calendar.service.dto.MakeLessonItemDto;
 import org.harper.otms.calendar.service.dto.MakeLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.SetupLessonDto;
 import org.harper.otms.calendar.service.dto.SetupLessonResponseDto;
-import org.harper.otms.calendar.service.dto.SnapshotDto;
+import org.harper.otms.calendar.service.dto.TriggerLessonDto;
+import org.harper.otms.calendar.service.dto.TriggerLessonResponseDto;
 import org.harper.otms.calendar.service.util.DateUtil;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
+import org.springframework.beans.factory.InitializingBean;
 
-public class DefaultLessonService implements LessonService {
+public class DefaultLessonService implements LessonService, InitializingBean {
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		getScheduler().addJob(new TriggerLessonJobDetail(), true);
+	}
 
 	@Override
 	public GetLessonResponseDto getLesson(GetLessonDto request) {
@@ -103,33 +117,6 @@ public class DefaultLessonService implements LessonService {
 	}
 
 	@Override
-	public GetSnapshotResponseDto getSnapshot(GetSnapshotDto request) {
-		Snapshot snapshot = getSnapshotDao().findById(request.getSnapshotId());
-		User viewer = getUserDao().findById(request.getCurrentUser());
-
-		SnapshotDto sdto = new SnapshotDto();
-
-		GetSnapshotResponseDto result = new GetSnapshotResponseDto();
-		result.setSnapshot(sdto);
-
-		if (null == snapshot)
-			return new GetSnapshotResponseDto(ErrorCode.DATA_NOT_FOUND);
-
-		if (snapshot.getClient().getUser().getId() != request.getCurrentUser()
-				&& snapshot.getTutor().getId() != request.getCurrentUser())
-			return new GetSnapshotResponseDto(ErrorCode.SYS_NO_AUTH);
-
-		if (snapshot.getClient().getId() != request.getCurrentUser()) {
-			result.setOwner(false);
-		} else {
-			result.setOwner(true);
-		}
-
-		result.getSnapshot().from(snapshot, viewer);
-		return result;
-	}
-
-	@Override
 	public void cancelLesson(CancelLessonDto request) {
 		// TODO Auto-generated method stub
 
@@ -142,18 +129,12 @@ public class DefaultLessonService implements LessonService {
 	}
 
 	@Override
-	public void updateSnapshot() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public SetupLessonResponseDto setupLesson(SetupLessonDto request) {
 		Lesson lesson = new Lesson();
 		lesson.setRequestDate(DateUtil.convert(new Date(),
 				TimeZone.getDefault(), TimeZone.getTimeZone("UTC")));
 		User owner = getUserDao().findById(request.getCurrentUser());
-
+			
 		if (request.getLesson().getLessonId() != 0) {
 			lesson = getLessonDao().findById(request.getLesson().getLessonId());
 		} else {
@@ -181,20 +162,21 @@ public class DefaultLessonService implements LessonService {
 
 		request.getLesson().to(lesson, owner);
 		getLessonDao().save(lesson);
+
 		return new SetupLessonResponseDto();
 	}
 
 	@Override
 	public GetRequestedLessonResponseDto getRequestedLessons(
 			GetRequestedLessonDto request) {
-		Tutor tutor = getTutorDao().findById(request.getCurrentUser());
-		List<Lesson> lessons = getLessonDao().findRequested(tutor);
+		User user = getUserDao().findById(request.getCurrentUser());
+		List<Lesson> lessons = getLessonDao().findRequested(user);
 
 		LessonDto[] dtos = new LessonDto[lessons.size()];
 
 		for (int i = 0; i < lessons.size(); i++) {
 			dtos[i] = new LessonDto();
-			dtos[i].from(lessons.get(i), tutor.getUser());
+			dtos[i].from(lessons.get(i), user);
 		}
 
 		GetRequestedLessonResponseDto result = new GetRequestedLessonResponseDto();
@@ -228,7 +210,85 @@ public class DefaultLessonService implements LessonService {
 
 		lesson.setStatus(toStatus);
 
+		// Setup lesson scheduler and reminder scheduler
+		String triggerId = MessageFormat.format("trigger_{0}_{1}", "lesson",
+				Integer.toString(lesson.getId()));
+		TriggerBuilder<Trigger> tBuilder = TriggerBuilder.newTrigger()
+				.withIdentity(triggerId, "calendar")
+				.forJob("triggerLessonJob", "calendar");
+		Trigger trigger = null;
+		if (lesson.getCalendar() instanceof OneoffEntry) {
+			OneoffEntry oe = (OneoffEntry) lesson.getCalendar();
+			trigger = tBuilder.startAt(oe.getFromTime()).build();
+		} else {
+			RepeatEntry re = (RepeatEntry) lesson.getCalendar();
+			trigger = tBuilder
+					.startAt(re.getStartDate())
+					.endAt(DateUtil.dayend(re.getStopDate()))
+					.withSchedule(
+							CronScheduleBuilder.cronSchedule(re.cronExp()))
+					.build();
+		}
+		trigger.getJobDataMap().put(TriggerLessonJobDetail.LESSON_ID,
+				String.valueOf(lesson.getId()));
+		TriggerKey tkey = trigger.getKey();
+		try {
+			if (getScheduler().checkExists(tkey)) {
+				getScheduler().rescheduleJob(tkey, trigger);
+			} else {
+				getScheduler().scheduleJob(trigger);
+			}
+		} catch (SchedulerException e) {
+			throw new RuntimeException(e);
+		}
+
 		return new ChangeLessonStatusResponseDto();
+	}
+
+	@Override
+	public TriggerLessonResponseDto triggerLesson(TriggerLessonDto request) {
+		if (request.getLessonItemId() != 0) {
+			LessonItem item = getLessonItemDao().findById(
+					request.getLessonItemId());
+			item.setStatus(LessonItem.Status.SNAPSHOT);
+		} else {
+			Lesson lesson = getLessonDao().findById(request.getLessonId());
+			CalendarEntry entry = lesson.getCalendar();
+
+			Date today = DateUtil.truncate(new Date());
+
+			LessonItem item = new LessonItem();
+			item.setLesson(lesson);
+			item.setTitle(lesson.getTitle());
+			item.setDescription(lesson.getDescription());
+			item.setMaskDate(today);
+			item.setStatus(LessonItem.Status.SNAPSHOT);
+			if (entry instanceof OneoffEntry) {
+				OneoffEntry oe = (OneoffEntry) entry;
+				item.setFromTime(oe.getFromTime());
+				item.setToTime(oe.getToTime());
+			} else {
+				RepeatEntry re = (RepeatEntry) entry;
+				item.setFromTime(DateUtil.form(today, re.getFromTime()));
+				item.setToTime(DateUtil.form(today, re.getToTime()));
+			}
+			lesson.getItems().put(today, item);
+
+			if (request.isLast()) {
+				lesson.setStatus(Lesson.Status.INVALID);
+				// Generate an actionlog for the operation
+				ActionLog actionLog = new ActionLog();
+				actionLog.setActionDate(DateUtil.convert(new Date(),
+						TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
+				actionLog.setOperator(null);
+				actionLog.setType("LESSON STATUS");
+				actionLog.setFrom(Lesson.Status.VALID.name());
+				actionLog.setTo(Lesson.Status.INVALID.name());
+				getActionLogDao().save(actionLog);
+			}
+
+		}
+		return new TriggerLessonResponseDto();
 	}
 
 	private LessonDao lessonDao;
@@ -244,6 +304,8 @@ public class DefaultLessonService implements LessonService {
 	private UserDao userDao;
 
 	private ActionLogDao actionLogDao;
+
+	private Scheduler scheduler;
 
 	public LessonDao getLessonDao() {
 		return lessonDao;
@@ -299,6 +361,14 @@ public class DefaultLessonService implements LessonService {
 
 	public void setActionLogDao(ActionLogDao actionLogDao) {
 		this.actionLogDao = actionLogDao;
+	}
+
+	public Scheduler getScheduler() {
+		return scheduler;
+	}
+
+	public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
 	}
 
 }

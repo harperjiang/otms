@@ -1,0 +1,58 @@
+.navbar {
+	margin-left: 20px;
+}
+
+.navbar ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	display: block;
+	overflow: auto;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	-webkit-border-radius: 5;
+	-moz-border-radius: 5;
+}
+
+.navbar li {
+	display: block;
+	float: left;
+	list-style: none;
+	margin: 0;
+	height: 40px;
+	line-height: 40px;
+	border-right: 1px solid #ddd;
+}
+
+.navbar li.navbar_last {
+	
+}
+
+.navbar a {
+	text-decoration: none;
+	display: block;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.navbar a:hover {
+	background: rgba(220, 220, 220, 0.3);
+}
+
+.topbar {
+	overflow: auto;
+}
+
+.topbar_rightitem {
+	float: right;
+}
+
+.topbar_rightitem a {
+	text-decoration: none;
+	display: inline-block;
+	padding-left: 20px;
+	padding-right: 20px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+}

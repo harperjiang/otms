@@ -60,15 +60,16 @@ otms.validator.ValidatorBase.prototype.value = function(arg) {
 };
 
 otms.validator.ValidatorBase.prototype.assign = function(newval) {
-	if(otms.isEmpty(newval))
+	if (otms.isEmpty(newval))
 		return;
 	var tagName = this.control.prop('tagName');
-	if ($.inArray(tagName, [ 'input', 'select', 'textarea' ]) != -1) {
+	if ($.inArray(tagName, [ 'INPUT', 'SELECT', 'TEXTAREA' ]) != -1) {
 		this.control.val(newval);
-	}
-	if ($.inArray(tagName, [ 'span', 'div' ])) {
+	} else if ($.inArray(tagName, [ 'SPAN', 'DIV' ]) != -1) {
 		this.control.empty();
 		this.control.append(newval);
+	} else {
+		this.control.val(newval);
 	}
 };
 
@@ -201,6 +202,8 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 				return this.message('Incorrect time format');
 			},
 			assign : function(value) {
+				if (otms.isEmpty(value))
+					return;
 				this.control.val(otms.DateUtil.formattime(value));
 			}
 		});
@@ -251,6 +254,8 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 				return this.message('Incorrect date format');
 			},
 			assign : function(value) {
+				if (otms.isEmpty(value))
+					return;
 				this.control.val(otms.DateUtil.formatdate(value));
 			}
 		});
@@ -268,6 +273,10 @@ otms.validator.BeanManager.prototype.reg = function(key, component) {
 };
 
 otms.validator.BeanManager.prototype.validate = function(bean, vresult) {
+	for ( var key in vresult) {
+		if (!vresult[key])
+			return false;
+	}
 	return true;
 };
 
@@ -298,9 +307,13 @@ otms.validator.BeanManager.prototype.setBean = function(bean) {
 	// Set data to each validator
 	for ( var key in this.components) {
 		var comp = this.components[key];
-		if (otms.UIUtil.hidden(comp.val()))
-			continue;
-		var validator = comp.prop('validator');
-		validator.assign(otms.get(bean, key));
+		if (comp.val() === undefined) {
+			console.log('Invalid component found:' + key);
+		} else {
+			if (otms.UIUtil.hidden(comp.val()))
+				continue;
+			var validator = comp.prop('validator');
+			validator.assign(otms.get(bean, key));
+		}
 	}
 };

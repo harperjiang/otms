@@ -5,6 +5,7 @@ import java.util.TimeZone;
 
 import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.entity.LessonItem;
+import org.harper.otms.calendar.service.util.DateUtil;
 
 public class LessonItemDto {
 
@@ -20,6 +21,8 @@ public class LessonItemDto {
 
 	private int toTime;
 
+	private String status;
+
 	public void from(LessonItem item, User viewer) {
 		setTitle(item.getTitle());
 		setTutorName(item.getLesson().getTutor().getUser().getName());
@@ -28,9 +31,10 @@ public class LessonItemDto {
 		TimeZone utc = TimeZone.getTimeZone("UTC");
 		item.convert(utc, viewer.getTimezone());
 
-		setDate(item.getDate());
-		setFromTime(item.getStartTime());
-		setToTime(item.getStopTime());
+		setDate(DateUtil.truncate(item.getFromTime()));
+		setFromTime(DateUtil.extract(item.getFromTime()));
+		setToTime(DateUtil.extract(item.getToTime()));
+		setStatus(item.getStatus().name());
 	}
 
 	public void to(LessonItem item, User owner) {
@@ -39,12 +43,12 @@ public class LessonItemDto {
 		item.setTitle(getTitle());
 		item.setDescription(getDescription());
 		// Do not contain tutor
-		item.setDate(getDate());
-		item.setStartTime(getFromTime());
-		item.setStopTime(getToTime());
+		item.setFromTime(DateUtil.form(getDate(), getFromTime()));
+		item.setToTime(DateUtil.form(getDate(), getToTime()));
 
-		// TODO Here should be owner
+		item.setStatus(LessonItem.Status.valueOf(getStatus()));
 		item.convert(owner.getTimezone(), utc);
+
 	}
 
 	public String getTitle() {
@@ -93,6 +97,14 @@ public class LessonItemDto {
 
 	public void setToTime(int toTime) {
 		this.toTime = toTime;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

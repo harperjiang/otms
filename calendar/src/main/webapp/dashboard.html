@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User Console</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
+
+<script>
+	function client_clicked(client_id) {
+		sessionStorage.setItem("otms.clientInfoPage.clientId", client_id);
+		window.location = 'client_info.html';
+	};
+
+	function tutor_clicked(tutor_id) {
+		sessionStorage.setItem("otms.tutorInfoPage.tutorId", tutor_id);
+		window.location = 'tutor_info.html';
+	};
+
+	$(function() {
+		if(!otms.auth.isLoggedin()) {
+			window.location = 'index.html';
+		}
+		otms.namespace('otms.dashboardPage');
+
+		var userType = otms.auth.userType();
+		var lessonList = new otms.ui.list.List($('#lesson_list_container'));
+
+		lessonList.setRenderer(function(container, event) {
+			var content = $(document.createElement('div'));
+			content.addClass('list_row_content');
+			container.append(content);
+
+			var titleSpan = $(document.createElement('span'));
+			titleSpan.addClass('list_row_title');
+			titleSpan.append(event.title);
+			content.append(titleSpan);
+
+			content.append(", with ");
+			if (userType === 'tutor') {
+				var link = $(document.createElement('a'));
+				link.attr('onclick', 'client_clicked(' + event.clientId + ')');
+				link.append(event.clientName);
+				content.append(link);
+				content.append('. ');
+			} else {
+				var link = $(document.createElement('a'));
+				link.attr('onclick', 'tutor_clicked(' + event.tutorId + ')');
+				link.append(event.tutorName);
+				content.append(link);
+				content.append('. ');
+			}
+			// Time info
+			var timeSpan = $(document.createElement("span"));
+			timeSpan.addClass('list_row_time');
+			timeSpan.append(otms.DateUtil.formattime(event.fromTime));
+			timeSpan.append(" to ");
+			timeSpan.append(otms.DateUtil.formattime(event.toTime));
+			timeSpan.append(", ");
+
+			timeSpan.append(otms.DateUtil.formatdate(event.date));
+
+			content.append(timeSpan);
+
+			// Button Operation Div
+			/* 			var buttonDiv = $(document.createElement('div'));
+			 buttonDiv.addClass('list_row_buttonstub_div');
+			 
+			 buttonDiv.append("&nbsp;");
+
+			 container.append(buttonDiv);  */
+			container.prop('dataItem', event);
+		});
+
+		var callback = function(success, data) {
+			var lessonNum = 0;
+			if (success) {
+				lessonList.model.setData(data.events);
+				lessonNum = data.events.length;
+			}
+			$('#lesson_num_span').empty();
+			$('#lesson_num_span').append(lessonNum);
+			$('#lesson_num_prompt').css('display',
+					(lessonNum == 0) ? 'none' : 'inline');
+
+		};
+		var comingweek = otms.DateUtil.comingweek();
+		CalendarService.getEvents(otms.auth.req({
+			'fromDate' : comingweek.fromDate,
+			'toDate' : comingweek.toDate
+		}), otms.ui.MessageBox.shan(callback));
+	});
+</script>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div class="page_block page_block_border">
+				<div class="page_block_title">Upcoming lessons</div>
+				<div class="page_block_content">
+					<div class="page_row">
+						<p>
+							You have <span id="lesson_num_span"></span> lessons in the coming
+							week. <span id="lesson_num_prompt">You will receive
+								notification 30 minutes before lesson starts.</span>
+						</p>
+					</div>
+					<div class="page_row">
+						<div id="lesson_list_container"></div>
+					</div>
+				</div>
+			</div>
+			<div class="page_block page_block_border">
+				<div class="page_block_title">Feedback</div>
+				<div class="page_block_content">
+					<div class="page_row">You have 0 uncommented lessons.</div>
+				</div>
+			</div>
+			<div class="page_block page_block_border">
+				<div class="page_block_title">Questions</div>
+				<div class="page_block_content">
+					<div class="page_row">You currently have no incoming
+						questions.</div>
+					<div class="page_row">None of your questions have been
+						answered.</div>
+					<div class="page_row"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

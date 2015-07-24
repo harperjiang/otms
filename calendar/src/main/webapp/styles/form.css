@@ -12,18 +12,18 @@
 }
 
 .form {
-	width: 400px;
-	min-height: 500px;
+	width:700px;
 	font-size: 16px;
 	margin-top: 20px;
 	line-height: 150%;
 }
 
-.form_short {
-	min-height: 0px;
+.login_form {
+	width: 400px;
+	min-height: 500px;
 }
 
-.form input[type="text"],.form input[type='password'] {
+.form input[type="text"], .form input[type='password'] {
 	display: block;
 	height: 35px;
 	margin-top: 20px;
@@ -57,7 +57,7 @@
 
 .form input[type='text'].timeinput {
 	display: inline-block;
-	width: 200px;
+	width: 180px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	font-size: 14px;
@@ -65,7 +65,7 @@
 
 .form input[type='text'].timeinput2 {
 	display: inline-block;
-	width: 110px;
+	width: 180px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	font-size: 14px;

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
@@ -19,13 +20,13 @@ import org.harper.otms.common.dao.Entity;
 public class LessonItem extends Entity {
 
 	public static enum Status {
-		VALID, DELETED
+		VALID, DELETED, SNAPSHOT
 	}
 
-	@Column(name = "event_date")
-	@Temporal(TemporalType.DATE)
-	private Date date;
-
+	/**
+	 * Define which date in a event series this item masks. Must be in GMT and
+	 * not converted by {@link #convert(TimeZone, TimeZone)}
+	 */
 	@Column(name = "mask_date")
 	@Temporal(TemporalType.DATE)
 	private Date maskDate;
@@ -34,11 +35,13 @@ public class LessonItem extends Entity {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
-	@Column(name = "start_time")
-	private int startTime;
+	@Column(name = "from_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fromTime;
 
-	@Column(name = "stop_time")
-	private int stopTime;
+	@Column(name = "to_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date toTime;
 
 	@OneToOne
 	@JoinColumn(name = "lesson_id")
@@ -51,39 +54,24 @@ public class LessonItem extends Entity {
 	private String description;
 
 	public void convert(TimeZone from, TimeZone to) {
-		OneoffEntry entry = new OneoffEntry();
-		entry.setDate(date);
-		entry.setStartTime(startTime);
-		entry.setStopTime(stopTime);
-		entry.convert(from, to);
-
-		setDate(entry.getDate());
-		setStartTime(entry.getStartTime());
-		setStopTime(entry.getStopTime());
+		setFromTime(DateUtil.convert(getFromTime(), from, to));
+		setToTime(DateUtil.convert(getToTime(), from, to));
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getFromTime() {
+		return fromTime;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setFromTime(Date fromTime) {
+		this.fromTime = fromTime;
 	}
 
-	public int getStartTime() {
-		return startTime;
+	public Date getToTime() {
+		return toTime;
 	}
 
-	public void setStartTime(int startTime) {
-		this.startTime = startTime;
-	}
-
-	public int getStopTime() {
-		return stopTime;
-	}
-
-	public void setStopTime(int stopTime) {
-		this.stopTime = stopTime;
+	public void setToTime(Date toTime) {
+		this.toTime = toTime;
 	}
 
 	public Lesson getLesson() {

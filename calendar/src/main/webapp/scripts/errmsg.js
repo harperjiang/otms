@@ -8,14 +8,26 @@ otms.ErrorMsg.msg = function(code, locale) {
 	if (undefined == result) {
 		result = otms.ErrorMsg.defaultmsg[locale] + code;
 	}
+	// If session related, clear old token
+	if (code >= 200 && code < 300) {
+		console.log("Session related error, clear token");
+		otms.auth.cleartoken();
+	}
+
 	return result;
 };
 
 otms.ErrorMsg.data = {
 	'en_US' : {
-		"101" : "No such tutor",
-		"201" : "User id has been used",
-		"202" : "User email has been used"
+		"101" : "The user id has been used",
+		"102" : "The user email has been used",
+		"103" : "User name doesn't exists",
+		"201" : "Session has expired. Please re-login",
+		"202" : "Please login first",
+		"1101" : "Cannot find the tutor",
+		"1401" : "Data not found",
+		"1501" : "No such user",
+		"1502" : "You are not allowed to access the information"
 	},
 	'zh_CN' : {
 		"101" : "没有找到这个教师",

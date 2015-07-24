@@ -1,0 +1,46 @@
+<div id="menubar">
+	<div id="menu">
+		<ul>
+			<li><a href='dashboard.html'><span>Dashboard</span></a></li>
+			<li><a href='profile.html'><span>Profile</span></a></li>
+			<li><a href='calendar.html'><span>View My Calendar</span></a></li>
+			<li class="menu_title"><span>Lessons</span></li>
+			<li class="menu_sub" showon="client"><a href="lesson.html">
+					<span>Setup Lesson</span>
+			</a></li>
+			<li class="menu_sub"><a href="requested_lesson.html"> <span>Requested
+						Lessons</span>
+			</a></li>
+			<li class="menu_sub"><a href="ongoing_lesson.html"> <span>On-going
+						Lessons</span>
+			</a></li>
+			<li class='menu_last'><a href='help.html'> <span>Help</span>
+			</a></li>
+		</ul>
+	</div>
+
+	<div id="quicklink_panel">
+		<div class="quicklink_title">Quick Links</div>
+		<div class="quicklink_row">Abcdasfwefwe</div>
+		<div class="quicklink_row">Abcdasfwefwe</div>
+		<div class="quicklink_row">Abcdasfwefwe</div>
+		<div class="quicklink_row">Abcdasfwefwe</div>
+		<div class="quicklink_row">Abcdasfwefwe</div>
+	</div>
+
+	<script>
+		var currentPage = window.location.pathname.split('/').pop();
+		$('#menu li').each(function(index, element) {
+			// Script for switching to current page
+			if ($(element).find('a').attr('href') == currentPage) {
+				$(element).addClass('menu_current');
+			}
+			// Script for hide menus not belonging to current user
+			var showon = $(element).attr('showon');
+			var usertype = otms.auth.userType();
+			if (showon != undefined && showon != usertype) {
+				$(element).css('display', 'none');
+			}
+		});
+	</script>
+</div>

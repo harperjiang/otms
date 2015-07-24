@@ -15,30 +15,34 @@ import org.harper.otms.calendar.service.util.DateUtil;
 @DiscriminatorValue("ONEOFF")
 public class OneoffEntry extends CalendarEntry {
 
-	@Column(name = "oneoff_date")
-	@Temporal(TemporalType.DATE)
-	private Date date;
+	@Column(name = "oneoff_from_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date fromTime;
 
-	public Date getDate() {
-		return date;
+	@Column(name = "oneoff_to_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date toTime;
+
+	public Date getFromTime() {
+		return fromTime;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setFromTime(Date fromTime) {
+		this.fromTime = fromTime;
+	}
+
+	public Date getToTime() {
+		return toTime;
+	}
+
+	public void setToTime(Date toTime) {
+		this.toTime = toTime;
 	}
 
 	@Override
 	public void convert(TimeZone from, TimeZone to) {
-		Date fromDate = DateUtil.form(getDate(), getStartTime());
-		Date toDate = DateUtil.form(getDate(), getStopTime());
-
-		Date nfDate = DateUtil.convert(fromDate, from, to);
-		Date ntDate = DateUtil.convert(toDate, from, to);
-
-		setDate(DateUtil.truncate(nfDate));
-		setStartTime(DateUtil.extract(nfDate));
-		setStopTime(DateUtil.extract(ntDate));
-
+		setFromTime(DateUtil.convert(getFromTime(), from, to));
+		setToTime(DateUtil.convert(getToTime(), from, to));
 	}
 
 }

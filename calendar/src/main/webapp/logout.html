@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Template</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script>
+	$(function() {
+		otms.auth.cleartoken();
+		otms.headerPage.refreshLoginOption();
+	});
+</script>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+	<div class="form login_form centerpanel">
+		<div id="form_errmsg_panel"></div>
+		<div class="form_title">Sign Out</div>
+
+		<div>You have been successfully signed out</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

@@ -5,6 +5,7 @@ import java.util.TimeZone;
 
 import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.entity.Snapshot;
+import org.harper.otms.calendar.service.util.DateUtil;
 
 public class SnapshotDto {
 
@@ -28,9 +29,9 @@ public class SnapshotDto {
 		TimeZone utc = TimeZone.getTimeZone("UTC");
 		item.convert(utc, viewer.getTimezone());
 
-		setDate(item.getDate());
-		setFromTime(item.getStartTime());
-		setToTime(item.getStopTime());
+		setDate(DateUtil.truncate(item.getFromTime()));
+		setFromTime(DateUtil.extract(item.getFromTime()));
+		setToTime(DateUtil.extract(item.getToTime()));
 	}
 
 	public void to(Snapshot item, User owner) {
@@ -39,9 +40,8 @@ public class SnapshotDto {
 		item.setTitle(getTitle());
 		item.setDescription(getDescription());
 		// Do not contain tutor
-		item.setDate(getDate());
-		item.setStartTime(getFromTime());
-		item.setStopTime(getToTime());
+		item.setFromTime(DateUtil.form(getDate(), getFromTime()));
+		item.setToTime(DateUtil.form(getDate(), getToTime()));
 
 		item.convert(owner.getTimezone(), utc);
 	}

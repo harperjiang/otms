@@ -57,6 +57,8 @@ public class DateUtil {
 	 * @return
 	 */
 	public static Date convert(Date date, TimeZone from, TimeZone to) {
+		if (from.equals(to))
+			return date;
 		// We assume the input date is always a date in local time zone, thus if
 		// local time zone is not equivalent to from time zone, a field to field
 		// copy conversion is needed

@@ -363,17 +363,3 @@ otms.ui.calendar.Calendar.prototype.onEventClick = function(obj, event) {
 otms.ui.calendar.Calendar.prototype.onAddButton = function() {
 
 };
-
-otms.ui.calendar.tzData = [ 'US/Mountain', 'US/Central', 'US/Pacific',
-		'US/Eastern', 'Asia/Shanghai' ];
-
-otms.ui.calendar.loadTzSelect = function(select) {
-	var tzList = otms.ui.calendar.tzData;
-	for (var i = 0; i < tzList.length; i++) {
-		var option = $(document.createElement("option"));
-		option.attr('value', tzList[i]);
-		var tz = moment.tz(tzList[i]);
-		option.append(tzList[i]);
-		select.append(option);
-	}
-};

@@ -10,23 +10,61 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/AuthService.js'></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script>
 	$(function() {
-		$('#signin_btn').click(
-				function(event) {
-					otms.ui.MessageBox.info($('#form_errmsg_panel'),
-							'Test information');
-				});
+
+		otms.namespace('otms.loginPage');
+
+		new otms.validator.NonemptyValidator($('#username'));
+		new otms.validator.NonemptyValidator($('#password'));
+
+		var bm = new otms.validator.BeanManager();
+		bm.reg('username', $('#username'));
+		bm.reg('password', $('#password'));
+
+		otms.loginPage.bm = bm;
+
+		var callback = function(success, data) {
+			if (success) {
+				// Put token in local storage
+				localStorage.setItem("otms.token", otms.json({
+					"userId" : data.userId,
+					"username" : data.username,
+					"type" : data.type,
+					"token" : data.token
+				}));
+				window.location = "dashboard.html";
+			}
+		};
+		var login = function() {
+			var bean = bm.getBean();
+			if (null != bean) {
+				AuthService.login(bean, otms.ui.MessageBox.handler(
+						$('#form_errmsg_panel'), callback));
+			}
+		};
+
+		$('#signin_btn').click(login);
+
+		$('#password').keydown(function(e) {
+			if (e.keyCode == 13) {
+				login();
+			}
+		})
 	});
 </script>
 </head>
 <body>
 	<!--#include virtual="header.html" -->
 
-	<div class="form centerpanel">
+	<div class="form login_form centerpanel">
 		<div id="form_errmsg_panel"></div>
 		<div class="form_title">Sign In</div>
 
@@ -40,7 +78,7 @@
 				<a href="forgetpass.html">Forget password?</a>
 			</div>
 		</div>
-		<div class="g-signin2 external_login_button" data-width="310"
+		<div class="g-signin2 external_login_button" data-width="200"
 			data-height="40" data-longtitle="true" data-theme="dark"
 			data-scope='https://www.googleapis.com/auth/plus.login'></div>
 

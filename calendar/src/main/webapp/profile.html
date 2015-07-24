@@ -8,16 +8,138 @@
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
 <script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/dialog.js"></script>
+<script type="text/javascript" src="scripts/ui/calendar.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/ClientService.js'></script>
 <script>
+	$(function() {
+		otms.namespace('otms.profilePage');
+		otms.loadTzSelect($('#timezone_select'));
 
+		new otms.validator.NonemptyValidator($('#name_input'));
+
+		var cbm = new otms.validator.BeanManager();
+		cbm.reg('displayName', $('#name_input'));
+		cbm.reg('username', $('#username_span'));
+		cbm.reg('timezone', $('#timezone_select'));
+		cbm.reg('description', $('#desc_input'));
+		cbm.reg('pictureUrl', $('#profile_img'));
+		cbm.reg('statement', $('#ps_text'));
+		//cbm.reg('audioText', $('#eel_span'));
+		cbm.reg('audioUrl', $('#audiourl_input'));
+		otms.profilePage.clientBm = cbm;
+
+		$('#confirm_btn').click(
+				function() {
+					var bean = ebm.getBean();
+					if (null != bean) {
+						ClientService.setupClient(otms.auth.req(bean),
+								otms.ui.MessageBox.han());
+					}
+				});
+
+		var userType = otms.auth.userType();
+		switch (userType) {
+		case undefined:
+			otms.ui.MessageBox.warning($('#errmsg_panel'),
+					'You are not logged in');
+			break;
+		case 'client':
+			var req = otms.auth.req({
+				"clientId" : otms.auth.currentUser()
+			});
+			var callback = function(success, data) {
+				if (success) {
+					var clientInfo = data.clientInfo;
+					// Noneditable
+					debugger;
+					otms.profilePage.clientBm.setBean(clientInfo);
+				}
+			};
+			ClientService.getClientInfo(req, otms.ui.MessageBox.shan(callback));
+			break;
+		case 'tutor':
+			break;
+		}
+
+	});
 </script>
 </head>
 <body>
 	<!--#include virtual="header.html" -->
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div id="client_profile_edit">
+				<div class="page_block">
+					<div style="margin-right: 20px; float: left;">
+						<div class="profile_picture">
+							<img id="profile_img" src="resource/default_profile.jpg"
+								width="100%" height="100%" />
+						</div>
+					</div>
+					<div style="float: left; min-height: 120px;">
+						<div class='page_row '>
+							<input id="name_input" placeholder="Your display name"
+								type='text' style="font-size: 25px; font-weight: bold" />
+						</div>
+						<div class="page_row ">
+							<input id="desc_input"
+								placeholder="One sentence for self introduction" type='text' />
+						</div>
+						<div class="page_row ">
+							<div style="display: inline-block; width: 250px">
+								username: <span id="username_span" style="font-weight: bold">&nbsp;</span>
+							</div>
+							<div style="display: inline-block; width: 250px">
+								timezone: <select id="timezone_select"></select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">Personal Statement</div>
+					<div class="page_row ">
+						<textarea id="ps_text"
+							placeholder="An introduction about yourself. A typical personal statement includes your background, hobby, advantages, etc."></textarea>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">English Proficiency Level</div>
+					<div class="page_row">Read the following text and record your
+						result.</div>
+					<div class="page_row">
+						<div class="text_hl">
+							<p>Alice was beginning to get very tired of sitting by her
+								sister on the bank, and of having nothing to do: once or twice
+								she had peeped into the book her sister was reading, but it had
+								no pictures or conversations in it, 'and what is the use of a
+								book,' thought Alice 'without pictures or conversations?'</p>
+							<p>So she was considering in her own mind (as well as she
+								could, for the hot day made her feel very sleepy and stupid),
+								whether the pleasure of making a daisy-chain would be worth the
+								trouble of getting up and picking the daisies, when suddenly a
+								White Rabbit with pink eyes ran close by her.</p>
+						</div>
+					</div>
+					<div class="page_row ">
+						<input type='text' placeholder="URL of your recording"
+							id="audiourl_input" />
+					</div>
+				</div>
+				<div class="page_block">
+					<button id="confirm_btn" class="btn_large">Save</button>
+				</div>
+			</div>
 
-
-
-
+		</div>
+	</div>
 	<!--#include virtual="footer.html" -->
 </body>
 </html>

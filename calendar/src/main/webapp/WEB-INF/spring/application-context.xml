@@ -4,6 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<import resource="env.xml" />
+	<import resource="scheduler.xml" />
+
+	<bean id="contextAccessor" class="org.harper.otms.common.spring.AppContextAccessor" />
 
 	<!-- Dao Definition -->
 	<bean id="userDao" class="org.harper.otms.auth.dao.jpa.JpaUserDao">
@@ -21,13 +24,22 @@
 	<bean id="lessonItemDao" class="org.harper.otms.calendar.dao.jpa.JpaLessonItemDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
-	<bean id="snapshotDao" class="org.harper.otms.calendar.dao.jpa.JpaSnapshotDao">
-		<property name="entityManager" ref="entityManager" />
-	</bean>
 	<bean id="actionLogDao" class="org.harper.otms.calendar.dao.jpa.JpaActionLogDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
+
+	<!-- Scheduler Job Definition -->
+
 	<!-- Service definition -->
+	<bean id="userService" class="org.harper.otms.auth.service.impl.DefaultUserService">
+		<property name="userDao" ref="userDao" />
+	</bean>
+
+	<bean id="authService" class="org.harper.otms.auth.service.impl.DefaultAuthService">
+		<property name="userDao" ref="userDao" />
+		<property name="tokenManager" ref="tokenManager" />
+	</bean>
+
 	<bean id="calendarService"
 		class="org.harper.otms.calendar.service.impl.DefaultCalendarService">
 		<property name="tutorDao" ref="tutorDao" />
@@ -35,7 +47,6 @@
 		<property name="lessonDao" ref="lessonDao" />
 		<property name="userDao" ref="userDao" />
 		<property name="lessonItemDao" ref="lessonItemDao" />
-		<property name="snapshotDao" ref="snapshotDao" />
 	</bean>
 
 	<bean id="lessonService"
@@ -44,13 +55,14 @@
 		<property name="clientDao" ref="clientDao" />
 		<property name="lessonDao" ref="lessonDao" />
 		<property name="lessonItemDao" ref="lessonItemDao" />
-		<property name="snapshotDao" ref="snapshotDao" />
 		<property name="userDao" ref="userDao" />
 		<property name="actionLogDao" ref="actionLogDao" />
+		<property name="scheduler" ref="scheduler" />
 	</bean>
 
-	<bean id="userService"
-		class="org.harper.otms.calendar.service.impl.DefaultUserService">
+	<bean id="profileService"
+		class="org.harper.otms.calendar.service.impl.DefaultProfileService">
+		<property name="userService" ref="userService" />
 		<property name="tutorDao" ref="tutorDao" />
 		<property name="clientDao" ref="clientDao" />
 		<property name="userDao" ref="userDao" />
@@ -60,4 +72,5 @@
 		class="org.harper.otms.calendar.service.impl.DefaultClientService">
 		<property name="clientDao" ref="clientDao" />
 	</bean>
+
 </beans>

@@ -58,6 +58,15 @@ otms.ui.MessageBox.showMessageWithClass = function(component, message, style) {
 	 */
 };
 
+// The slient default handler
+otms.ui.MessageBox.shan = function(callback) {
+	return otms.ui.MessageBox.errhandler($('#errmsg_panel'), callback);
+};
+
+otms.ui.MessageBox.han = function(callback) {
+	return otms.ui.MessageBox.handler($('#errmsg_panel'), callback);
+};
+
 otms.ui.MessageBox.handler = function(container, mycallback) {
 	return {
 		callback : function(response) {

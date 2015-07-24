@@ -100,6 +100,17 @@ otms.uuid = function() {
 			+ s4() + s4();
 };
 
+otms.json = function(arg) {
+	switch (typeof (arg)) {
+	case 'object':
+		return JSON.stringify(arg);
+	case 'string':
+		return JSON.parse(arg);
+	default:
+		return undefined;
+	}
+};
+
 otms.UIUtil = {};
 
 otms.UIUtil.hidden = function(element) {
@@ -139,7 +150,7 @@ otms.DateUtil.formattime = function(time) {
 	var min = 0;
 	switch (typeof (time)) {
 	case "number":
-		hour = Math.round(time / 60);
+		hour = Math.floor(time / 60);
 		min = time % 60;
 		break;
 	case "object":
@@ -180,6 +191,12 @@ otms.DateUtil.formatdate = function(date) {
 			+ date.getFullYear();
 };
 
+otms.DateUtil.serverformatdate = function(date) {
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+			+ date.getDate() + "-" + date.getHours() + "-" + date.getMinutes()
+			+ "-" + date.getSeconds();
+};
+
 otms.DateUtil.truncate = function(input) {
 	var date = new Date(input);
 	date.setHours(0);
@@ -188,6 +205,14 @@ otms.DateUtil.truncate = function(input) {
 	date.setMilliseconds(0);
 	return date;
 };
+
+otms.DateUtil.form = function(dateonly, time) {
+	var date = new Date(dateonly);
+	date.setHours(Math.round(time / 60));
+	date.setMinutes(time % 60);
+	date.setSeconds(0);
+	return date;
+}
 
 otms.DateUtil.weekdayAbb = [ 'Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa' ];
 
@@ -216,4 +241,34 @@ otms.DateUtil.formatweekday = function(input) {
 		}
 	}
 	return val.slice(0, val.length - 1);
+};
+
+otms.DateUtil.comingweek = function() {
+	var now = new Date();
+	var nextweek = new Date(now);
+	nextweek.setDate(now.getDate() + 7);
+
+	return {
+		'fromDate' : now,
+		'toDate' : nextweek
+	};
+};
+
+otms.tzData = [ 'US/Mountain', 'US/Central', 'US/Pacific', 'US/Eastern',
+		'Asia/Shanghai' ];
+
+otms.loadTzSelect = function(select) {
+	var tzList = otms.tzData;
+	for (var i = 0; i < tzList.length; i++) {
+		var option = $(document.createElement("option"));
+		option.attr('value', tzList[i]);
+		option.append(tzList[i]);
+		select.append(option);
+	}
+};
+
+otms.getPageParam = function(key) {
+	var value = sessionStorage.getItem(key);
+	sessionStorage.removeItem(key);
+	return value;
 };
