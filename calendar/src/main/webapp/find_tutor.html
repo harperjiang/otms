@@ -2,22 +2,130 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Console</title>
+<title>Find a tutor</title>
 <link rel="stylesheet" type="text/css" href="styles/all.css" />
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="code/find_tutor.js"></script>
+
+<style>
+.tutor_block {
+	float: left;
+	margin: 10px;
+	cursor: pointer;
+	padding: 10px;
+	border: 1px solid #aaa;
+	height: 160px;
+	position: relative;
+}
+
+.tutor_block:hover {
+	background-color: rgba(160, 214, 245, 0.2);
+}
+
+.tutor_photo_panel {
+	width: 80px;
+	height: 80px;
+	background-color: #ccc;
+	float: left;
+	margin-right: 10px;
+}
+
+.tutor_info_panel {
+	overflow: hidden;
+}
+
+.tutor_info_wrapper {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+}
+
+.tutor_name_panel {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.tutor_desc_panel {
+	font-size: 14px;
+	height: 90px;
+	overflow: hidden;
+}
+
+.tutor_block_menu {
+	position: absolute;
+	height: 25px;
+	bottom: 0px;
+	left: 350px;
+}
+
+.tutor_block_menu a {
+	font-size: 14px;
+	display: inline-block;
+	margin: 5px;
+}
+</style>
 <script>
-	
+	$(function() {
+
+		otms.namespace('otms.findTutorPage');
+
+		var searchbm = new otms.validator.BeanManager();
+		searchbm.reg('keyword', $('#keyword_input'));
+		searchbm.reg('favorite', $('#favorite_check'));
+
+		otms.findTutorPage.searchbm = searchbm;
+
+		var list = new otms.ui.list.SimpleList($('#tutor_container'));
+		list.renderItem = renderTutorBlock;
+		list.finishRender = finishRender;
+
+		$('#btn_find').click(function() {
+			
+		});
+
+		$('#btn_lucky').click(function() {
+
+		});
+	});
 </script>
 </head>
 <body>
 	<!--#include virtual="header.html" -->
 	<div id="page">
-		<div id="errmsg_panel"></div>
-		<!--#include virtual="menu.html" -->
-		<div id="page_content"></div>
+		<div
+			style="width: 700px; margin-left: auto; margin-right: auto; overflow: auto;">
+			<div class="page_title">TutorCan has the best tutors you need</div>
+			<div class="page_block">
+				<div class="page_block_title">Specify your search criteria</div>
+				<div class="page_row">
+					<input type="text" id="keyword_input"
+						placeholder="keyword of your tutor (part of his/her name, etc.)" />
+				</div>
+				<div class="page_row">
+					<label>Age Preference: </label> <select>
+						<option>3-5 years</option>
+						<option>5-8 years</option>
+						<option>8-12 years</option>
+					</select>
+				</div>
+				<div class="page_row">
+					<label><input id="favorite_check" type='checkbox' />My
+						Favorite Tutor only</label>
+				</div>
+				<div class="page_row">
+					<button id="btn_find" class="btn_normal">Find all tutors</button>
+					<button id="btn_lucky" class="btn_normal">I am feeling
+						lucky</button>
+				</div>
+			</div>
+			<div id="tutor_container"></div>
+		</div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

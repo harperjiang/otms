@@ -1,5 +1,7 @@
 package org.harper.otms.calendar.service.dto;
 
+import java.util.TimeZone;
+
 import org.harper.otms.calendar.entity.Client;
 
 public class ClientInfoDto {
@@ -14,6 +16,8 @@ public class ClientInfoDto {
 
 	private String description;
 
+	private String email;
+
 	private String pictureUrl;
 
 	private String audioText;
@@ -26,12 +30,17 @@ public class ClientInfoDto {
 		setUsername(client.getUser().getName());
 		setDisplayName(client.getUser().getDisplayName());
 		setTimezone(client.getUser().getTimezone().getID());
+		setEmail(client.getUser().getEmail());
 		setPictureUrl(client.getPictureUrl());
 		setAudioText(client.getAudioText());
 		setAudioUrl(client.getAudioUrl());
 	}
 
 	public void to(Client client) {
+		client.getUser().setDisplayName(getDisplayName());
+		client.getUser().setTimezone(TimeZone.getTimeZone(getTimezone()));
+		client.getUser().setEmail(getEmail());
+		
 		client.setDescription(getDescription());
 		client.setAudioText(getAudioText());
 		client.setAudioUrl(getAudioUrl());
@@ -100,6 +109,14 @@ public class ClientInfoDto {
 
 	public void setClientId(int clientId) {
 		this.clientId = clientId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

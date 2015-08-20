@@ -9,4 +9,6 @@ public interface UserDao extends Dao<User> {
 
 	User findByEmail(String email);
 
+	User findByActivateCode(String uuid);
+
 }

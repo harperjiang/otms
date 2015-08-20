@@ -7,97 +7,82 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/ui/list.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
+<script type='text/javascript' src='dwr/interface/TodoService.js'></script>
+<script type="text/javascript" src="code/lessonlist_renderer.js"></script>
+<script type="text/javascript" src="code/dashboard.js"></script>
 
 <script>
-	function client_clicked(client_id) {
-		sessionStorage.setItem("otms.clientInfoPage.clientId", client_id);
-		window.location = 'client_info.html';
-	};
-
-	function tutor_clicked(tutor_id) {
-		sessionStorage.setItem("otms.tutorInfoPage.tutorId", tutor_id);
-		window.location = 'tutor_info.html';
-	};
-
 	$(function() {
-		if(!otms.auth.isLoggedin()) {
+		if (!otms.auth.isLoggedin()) {
 			window.location = 'index.html';
 		}
 		otms.namespace('otms.dashboardPage');
 
 		var userType = otms.auth.userType();
 		var lessonList = new otms.ui.list.List($('#lesson_list_container'));
+		lessonList.setRenderer(lessonEventListRenderer());
+		lessonList.rowClicked = function(itemdata) {
+			sessionStorage.setItem("otms.lessonPage.id", itemdata.id);
+			window.location = 'lesson.html';
+		};
+		lessonList.titleContainer = $('#lesson_title');
+		lessonList.renderTitle = function(length) {
+			var msgtop = "You have {0} lessons in the coming week.";
+			var append = " You will receive notification 30 minutes before lesson starts."
+			var result = otms.FormatUtil.format(msgtop, length == 0 ? 'no'
+					: length);
+			if (length > 0)
+				result += append;
+			return result;
+		}
 
-		lessonList.setRenderer(function(container, event) {
-			var content = $(document.createElement('div'));
-			content.addClass('list_row_content');
-			container.append(content);
+		var todoList = new otms.ui.list.List($('#todo_list_container'));
+		todoList.setRenderer(todo_renderer);
+		todoList.titleContainer = $('#todo_title');
+		todoList.renderTitle = function(length) {
+			var msgtop = "You have {0} todo events.";
+			var result = otms.FormatUtil.format(msgtop, length == 0 ? 'no'
+					: length);
+			return result;
+		}
 
-			var titleSpan = $(document.createElement('span'));
-			titleSpan.addClass('list_row_title');
-			titleSpan.append(event.title);
-			content.append(titleSpan);
-
-			content.append(", with ");
-			if (userType === 'tutor') {
-				var link = $(document.createElement('a'));
-				link.attr('onclick', 'client_clicked(' + event.clientId + ')');
-				link.append(event.clientName);
-				content.append(link);
-				content.append('. ');
-			} else {
-				var link = $(document.createElement('a'));
-				link.attr('onclick', 'tutor_clicked(' + event.tutorId + ')');
-				link.append(event.tutorName);
-				content.append(link);
-				content.append('. ');
-			}
-			// Time info
-			var timeSpan = $(document.createElement("span"));
-			timeSpan.addClass('list_row_time');
-			timeSpan.append(otms.DateUtil.formattime(event.fromTime));
-			timeSpan.append(" to ");
-			timeSpan.append(otms.DateUtil.formattime(event.toTime));
-			timeSpan.append(", ");
-
-			timeSpan.append(otms.DateUtil.formatdate(event.date));
-
-			content.append(timeSpan);
-
-			// Button Operation Div
-			/* 			var buttonDiv = $(document.createElement('div'));
-			 buttonDiv.addClass('list_row_buttonstub_div');
-			 
-			 buttonDiv.append("&nbsp;");
-
-			 container.append(buttonDiv);  */
-			container.prop('dataItem', event);
-		});
-
-		var callback = function(success, data) {
+		var lessonListCallback = function(success, data) {
 			var lessonNum = 0;
 			if (success) {
 				lessonList.model.setData(data.events);
 				lessonNum = data.events.length;
 			}
-			$('#lesson_num_span').empty();
-			$('#lesson_num_span').append(lessonNum);
+			var numSpan = $('#lesson_num_span');
+			numSpan.empty();
+			numSpan.append(lessonNum);
 			$('#lesson_num_prompt').css('display',
 					(lessonNum == 0) ? 'none' : 'inline');
 
 		};
+
 		var comingweek = otms.DateUtil.comingweek();
 		CalendarService.getEvents(otms.auth.req({
 			'fromDate' : comingweek.fromDate,
 			'toDate' : comingweek.toDate
-		}), otms.ui.MessageBox.shan(callback));
+		}), otms.ui.MessageBox.shan(lessonListCallback));
+
+		var todoCallback = function(success, data) {
+			if (success) {
+				var numSpan = $('#todo_num_span');
+				numSpan.empty();
+				numSpan.append(data.todos.length);
+				todoList.model.setData(data.todos);
+			}
+		};
+		TodoService.getTodos(otms.auth.req({}), otms.ui.MessageBox
+				.shan(todoCallback));
 	});
 </script>
 </head>
@@ -110,26 +95,23 @@
 			<div class="page_block page_block_border">
 				<div class="page_block_title">Upcoming lessons</div>
 				<div class="page_block_content">
-					<div class="page_row">
-						<p>
-							You have <span id="lesson_num_span"></span> lessons in the coming
-							week. <span id="lesson_num_prompt">You will receive
-								notification 30 minutes before lesson starts.</span>
-						</p>
-					</div>
+					<div class="page_row" id="lesson_title"></div>
 					<div class="page_row">
 						<div id="lesson_list_container"></div>
 					</div>
 				</div>
 			</div>
 			<div class="page_block page_block_border">
-				<div class="page_block_title">Feedback</div>
+				<div class="page_block_title">Todo</div>
 				<div class="page_block_content">
-					<div class="page_row">You have 0 uncommented lessons.</div>
+					<div class="page_row" id="todo_title"></div>
+					<div class="page_row">
+						<div id="todo_list_container"></div>
+					</div>
 				</div>
 			</div>
 			<div class="page_block page_block_border">
-				<div class="page_block_title">Questions</div>
+				<div class="page_block_title">Recommendation</div>
 				<div class="page_block_content">
 					<div class="page_row">You currently have no incoming
 						questions.</div>

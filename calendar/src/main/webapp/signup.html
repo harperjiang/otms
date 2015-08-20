@@ -10,7 +10,7 @@
 <script type="text/javascript"
 	src="scripts/moment-timezone-with-data-2010-2020.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
@@ -40,7 +40,7 @@
 		bm.validate = function(bean, vresult) {
 			if (!bean.agree) {
 				this.fail([ 'agree' ], 'Please accept the agreement');
-				otms.ui.MessageBox.warning($('#form_errmsg_panel'),
+				otms.ui.MessageBox.warning($('#errmsg_panel'),
 						'Please accept the agreement');
 				return false;
 			}
@@ -63,9 +63,8 @@
 					$(this).attr('disabled', 'true');
 					var bean = window.beanManager.getBean();
 					if (bean != null) {
-						ProfileService.createUser(otms.auth.req(bean),
-								otms.ui.MessageBox.handler(
-										$('#form_errmsg_panel'), callback));
+						ProfileService.registerUser(otms.auth.req(bean),
+								otms.ui.MessageBox.han(callback));
 					} else {
 						$(this).removeAttr('disabled');
 					}
@@ -80,72 +79,72 @@
 </head>
 <body>
 	<!--#include virtual="header.html" -->
+	<div id="page">
+		<div id='errmsg_panel'></div>
+		<div id="signup_info_panel" class="form login_form centerpanel">
+			<div class="form_title">Sign Up</div>
+			<input type="text" id="name_input" placeholder="Username" /> <input
+				type="text" id="display_input" placeholder="Display Name" /><input
+				type="text" id="email_input" placeholder="Email Address" /> <input
+				id="password_input" type="password"
+				placeholder="Password (length > 8, with letter, number and symbol)" />
+			<div class="form_row">
+				<label style="margin-bottom: 10px">Local TimeZone:</label><select
+					id="timezone_select"></select>
+			</div>
+			<div class="form_row">
+				<div>
+					<label style='width: 80px'>I am </label> <label><input
+						type="radio" name="role" value="client" checked /> looking for a
+						tutor</label>
+				</div>
+				<div>
+					<label style='width: 80px'>&nbsp;</label> <label><input
+						type="radio" name="role" value="tutor"> willing to teach
+						students</label>
+				</div>
 
-	<div id="signup_info_panel" class="form login_form centerpanel">
-		<div id='form_errmsg_panel'></div>
-		<div class="form_title">Sign Up</div>
-		<input type="text" id="name_input" placeholder="Username" /> <input
-			type="text" id="display_input" placeholder="Display Name" /><input
-			type="text" id="email_input" placeholder="Email Address" /> <input
-			id="password_input" type="password"
-			placeholder="Password (length > 8, with letter, number and symbol)" />
-		<div class="form_row">
-			<label style="margin-bottom: 10px">Local TimeZone:</label><select
-				id="timezone_select"></select>
-		</div>
-		<div class="form_row">
-			<div>
-				<label style='width: 80px'>I am </label> <label><input
-					type="radio" name="role" value="client" checked /> looking for a
-					tutor</label>
+			</div>
+			<div class="form_row">
+				<input name="agree" id="agree_checkbox" type="checkbox"
+					style="display: inline-block; width: 30px" /><label
+					style="width: 350px" for="agree_checkbox">I accept to the
+					terms and user agreements</label>
 			</div>
 			<div>
-				<label style='width: 80px'>&nbsp;</label> <label><input
-					type="radio" name="role" value="tutor"> willing to teach
-					students</label>
+				<button id="signup_btn" class="btn_large">Sign Up</button>
+				<button id="switch_btn" style="display: none" class="btn_large">Switch</button>
 			</div>
-
 		</div>
-		<div class="form_row">
-			<input name="agree" id="agree_checkbox" type="checkbox"
-				style="display: inline-block; width: 30px" /><label
-				style="width: 350px" for="agree_checkbox">I accept to the
-				terms and user agreements</label>
-		</div>
-		<div>
-			<button id="signup_btn" class="btn_large">Sign Up</button>
-			<button id="switch_btn" style="display: none" class="btn_large">Switch</button>
+		<div id="signup_confirm_panel" class="form centerpanel"
+			style="display: none;">
+			<div class="form_title">Success!</div>
+			<div class="form_row">
+				We have sent an email to <span id="email_span"
+					style="font-weight: bold"></span>. Please follow the instruction to
+				complete registration.
+			</div>
+			<div class="form_row">Didn't see the email? Check if it is in
+				your spam folder.</div>
+			<div class="form_row">
+				Here's some introductions you can start with.
+				<div class="form_section">For students:</div>
+				<div>
+					<a href="">How can I find a good tutor?</a>
+				</div>
+				<div>
+					<a href="">How can I find a good tutor?</a>
+				</div>
+				<div class="form_section">For tutors:</div>
+				<div>
+					<a href="">How can I find a good tutor?</a>
+				</div>
+				<div>
+					<a href="">How can I find a good tutor?</a>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div id="signup_confirm_panel" class="form centerpanel"
-		style="display: none;">
-		<div class="form_title">Success!</div>
-		<div class="form_row">
-			We have sent an email to <span id="email_span"
-				style="font-weight: bold"></span>. Please follow the instruction to
-			complete registration.
-		</div>
-		<div class="form_row">Didn't see the email? Check if it is in
-			your spam folder.</div>
-		<div class="form_row">
-			Here's some introductions you can start with.
-			<div class="form_section">For students:</div>
-			<div>
-				<a href="">How can I find a good tutor?</a>
-			</div>
-			<div>
-				<a href="">How can I find a good tutor?</a>
-			</div>
-			<div class="form_section">For tutors:</div>
-			<div>
-				<a href="">How can I find a good tutor?</a>
-			</div>
-			<div>
-				<a href="">How can I find a good tutor?</a>
-			</div>
-		</div>
-	</div>
-
 
 	<!--#include virtual="footer.html" -->
 </body>

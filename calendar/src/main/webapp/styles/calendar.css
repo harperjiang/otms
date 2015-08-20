@@ -1,5 +1,5 @@
 .calendar_container {
-	width: 840px;
+	width: 700px;
 	overflow: auto;
 }
 
@@ -14,7 +14,7 @@
 
 .calendar_column {
 	float: left;
-	width: 120px;
+	width: 100px;
 }
 
 .calendar_column_header {
@@ -89,7 +89,7 @@
 	color: white;
 	padding: 2px;
 	font-size: 12px;
-	height: 14px;
+	height: 18px;
 	cursor: pointer;
 	overflow: hidden;
 }

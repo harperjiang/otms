@@ -15,6 +15,11 @@
 			<include method="login" />
 		</create>
 
+		<create creator="spring" javascript="UserService">
+			<param name="beanName" value="userService" />
+			<include method="activateUser" />
+		</create>
+
 		<create creator="spring" javascript="CalendarService">
 			<param name="beanName" value="calendarService" />
 			<include method="getEvents" />
@@ -23,18 +28,22 @@
 		<create creator="spring" javascript="ProfileService">
 			<param name="beanName" value="profileService" />
 			<include method="registerUser" />
+			<include method="getClientInfo" />
+			<include method="getTutorInfo" />
+			<include method="uploadProfileImage" />
+			<include method="setupClient" />
+			<include method="setupTutor" />
 		</create>
 
 		<create creator="spring" javascript="ClientService">
 			<param name="beanName" value="clientService" />
-			<include method="getClientInfo" />
-			<include method="setupClient" />
 		</create>
 
 		<create creator="spring" javascript="LessonService">
 			<param name="beanName" value="lessonService" />
 			<include method="setupLesson" />
 			<include method="getRequestedLessons" />
+			<include method="getOngoingLessons" />
 			<include method="getLesson" />
 			<include method="getLessonItem" />
 			<include method="getSnapshot" />
@@ -42,10 +51,16 @@
 			<include method="triggerLesson" />
 		</create>
 
+		<create creator="spring" javascript="TodoService">
+			<param name="beanName" value="todoService" />
+			<include method="getTodos" />
+		</create>
+
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
 
 		<convert converter="mydate" match="java.util.Date" />
+		<convert converter="file" match="java.awt.image.BufferedImage" />
 
 		<!-- this is a bad idea for live, but can be useful in testing -->
 		<convert converter="exception" match="java.lang.Exception" />

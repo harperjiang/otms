@@ -1,6 +1,7 @@
 package org.harper.otms.calendar.service.impl;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -12,6 +13,7 @@ import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.dao.LessonItemDao;
 import org.harper.otms.calendar.dao.SnapshotDao;
+import org.harper.otms.calendar.dao.TodoDao;
 import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.ActionLog;
 import org.harper.otms.calendar.entity.CalendarEntry;
@@ -21,6 +23,7 @@ import org.harper.otms.calendar.entity.Lesson.Status;
 import org.harper.otms.calendar.entity.LessonItem;
 import org.harper.otms.calendar.entity.OneoffEntry;
 import org.harper.otms.calendar.entity.RepeatEntry;
+import org.harper.otms.calendar.entity.Todo;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.ErrorCode;
 import org.harper.otms.calendar.service.LessonService;
@@ -32,6 +35,8 @@ import org.harper.otms.calendar.service.dto.GetLessonDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
+import org.harper.otms.calendar.service.dto.GetOngoingLessonDto;
+import org.harper.otms.calendar.service.dto.GetOngoingLessonResponseDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonResponseDto;
 import org.harper.otms.calendar.service.dto.LessonDto;
@@ -49,9 +54,13 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 public class DefaultLessonService implements LessonService, InitializingBean {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -134,7 +143,7 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		lesson.setRequestDate(DateUtil.convert(new Date(),
 				TimeZone.getDefault(), TimeZone.getTimeZone("UTC")));
 		User owner = getUserDao().findById(request.getCurrentUser());
-			
+
 		if (request.getLesson().getLessonId() != 0) {
 			lesson = getLessonDao().findById(request.getLesson().getLessonId());
 		} else {
@@ -170,7 +179,8 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 	public GetRequestedLessonResponseDto getRequestedLessons(
 			GetRequestedLessonDto request) {
 		User user = getUserDao().findById(request.getCurrentUser());
-		List<Lesson> lessons = getLessonDao().findRequested(user);
+		List<Lesson> lessons = getLessonDao().findByStatus(user,
+				Status.REQUESTED);
 
 		LessonDto[] dtos = new LessonDto[lessons.size()];
 
@@ -180,6 +190,26 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		}
 
 		GetRequestedLessonResponseDto result = new GetRequestedLessonResponseDto();
+		result.setLessons(dtos);
+
+		return result;
+	}
+
+	@Override
+	public GetOngoingLessonResponseDto getOngoingLessons(
+			GetOngoingLessonDto request) {
+		User user = getUserDao().findById(request.getCurrentUser());
+		List<Lesson> lessons = getLessonDao().findByStatus(user, Status.VALID);
+
+		List<LessonDto> dtos = new ArrayList<LessonDto>();
+
+		for (int i = 0; i < lessons.size(); i++) {
+			LessonDto dto = new LessonDto();
+			dto.from(lessons.get(i), user);
+			dtos.add(dto);
+		}
+
+		GetOngoingLessonResponseDto result = new GetOngoingLessonResponseDto();
 		result.setLessons(dtos);
 
 		return result;
@@ -206,6 +236,7 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		actionLog.setType("LESSON STATUS");
 		actionLog.setFrom(lesson.getStatus().name());
 		actionLog.setTo(toStatus.name());
+		actionLog.setComment("User Operation");
 		getActionLogDao().save(actionLog);
 
 		lesson.setStatus(toStatus);
@@ -247,9 +278,9 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 	@Override
 	public TriggerLessonResponseDto triggerLesson(TriggerLessonDto request) {
+		LessonItem item = null;
 		if (request.getLessonItemId() != 0) {
-			LessonItem item = getLessonItemDao().findById(
-					request.getLessonItemId());
+			item = getLessonItemDao().findById(request.getLessonItemId());
 			item.setStatus(LessonItem.Status.SNAPSHOT);
 		} else {
 			Lesson lesson = getLessonDao().findById(request.getLessonId());
@@ -257,7 +288,13 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 			Date today = DateUtil.truncate(new Date());
 
-			LessonItem item = new LessonItem();
+			if (lesson.getItems().containsKey(today)) {
+				// Today has an item, the lesson should not be fired
+				logger.info("Lesson is not triggered as an item exists");
+				return new TriggerLessonResponseDto();
+			}
+
+			item = new LessonItem();
 			item.setLesson(lesson);
 			item.setTitle(lesson.getTitle());
 			item.setDescription(lesson.getDescription());
@@ -272,6 +309,7 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 				item.setFromTime(DateUtil.form(today, re.getFromTime()));
 				item.setToTime(DateUtil.form(today, re.getToTime()));
 			}
+			item.setLesson(lesson);
 			lesson.getItems().put(today, item);
 
 			if (request.isLast()) {
@@ -284,10 +322,30 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 				actionLog.setType("LESSON STATUS");
 				actionLog.setFrom(Lesson.Status.VALID.name());
 				actionLog.setTo(Lesson.Status.INVALID.name());
+				actionLog.setComment("Lesson Triggered");
 				getActionLogDao().save(actionLog);
 			}
-
 		}
+		// Assign Id
+		getLessonItemDao().save(item);
+
+		// Add a todo list for commenting this snapshot
+		Todo todo = new Todo();
+		todo.setType(Todo.Type.COMMENT_LESSON);
+		todo.setOwner(item.getLesson().getClient().getUser());
+		todo.setExpireTime(DateUtil.offset(7));
+		todo.getContext().addProperty(Todo.DK_REFID, item.getId());
+		todo.getContext().addProperty(Todo.DK_LESSON_TUTORID,
+				item.getLesson().getTutor().getId());
+		todo.getContext().addProperty(Todo.DK_LESSON_TITLE, item.getTitle());
+		todo.getContext().addProperty(Todo.DK_LESSON_WITH,
+				item.getLesson().getTutor().getUser().getName());
+		todo.getContext().addProperty(Todo.DK_LESSON_FROM,
+				item.getFromTime().getTime());
+		todo.getContext().addProperty(Todo.DK_LESSON_TO,
+				item.getToTime().getTime());
+		getTodoDao().save(todo);
+
 		return new TriggerLessonResponseDto();
 	}
 
@@ -304,6 +362,8 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 	private UserDao userDao;
 
 	private ActionLogDao actionLogDao;
+
+	private TodoDao todoDao;
 
 	private Scheduler scheduler;
 
@@ -361,6 +421,14 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 	public void setActionLogDao(ActionLogDao actionLogDao) {
 		this.actionLogDao = actionLogDao;
+	}
+
+	public TodoDao getTodoDao() {
+		return todoDao;
+	}
+
+	public void setTodoDao(TodoDao todoDao) {
+		this.todoDao = todoDao;
 	}
 
 	public Scheduler getScheduler() {

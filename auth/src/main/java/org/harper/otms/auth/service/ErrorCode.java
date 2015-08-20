@@ -10,9 +10,18 @@ public interface ErrorCode {
 
 	int USER_NAME_NOTEXIST = USER + 3;
 
+	int USER_NOT_ACTIVATED = USER + 4;
+
+	int USER_ALREADY_ACTIVATED = USER + 5;
+
 	int SESSION = 200;
 
 	int SESSION_NOTLOGIN = SESSION + 2;
 
 	int SESSION_EXPIRED = SESSION + 1;
+
+	int SYSTEM = 300;
+
+	int SYSTEM_INVALID_PARAM = SYSTEM + 1;
+
 }

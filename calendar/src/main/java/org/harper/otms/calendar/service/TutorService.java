@@ -1,5 +1,7 @@
 package org.harper.otms.calendar.service;
 
+import org.harper.otms.calendar.service.dto.FindTutorDto;
+import org.harper.otms.calendar.service.dto.FindTutorResponseDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetDto;
@@ -12,4 +14,5 @@ public interface TutorService {
 	
 	SetupTimesheetResponseDto setupTimesheet(SetupTimesheetDto request);
 	
+	FindTutorResponseDto findTutors(FindTutorDto request);
 }

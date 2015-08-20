@@ -7,7 +7,7 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
@@ -75,26 +75,26 @@
 
 		// Install Bean Manager
 		var bm = new otms.validator.BeanManager();
-		bm.reg('lesson.title', $('#title_input'));
-		bm.reg('lesson.tutorName', $('#tutor_input'));
-		bm.reg('lesson.clientName', $('#client_input'));
-		bm.reg('lesson.description', $('#meetingdesc_text'));
-		bm.reg('lesson.fromTime', $('#timefrom_input'));
-		bm.reg('lesson.toTime', $('#timeto_input'));
-		bm.reg('lesson.repeat', $('#repeat_checkbox'));
+		bm.reg('title', $('#title_input'));
+		bm.reg('tutorName', $('#tutor_input'));
+		bm.reg('clientName', $('#client_input'));
+		bm.reg('description', $('#meetingdesc_text'));
+		bm.reg('fromTime', $('#timefrom_input'));
+		bm.reg('toTime', $('#timeto_input'));
+		bm.reg('repeat', $('#repeat_checkbox'));
 
-		bm.reg('lesson.repeatFromDate', $('#repeat_datefrom_input'));
-		bm.reg('lesson.repeatToDate', $('#repeat_dateto_input'));
+		bm.reg('repeatFromDate', $('#repeat_datefrom_input'));
+		bm.reg('repeatToDate', $('#repeat_dateto_input'));
 
-		bm.reg('lesson.weekrepeat.0', $('#repeat_sunday_check'));
-		bm.reg('lesson.weekrepeat.1', $('#repeat_monday_check'));
-		bm.reg('lesson.weekrepeat.2', $('#repeat_tuesday_check'));
-		bm.reg('lesson.weekrepeat.3', $('#repeat_wednesday_check'));
-		bm.reg('lesson.weekrepeat.4', $('#repeat_thursday_check'));
-		bm.reg('lesson.weekrepeat.5', $('#repeat_friday_check'));
-		bm.reg('lesson.weekrepeat.6', $('#repeat_saturday_check'));
+		bm.reg('weekrepeat.0', $('#repeat_sunday_check'));
+		bm.reg('weekrepeat.1', $('#repeat_monday_check'));
+		bm.reg('weekrepeat.2', $('#repeat_tuesday_check'));
+		bm.reg('weekrepeat.3', $('#repeat_wednesday_check'));
+		bm.reg('weekrepeat.4', $('#repeat_thursday_check'));
+		bm.reg('weekrepeat.5', $('#repeat_friday_check'));
+		bm.reg('weekrepeat.6', $('#repeat_saturday_check'));
 
-		bm.reg('lesson.oneoffDate', $('#oneoff_date_input'));
+		bm.reg('oneoffDate', $('#oneoff_date_input'));
 
 		otms.lessonPage.bm = bm;
 
@@ -102,12 +102,12 @@
 			// First check vresult
 			for ( var key in vresult) {
 				if (vresult[key] == false) {
-					if (key == 'lesson.oneoffDate' && bean.lesson.repeat) {
+					if (key == 'oneoffDate' && bean.repeat) {
 						continue;
 					}
-					if (!bean.lesson.repeat
-							&& $.inArray(key, [ "lesson.repeatFromDate",
-									"lesson.repeatToDate" ]) != -1) {
+					if (!bean.repeat
+							&& $.inArray(key, [ "repeatFromDate",
+									"repeatToDate" ]) != -1) {
 						continue;
 					}
 					return false;
@@ -115,39 +115,38 @@
 			}
 
 			// From time must be smaller than to time
-			if (bean.lesson.fromTime.total >= bean.lesson.toTime.total) {
-				this.fail([ 'lesson.fromTime', 'lesson.toTime' ],
+			if (bean.fromTime.total >= bean.toTime.total) {
+				this.fail([ 'fromTime', 'toTime' ],
 						'From time must be earlier than to time');
 				return false;
 			}
 			var today = new Date();
-			if (bean.lesson.repeat) {
-				var firstRun = otms.DateUtil.form(bean.lesson.repeatFromDate,
-						bean.lesson.fromTime);
+			if (bean.repeat) {
+				var firstRun = otms.DateUtil.form(bean.repeatFromDate,
+						bean.fromTime);
 				// If from date is older than today
 				if (firstRun.getTime() <= today.getTime()) {
-					this.fail([ 'lesson.repeatFromDate' ],
+					this.fail([ 'repeatFromDate' ],
 							'Please specify a future time');
 					return false;
 				}
 				// From date must be smaller than to date
-				if (bean.lesson.repeatFromDate.getTime() >= bean.lesson.repeatToDate
+				if (bean.repeatFromDate.getTime() >= bean.repeatToDate
 						.getTime()) {
-					this.fail(
-							[ 'lesson.repeatFromDate', 'lesson.repeatToDate' ],
+					this.fail([ 'repeatFromDate', 'repeatToDate' ],
 							'From time must be earlier than to time');
 					return false;
 				}
 				// Check at least one day when repeat
 
 				var res = 0;
-				res += bean.lesson.repeatSunday;
-				res += bean.lesson.repeatMonday;
-				res += bean.lesson.repeatTuesday;
-				res += bean.lesson.repeatWednesday;
-				res += bean.lesson.repeatThursday;
-				res += bean.lesson.repeatFriday;
-				res += bean.lesson.repeatSaturday;
+				res += bean.repeatSunday;
+				res += bean.repeatMonday;
+				res += bean.repeatTuesday;
+				res += bean.repeatWednesday;
+				res += bean.repeatThursday;
+				res += bean.repeatFriday;
+				res += bean.repeatSaturday;
 
 				if (res == 0) {
 					otms.ui.MessageBox.warning($('#errmsg_panel'),
@@ -155,11 +154,10 @@
 					return false;
 				}
 			} else {
-				var firstRun = otms.DateUtil.form(bean.lesson.oneoffDate,
-						bean.lesson.fromTime);
+				var firstRun = otms.DateUtil.form(bean.oneoffDate,
+						bean.fromTime);
 				if (firstRun <= today.getTime()) {
-					this.fail([ 'lesson.oneoffDate' ],
-							'Please specify a future time');
+					this.fail([ 'oneoffDate' ], 'Please specify a future time');
 					return false;
 				}
 			}
@@ -173,11 +171,13 @@
 			// TODO Load data from server
 			var callback = function(success, data) {
 				if (success) {
-					bm.setBean(data);
+					bm.setBean(data.lesson);
+					// Manually trigger div flip
+					switch_div($('#repeat_checkbox'));
 					if (data.lesson.status == 'INVALID') {
 						enter_readonly_mode();
 					}
-					if(otms.auth.userType() == 'tutor') {
+					if (otms.auth.userType() == 'tutor') {
 						enter_readonly_mode();
 						enter_tutor_view();
 					}
@@ -211,8 +211,9 @@
 					// Call Server
 					if (bean != null) {
 						$(this).prop('disabled', 'true');
-						LessonService.setupLesson(otms.auth.req(bean),
-								otms.ui.MessageBox.han(confirmCallback));
+						LessonService.setupLesson(otms.auth.req({
+							"lesson" : bean
+						}), otms.ui.MessageBox.han(confirmCallback));
 					} else {
 						otms.ui.MessageBox.warning($('#errmsg_panel'),
 								'Validation Failed');
@@ -227,7 +228,10 @@
 
 		});
 
-		$('#jump_btn').click(function(event) {
+		$('#req_lesson_btn').click(function(event) {
+			window.location = 'requested_lesson.html';
+		});
+		$('#calendar_btn').click(function(event) {
 			window.location = 'calendar.html';
 		});
 	});
@@ -289,7 +293,7 @@
 						</div>
 						<div class="page_row">
 							<label>Repeat every</label>
-							<div>
+							<div style="overflow: auto;">
 								<label style='width: 120px;'><input type='checkbox'
 									id='repeat_sunday_check'>Sunday</label> <label
 									style='width: 120px;'><input type='checkbox'
@@ -314,23 +318,29 @@
 						</div>
 					</div>
 				</div>
-				<div class="form_row">
-					<button class="btn_large" id='confirm_btn'>Confirm</button>
-					<button class="btn_danger" id='delete_btn'
-						style='margin-left: 20px; display: none;'>Cancel Lesson</button>
+				<div class="page_block">
+					<div class="page_row">
+						<button class="btn_large" id='confirm_btn'>Confirm</button>
+						<button class="btn_large" id='confirm_btn' style="display: none;">Modify
+							this occurance</button>
+						<button class="btn_danger" id='delete_btn'
+							style='margin-left: 20px; display: none;'>Cancel Lesson</button>
+					</div>
 				</div>
 			</div>
-		</div>
-		<div id="confirm_panel" class="form centerpanel"
-			style="display: none;">
-			<div class="form_title">Lesson Setup Success!</div>
-			<div class="form_row">We have sent your lesson request to your
-				tutor. You will receive a notification when he/she confirms your
-				lesson request.</div>
-			<div class="form_row">The lesson will automatically be added to
-				your calendar when confirmed by your tutor.</div>
-			<div class="form_row">
-				<button class="btn_large" id='jump_btn'>Go to my calendar</button>
+			<div id="confirm_panel" class="page_block" style="display: none;">
+				<div class="page_title">Lesson Setup Success!</div>
+				<div class="page_row">We have sent your lesson request to your
+					tutor. You will receive a notification when he/she confirms your
+					lesson request.</div>
+				<div class="page_row">The lesson will automatically be added
+					to your calendar when confirmed by your tutor.</div>
+				<div class="page_row">
+					<button class="btn_large" id='req_lesson_btn'>View
+						requested lessons</button>
+					<button class="btn_large" id='calendar_btn'>Go to my
+						calendar</button>
+				</div>
 			</div>
 		</div>
 	</div>

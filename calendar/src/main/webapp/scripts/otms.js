@@ -40,6 +40,9 @@ otms.get = function(object, key) {
 	var parts = key.split('.');
 	var current = object;
 	for (var i = 0; i < parts.length; i++) {
+		if (otms.isEmpty(current)) {
+			return undefined;
+		}
 		var part = parts[i];
 		var index = parseInt(part);
 		if (current === undefined)
@@ -118,6 +121,14 @@ otms.UIUtil.hidden = function(element) {
 
 };
 
+otms.UIUtil.stopMessage = function(e) {
+	if (!e)
+		var e = window.event;
+	e.cancelBubble = true;
+	if (e.stopPropagation)
+		e.stopPropagation();
+};
+
 otms.FormatUtil = {};
 
 otms.FormatUtil.padding = function(input, padding, length) {
@@ -126,6 +137,13 @@ otms.FormatUtil.padding = function(input, padding, length) {
 		string = padding + string;
 	}
 	return string;
+};
+
+otms.FormatUtil.format = function() {
+	var args = arguments;
+	return arguments[0].replace(/\{(\d+)\}/g, function() {
+		return args[1 + parseInt(arguments[1])];
+	});
 };
 
 otms.DateUtil = {};
@@ -154,8 +172,13 @@ otms.DateUtil.formattime = function(time) {
 		min = time % 60;
 		break;
 	case "object":
-		hour = time.hour;
-		min = time.minute;
+		if (Object.prototype.toString.call(time) === '[object Date]') {
+			hour = time.getHours();
+			min = time.getMinutes();
+		} else {
+			hour = time.hour;
+			min = time.minute;
+		}
 		break;
 	default:
 		break;
@@ -212,7 +235,15 @@ otms.DateUtil.form = function(dateonly, time) {
 	date.setMinutes(time % 60);
 	date.setSeconds(0);
 	return date;
-}
+};
+
+otms.DateUtil.extractdate = function(date) {
+
+};
+
+otms.DateUtil.extracttime = function(date) {
+	return date.getHours() * 60 + date.getMinutes();
+};
 
 otms.DateUtil.weekdayAbb = [ 'Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa' ];
 
@@ -271,4 +302,55 @@ otms.getPageParam = function(key) {
 	var value = sessionStorage.getItem(key);
 	sessionStorage.removeItem(key);
 	return value;
+};
+
+otms.getUrlParam = function(sParam) {
+	var sPageURL = window.location.search.substring(1);
+
+	var sURLVariables = sPageURL.split('&');
+	for (var i = 0; i < sURLVariables.length; i++) {
+		var sParameterName = sURLVariables[i].split('=');
+		if (sParameterName[0] == sParam) {
+			return sParameterName[1];
+		}
+	}
+	return undefined;
+};
+
+otms.merge = function() {
+	var result = {};
+	for (arg in arguments) {
+		for (key in arg) {
+			result[key] = arg[key];
+		}
+	}
+	return result;
+};
+
+otms.submitform = function(form, callback) {
+	var iframe = $('<iframe name="formiframe" id="formiframe" style="display: none"></iframe>');
+	$("body").append(iframe);
+
+	form.attr("encoding", "multipart/form-data");
+	form.attr("enctype", "multipart/form-data");
+
+	var additional = otms.auth.req({});
+	for ( var key in additional) {
+		var hidden = $('<input type="hidden"/>');
+		hidden.attr('name', key);
+		hidden.attr('value', additional[key]);
+		form.append(hidden);
+	}
+	form.attr("target", "formiframe");
+	form.submit();
+
+	$("#formiframe").load(function() {
+		var iframeContents = this.contentWindow.document.body.innerText;
+		debugger;
+		if (callback != null) {
+			callback(otms.json(iframeContents));
+		}
+		$(this).remove();
+	});
+
 };

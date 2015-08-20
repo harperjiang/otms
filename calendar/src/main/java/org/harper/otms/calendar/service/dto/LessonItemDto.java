@@ -9,6 +9,8 @@ import org.harper.otms.calendar.service.util.DateUtil;
 
 public class LessonItemDto {
 
+	private int itemId;
+
 	private String title;
 
 	private String tutorName;
@@ -24,6 +26,7 @@ public class LessonItemDto {
 	private String status;
 
 	public void from(LessonItem item, User viewer) {
+		setItemId(item.getId());
 		setTitle(item.getTitle());
 		setTutorName(item.getLesson().getTutor().getUser().getName());
 		setDescription(item.getDescription());
@@ -105,6 +108,14 @@ public class LessonItemDto {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
 	}
 
 }

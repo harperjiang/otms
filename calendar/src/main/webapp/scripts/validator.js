@@ -64,7 +64,11 @@ otms.validator.ValidatorBase.prototype.assign = function(newval) {
 		return;
 	var tagName = this.control.prop('tagName');
 	if ($.inArray(tagName, [ 'INPUT', 'SELECT', 'TEXTAREA' ]) != -1) {
-		this.control.val(newval);
+		if (this.control.attr('type') === 'checkbox') {
+			this.control.prop('checked', newval);
+		} else {
+			this.control.val(newval);
+		}
 	} else if ($.inArray(tagName, [ 'SPAN', 'DIV' ]) != -1) {
 		this.control.empty();
 		this.control.append(newval);
@@ -286,7 +290,10 @@ otms.validator.BeanManager.prototype.fail = function(keys, message) {
 };
 
 otms.validator.BeanManager.prototype.getBean = function() {
-	var bean = {};
+	if(this.bean === undefined) {
+		this.bean = {};
+	}
+	var bean = this.bean;
 	var vresult = {};
 	// Collect data from each validator
 	for ( var key in this.components) {
@@ -304,6 +311,7 @@ otms.validator.BeanManager.prototype.getBean = function() {
 };
 
 otms.validator.BeanManager.prototype.setBean = function(bean) {
+	this.bean = bean;
 	// Set data to each validator
 	for ( var key in this.components) {
 		var comp = this.components[key];

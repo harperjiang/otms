@@ -13,6 +13,7 @@
 		<class>org.harper.otms.calendar.entity.Timesheet</class>
 		<class>org.harper.otms.auth.entity.User</class>
 		<class>org.harper.otms.calendar.entity.ActionLog</class>
+		<class>org.harper.otms.calendar.entity.Todo</class>
 		<properties>
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
 			<property name="eclipselink.logging.level" value="ALL"/>

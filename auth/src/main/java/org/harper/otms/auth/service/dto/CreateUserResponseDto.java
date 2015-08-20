@@ -6,6 +6,14 @@ public class CreateUserResponseDto extends ResponseDto {
 
 	private int userId;
 
+	public CreateUserResponseDto() {
+		super();
+	}
+
+	public CreateUserResponseDto(int err) {
+		super(err);
+	}
+
 	public int getUserId() {
 		return userId;
 	}
@@ -13,6 +21,5 @@ public class CreateUserResponseDto extends ResponseDto {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	
-	
+
 }

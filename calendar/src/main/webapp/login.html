@@ -3,21 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="google-signin-client_id"
-	content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+	content="222968453652-mgvonsdfonrqka6pob72qb5gqumd5u1s.apps.googleusercontent.com">
 <title>User Login</title>
 <link rel="stylesheet" type="text/css" href="styles/all.css" />
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/AuthService.js'></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
-<script type='text/javascript' src='dwr/engine.js'></script>
-<script type='text/javascript' src='dwr/interface/AuthService.js'></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <script>
+	function googleSignin(googleUser) {
+		var profile = googleUser.getBasicProfile();
+		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+		console.log('Name: ' + profile.getName());
+		console.log('Image URL: ' + profile.getImageUrl());
+		console.log('Email: ' + profile.getEmail());
+	}
+
 	$(function() {
 
 		otms.namespace('otms.loginPage');
@@ -63,31 +72,32 @@
 </head>
 <body>
 	<!--#include virtual="header.html" -->
+	<div id="page">
+		<div class="form login_form centerpanel">
+			<div id="form_errmsg_panel"></div>
+			<div class="form_title">Sign In</div>
 
-	<div class="form login_form centerpanel">
-		<div id="form_errmsg_panel"></div>
-		<div class="form_title">Sign In</div>
+			<input id="username" type="text" name="username"
+				placeholder="Username" /> <input id="password" type="password"
+				name="password" placeholder="Password" />
 
-		<input id="username" type="text" name="username"
-			placeholder="Username" /> <input id="password" type="password"
-			name="password" placeholder="Password" />
+			<div>
+				<button id="signin_btn" class="btn_large">Sign In</button>
+				<div style="display: inline-block; margin-left: 20px;">
+					<a href="forgetpass.html">Forget password?</a>
+				</div>
+			</div>
+			<div class="g-signin2 external_login_button" data-width="170"
+				data-height="35" data-longtitle="true" data-theme="dark"
+				data-scope='https://www.googleapis.com/auth/plus.login'
+				data-onsuccess='onGoogleSignin'></div>
 
-		<div>
-			<button id="signin_btn" class="btn_large">Sign In</button>
-			<div style="display: inline-block; margin-left: 20px;">
-				<a href="forgetpass.html">Forget password?</a>
+			<div>
+				New User? <a href="signup.html">Sign up</a> for free
 			</div>
 		</div>
-		<div class="g-signin2 external_login_button" data-width="200"
-			data-height="40" data-longtitle="true" data-theme="dark"
-			data-scope='https://www.googleapis.com/auth/plus.login'></div>
 
-		<div>
-			New User? <a href="signup.html">Sign up</a> for free
-		</div>
 	</div>
-
-
 	<!--#include virtual="footer.html" -->
 </body>
 </html>

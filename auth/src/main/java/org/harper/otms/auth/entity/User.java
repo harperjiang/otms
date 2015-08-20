@@ -31,6 +31,12 @@ public class User extends Entity {
 	@Convert("timezoneConverter")
 	private TimeZone timezone;
 
+	@Column(name = "activated")
+	private boolean activated;
+
+	@Column(name = "activate_code")
+	private String activationCode;
+
 	public String getName() {
 		return name;
 	}
@@ -77,6 +83,22 @@ public class User extends Entity {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
+	public String getActivationCode() {
+		return activationCode;
+	}
+
+	public void setActivationCode(String activationCode) {
+		this.activationCode = activationCode;
 	}
 
 }

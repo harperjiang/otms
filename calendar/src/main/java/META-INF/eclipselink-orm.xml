@@ -6,9 +6,19 @@
 
 	<converter name="timezoneConverter" auto-apply="true"
 		class="org.harper.otms.common.dao.TimezoneConverter" />
+	<converter name="jsonConverter" auto-apply="true"
+		class="org.harper.otms.common.dao.JsonConverter" />
+
 	<table-generator name="userseq" table="seq_num"
 		pk-column-name="name" pk-column-value="user" value-column-name="value"
 		allocation-size="25" />
+	<table-generator name="lessonseq" table="seq_num"
+		pk-column-name="name" pk-column-value="lesson" value-column-name="value"
+		allocation-size="25" />
+	<table-generator name="lessonitemseq" table="seq_num"
+		pk-column-name="name" pk-column-value="lesson_item" value-column-name="value"
+		allocation-size="25" />
+
 
 	<entity class="org.harper.otms.auth.entity.User">
 		<attributes>
@@ -37,7 +47,7 @@
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="IDENTITY" />
+				<generated-value strategy="TABLE" generator="lessonseq" />
 			</id>
 		</attributes>
 	</entity>
@@ -53,7 +63,7 @@
 		<attributes>
 			<id name="id">
 				<column name="id" />
-				<generated-value strategy="IDENTITY" />
+				<generated-value strategy="TABLE" generator="lessonitemseq" />
 			</id>
 		</attributes>
 	</entity>
@@ -65,11 +75,21 @@
 			</id>
 		</attributes>
 	</entity>
-	
+
 	<entity class="org.harper.otms.calendar.entity.ActionLog">
 		<attributes>
 			<id name="id">
 				<column name="id" />
+				<generated-value strategy="IDENTITY" />
+			</id>
+		</attributes>
+	</entity>
+
+	<entity class="org.harper.otms.calendar.entity.Todo">
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="IDENTITY" />
 			</id>
 		</attributes>
 	</entity>

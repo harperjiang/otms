@@ -9,7 +9,7 @@
 <script type="text/javascript" src="scripts/jquery-ui.js"></script>
 <script type='text/javascript' src='dwr/engine.js'></script>
 <script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
@@ -21,9 +21,14 @@
 				var calendar = new otms.ui.calendar.Calendar($('#container'));
 
 				calendar.onAddButton = function() {
-					// Go to setup meeting page
-					window.sessionStorage.removeItem('eventId');
-					window.location = 'lesson.html';
+					if (otms.auth.userType() == 'client') {
+						// Go to setup meeting page
+						window.sessionStorage.removeItem('eventId');
+						window.location = 'lesson.html';
+					} else {
+						otms.ui.MessageBox.info($('#errmsg_panel'),
+								'You are not allowed to schedule new lesson');
+					}
 				};
 
 				calendar.onEventClick = function(obj, event) {
@@ -37,18 +42,24 @@
 							var checked = dialog.panel.find(
 									'input[name="modify_type"]:checked').val();
 							if (checked == 'meeting') {
-								sessionStorage.setItem('otms.lessonPage.id', event.id);
+								sessionStorage.setItem('otms.lessonPage.id',
+										event.id);
 								window.location = 'lesson.html';
 							} else {
-								sessionStorage.setItem('otms.lessonItemPage.id',
+								sessionStorage.setItem(
+										'otms.lessonItemPage.lessonId',
 										event.id);
+								sessionStorage.setItem(
+										'otms.lessonItemPage.lessonDate',
+										event.date.getTime());
 								window.location = 'lesson_item.html';
 							}
 						};
 						dialog.show();
 					} else {
 						// Show lesson_item page
-						sessionStorage.setItem('otms.lessonItemPage.id', event.id);
+						sessionStorage.setItem('otms.lessonItemPage.id',
+								event.id);
 						window.location = 'lesson_item.html';
 					}
 				};
@@ -83,7 +94,7 @@
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">
 			<div class="page_title">My Calendar</div>
-			<div id="container" class="centerpanel"></div>
+			<div id="container"></div>
 		</div>
 	</div>
 

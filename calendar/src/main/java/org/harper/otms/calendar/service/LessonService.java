@@ -8,6 +8,8 @@ import org.harper.otms.calendar.service.dto.GetLessonDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
+import org.harper.otms.calendar.service.dto.GetOngoingLessonDto;
+import org.harper.otms.calendar.service.dto.GetOngoingLessonResponseDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonDto;
 import org.harper.otms.calendar.service.dto.GetRequestedLessonResponseDto;
 import org.harper.otms.calendar.service.dto.MakeLessonItemDto;
@@ -58,6 +60,12 @@ public interface LessonService {
 	GetRequestedLessonResponseDto getRequestedLessons(
 			GetRequestedLessonDto request);
 
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	GetOngoingLessonResponseDto getOngoingLessons(GetOngoingLessonDto request);
 	/**
 	 * 
 	 * @param request

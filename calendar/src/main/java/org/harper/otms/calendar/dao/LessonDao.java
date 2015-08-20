@@ -12,8 +12,6 @@ public interface LessonDao extends Dao<Lesson> {
 
 	List<Lesson> findWithin(User user, Date fromDate, Date toDate, Status status);
 
-	List<Lesson> findRequested(User user);
-	
-	
+	List<Lesson> findByStatus(User user, Status status);
 
 }

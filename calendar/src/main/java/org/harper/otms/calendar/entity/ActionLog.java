@@ -33,6 +33,9 @@ public class ActionLog extends Entity {
 	@Column(name = "to_val")
 	private String to;
 
+	@Column(name = "comment")
+	private String comment;
+
 	public Date getActionDate() {
 		return actionDate;
 	}
@@ -71,6 +74,14 @@ public class ActionLog extends Entity {
 
 	public void setTo(String to) {
 		this.to = to;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

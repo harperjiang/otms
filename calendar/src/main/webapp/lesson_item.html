@@ -7,7 +7,7 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
@@ -51,7 +51,7 @@
 
 		// Check storage for input parameter
 		var eventId = otms.getPageParam('otms.lessonItemPage.id');
-
+		var lessonId = otms.getPageParam("otms.lessonItemPage.lessonId");
 		if (eventId != undefined) {
 			// Load data from server
 			var req = otms.auth.req({
@@ -60,13 +60,37 @@
 			var callback = function(success, data) {
 				if (success) {
 					bm.setBean(data.lessonItem);
-					debugger;
 					if (data.lessonItem.status == 'SNAPSHOT') {
 						snapshot_mode();
 					}
 				}
 			};
 			LessonService.getLessonItem(req, otms.ui.MessageBox.shan(callback));
+		} else if (lessonId != undefined) {
+			// Load lesson and create a new lesson item
+			var req = otms.auth.req({
+				'lessonId' : eventId
+			});
+			var date = new Date(otms
+					.getPageParam("otms.lessonItemPage.lessonDate"));
+			var callback = function(success, data) {
+				if (success) {
+					// Create an lesson item from the lesson bean
+					var lesson = data.lesson;
+					var itemBean = {
+						"title" : lesson.title,
+						"tutorName" : lesson.tutorName,
+						"description" : lesson.description,
+						"date" : date,
+						"fromTime" : lesson.fromTime,
+						"toTime" : lesson.toTime
+					};
+					bm.setBean(itemBean);
+
+				}
+			};
+
+			LessonService.getLesson(req, otms.ui.MessageBox.shan(callback));
 		} else {
 			// Display warning
 			otms.ui.MessageBox.warning($('#errmsg_panel'),

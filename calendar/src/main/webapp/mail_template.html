@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<style>
+* {
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
+		"Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+button {
+	-webkit-border-radius: 8;
+	-moz-border-radius: 8;
+	border-radius: 8px;
+	font-family: Arial;
+	color: #ffffff;
+	font-size: 18px;
+	background: #54b4f5;
+	padding: 7px 15px 7px 15px;
+	text-decoration: none;
+	border: none;
+}
+
+button:hover {
+	background: #2982ba;
+	text-decoration: none;
+}
+</style>
+<body>
+	<div style="width: 650px; margin-left: auto; margin-right: auto;">
+		<div style="width: 200px; height: 50px;">
+			<img src="resource/logo.png" width="100%" height="100%" />
+		</div>
+		<div
+			style="height: 80px; line-height: 80px; font-size: 22px; text-align: center; background-color: #ddd; margin-top: 20px;">Thank
+			you for registering TutorCan!</div>
+		<div
+			style="font-size: 16px; background-color: #f2f2f2; padding: 14px;">
+			<p>Dear ${username},</p>
+			<p>You have successfully created your account at TutorCan. Please
+				click the following button to complete your registration and make
+				full use of TutorCan's function.</p>
+
+			<p>
+				<a href="http://www.tutorcan.com/activate.html?uuid=${uuid}"><button
+						style="-webkit-border-radius: 8; -moz-border-radius: 8; border-radius: 8px; font-family: Arial; color: #ffffff; font-size: 18px; background: #54b4f5; padding: 7px 15px 7px 15px; text-decoration: none; border: none;">Activation
+						Link</button></a>
+			</p>
+			<p>If the button doesn't work, please copy the following link to
+				your browser's address bar.</p>
+			<p style="color: #14f; font-size: 14px; font-weight: bold;">http://www.tutorcan.com/activate.html?uuid=${uuid}</p>
+			<div style="height: 20px;">&nbsp;</div>
+			<p style="font-weight: bold;">Not your operation?</p>
+			<p>
+				You can safely disregard this email. If you are interested in online
+				tutoring, please pay a visit to <a href="#">www.tutorcan.com</a> and
+				we are sure you will like it.
+			</p>
+
+			<p>Best,</p>
+			<p>The TutorCan Team</p>
+
+		</div>
+	</div>
+</body>
+</html>

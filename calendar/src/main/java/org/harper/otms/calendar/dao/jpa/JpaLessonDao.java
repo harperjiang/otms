@@ -79,7 +79,7 @@ public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 	}
 
 	@Override
-	public List<Lesson> findRequested(User user) {
+	public List<Lesson> findByStatus(User user, Status status) {
 		String sql = null;
 		if ("tutor".equals(user.getType())) {
 			sql = "select l from Lesson l " + "where l.tutor.id = :userid "
@@ -90,7 +90,7 @@ public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 		}
 		return getEntityManager().createQuery(sql, Lesson.class)
 				.setParameter("userid", user.getId())
-				.setParameter("stat", Status.REQUESTED).getResultList();
+				.setParameter("stat", status).getResultList();
 	}
 
 }

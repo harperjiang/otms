@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Template</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/UserService.js'></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script>
+	$(function() {
+		debugger;
+		var uuid = otms.getUrlParam("uuid");
+		if (uuid === undefined) {
+			$('#failed_panel').css('display', 'block');
+			return;
+		}
+		var callback = function(success, data) {
+			if (success) {
+				$('#success_panel').css('display', 'block');
+			} else {
+				$('#failed_panel').css('display', 'block');
+			}
+		};
+		UserService.activateUser({
+			"uuid" : uuid
+		}, otms.ui.MessageBox.shan(callback));
+	});
+</script>
+</head>
+<body>
+	<!--#include virtual="header.html" -->
+	<div id="page_center">
+		<div id="errmsg_panel"></div>
+		<div id="success_panel" style="display: none;">
+			<div class="page_title">Account Activated</div>
+			<div class="page_row">You can now sign in the system to use all
+				the functions TutorCan provides.</div>
+			<div class="page_row">Quick Starts</div>
+		</div>
+		<div id="failed_panel" style="display: none;">
+			<div class="page_title">Account Activation Failed</div>
+			<div class="page_row">The activation code is either invalid or
+				expired.</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

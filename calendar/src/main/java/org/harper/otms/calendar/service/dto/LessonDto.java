@@ -10,6 +10,8 @@ import org.harper.otms.calendar.entity.OneoffEntry;
 import org.harper.otms.calendar.entity.RepeatEntry;
 import org.harper.otms.calendar.entity.RepeatEntry.DateExpression;
 import org.harper.otms.calendar.service.util.DateUtil;
+import org.mortbay.util.StringUtil;
+import org.springframework.util.StringUtils;
 
 public class LessonDto {
 
@@ -80,7 +82,9 @@ public class LessonDto {
 	public void to(Lesson lesson, User owner) {
 		lesson.setTitle(getTitle());
 		lesson.setDescription(getDescription());
-		lesson.setStatus(Lesson.Status.valueOf(getStatus()));
+		if (!StringUtils.isEmpty(getStatus())) {
+			lesson.setStatus(Lesson.Status.valueOf(getStatus()));
+		}
 		// Convert the dates to GMT
 		if (isRepeat()) {
 			RepeatEntry entry = new RepeatEntry();

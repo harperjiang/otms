@@ -2,19 +2,105 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>User Console</title>
 <link rel="stylesheet" type="text/css" href="styles/all.css" />
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/ui.js"></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script>
+	$(function() {
+		var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId");
+		if (undefined === tutorId) {
+			// Display invalid access 
+			otms.ui.MessageBox.warning($('#errmsg_panel'), 'Invalid Access');
+			setTimeout(function() {
+				window.location = 'index.html';
+			}, 2000);
+		}
 
+		otms.namespace('otms.tutorInfoPage');
+
+		var vbm = new otms.validator.BeanManager();
+		vbm.reg('displayName', $('#name_span'));
+		vbm.reg('username', $('#username_span'));
+		vbm.reg('timezone', $('#timezone_span'));
+		vbm.reg('description', $('#desc_span'));
+		vbm.reg('pictureUrl', $('#profile_img'));
+		vbm.reg('statement', $('#ps_span'));
+		//vbm.reg('audioText', $('#eel_span'));
+		vbm.reg('videoIntroUrl', $('#video_frame'));
+		otms.tutorInfoPage.viewbm = vbm;
+
+		var req = otms.auth.req({
+			'tutorId' : tutorId
+		});
+		var callback = function(success, data) {
+			if (success) {
+				var tutorInfo = data.tutorInfo;
+				// Noneditable
+				otms.tutorInfoPage.viewbm.setBean(tutorInfo);
+			}
+		};
+		ProfileService.getTutorInfo(req, otms.ui.MessageBox.errhandler(
+				$('#errmsg_panel'), callback));
+	});
 </script>
 </head>
 <body>
 	<!--#include virtual="header.html" -->
+	<div id="page">
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div id="profile_view_page">
+				<div style="margin-right: 20px; float: left;">
+					<div style="width: 120px; height: 120px; display: block;">
+						<img id="profile_img" src="resource/default_profile.jpg"
+							width="100%" height="100%" />
+					</div>
+				</div>
+				<div style="display: block; overflow: hidden;">
+					<div style="float: left; min-height: 120px; width: 100%">
+						<div class='page_row '>
+							<span id="name_span" class="content"
+								style="font-size: 25px; font-weight: bold">&nbsp;</span>
+						</div>
+						<div class="page_row ">
+							<div style="display: inline-block; width: 49%">
+								<label>username:</label> <span id="username_span"
+									class="content" style="font-weight: bold">&nbsp;</span>
+							</div>
+							<div style="display: inline-block; width: 49%">
+								<label>timezone:</label> <span class="content"
+									id="timezone_span" style="font-weight: bold">&nbsp;</span>
+							</div>
+						</div>
+						<div class="page_row ">
+							<span id="desc_span" class="content">&nbsp;</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="page_block">
+				<div class="page_block_title">Personal Statement</div>
+				<div class="page_row">
+					<span id="ps_span">&nbsp;</span>
+				</div>
+				<div class="page_row">
+					<iframe id="video_frame" width="280" height="200"
+						src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe>
+				</div>
+			</div>
 
+		</div>
+	</div>
 	<!--#include virtual="footer.html" -->
 </body>
 </html>

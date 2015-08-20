@@ -117,4 +117,11 @@ public class DateUtil {
 		cal.setTime(date);
 		return cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
 	}
+
+	public static Date offset(int num) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH, num);
+		return cal.getTime();
+	}
 }

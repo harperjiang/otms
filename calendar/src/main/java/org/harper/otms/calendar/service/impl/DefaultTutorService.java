@@ -8,6 +8,8 @@ import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.Timesheet;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.TutorService;
+import org.harper.otms.calendar.service.dto.FindTutorDto;
+import org.harper.otms.calendar.service.dto.FindTutorResponseDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetDto;
@@ -65,6 +67,12 @@ public class DefaultTutorService implements TutorService {
 
 		SetupTimesheetResponseDto result = new SetupTimesheetResponseDto();
 		return result;
+	}
+
+	@Override
+	public FindTutorResponseDto findTutors(FindTutorDto request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private TutorDao tutorDao;

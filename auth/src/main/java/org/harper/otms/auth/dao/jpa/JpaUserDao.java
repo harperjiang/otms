@@ -20,4 +20,11 @@ public class JpaUserDao extends JpaDao<User> implements UserDao {
 				.setParameter("email", email));
 	}
 
+	@Override
+	public User findByActivateCode(String uuid) {
+		String sql = "select u from User u where u.activationCode = :act and u.activated = false";
+		return getSingleResult(getEntityManager().createQuery(sql, User.class)
+				.setParameter("act", uuid));
+	}
+
 }

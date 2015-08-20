@@ -16,6 +16,9 @@ public class DefaultAuthService implements AuthService {
 		if (null == user) {
 			return new LoginResponseDto(ErrorCode.USER_NAME_NOTEXIST);
 		}
+		if(!user.isActivated()) {
+			return new LoginResponseDto(ErrorCode.USER_NOT_ACTIVATED);
+		}
 		LoginResponseDto response = new LoginResponseDto();
 		response.setUserId(user.getId());
 		response.setType(user.getType());

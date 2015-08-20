@@ -1,19 +1,44 @@
+#header {
+	position: fixed;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	background-color: #fff;
+	z-index: 50000;
+}
+
+#footer {
+	height: 120px;
+	background-color: #ddd;
+	text-align: center;
+	overflow: auto;
+}
+
 #page {
 	overflow: auto;
+	margin-top: 140px;
 }
 
 #page_content {
 	float: left;
-	width: 850px;
+	width: 750px;
 	margin-top: 20px;
 	margin-left: 40px;
 	overflow: auto;
 }
 
+#page_center {
+	margin-top: 120px;
+	width: 850px;
+	min-height: 600px;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .page_title {
-	margin-bottom: 20px;
-	font-size: 25px;
-	font-weight: bold;
+	margin-bottom: 30px;
+	font-size: 30px;
 }
 
 .page_block {
@@ -41,6 +66,7 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 	line-height: 160%;
+	overflow: auto;
 }
 
 .page_row input[type='text'],.page_row input[type='password'],.page_row textarea
@@ -51,6 +77,10 @@
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.page_row input[type='checkbox'] {
+	margin-right:10px;
 }
 
 .page_row textarea {
@@ -67,6 +97,12 @@
 	font-size: 15px;
 	height: 30px;
 	border-color: #999;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+.page_row span {
+	line-height: 40px;
 }
 
 .page_row label {
@@ -74,18 +110,30 @@
 	display: inline-block;
 	margin-right: 10px;
 	min-width: 80px;
+	float: left;
+	line-height: 42px;
+}
+
+.page_row span.inputcontainer {
+	overflow: hidden;
+	display: block;
+}
+
+.page_row span.contentspan {
+	display: block;
+	font-size: 15px;
+	padding: 10px;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .page_row input[type='text'].timeinput {
 	display: inline-block;
 	width: 140px;
-	margin-top: 5px;
-	margin-bottom: 5px;
 }
 
 .page_row input[type='text'].timeinput2 {
 	display: inline-block;
 	width: 140px;
-	margin-top: 5px;
-	margin-bottom: 5px;
 }

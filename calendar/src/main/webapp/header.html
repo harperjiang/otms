@@ -1,5 +1,9 @@
 <div id="header">
 	<div class="topbar">
+		<div class="topbar_logo">
+			<a href="index.html"><img src="resource/logo.png" width="100%"
+				height="100%"></a>
+		</div>
 		<div class="topbar_rightitem" id="before_login_panel">
 			<a href="login.html">Sign In</a>
 		</div>
@@ -10,9 +14,11 @@
 	</div>
 	<div class="navbar">
 		<ul>
-			<li><a href="dashboard.html"><span>Home</span></a></li>
+			<li><a id="nav_home" href="dashboard.html"><span>Home</span></a></li>
+			<li><a href="intro.html"><span>Lesson Plan
+						Introduction</span></a></li>
 			<li><a href="find_tutor.html"><span>Find a tutor</span></a></li>
-			<li><a href="intro.html"><span>Lesson Introduction</span></a></li>
+
 			<li><a href="help.html"><span>Help</span></a></li>
 		</ul>
 	</div>
@@ -32,4 +38,9 @@
 	}
 
 	otms.headerPage.refreshLoginOption();
+
+	if (!otms.auth.isLoggedin()) {
+		// Point to index instead of dashboard
+		$('#nav_home').attr('href', 'index.html');
+	}
 </script>

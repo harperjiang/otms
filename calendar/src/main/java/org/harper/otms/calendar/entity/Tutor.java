@@ -3,6 +3,7 @@ package org.harper.otms.calendar.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -20,6 +21,12 @@ public class Tutor extends Entity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "picture_url")
+	private String pictureUrl;
+
 	@Embedded
 	private Timesheet timesheet = new Timesheet();
 
@@ -33,6 +40,14 @@ public class Tutor extends Entity {
 	public void setUser(User user) {
 		this.user = user;
 		this.setId(user.getId());
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Timesheet getTimesheet() {
@@ -49,6 +64,14 @@ public class Tutor extends Entity {
 
 	public void setHolidays(List<Date> holidays) {
 		this.holidays = holidays;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
 	}
 
 }

@@ -1,9 +1,13 @@
 otms.namespace('otms.auth');
 
 otms.auth.token = function() {
+	if (otms.auth.tokenCache !== undefined) {
+		return otms.auth.tokenCache;
+	}
 	var token = localStorage.getItem('otms.token');
 	if (token != undefined && token != null) {
 		token = otms.json(token);
+		otms.auth.tokenCache = token;
 		return token;
 	}
 	return undefined;
@@ -11,6 +15,7 @@ otms.auth.token = function() {
 
 otms.auth.cleartoken = function() {
 	localStorage.removeItem('otms.token');
+	otms.auth.tokenCache = undefined;
 };
 
 otms.auth.req = function(request) {

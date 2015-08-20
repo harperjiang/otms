@@ -5,6 +5,7 @@
 
 	<import resource="env.xml" />
 	<import resource="scheduler.xml" />
+	<import resource="mail.xml" />
 
 	<bean id="contextAccessor" class="org.harper.otms.common.spring.AppContextAccessor" />
 
@@ -27,12 +28,16 @@
 	<bean id="actionLogDao" class="org.harper.otms.calendar.dao.jpa.JpaActionLogDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
+	<bean id="todoDao" class="org.harper.otms.calendar.dao.jpa.JpaTodoDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
 
 	<!-- Scheduler Job Definition -->
 
 	<!-- Service definition -->
 	<bean id="userService" class="org.harper.otms.auth.service.impl.DefaultUserService">
 		<property name="userDao" ref="userDao" />
+		<property name="mailSender" ref="mailSender" />
 	</bean>
 
 	<bean id="authService" class="org.harper.otms.auth.service.impl.DefaultAuthService">
@@ -57,6 +62,7 @@
 		<property name="lessonItemDao" ref="lessonItemDao" />
 		<property name="userDao" ref="userDao" />
 		<property name="actionLogDao" ref="actionLogDao" />
+		<property name="todoDao" ref="todoDao" />
 		<property name="scheduler" ref="scheduler" />
 	</bean>
 
@@ -66,11 +72,18 @@
 		<property name="tutorDao" ref="tutorDao" />
 		<property name="clientDao" ref="clientDao" />
 		<property name="userDao" ref="userDao" />
+		<property name="imageFolder" value="/Users/harper" />
 	</bean>
 
 	<bean id="clientService"
 		class="org.harper.otms.calendar.service.impl.DefaultClientService">
-		<property name="clientDao" ref="clientDao" />
+	</bean>
+
+	<bean id="todoService"
+		class="org.harper.otms.calendar.service.impl.DefaultTodoService">
+		<property name="userDao" ref="userDao" />
+		<property name="todoDao" ref="todoDao" />
+
 	</bean>
 
 </beans>
