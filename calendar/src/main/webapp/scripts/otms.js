@@ -33,7 +33,8 @@ otms.extend = function(base, cons, extend) {
 };
 
 otms.isEmpty = function(str) {
-	return str == undefined || str == null || str === '';
+	return str === undefined || str == null || str === ''
+			|| str === 'undefined';
 };
 
 otms.get = function(object, key) {
@@ -274,6 +275,12 @@ otms.DateUtil.formatweekday = function(input) {
 	return val.slice(0, val.length - 1);
 };
 
+otms.DateUtil.offset = function(date, offset) {
+	var result = new Date(date);
+	result.setDate(result.getDate() + offset);
+	return result;
+};
+
 otms.DateUtil.comingweek = function() {
 	var now = new Date();
 	var nextweek = new Date(now);
@@ -298,10 +305,20 @@ otms.loadTzSelect = function(select) {
 	}
 };
 
-otms.getPageParam = function(key) {
+otms.setPageParam = function(key, value) {
+	sessionStorage.setItem(key, value);
+};
+
+otms.getPageParam = function(key, remove) {
 	var value = sessionStorage.getItem(key);
-	sessionStorage.removeItem(key);
+	if (remove === undefined || remove === true) {
+		sessionStorage.removeItem(key);
+	}
 	return value;
+};
+
+otms.clearPageParam = function(key) {
+	sessionStorage.removeItem(key);
 };
 
 otms.getUrlParam = function(sParam) {
@@ -319,12 +336,24 @@ otms.getUrlParam = function(sParam) {
 
 otms.merge = function() {
 	var result = {};
-	for (arg in arguments) {
-		for (key in arg) {
-			result[key] = arg[key];
+	for (argkey in arguments) {
+		var argobj = arguments[argkey];
+		for (key in argobj) {
+			result[key] = argobj[key];
 		}
 	}
 	return result;
+};
+
+otms.clone = function(obj) {
+	if (null == obj || "object" != typeof obj)
+		return obj;
+	var copy = obj.constructor();
+	for ( var attr in obj) {
+		if (obj.hasOwnProperty(attr))
+			copy[attr] = obj[attr];
+	}
+	return copy;
 };
 
 otms.submitform = function(form, callback) {

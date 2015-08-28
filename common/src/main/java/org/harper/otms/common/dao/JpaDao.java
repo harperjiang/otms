@@ -2,14 +2,22 @@ package org.harper.otms.common.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.eclipse.persistence.internal.jpa.QueryImpl;
+import org.eclipse.persistence.internal.sessions.AbstractRecord;
+import org.eclipse.persistence.internal.sessions.AbstractSession;
+import org.eclipse.persistence.queries.DatabaseQuery;
 import org.eclipse.persistence.queries.ScrollableCursor;
+import org.eclipse.persistence.sessions.Session;
+import org.harper.otms.common.dto.PagingDto;
 
 public abstract class JpaDao<T extends Entity> implements Dao<T> {
 
@@ -72,7 +80,9 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 
 	@Override
 	public void delete(T target) {
-		getEntityManager().remove(target);
+		if (target != null) {
+			getEntityManager().remove(target);
+		}
 	}
 
 	public static final class DefaultCursor<T> implements Cursor<T>,
@@ -129,6 +139,41 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	protected List<T> pagingQuery(TypedQuery<T> query, PagingDto paging) {
+
+		Session session = getEntityManager().unwrap(Session.class);
+		// Extract SQL from query
+		QueryImpl queryImpl = (QueryImpl) query;
+		DatabaseQuery databaseQuery = queryImpl.getDatabaseQuery();
+
+		AbstractRecord row = databaseQuery.rowFromArguments(
+				paramValues(queryImpl), (AbstractSession) session);
+
+		String sql = databaseQuery.getTranslatedSQLString(session, row);
+
+		String countSql = "select count(1) from (" + sql + ") i0";
+		Query countQuery = getEntityManager().createNativeQuery(countSql);
+
+		Long count = (Long) countQuery.getSingleResult();
+		Long totalPage = count / paging.getPageSize()
+				+ (count % paging.getPageSize() > 0 ? 1 : 0);
+		paging.setTotalPage(totalPage.intValue());
+
+		query.setFirstResult(paging.getCurrentPage() * paging.getPageSize());
+		query.setMaxResults(paging.getPageSize());
+
+		return query.getResultList();
+	}
+
+	protected List<Object> paramValues(QueryImpl query) {
+		DatabaseQuery dbQuery = query.getDatabaseQuery();
+		List<Object> values = new ArrayList<Object>();
+		for (String arg : dbQuery.getArguments()) {
+			values.add(query.getParameterValue(arg));
+		}
+		return values;
 	}
 
 	protected String bindingExp(int length) {

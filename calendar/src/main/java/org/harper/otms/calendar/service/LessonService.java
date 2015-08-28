@@ -5,6 +5,8 @@ import org.harper.otms.calendar.service.dto.ChangeLessonStatusDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusResponseDto;
 import org.harper.otms.calendar.service.dto.ConfirmCancelDto;
 import org.harper.otms.calendar.service.dto.GetLessonDto;
+import org.harper.otms.calendar.service.dto.GetLessonHistoryDto;
+import org.harper.otms.calendar.service.dto.GetLessonHistoryResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
@@ -66,6 +68,14 @@ public interface LessonService {
 	 * @return
 	 */
 	GetOngoingLessonResponseDto getOngoingLessons(GetOngoingLessonDto request);
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	GetLessonHistoryResponseDto getLessonHistory(GetLessonHistoryDto request);
+
 	/**
 	 * 
 	 * @param request

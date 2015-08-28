@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User Console</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
+<script type="text/javascript" src="scripts/ui/paging.js"></script>
+<script type="text/javascript" src="code/lessonlist_renderer.js"></script>
+<script type="text/javascript" src="code/lesson_history.js"></script>
+<script>
+	$(function() {
+		otms.namespace('otms.lessonHistoryPage');
+
+		var list = new otms.ui.list.List($('#lesson_list_container'));
+		list.setRenderer(lessonItemListRenderer());
+		list.rowClicked = viewLessonItemDetail;
+		list.titleContainer = $('#title_container');
+		list.renderTitle = function(length) {
+			var msg = '{0} results found';
+			return otms.FormatUtil.format(msg, length == 0 ? 'no' : length);
+		};
+		otms.lessonHistoryPage.list = list;
+
+		var pagingControl = new otms.ui.paging.PagingControl(
+				$('#paging_control'));
+		pagingControl.callback = query;
+		otms.lessonHistoryPage.paging = pagingControl;
+
+		$('#time_period').change(function() {
+			pagingControl.changePage();
+		});
+
+		// Goto first page
+		pagingControl.changePage();
+	});
+</script>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div class="page_title">Lesson History</div>
+			<div class="page_block">
+				<div class="page_row">
+					<label>Choose a time period:&nbsp;<select id="time_period">
+							<option value="0">the past week</option>
+							<option value="1">the past month</option>
+							<option value="2">last 3 months</option>
+							<option value="3">from the beginning</option>
+					</select></label>
+				</div>
+				<div class="list_panel">
+					<div class="page_row">
+						<div id="title_container"></div>
+					</div>
+					<div class="page_row">
+						<div id="lesson_list_container" class="centerpanel"></div>
+					</div>
+				</div>
+				<div class="page_row">
+					<div id="paging_control"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

@@ -31,7 +31,9 @@
 	<bean id="todoDao" class="org.harper.otms.calendar.dao.jpa.JpaTodoDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
-
+	<bean id="feedbackDao" class="org.harper.otms.calendar.dao.jpa.JpaFeedbackDao">
+		<property name="entityManager" ref="entityManager" />
+	</bean>
 	<!-- Scheduler Job Definition -->
 
 	<!-- Service definition -->
@@ -79,11 +81,22 @@
 		class="org.harper.otms.calendar.service.impl.DefaultClientService">
 	</bean>
 
+	<bean id="tutorService"
+		class="org.harper.otms.calendar.service.impl.DefaultTutorService">
+		<property name="tutorDao" ref="tutorDao" />
+	</bean>
+
 	<bean id="todoService"
 		class="org.harper.otms.calendar.service.impl.DefaultTodoService">
 		<property name="userDao" ref="userDao" />
 		<property name="todoDao" ref="todoDao" />
-
 	</bean>
 
+	<bean id="feedbackService"
+		class="org.harper.otms.calendar.service.impl.DefaultFeedbackService">
+		<property name="lessonItemDao" ref="lessonItemDao" />
+		<property name="feedbackDao" ref="feedbackDao" />
+		<property name="todoDao" ref="todoDao" />
+		<property name="userDao" ref="userDao" />
+	</bean>
 </beans>

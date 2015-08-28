@@ -38,7 +38,7 @@ public class DefaultCalendarService implements CalendarService {
 
 		// The past
 		List<LessonItem> snapshotItems = getLessonItemDao().findWithin(user,
-				fromDate, now, LessonItem.Status.SNAPSHOT);
+				fromDate, now, LessonItem.Status.SNAPSHOT, null);
 		// The new
 		List<Lesson> lessons = getLessonDao().findWithin(user, now, toDate,
 				Lesson.Status.VALID);

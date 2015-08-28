@@ -32,6 +32,8 @@ import org.harper.otms.calendar.service.dto.ChangeLessonStatusDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusResponseDto;
 import org.harper.otms.calendar.service.dto.ConfirmCancelDto;
 import org.harper.otms.calendar.service.dto.GetLessonDto;
+import org.harper.otms.calendar.service.dto.GetLessonHistoryDto;
+import org.harper.otms.calendar.service.dto.GetLessonHistoryResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemDto;
 import org.harper.otms.calendar.service.dto.GetLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.GetLessonResponseDto;
@@ -117,6 +119,34 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		result.setLessonItem(new LessonItemDto());
 		result.getLessonItem().from(item, viewer);
 		return result;
+	}
+
+	@Override
+	public GetLessonHistoryResponseDto getLessonHistory(
+			GetLessonHistoryDto request) {
+		User owner = getUserDao().findById(request.getCurrentUser());
+
+		TimeZone fromzone = owner.getTimezone();
+		TimeZone tozone = TimeZone.getTimeZone("GMT");
+
+		List<LessonItem> records = getLessonItemDao().findWithin(owner,
+				DateUtil.convert(request.getFromTime(), fromzone, tozone),
+				DateUtil.convert(request.getToTime(), fromzone, tozone),
+				LessonItem.Status.SNAPSHOT, request.getPaging());
+
+		GetLessonHistoryResponseDto response = new GetLessonHistoryResponseDto();
+
+		List<LessonItemDto> results = new ArrayList<LessonItemDto>();
+		for (LessonItem li : records) {
+			LessonItemDto dto = new LessonItemDto();
+			dto.from(li, owner);
+			results.add(dto);
+		}
+
+		response.setPaging(request.getPaging());
+		response.setResult(results);
+
+		return response;
 	}
 
 	@Override
@@ -331,10 +361,10 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 		// Add a todo list for commenting this snapshot
 		Todo todo = new Todo();
-		todo.setType(Todo.Type.COMMENT_LESSON);
+		todo.setType(Todo.Type.CLIENT_FEEDBACK);
 		todo.setOwner(item.getLesson().getClient().getUser());
 		todo.setExpireTime(DateUtil.offset(7));
-		todo.getContext().addProperty(Todo.DK_REFID, item.getId());
+		todo.setRefId(item.getId());
 		todo.getContext().addProperty(Todo.DK_LESSON_TUTORID,
 				item.getLesson().getTutor().getId());
 		todo.getContext().addProperty(Todo.DK_LESSON_TITLE, item.getTitle());

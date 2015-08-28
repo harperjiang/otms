@@ -46,6 +46,7 @@
 			<include method="getOngoingLessons" />
 			<include method="getLesson" />
 			<include method="getLessonItem" />
+			<include method="getLessonHistory" />
 			<include method="getSnapshot" />
 			<include method="changeLessonStatus" />
 			<include method="triggerLesson" />
@@ -56,8 +57,20 @@
 			<include method="getTodos" />
 		</create>
 
+		<create creator="spring" javascript="TutorService">
+			<param name="beanName" value="tutorService" />
+			<include method="getPopularTutors" />
+		</create>
+
+		<create creator="spring" javascript="FeedbackService">
+			<param name="beanName" value="feedbackService" />
+			<include method="clientFeedback" />
+			<include method="getFeedback" />
+		</create>
+
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
+		<convert converter="bean" match="org.harper.otms.common.dto.*" />
 
 		<convert converter="mydate" match="java.util.Date" />
 		<convert converter="file" match="java.awt.image.BufferedImage" />

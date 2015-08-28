@@ -8,6 +8,8 @@ public class TodoDto {
 
 	private String type;
 
+	private int refId;
+
 	private String context;
 
 	public TodoDto() {
@@ -21,6 +23,7 @@ public class TodoDto {
 		// Date newDate = DateUtil.convert(oldDate, gmt, viewer.getTimezone());
 		// item.getContext().
 		// }
+		this.setRefId(item.getRefId());
 		this.setContext(new Gson().toJson(item.getContext()));
 	}
 
@@ -38,6 +41,14 @@ public class TodoDto {
 
 	public void setContext(String context) {
 		this.context = context;
+	}
+
+	public int getRefId() {
+		return refId;
+	}
+
+	public void setRefId(int refId) {
+		this.refId = refId;
 	}
 
 }

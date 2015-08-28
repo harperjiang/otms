@@ -208,14 +208,15 @@ otms.validator.TimeValidator = otms.extend(otms.validator.ValidatorBase,
 			assign : function(value) {
 				if (otms.isEmpty(value))
 					return;
-				this.control.val(otms.DateUtil.formattime(value));
+				otms.validator.ValidatorBase.prototype.assign.call(this,
+						otms.DateUtil.formattime(value));
 			}
 		});
 
 // Accept 5/23 3/24/15 05/12/2015
 otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
-		function(val) {
-			otms.validator.ValidatorBase.call(this, val);
+		function(control) {
+			otms.validator.ValidatorBase.call(this, control);
 		}, {
 			check : function(content) {
 				this.checked = true;
@@ -260,7 +261,8 @@ otms.validator.DateValidator = otms.extend(otms.validator.ValidatorBase,
 			assign : function(value) {
 				if (otms.isEmpty(value))
 					return;
-				this.control.val(otms.DateUtil.formatdate(value));
+				otms.validator.ValidatorBase.prototype.assign.call(this,
+						otms.DateUtil.formatdate(value));
 			}
 		});
 
@@ -290,7 +292,7 @@ otms.validator.BeanManager.prototype.fail = function(keys, message) {
 };
 
 otms.validator.BeanManager.prototype.getBean = function() {
-	if(this.bean === undefined) {
+	if (this.bean === undefined) {
 		this.bean = {};
 	}
 	var bean = this.bean;
@@ -311,17 +313,21 @@ otms.validator.BeanManager.prototype.getBean = function() {
 };
 
 otms.validator.BeanManager.prototype.setBean = function(bean) {
-	this.bean = bean;
-	// Set data to each validator
-	for ( var key in this.components) {
-		var comp = this.components[key];
-		if (comp.val() === undefined) {
-			console.log('Invalid component found:' + key);
+	this.bean = otms.clone(bean);
+	// Remove unused data and set data to each validator
+	for ( var key in this.bean) {
+		if (this.components[key] === undefined) {
+			delete this.bean[key];
 		} else {
-			if (otms.UIUtil.hidden(comp.val()))
-				continue;
-			var validator = comp.prop('validator');
-			validator.assign(otms.get(bean, key));
+			var comp = this.components[key];
+			if (comp.val() === undefined) {
+				console.log('Invalid component found:' + key);
+			} else {
+				if (otms.UIUtil.hidden(comp.val()))
+					continue;
+				var validator = comp.prop('validator');
+				validator.assign(otms.get(this.bean, key));
+			}
 		}
 	}
 };

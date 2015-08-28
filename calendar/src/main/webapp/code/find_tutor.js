@@ -17,6 +17,10 @@ function renderTutorBlock(item) {
 	photoPanel.addClass('tutor_photo_panel');
 	block.append(photoPanel);
 
+	var photoImg = $(document.createElement("img"));
+	photoImg.attr('src', item.pictureUrl);
+	photoPanel.append(photoImg);
+
 	var infoPanel = $(document.createElement('div'));
 	infoPanel.addClass('tutor_info_panel');
 	block.append(infoPanel);
@@ -27,10 +31,12 @@ function renderTutorBlock(item) {
 
 	var namePanel = $(document.createElement('div'));
 	namePanel.addClass('tutor_name_panel');
+	namePanel.append(item.name);
 	wrapper.append(namePanel);
 
 	var descPanel = $(document.createElement('div'));
 	descPanel.addClass('tutor_desc_panel');
+	descPanel.append(item.description);
 	wrapper.append(descPanel);
 
 	var menuPanel = $(document.createElement('div'));
@@ -39,16 +45,19 @@ function renderTutorBlock(item) {
 	block.append(menuPanel);
 
 	var favoriteLink = $(document.createElement('a'));
+	favoriteLink.addClass('favorite');
 	favoriteLink.attr('itemId', 'favLink');
 	favoriteLink.append('My Favorite');
 	menuPanel.append(favoriteLink);
 
 	var timesheetLink = $(document.createElement('a'));
+	timesheetLink.addClass('timesheet');
 	timesheetLink.attr('itemId', 'tsLink');
 	timesheetLink.append('View Timesheet');
 	menuPanel.append(timesheetLink);
 
 	var scheduleLink = $(document.createElement('a'));
+	scheduleLink.addClass('schedule');
 	scheduleLink.attr('itemId', 'sLink');
 	scheduleLink.append('Schedule Lesson');
 	menuPanel.append(scheduleLink);
@@ -59,31 +68,41 @@ function renderTutorBlock(item) {
 };
 
 function finishRender() {
+	appendMenu();
 	$(document).on('click', '.tutor_block_menu a[itemId = "favLink"]',
 			setFavorite);
 	$(document).on('click', '.tutor_block_menu a[itemId = "tsLink"]',
 			viewTimesheet);
 	$(document).on('click', '.tutor_block_menu a[itemId = "sLink"]',
 			scheduleLesson);
+
+	$(document).on('click', '.tutor_block', showTutor);
 }
 
-function setFavorite() {
+function setFavorite(event) {
 	var block = $(this).parent('.tutor_block');
 	var dataItem = block.prop('dataItem');
-
+	event.stopPropagation();
 	alert('Not implemented');
 };
 
-function scheduleLesson() {
+function scheduleLesson(event) {
 	var block = $(this).parent('.tutor_block');
 	var dataItem = block.prop('dataItem');
-
+	event.stopPropagation();
 	alert('Not implemented');
 };
 
-function showTimesheet() {
+function viewTimesheet(event) {
 	var block = $(this).parent('.tutor_block');
 	var dataItem = block.prop('dataItem');
-
+	event.stopPropagation();
 	alert('Not implemented');
+};
+
+function showTutor() {
+	var dataItem = $(this).prop('dataItem');
+
+	sessionStorage.setItem('otms.tutorInfoPage.tutorId', dataItem.tutorId);
+	window.location = 'tutor_info.html';
 };

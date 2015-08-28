@@ -1,5 +1,7 @@
 package org.harper.otms.calendar.dao.jpa;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,5 +25,12 @@ public class JpaTutorDao extends JpaDao<Tutor> implements TutorDao {
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+	@Override
+	public List<Tutor> findPopular() {
+		String sql = "select t from Tutor t order by t.popularLevel";
+		return getEntityManager().createQuery(sql, Tutor.class)
+				.setMaxResults(10).getResultList();
 	}
 }

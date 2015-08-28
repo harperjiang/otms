@@ -22,6 +22,7 @@
 
 		var list = new otms.ui.list.List($('#lesson_list_container'));
 		list.setRenderer(lessonListRenderer());
+		list.rowClicked = viewLessonDetail;
 
 		list.titleContainer = $('#title_container');
 		list.renderTitle = function(length) {
@@ -35,8 +36,8 @@
 </script>
 </head>
 <body>
-	<!--#include virtual="header.html" -->
 	<div id="page">
+		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">

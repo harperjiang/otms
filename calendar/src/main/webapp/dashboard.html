@@ -28,7 +28,8 @@
 		var userType = otms.auth.userType();
 		var lessonList = new otms.ui.list.List($('#lesson_list_container'));
 		lessonList.setRenderer(lessonEventListRenderer());
-		lessonList.rowClicked = function(itemdata) {
+		lessonList.rowClicked = function(event, itemdata) {
+			debugger;
 			sessionStorage.setItem("otms.lessonPage.id", itemdata.id);
 			window.location = 'lesson.html';
 		};
@@ -46,6 +47,7 @@
 		var todoList = new otms.ui.list.List($('#todo_list_container'));
 		todoList.setRenderer(todo_renderer);
 		todoList.titleContainer = $('#todo_title');
+		todoList.rowClicked = todoClicked;
 		todoList.renderTitle = function(length) {
 			var msgtop = "You have {0} todo events.";
 			var result = otms.FormatUtil.format(msgtop, length == 0 ? 'no'
@@ -54,17 +56,9 @@
 		}
 
 		var lessonListCallback = function(success, data) {
-			var lessonNum = 0;
 			if (success) {
 				lessonList.model.setData(data.events);
-				lessonNum = data.events.length;
 			}
-			var numSpan = $('#lesson_num_span');
-			numSpan.empty();
-			numSpan.append(lessonNum);
-			$('#lesson_num_prompt').css('display',
-					(lessonNum == 0) ? 'none' : 'inline');
-
 		};
 
 		var comingweek = otms.DateUtil.comingweek();
@@ -75,9 +69,6 @@
 
 		var todoCallback = function(success, data) {
 			if (success) {
-				var numSpan = $('#todo_num_span');
-				numSpan.empty();
-				numSpan.append(data.todos.length);
 				todoList.model.setData(data.todos);
 			}
 		};
@@ -87,8 +78,8 @@
 </script>
 </head>
 <body>
-	<!--#include virtual="header.html" -->
 	<div id="page">
+		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">

@@ -7,151 +7,101 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
 <script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
-<script type='text/javascript' src='dwr/engine.js'></script>
-<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script type="text/javascript" src="code/lesson_item.js"></script>
 <script>
-	function snapshot_mode() {
-		otms.lessonItemPage.snapshotMode = true;
-		$('#title_panel').empty();
-		$('#title_panel').append('View History Record');
-		$('#title_input').prop('readonly', 'true');
-		$('#desc_text').prop('readonly', 'true');
-		$('#timefrom_input').prop('readonly', 'true');
-		$('#timeto_input').prop('readonly', 'true');
-		$('#date_input').prop('readonly', 'true');
-		$('#confirm_btn').css('display', 'none');
-		$('#delete_btn').css('display', 'none');
-	};
-
-	$(function() {
-		// Initialize to lesson_item mode
-		otms.namespace('otms.lessonItemPage');
-		otms.lessonItemPage.snapshotMode = false;
-
-		// Install validator
-		new otms.validator.TimeValidator($('#timefrom_input'));
-		new otms.validator.TimeValidator($('#timeto_input'));
-		new otms.validator.DateValidator($('#date_input'));
-
-		// Install BeanManager
-		var bm = new otms.validator.BeanManager();
-		bm.reg('title', $('#title_input'));
-		bm.reg('tutorName', $('#tutor_input'));
-		bm.reg('description', $('#desc_text'));
-		bm.reg('date', $('#date_input'));
-		bm.reg('fromTime', $('#timefrom_input'));
-		bm.reg('toTime', $('#timeto_input'));
-
-		otms.lessonItemPage.bm = bm;
-
-		// Check storage for input parameter
-		var eventId = otms.getPageParam('otms.lessonItemPage.id');
-		var lessonId = otms.getPageParam("otms.lessonItemPage.lessonId");
-		if (eventId != undefined) {
-			// Load data from server
-			var req = otms.auth.req({
-				'lessonItemId' : eventId
-			});
-			var callback = function(success, data) {
-				if (success) {
-					bm.setBean(data.lessonItem);
-					if (data.lessonItem.status == 'SNAPSHOT') {
-						snapshot_mode();
-					}
-				}
-			};
-			LessonService.getLessonItem(req, otms.ui.MessageBox.shan(callback));
-		} else if (lessonId != undefined) {
-			// Load lesson and create a new lesson item
-			var req = otms.auth.req({
-				'lessonId' : eventId
-			});
-			var date = new Date(otms
-					.getPageParam("otms.lessonItemPage.lessonDate"));
-			var callback = function(success, data) {
-				if (success) {
-					// Create an lesson item from the lesson bean
-					var lesson = data.lesson;
-					var itemBean = {
-						"title" : lesson.title,
-						"tutorName" : lesson.tutorName,
-						"description" : lesson.description,
-						"date" : date,
-						"fromTime" : lesson.fromTime,
-						"toTime" : lesson.toTime
-					};
-					bm.setBean(itemBean);
-
-				}
-			};
-
-			LessonService.getLesson(req, otms.ui.MessageBox.shan(callback));
-		} else {
-			// Display warning
-			otms.ui.MessageBox.warning($('#errmsg_panel'),
-					'Invalid access. Will now go to front page');
-			setTimeout(function() {
-				window.location = 'index.html';
-			}, 2000);
-		}
-
-		$('#confirm_btn').click(function(event) {
-
-		});
-
-		$('#delete_btn').click(function(event) {
-
-		});
-	});
+	$(onload);
 </script>
 </head>
 <body>
-	<!--#include virtual="header.html" -->
 	<div id="page">
+		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">
-			<div id="title_panel" class='page_title'>Modify Lesson Item</div>
-			<div class="page_block">
-				<div class="page_block_title">Lesson Information</div>
-				<div class="page_row">
-					<input type="text" id='title_input' placeholder="Lesson Title">
-				</div>
-				<div class="page_row">
-					<input type="text" id='tutor_input' placeholder="Your tutor id"
-						readonly="readonly">
-				</div>
-				<div class="page_row">
-					<textarea id="desc_text" placeholder="Lesson Description"></textarea>
-				</div>
-			</div>
-			<div class="page_block">
-				<div class="page_block_title">Lesson Time (your local time)</div>
-				<div class='page_row'>
-					<div style='display: inline-block; width: 49%'>
-						<label class='timelabel2'>From:</label> <input type='text'
-							placeholder='08:00' id='timefrom_input' class='timeinput2' />
+			<div id="modify_panel">
+				<div id="title_panel" class='page_title'>Modify Lesson</div>
+				<div class="page_block">
+					<div class="page_block_title">Lesson Information</div>
+					<div class="page_row">
+						<input type="text" id='title_input' placeholder="Lesson Title">
 					</div>
-					<div style='display: inline-block; width: 49%'>
-						<label class='timelabel2'>To:</label> <input type='text'
-							placeholder='09:00' id='timeto_input' class='timeinput2' />
+					<div class="page_row">
+						<input type="text" id='tutor_input' placeholder="Your tutor id"
+							disabled="disabled">
+					</div>
+					<div class="page_row">
+						<textarea id="desc_text" placeholder="Lesson Description"></textarea>
 					</div>
 				</div>
-				<div class='page_row'>
-					<label>Meet On:</label> <input type='text' id='date_input'
-						placeholder='01/01/2015' class='timeinput' />
+				<div class="page_block">
+					<div class="page_block_title">Lesson Time (your local time)</div>
+					<div class='page_row'>
+						<div style='display: inline-block; width: 49%'>
+							<label class='timelabel2'>From:</label> <input type='text'
+								placeholder='08:00' id='timefrom_input' class='timeinput2' />
+						</div>
+						<div style='display: inline-block; width: 49%'>
+							<label class='timelabel2'>To:</label> <input type='text'
+								placeholder='09:00' id='timeto_input' class='timeinput2' />
+						</div>
+					</div>
+					<div class='page_row'>
+						<label>Meet On:</label> <input type='text' id='date_input'
+							placeholder='01/01/2015' class='timeinput' />
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_row">
+						<button id="confirm_btn" class="btn_large">Confirm</button>
+						<button id="delete_btn" class="btn_danger"
+							style='margin-left: 20px;'>Delete Lesson Item</button>
+					</div>
 				</div>
 			</div>
-			<div class="page_block">
-				<div class="page_row">
-					<button id="confirm_btn" class="btn_large">Confirm</button>
-					<button id="delete_btn" class="btn_danger"
-						style='margin-left: 20px;'>Delete Lesson Item</button>
+
+			<div id="view_panel" style="display: none;">
+				<div id="title_panel" class='page_title'>View Lesson History</div>
+				<div class="page_block">
+					<div class="page_block_title">Lesson Information</div>
+					<div class="page_row">
+						<label>Title: </label><span id="title_span"></span>
+					</div>
+					<div class="page_row">
+						<label>Tutor:</label><span id="tutor_span"></span>
+					</div>
+					<div class="page_row">
+						<label class="textarea_label">Lesson Description:</label> <span
+							id="desc_span" class="textarea"></span>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">Lesson Time (your local time)</div>
+					<div class='page_row'>
+						<div style='display: inline-block; width: 49%'>
+							<label class='timelabel2'>From:</label> <span id='timefrom_span'
+								class='timeinput2'></span>
+						</div>
+						<div style='display: inline-block; width: 49%'>
+							<label class='timelabel2'>To:</label> <span id='timeto_span'
+								class='timeinput2'></span>
+						</div>
+					</div>
+					<div class='page_row'>
+						<label>Meet On:</label> <span id='date_span' class='timeinput'></span>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_row">
+						<button id="feedback_btn" class="btn_large">Write
+							Feedback</button>
+					</div>
 				</div>
 			</div>
 		</div>

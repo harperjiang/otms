@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Feedback</title>
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
+<link href="styles/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
+<script src="scripts/jquery-ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/FeedbackService.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script type="text/javascript" src="scripts/otms.js"></script>
+<script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/errmsg.js"></script>
+<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/starrate.js"></script>
+<script type="text/javascript" src="code/client_feedback.js"></script>
+<script>
+	$(onload);
+</script>
+<style>
+</style>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div class="page_title">Feedback</div>
+			<div id="operation_panel">
+				<div id="title_panel" class="page_block bg_green"></div>
+				<div class="page_block">
+					<div class="page_row">
+						<div class="inlinelabel">Have you attended the lesson?</div>
+						<div class="inlinecontainer">
+							<label><input type="radio" name="attend" value="yes"
+								checked="checked">Yes</label> <label><input type="radio"
+								name="attend" value="no">No</label>
+						</div>
+					</div>
+					<div id="attend_panel">
+						<div class="page_row">
+							<div class="inlinelabel">How do you rate the lesson?</div>
+							<div id="lesson_rate"></div>
+						</div>
+						<div class="page_row">
+							<div class="inlinelabel">How do you rate your tutor?</div>
+							<div id="tutor_rate"></div>
+						</div>
+
+					</div>
+
+					<div id="noattend_panel" style="display: none;">
+						<div class="page_row">Please choose the reason you didn't
+							attend the lesson.</div>
+						<div class="page_row">
+							<select id="select_noattend_reason">
+								<option value="1">I cannot make it.</option>
+								<option value="2">The tutor cannot make it.</option>
+								<option value="3">The tutor didn't appear.</option>
+							</select>
+						</div>
+						<div class="page_row">
+							<div class="inlinelabel">How do you rate your tutor?</div>
+							<div id="tutor_noattend_rate"></div>
+						</div>
+
+					</div>
+					<div class="page_row">
+						<label>Please leave your comment.</label>
+						<textarea id="comment"></textarea>
+					</div>
+				</div>
+
+				<div class="page_block">
+					<button id="btn_submit" class="btn_normal">Submit</button>
+					<button id="btn_reset" class="btn_yellow">Reset</button>
+				</div>
+			</div>
+			<div id="complete_panel" style="display: none;">
+				<div class="page_row">Thank you! Your feedback has been
+					submitted.</div>
+
+				<div class="page_row">You can now</div>
+				<div class="page_row">
+					<button id="btn_dashboard" class="btn_normal">View
+						Dashboard</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

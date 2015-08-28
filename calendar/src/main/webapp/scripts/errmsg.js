@@ -41,3 +41,12 @@ otms.ErrorMsg.defaultmsg = {
 	'en_US' : 'Server error: error code ',
 	'zh_CN' : '服务器返回错误代码'
 };
+
+otms.ErrorMsg.invalidAccess = function() {
+	// Display warning
+	otms.ui.MessageBox.warning($('#errmsg_panel'),
+			'Invalid access. Will now go to Index Page');
+	setTimeout(function() {
+		window.location = 'index.html';
+	}, 1000);
+};

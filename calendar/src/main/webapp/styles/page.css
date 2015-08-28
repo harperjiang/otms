@@ -1,13 +1,15 @@
 #header {
 	position: fixed;
-	width: 100%;
+	width: 1100px;
 	top: 0px;
-	left: 0px;
+	margin-left: auto;
+	margin-right: auto;
 	background-color: #fff;
 	z-index: 50000;
 }
 
 #footer {
+	width: 100%;
 	height: 120px;
 	background-color: #ddd;
 	text-align: center;
@@ -17,21 +19,27 @@
 #page {
 	overflow: auto;
 	margin-top: 140px;
+	width: 1100px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 20px;
 }
 
 #page_content {
 	float: left;
-	width: 750px;
-	margin-top: 20px;
+	width: 790px;
 	margin-left: 40px;
 	overflow: auto;
 }
 
-#page_center {
-	margin-top: 120px;
-	width: 850px;
+#page_content_nomenu {
+	margin-left: 10px;
+	overflow: auto;
+}
+
+#page_content_thin {
 	min-height: 600px;
-	padding: 20px;
+	padding-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -59,7 +67,7 @@
 	margin-bottom: 20px;
 	font-size: 20px;
 	font-weight: bold;
-	color: #66adff
+	color: #54b4f5
 }
 
 .page_row {
@@ -69,8 +77,8 @@
 	overflow: auto;
 }
 
-.page_row input[type='text'],.page_row input[type='password'],.page_row textarea
-	{
+.page_row input[type='text'], .page_row input[type='password'],
+	.page_row textarea {
 	font-size: 15px;
 	width: 100%;
 	padding: 10px;
@@ -80,7 +88,7 @@
 }
 
 .page_row input[type='checkbox'] {
-	margin-right:10px;
+	margin-right: 10px;
 }
 
 .page_row textarea {
@@ -97,8 +105,9 @@
 	font-size: 15px;
 	height: 30px;
 	border-color: #999;
-	margin-top:5px;
-	margin-bottom:5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 10px;
 }
 
 .page_row span {
@@ -110,8 +119,31 @@
 	display: inline-block;
 	margin-right: 10px;
 	min-width: 80px;
-	float: left;
 	line-height: 42px;
+}
+
+.page_row label.textarea_label {
+	display: block;
+	width: 100%;
+	float: none;
+}
+
+.page_row div.textarea {
+	display: block;
+	font-size: 14px;
+	line-height: 100%;
+	width: 100%;
+	padding: 20px;
+	background-color: #eeeeee;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.page_row div.textarea_small {
+	font-size: 14px;
+	line-height: 100%;
+	font-style: italic;
 }
 
 .page_row span.inputcontainer {
@@ -128,6 +160,11 @@
 	box-sizing: border-box;
 }
 
+.page_row span.timeinput {
+	display: inline-block;
+	width: 140px;
+}
+
 .page_row input[type='text'].timeinput {
 	display: inline-block;
 	width: 140px;
@@ -136,4 +173,21 @@
 .page_row input[type='text'].timeinput2 {
 	display: inline-block;
 	width: 140px;
+}
+
+.page_row p {
+	font-size: 14px;
+	line-height: 150%;
+}
+
+.page_row div.inlinelabel {
+	display: inline-block;
+	line-height: 40px;
+	vertical-align: middle;
+	min-width: 250px;
+}
+
+.page_row div.inlinecontainer {
+	display: inline-block;
+	vertical-align: middle;
 }

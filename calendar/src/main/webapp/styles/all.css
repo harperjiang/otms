@@ -8,5 +8,7 @@
 @IMPORT url("list.css");
 @IMPORT url('validator.css');
 @IMPORT url('msgbox.css');
+@IMPORT url("starrate.css");
 @IMPORT url("timesheet.css");
 @IMPORT url("calendar.css");
+@IMPORT url("paging.css");

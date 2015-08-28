@@ -20,7 +20,7 @@ import com.google.gson.JsonObject;
 public class Todo extends Entity {
 
 	public static enum Type {
-		COMMENT_LESSON
+		CLIENT_FEEDBACK
 	};
 
 	@OneToOne
@@ -29,6 +29,9 @@ public class Todo extends Entity {
 
 	@Column(name = "type")
 	private String type;
+
+	@Column(name = "ref_id")
+	private int refId;
 
 	@Column(name = "context")
 	@Convert("jsonConverter")
@@ -66,7 +69,13 @@ public class Todo extends Entity {
 		this.expireTime = expireTime;
 	}
 
-	public static String DK_REFID = "refid";
+	public int getRefId() {
+		return refId;
+	}
+
+	public void setRefId(int refId) {
+		this.refId = refId;
+	}
 
 	public static String DK_LESSON_TITLE = "lessonTitle";
 

@@ -22,3 +22,38 @@ div {
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
+a.favorite {
+	background: url(images/icon-favorite.png) no-repeat;
+	padding-left: 18px;
+}
+
+a.timesheet {
+	background: url(images/icon-timesheet.png) no-repeat;
+	padding-left: 18px;
+}
+
+a.schedule {
+	background: url(images/icon-schedule.png) no-repeat;
+	padding-left: 18px;
+}
+
+button {
+	cursor: pointer;
+}
+
+input[type="text"]:disabled {
+	background: #dddddd;
+}
+
+textarea:disabled {
+	background: #dddddd;
+}
+
+.bg_green {
+	padding-left: 20px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: 14px;
+	background-color: #C2FFC2;
+}

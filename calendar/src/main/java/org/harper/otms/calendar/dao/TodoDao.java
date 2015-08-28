@@ -4,8 +4,12 @@ import java.util.List;
 
 import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.entity.Todo;
+import org.harper.otms.calendar.entity.Todo.Type;
 import org.harper.otms.common.dao.Dao;
 
 public interface TodoDao extends Dao<Todo> {
+	
 	public List<Todo> findByOwner(User owner);
+
+	public Todo findByOwnerTypeAndRefId(User user, Type type, int refid);
 }

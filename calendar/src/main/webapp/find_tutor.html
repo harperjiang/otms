@@ -7,19 +7,23 @@
 <link href="styles/jquery-ui.css" rel="stylesheet">
 <script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
 <script src="scripts/jquery-ui.js"></script>
+<script type='text/javascript' src='dwr/engine.js'></script>
+<script type='text/javascript' src='dwr/interface/TutorService.js'></script>
 <script type="text/javascript" src="scripts/otms.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="scripts/errmsg.js"></script>
 <script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
 <script type="text/javascript" src="code/find_tutor.js"></script>
 
 <style>
 .tutor_block {
 	float: left;
+	width: 90%;
 	margin: 10px;
 	cursor: pointer;
 	padding: 10px;
-	border: 1px solid #aaa;
 	height: 160px;
 	position: relative;
 }
@@ -29,11 +33,11 @@
 }
 
 .tutor_photo_panel {
-	width: 80px;
-	height: 80px;
+	width: 100px;
+	height: 100px;
 	background-color: #ccc;
 	float: left;
-	margin-right: 10px;
+	margin-right: 20px;
 }
 
 .tutor_info_panel {
@@ -48,11 +52,14 @@
 
 .tutor_name_panel {
 	font-weight: bold;
+	font-size: 24px;
 	margin-bottom: 5px;
 }
 
 .tutor_desc_panel {
 	font-size: 14px;
+	font-style: italic;
+	line-height: 160%;
 	height: 90px;
 	overflow: hidden;
 }
@@ -85,8 +92,17 @@
 		list.renderItem = renderTutorBlock;
 		list.finishRender = finishRender;
 
+		var callback = function(success, data) {
+			if (success) {
+				list.model.setData(data.tutors);
+			}
+		};
+
+		TutorService.getPopularTutors(otms.auth.req({}), otms.ui.MessageBox
+				.shan(callback));
+
 		$('#btn_find').click(function() {
-			
+
 		});
 
 		$('#btn_lucky').click(function() {
@@ -96,10 +112,10 @@
 </script>
 </head>
 <body>
-	<!--#include virtual="header.html" -->
 	<div id="page">
-		<div
-			style="width: 700px; margin-left: auto; margin-right: auto; overflow: auto;">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<div id="page_content_nomenu">
 			<div class="page_title">TutorCan has the best tutors you need</div>
 			<div class="page_block">
 				<div class="page_block_title">Specify your search criteria</div>
@@ -119,7 +135,7 @@
 						Favorite Tutor only</label>
 				</div>
 				<div class="page_row">
-					<button id="btn_find" class="btn_normal">Find all tutors</button>
+					<button id="btn_find" class="btn_normal">Filter tutors</button>
 					<button id="btn_lucky" class="btn_normal">I am feeling
 						lucky</button>
 				</div>

@@ -10,10 +10,13 @@ import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.TutorService;
 import org.harper.otms.calendar.service.dto.FindTutorDto;
 import org.harper.otms.calendar.service.dto.FindTutorResponseDto;
+import org.harper.otms.calendar.service.dto.GetPopularTutorDto;
+import org.harper.otms.calendar.service.dto.GetPopularTutorResponseDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetResponseDto;
+import org.harper.otms.calendar.service.dto.TutorBriefDto;
 
 public class DefaultTutorService implements TutorService {
 
@@ -70,9 +73,27 @@ public class DefaultTutorService implements TutorService {
 	}
 
 	@Override
+	public GetPopularTutorResponseDto getPopularTutors(
+			GetPopularTutorDto request) {
+		GetPopularTutorResponseDto response = new GetPopularTutorResponseDto();
+
+		List<Tutor> populars = getTutorDao().findPopular();
+		List<TutorBriefDto> tbs = new ArrayList<TutorBriefDto>();
+		for(Tutor t:populars) {
+			TutorBriefDto tbd = new TutorBriefDto();
+			tbd.from(t);
+			tbs.add(tbd);
+		}
+		response.setTutors(tbs);
+		
+		return response;
+	}
+
+	@Override
 	public FindTutorResponseDto findTutors(FindTutorDto request) {
-		// TODO Auto-generated method stub
-		return null;
+		FindTutorResponseDto response = new FindTutorResponseDto();
+
+		return response;
 	}
 
 	private TutorDao tutorDao;

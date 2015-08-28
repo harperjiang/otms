@@ -21,11 +21,26 @@ public class Tutor extends Entity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@Column(name = "picture_url")
+	private String pictureUrl;
+
+	@Column(name = "popular_level")
+	private int popularLevel;
+
+	@Column(name = "statement")
+	private String statement;
+
 	@Column(name = "description")
 	private String description;
 
-	@Column(name = "picture_url")
-	private String pictureUrl;
+	@Column(name = "info_aboutme")
+	private String aboutMe;
+
+	@Column(name = "info_working")
+	private String workingInfo;
+
+	@Column(name = "info_edu")
+	private String eduInfo;
 
 	@Embedded
 	private Timesheet timesheet = new Timesheet();
@@ -40,6 +55,14 @@ public class Tutor extends Entity {
 	public void setUser(User user) {
 		this.user = user;
 		this.setId(user.getId());
+	}
+
+	public String getStatement() {
+		return statement;
+	}
+
+	public void setStatement(String statement) {
+		this.statement = statement;
 	}
 
 	public String getDescription() {
@@ -72,6 +95,38 @@ public class Tutor extends Entity {
 
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
+	}
+
+	public int getPopularLevel() {
+		return popularLevel;
+	}
+
+	public void setPopularLevel(int popularLevel) {
+		this.popularLevel = popularLevel;
+	}
+
+	public String getAboutMe() {
+		return aboutMe;
+	}
+
+	public void setAboutMe(String aboutMe) {
+		this.aboutMe = aboutMe;
+	}
+
+	public String getWorkingInfo() {
+		return workingInfo;
+	}
+
+	public void setWorkingInfo(String workingInfo) {
+		this.workingInfo = workingInfo;
+	}
+
+	public String getEduInfo() {
+		return eduInfo;
+	}
+
+	public void setEduInfo(String eduInfo) {
+		this.eduInfo = eduInfo;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import org.harper.otms.calendar.entity.Tutor;
 
 public class TutorInfoDto {
+	
 	private int tutorId;
 
 	private String displayName;
@@ -13,14 +14,20 @@ public class TutorInfoDto {
 
 	private String timezone;
 
-	private String description;
-
 	private String email;
 
 	private String pictureUrl;
 
+	private String description;
+	
 	private String statement;
-
+	
+	private String aboutMeInfo;
+	
+	private String workingInfo;
+	
+	private String eduInfo;
+	
 	private String videoIntroUrl;
 
 	public void from(Tutor tutor) {
@@ -32,11 +39,19 @@ public class TutorInfoDto {
 		setTimezone(tutor.getUser().getTimezone().getID());
 		setEmail(tutor.getUser().getEmail());
 		setPictureUrl(tutor.getPictureUrl());
+		setStatement(tutor.getStatement());
+		setAboutMeInfo(tutor.getAboutMe());
+		setWorkingInfo(tutor.getWorkingInfo());
+		setEduInfo(tutor.getEduInfo());
 	}
 
 	public void to(Tutor tutor) {
-		tutor.setDescription(getDescription());
 		tutor.setPictureUrl(getPictureUrl());
+		tutor.setStatement(getStatement());
+		tutor.setDescription(getDescription());
+		tutor.setAboutMe(getAboutMeInfo());
+		tutor.setWorkingInfo(getWorkingInfo());
+		tutor.setEduInfo(getEduInfo());
 		tutor.getUser().setDisplayName(getDisplayName());
 		tutor.getUser().setEmail(getEmail());
 		tutor.getUser().setTimezone(TimeZone.getTimeZone(getTimezone()));
@@ -112,6 +127,30 @@ public class TutorInfoDto {
 
 	public void setVideoIntroUrl(String videoIntroUrl) {
 		this.videoIntroUrl = videoIntroUrl;
+	}
+
+	public String getAboutMeInfo() {
+		return aboutMeInfo;
+	}
+
+	public void setAboutMeInfo(String aboutMeInfo) {
+		this.aboutMeInfo = aboutMeInfo;
+	}
+
+	public String getWorkingInfo() {
+		return workingInfo;
+	}
+
+	public void setWorkingInfo(String workingInfo) {
+		this.workingInfo = workingInfo;
+	}
+
+	public String getEduInfo() {
+		return eduInfo;
+	}
+
+	public void setEduInfo(String eduInfo) {
+		this.eduInfo = eduInfo;
 	}
 
 }

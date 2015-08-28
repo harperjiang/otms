@@ -67,14 +67,15 @@ otms.ui.list.List.prototype.refresh = function() {
 		container.prop('dataItem', item);
 		this.contentPanel.append(container);
 	}
-	$(document).on('mouseenter', '.list_row', function(event) {
+
+	$(this.container).on('mouseenter', '.list_row', function(event) {
 		// display the popup
 		list.currentItem = $(this).prop('dataItem');
 		list.showPopup($(this));
 	});
 
-	$(document).on('click', '.list_row', function(event) {
-		list.rowClicked($(this).prop('dataItem'));
+	$(this.container).on('click', '.list_row', function(event) {
+		list.rowClicked(event, $(this).prop('dataItem'));
 	});
 
 	var end = $(document.createElement('div'));
@@ -87,8 +88,9 @@ otms.ui.list.List.prototype.refresh = function() {
 	}
 };
 
-otms.ui.list.List.prototype.rowClicked = function(itemdata) {
+otms.ui.list.List.prototype.rowClicked = function(event, itemdata) {
 	// Do nothing
+	debugger;
 };
 
 otms.ui.list.List.prototype.hasPopup = function(data) {

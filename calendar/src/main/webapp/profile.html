@@ -31,41 +31,49 @@
 		commonbm.reg('username', $('#username_span'));
 		commonbm.reg('timezone', $('#timezone_select'));
 		commonbm.reg('email', $('#email_input'));
-		commonbm.reg('description', $('#desc_input'));
 		commonbm.reg('pictureUrl', $('#profile_img'));
 		otms.profilePage.commonbm = commonbm;
 
 		var clientbm = new otms.validator.BeanManager();
-		clientbm.reg('statement', $('#client_ps_text'));
+		clientbm.reg('statement', $('#client_stmt_input'));
+		clientbm.reg('description', $('#client_desc_text'));
 		//cbm.reg('audioText', $('#eel_span'));
 		clientbm.reg('audioUrl', $('#client_audiourl_input'));
 		otms.profilePage.clientbm = clientbm;
 
 		var tutorbm = new otms.validator.BeanManager();
-		tutorbm.reg('statement', $('#tutor_ps_text'));
+		tutorbm.reg('description', $('#tutor_desc_text'));
+		tutorbm.reg('statement', $('#tutor_stmt_input'));
 		tutorbm.reg('videoIntroUrl', $('#tutor_video_input'));
+		tutorbm.reg('eduInfo', $('#tutor_edu_text'));
+		tutorbm.reg('workingInfo', $('#tutor_working_text'));
+		tutorbm.reg('aboutMeInfo', $('#tutor_aboutme_text'));
+		otms.profilePage.tutorbm = tutorbm;
 
-		$('#client_confirm_btn').click(
-				function() {
-					var commonbean = commonbm.getBean();
-					var clientbean = clientbm.getBean();
-					if (commonbean != null && clientbean != null) {
-						var bean = otms.merge(commonbean, clientbean);
-						ProfileService.setupClient(otms.auth.req(bean),
-								otms.ui.MessageBox.han());
-					}
-				});
+		$('#client_confirm_btn').click(function() {
+			var pbean = otms.profilePage.preserveBean;
+			var commonbean = commonbm.getBean();
+			var clientbean = clientbm.getBean();
+			if (commonbean != null && clientbean != null) {
+				var bean = otms.merge(pbean, commonbean, clientbean);
+				ProfileService.setupClient(otms.auth.req({
+					"clientInfo" : bean
+				}), otms.ui.MessageBox.han());
+			}
+		});
 
-		$('#tutor_confirm_btn').click(
-				function() {
-					var commonbean = commonbm.getBean();
-					var tutorbean = clientbm.getBean();
-					if (commonbean != null && tutorbean != null) {
-						var bean = otms.merge(commonbean, tutorbean);
-						ProfileService.setupTutor(otms.auth.req(bean),
-								otms.ui.MessageBox.han());
-					}
-				});
+		$('#tutor_confirm_btn').click(function() {
+			var pbean = otms.profilePage.preserveBean;
+			var commonbean = commonbm.getBean();
+			var tutorbean = tutorbm.getBean();
+			if (commonbean != null && tutorbean != null) {
+				var bean = otms.merge(pbean, commonbean, tutorbean);
+				debugger;
+				ProfileService.setupTutor(otms.auth.req({
+					"tutorInfo" : bean
+				}), otms.ui.MessageBox.han());
+			}
+		});
 
 		var userType = otms.auth.userType();
 
@@ -85,6 +93,7 @@
 					// Noneditable
 					otms.profilePage.commonbm.setBean(clientInfo);
 					otms.profilePage.clientbm.setBean(clientInfo);
+					otms.profilePage.preserveBean = clientInfo;
 				}
 			};
 			ProfileService
@@ -99,7 +108,10 @@
 				if (success) {
 					var tutorInfo = data.tutorInfo;
 					// Noneditable
+					debugger;
 					otms.profilePage.commonbm.setBean(tutorInfo);
+					otms.profilePage.tutorbm.setBean(tutorInfo);
+					otms.profilePage.preserveBean = tutorInfo;
 				}
 			};
 			ProfileService.getTutorInfo(req, otms.ui.MessageBox.shan(callback));
@@ -127,8 +139,8 @@
 </script>
 </head>
 <body>
-	<!--#include virtual="header.html" -->
 	<div id="page">
+		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">
@@ -158,11 +170,6 @@
 								<label>timezone:</label> <select id="timezone_select"></select>
 							</div>
 						</div>
-						<div class="page_row ">
-							<input id="desc_input"
-								placeholder="One sentence for self introduction" type='text' />
-						</div>
-
 						<div class="page_row">
 							<label>Email for receiving alert:</label><span
 								class="inputcontainer"><input class="withlabel"
@@ -174,10 +181,15 @@
 				</div>
 			</div>
 			<div id="client_profile_panel" style="display: none;">
+
+				<div class="page_row ">
+					<input id="client_stmt_input"
+						placeholder="Describe the tutor you are looking for" type='text' />
+				</div>
 				<div class="page_block">
 					<div class="page_block_title">Personal Statement</div>
 					<div class="page_row ">
-						<textarea id="client_ps_text"
+						<textarea id="client_desc_text"
 							placeholder="An introduction about yourself. A typical personal statement includes your background, hobby, advantages, etc."></textarea>
 					</div>
 				</div>
@@ -209,16 +221,42 @@
 				</div>
 			</div>
 			<div id="tutor_profile_panel" style="display: none;">
+				<div class="page_row ">
+					<input id="tutor_stmt_input"
+						placeholder="Describe the students you are looking for"
+						type='text' />
+				</div>
 				<div class="page_block">
 					<div class="page_block_title">Self Introduction</div>
 					<div class="page_row">
-						<textarea id='tutor_ps_text'
-							placeholder='Write words about yourself and let the potential client find you!'></textarea>
+						<textarea id='tutor_desc_text'
+							placeholder='Write some words about yourself and let the potential client find you!'></textarea>
 					</div>
 					<div class="page_row">Or make a self-introduction video</div>
 					<div class="page_row">
 						<input type='text' id='tutor_video_input'
 							placeholder="Video self-introduction URL" />
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">About Me</div>
+					<div class="page_row">
+						<textarea id='tutor_aboutme_text'
+							placeholder='More background about you'></textarea>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">Education Background</div>
+					<div class="page_row">
+						<textarea id='tutor_edu_text'
+							placeholder='Your education background. Please include information like school, degree and major'></textarea>
+					</div>
+				</div>
+				<div class="page_block">
+					<div class="page_block_title">Working Experience</div>
+					<div class="page_row">
+						<textarea id='tutor_working_text'
+							placeholder='Do you have education related working experience? Describe it here.'></textarea>
 					</div>
 				</div>
 				<div class="page_block">

@@ -1,0 +1,30 @@
+.starrate_panel {
+	display: inline-block;
+	vertical-align: middle;
+	width: 110px;
+	height: 19px;
+}
+
+.starrate_0 {
+	background: url(images/5_star_rating.png) 0px -1px no-repeat;
+}
+
+.starrate_1 {
+	background: url(images/5_star_rating.png) 0px -21px no-repeat;
+}
+
+.starrate_2 {
+	background: url(images/5_star_rating.png) 0px -41px no-repeat;
+}
+
+.starrate_3 {
+	background: url(images/5_star_rating.png) 0px -61px no-repeat;
+}
+
+.starrate_4 {
+	background: url(images/5_star_rating.png) 0px -81px no-repeat;
+}
+
+.starrate_5 {
+	background: url(images/5_star_rating.png) 0px -101px no-repeat;
+}

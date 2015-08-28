@@ -93,5 +93,13 @@
 			</id>
 		</attributes>
 	</entity>
-
+	
+	<entity class="org.harper.otms.calendar.entity.Feedback">
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="IDENTITY" />
+			</id>
+		</attributes>
+	</entity>
 </entity-mappings>

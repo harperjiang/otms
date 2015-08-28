@@ -23,6 +23,10 @@ public class LessonItem extends Entity {
 		VALID, DELETED, SNAPSHOT
 	}
 
+	public static enum FeedbackStatus {
+		NO_FEEDBACK, CLIENT_FEEDBACK
+	}
+
 	/**
 	 * Define which date in a event series this item masks. Must be in GMT and
 	 * not converted by {@link #convert(TimeZone, TimeZone)}
@@ -52,6 +56,10 @@ public class LessonItem extends Entity {
 
 	@Column(name = "description")
 	private String description;
+
+	@Column(name = "feedback_status")
+	@Enumerated(EnumType.STRING)
+	private FeedbackStatus feedbackStatus = FeedbackStatus.NO_FEEDBACK;
 
 	public void convert(TimeZone from, TimeZone to) {
 		setFromTime(DateUtil.convert(getFromTime(), from, to));
@@ -112,6 +120,14 @@ public class LessonItem extends Entity {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public FeedbackStatus getFeedbackStatus() {
+		return feedbackStatus;
+	}
+
+	public void setFeedbackStatus(FeedbackStatus feedbackStatus) {
+		this.feedbackStatus = feedbackStatus;
 	}
 
 }

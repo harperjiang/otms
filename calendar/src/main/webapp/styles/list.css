@@ -1,3 +1,11 @@
+.list_panel {
+	background-color: #EEFFEE;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
 .list_container {
 	
 }
@@ -48,9 +56,9 @@
 }
 
 .list_row_title {
-	font-size: 16px;
-	font-weight: bold;
-	color: gray;
+	font-weight: normal;
+	font-style: italic;
+	color: #66adff;
 }
 
 .list_row_time {
