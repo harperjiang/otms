@@ -3,18 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta property="wb:webmaster" content="db48dfb682e9d181" />
-<title>Welcome to TutorCan</title>
-<link rel="stylesheet" type="text/css" href="styles/all.css" />
-<link href="styles/jquery-ui.css" rel="stylesheet">
-<script type="text/javascript" src="scripts/jquery-2.1.4.js"></script>
-<script src="scripts/jquery-ui.js"></script>
-<script type="text/javascript" src="scripts/otms.js"></script>
-<script type="text/javascript" src="scripts/auth.js"></script>
-<script type="text/javascript" src="scripts/errmsg.js"></script>
-<script type="text/javascript" src="scripts/ui/msgbox.js"></script>
+<title>乐教营早教英语 寻找您孩子的私人外教</title>
+<!--#include virtual="head.html" -->
 <script>
-	
+	$(function() {
+		$('#adv_panel').click(function() {
+			window.location = 'about.html';
+		});
+		$('#webad_video').click(function(event) {
+			this.paused ? this.play() : this.pause();
+		});
+	});
 </script>
+<style>
+.adv_block {
+	display: inline-block;
+	text-align: center;
+	width: 24%;
+	vertical-align: top;
+	cursor: pointer;
+}
+
+.adv_block:hover {
+	color: #bbddaa;
+}
+
+.adv_imgholder {
+	display: inline-block;
+	width: 60%;
+}
+
+.adv_title {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 20px;
+	font-weight: bold;
+	height: 50px;
+}
+
+.adv_content {
+	text-align: left;
+	color: gray;
+	font-size: 14px;
+	width: 70%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.why_title {
+	font-size: 30px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	border-top: 1px solid lightgray;
+	padding-top: 20px;
+}
+</style>
 </head>
 <body>
 	<div id="page">
@@ -22,11 +66,62 @@
 		<div id="errmsg_panel"></div>
 		<div id="page_content_nomenu">
 
-			<div style="width: 500px; height: 200px; background-color: gray">
-				<div style="font-size: 40px; font-weight: bold;">Your
-					professional English tutor at home.</div>
+			<div style="width: 540px; height: 300px; float: left; margin: 5px;">
+				<div style="font-size: 40px; font-weight: bold;">每个孩子都可以拥有私人外教</div>
+				<div
+					style="margin-top: 20px; margin-bottom: 20px; font-size: 30px; color: gray;">
+					在乐教营为您的孩子寻找私人网络外教，随时随地进行英语浸入式教学</div>
+				<div
+					style="text-align: center; width: 70%; padding-top: 15px; padding-bottom: 15px;"
+					class="bg_blue">
+					<button class="btn_yellow" onclick="window.location='signup.html'"
+						style="width: 80%; margin-top: 10px; margin-bottom: 5px;">现在注册，寻找专属私人外教</button>
+					<button class="btn_normal" onclick="window.location='login.html'"
+						style="width: 80%; margin-top: 5px; margin-bottom: 10px;">登录系统</button>
+				</div>
 			</div>
-			<div></div>
+			<div
+				style="width: 480px; float: left; margin: 10px; margin-left: 20px;">
+				<video id="webad_video" width="480" height="360" controls
+					poster="resource/video.png">
+					<source src="resource/websitead.mp4" type="video/mp4">
+					<source src="resource/websitead.ogg" type="video/ogg">
+					<source src="resource/websitead.webm" type="video/webm">
+					Your browser does not support the video tag.
+				</video>
+			</div>
+			<div style="clear: both;"></div>
+			<div class="why_title">为什么选择乐教营?</div>
+			<div id="adv_panel" style="margin-top: 10px; margin-bottom: 20px;">
+				<div class="adv_block">
+					<div class="adv_imgholder">
+						<img src="resource/certified.png" width="100%" />
+					</div>
+					<div class="adv_title">教师认证</div>
+					<div class="adv_content">教师均以英语为母语。毕业于儿童教育相关专业，拥有丰富的早教经验</div>
+				</div>
+				<div class="adv_block">
+					<div class="adv_imgholder">
+						<img src="resource/teach.png" width="100%" />
+					</div>
+					<div class="adv_title">专业课程设计</div>
+					<div class="adv_content">课程设计基于美国小学教育系统，并针对中国孩子特点进行针对性改进</div>
+				</div>
+				<div class="adv_block">
+					<div class="adv_imgholder">
+						<img src="resource/access.png" width="100%" />
+					</div>
+					<div class="adv_title">访问灵活</div>
+					<div class="adv_content">通过网络参加课程，不受时间、地点限制</div>
+				</div>
+				<div class="adv_block">
+					<div class="adv_imgholder">
+						<img src="resource/money-saving.png" width="100%" />
+					</div>
+					<div class="adv_title">价格实惠</div>
+					<div class="adv_content">无须提前付费。仅当每节课程满意后付费。工薪家庭也能承担的私人外教</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!--#include virtual="footer.html" -->

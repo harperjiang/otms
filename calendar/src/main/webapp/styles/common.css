@@ -20,6 +20,7 @@ a:hover {
 div {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	-webkit-font-smoothing:antialiased;
 	box-sizing: border-box;
 }
 
@@ -51,9 +52,9 @@ textarea:disabled {
 }
 
 .bg_green {
-	padding-left: 20px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-	font-size: 14px;
-	background-color: #C2FFC2;
+	background-color: #eafbea;
+}
+
+.bg_blue {
+	background-color: #eaf1f6;
 }
