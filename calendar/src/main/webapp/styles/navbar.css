@@ -1,4 +1,5 @@
 .navbar {
+	
 }
 
 .navbar ul {
@@ -23,8 +24,18 @@
 	border-right: 1px solid #ddd;
 }
 
-.navbar li.navbar_last {
+.navbar li.nav_last {
 	
+}
+
+.navbar li.nav_right {
+	float: right;
+	border-left: 1px solid #ddd;
+}
+
+.navbar li.nav_current a {
+	background-color: rgb(0, 136, 204);
+	color: #fff;
 }
 
 .navbar a {

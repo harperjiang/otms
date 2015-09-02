@@ -14,12 +14,14 @@
 				id="topbar_signout_link" href="logout.html">登出</a>
 		</div>
 	</div>
-	<div class="navbar">
+	<div id="navbar" class="navbar">
 		<ul>
 			<li><a id="nav_home" href="dashboard.html"><span>首页</span></a></li>
+			<li><a href="quick_start.html"><span>快速开始</span></a></li>
 			<li><a href="lesson_intro.html"><span>课程介绍</span></a></li>
-			<li><a href="find_tutor.html"><span>寻找外教</span></a></li>
-			<li><a href="help.html"><span data-i18n="nav.help">帮助</span></a></li>
+			<li><a href="find_tutor.html"><span>外教信息</span></a></li>
+			<li><a href="help.html"><span>帮助中心</span></a></li>
+			<li class="nav_right"><a href="about.html"><span>关于乐教营</span></a>
 		</ul>
 	</div>
 </div>
@@ -43,4 +45,12 @@
 		// Point to index instead of dashboard
 		$('#nav_home').attr('href', 'index.html');
 	}
+
+	var currentPage = window.location.pathname.split('/').pop();
+	$('#navbar li').each(function(index, element) {
+		// Script for switching to current page
+		if ($(element).find('a').attr('href') == currentPage) {
+			$(element).addClass('nav_current');
+		}
+	});
 </script>

@@ -101,6 +101,23 @@
 	text-decoration: none;
 }
 
+.btn_green {
+	-webkit-border-radius: 4;
+	-moz-border-radius: 4;
+	border-radius: 4px;
+	color: #ffffff;
+	font-size: 16px;
+	background: #5aba45;
+	padding: 10px 20px 10px 20px;
+	text-decoration: none;
+	border-style: none;
+}
+
+.btn_green:hover {
+	background: #339c40;
+	text-decoration: none;
+}
+
 .btn_small {
 	-webkit-border-radius: 4;
 	-moz-border-radius: 4;

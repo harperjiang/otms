@@ -2,18 +2,54 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Console</title>
+<title>帮助中心</title>
 <!--#include virtual="head.html" -->
+<script type="text/javascript" src="code/help.js"></script>
+<script type="text/javascript" src="code/help_topic.js"></script>
 <script>
 	
 </script>
+<style type="text/css">
+.banner_panel {
+	height: 150px;
+	background: url(resource/help_banner.png) 80% no-repeat;
+	margin-bottom: 30px;
+	text-align: center;
+	padding-top: 100px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.searchbox_panel {
+	background-color: #eee;
+	display: inline-block;
+}
+
+.searchbox {
+	background: url(resource/search_icon.png) left center no-repeat;
+	background-size: 40px 40px;
+	padding-left: 50px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-size: 18px;
+	height: 30px;
+	width: 300px;
+	border: none;
+	color: #404040;
+}
+</style>
 </head>
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
 		<div id="page_content_nomenu">
-			<div class="page_title">Help Center</div>
+			<div class="banner_panel">
+				<div class="searchbox_panel">
+					<input type="text" class="searchbox" placeholder="搜寻帮助信息" />
+				</div>
+			</div>
+			<div class="page_title">帮助中心</div>
 			<div class="page_block">
 				<div class="page_block_title">How does TutorCan work?</div>
 				<div class="page_row"></div>
@@ -36,6 +72,9 @@
 						suggestions. We have a quality team to guarantee these feedbacks
 						are handled by tutors in a timely manner.</p>
 				</div>
+				<div class="page_row">在每位外教的介绍页面，您可以找到“申请试听”的选项。点击后可以向外教发起试听申请。在申请附言中，您可以写明希望选择的时间。我们的外教收到申请后会尽快回复您，并按照您选择的时间段指定试听课程的时间。您可以选择同意或者拒绝该时间段。如果拒绝，您需要重新申请试听。</div>
+				<div class="page_row">您选择同意后，试听课程将被添加到您的日历上。课程即将开始时，您会收到一封包含课程邀请链接的电子邮件。点击链接便可以自动进入网络课堂。</div>
+
 			</div>
 		</div>
 	</div>
