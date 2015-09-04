@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>联系我们</title>
+<!--#include virtual="head.html" -->
+<script>
+	$(function() {
+		$('#submit').click(function() {
+			$('#main_panel').css('display', 'none');
+			$('#success_panel').css('display', 'block');
+		});
+	});
+</script>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<div id="page_content_thin">
+
+			<div class="page_title">联系我们</div>
+			<div id="main_panel">
+				<div class="page_block">请说明您遇到的问题，并留下您的联系方式。我们将尽快与您取得联系。</div>
+				<div id="message_panel" class="page_block">
+					<div class="page_row">
+						<input type="text" placeholder='您的姓名' />
+					</div>
+					<div class="page_row">
+						<input type="text" placeholder='您的电子邮件' />
+					</div>
+					<div class="page_row">
+						<textarea placeholder="请说明您想询问的问题"></textarea>
+					</div>
+					<button id="submit" class="btn_normal">提交问题</button>
+				</div>
+			</div>
+
+			<div id="success_panel" style="display: none;">
+				<div class="page_block">
+					<div class="page_row">谢谢您！您的问题已经提交，我们将尽快与您取得联系。</div>
+					<div class="page_row">您还可以</div>
+					<div class="page_row">
+						<button class="btn_green" onclick="window.location='help.html'">访问帮助中心</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

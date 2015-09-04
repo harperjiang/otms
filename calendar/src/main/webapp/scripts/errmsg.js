@@ -2,7 +2,7 @@ otms.namespace('otms.ErrorMsg');
 
 otms.ErrorMsg.msg = function(code, locale) {
 	if (locale === undefined) {
-		locale = 'en_US';
+		locale = 'zh_CN';
 	}
 	var result = otms.ErrorMsg.data[locale][String(code)];
 	if (undefined == result) {
@@ -31,9 +31,15 @@ otms.ErrorMsg.data = {
 		"1502" : "You are not allowed to access the information"
 	},
 	'zh_CN' : {
-		"101" : "没有找到这个教师",
-		"201" : "该用户名已被使用",
-		"202" : "该电子邮件地址已被使用"
+		"101" : "该用户名已被使用",
+		"102" : "该电子邮件地址已被使用",
+		"103" : "用户名不存在",
+		"201" : "您太长时间未操作，请重新登录",
+		"202" : "请先登录系统再进行此操作",
+		"1101" : "找不到指定的信息",
+		"1401" : "找不到指定的信息",
+		"1501" : "用户不存在",
+		"1502" : "您不能查看该信息"
 	}
 };
 

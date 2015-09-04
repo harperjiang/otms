@@ -4,6 +4,26 @@
 		"Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
 }
 
+body {
+	background-color: #f6f6f6;
+}
+
+div {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	box-sizing: border-box;
+	background-color: transparent;
+	color: #82888a;
+}
+
+li {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
+	box-sizing: border-box;
+}
+
 a {
 	text-decoration: none;
 	color: #54b4f5;
@@ -16,13 +36,6 @@ a:hover {
 .text_hl {
 	background-color: rgba(210, 210, 210, 0.6);
 	padding: 10px 20px;
-}
-
-div {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-webkit-font-smoothing: antialiased;
-	box-sizing: border-box;
 }
 
 a.favorite {

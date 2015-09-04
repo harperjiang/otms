@@ -2,27 +2,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>帮助中心</title>
+<title>乐教营 - 帮助中心</title>
 <!--#include virtual="head.html" -->
-<script type="text/javascript" src="code/help.js"></script>
 <script type="text/javascript" src="code/help_topic.js"></script>
+<script type="text/javascript" src="code/help.js"></script>
 <script>
-	
+	$(onload);
 </script>
 <style type="text/css">
 .banner_panel {
-	height: 150px;
+	height: 180px;
 	background: url(resource/help_banner.png) 80% no-repeat;
-	margin-bottom: 30px;
 	text-align: center;
 	padding-top: 100px;
-	margin-bottom: 30px;
 	text-align: center;
 }
 
 .searchbox_panel {
-	background-color: #eee;
 	display: inline-block;
+	background-color: #f9f9f9;
 }
 
 .searchbox {
@@ -37,6 +35,87 @@
 	border: none;
 	color: #404040;
 }
+
+.help_header {
+	height: 40px;
+	text-align: left;
+	background-color: transparent;
+}
+
+.help_header ul {
+	margin: 0px;
+}
+
+.help_header li {
+	display: inline-block;
+	border-bottom: 5px solid lightgray;
+	line-height: 34px;
+	text-align: center;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.help_header a {
+	color: #fff;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.help_header a:hover {
+	text-decoration: none;
+	color: #ccc;
+}
+
+.help_menu {
+	float: left;
+	width: 400px;
+	min-height: 500px;
+}
+
+.help_menu li {
+	display: block;
+	line-height: 40px;
+	margin-left: 30px;
+}
+
+.help_menu a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.help_menu a:hover {
+	text-decoration: none;
+	color: #423234;
+}
+
+.help_content {
+	margin-left: 400px;
+	padding-top: 30px;
+}
+
+.help_title {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+
+.help_data {
+	
+}
+
+.help_data a {
+	display: block;
+	cursor: pointer;
+	text-decoration: none;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.help_data a:hover {
+	color: #423523;
+	text-decoration: none;
+}
 </style>
 </head>
 <body>
@@ -48,32 +127,19 @@
 				<div class="searchbox_panel">
 					<input type="text" class="searchbox" placeholder="搜寻帮助信息" />
 				</div>
-			</div>
-			<div class="page_title">帮助中心</div>
-			<div class="page_block">
-				<div class="page_block_title">How does TutorCan work?</div>
-				<div class="page_row"></div>
-			</div>
-			<div class="page_block">
-				<div class="page_block_title">How is the quality of your
-					tutors?</div>
-				<div class="page_row">
-					<p>Not every native speaker can be a good tutor. TutorCan knows
-						that and choose the member of our tutor team carefully.</p>
-					<p>Our tutors either major in Child Education and English from
-						the best education college, or are primary school teachers that
-						have many years of experiences of teaching kids English.</p>
-					<p>Before joining the team, each tutor will be individually
-						interviewed and evaluated by an experienced education expert to
-						determine their eligibility. They will also receive periodically
-						reviews to ensure the competence.</p>
-					<p>Student feedback is another important factor for us to
-						evaluate tutors' performance. Student can grade their tutors, give
-						suggestions. We have a quality team to guarantee these feedbacks
-						are handled by tutors in a timely manner.</p>
+				<div class="help_header">
+					<ul id="hist_ul">
+					</ul>
 				</div>
-				<div class="page_row">在每位外教的介绍页面，您可以找到“申请试听”的选项。点击后可以向外教发起试听申请。在申请附言中，您可以写明希望选择的时间。我们的外教收到申请后会尽快回复您，并按照您选择的时间段指定试听课程的时间。您可以选择同意或者拒绝该时间段。如果拒绝，您需要重新申请试听。</div>
-				<div class="page_row">您选择同意后，试听课程将被添加到您的日历上。课程即将开始时，您会收到一封包含课程邀请链接的电子邮件。点击链接便可以自动进入网络课堂。</div>
+			</div>
+
+			<div class="help_menu">
+				<ul id="menu_ul">
+				</ul>
+			</div>
+			<div class="help_content">
+				<div id="title_panel" class="help_title"></div>
+				<div id="data_panel" class="help_data"></div>
 
 			</div>
 		</div>

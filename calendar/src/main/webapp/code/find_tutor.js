@@ -47,19 +47,19 @@ function renderTutorBlock(item) {
 	var favoriteLink = $(document.createElement('a'));
 	favoriteLink.addClass('favorite');
 	favoriteLink.attr('itemId', 'favLink');
-	favoriteLink.append('My Favorite');
+	favoriteLink.append('我对这个教师感兴趣');
 	menuPanel.append(favoriteLink);
 
 	var timesheetLink = $(document.createElement('a'));
 	timesheetLink.addClass('timesheet');
 	timesheetLink.attr('itemId', 'tsLink');
-	timesheetLink.append('View Timesheet');
+	timesheetLink.append('查看可以上课的时间');
 	menuPanel.append(timesheetLink);
 
 	var scheduleLink = $(document.createElement('a'));
 	scheduleLink.addClass('schedule');
 	scheduleLink.attr('itemId', 'sLink');
-	scheduleLink.append('Schedule Lesson');
+	scheduleLink.append('向教师请求试听课');
 	menuPanel.append(scheduleLink);
 
 	block.prop('dataItem', item);
