@@ -8,6 +8,12 @@ public class LoginRequestDto extends RequestDto {
 
 	private String password;
 
+	private boolean linkLogin;
+
+	private String sourceSystem;
+
+	private String sourceId;
+
 	public String getUsername() {
 		return username;
 	}
@@ -22,6 +28,30 @@ public class LoginRequestDto extends RequestDto {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public boolean isLinkLogin() {
+		return linkLogin;
+	}
+
+	public void setLinkLogin(boolean linkLogin) {
+		this.linkLogin = linkLogin;
+	}
+
+	public String getSourceSystem() {
+		return sourceSystem;
+	}
+
+	public void setSourceSystem(String sourceSystem) {
+		this.sourceSystem = sourceSystem;
+	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
 	}
 
 }

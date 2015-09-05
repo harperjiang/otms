@@ -18,6 +18,7 @@ import org.harper.otms.auth.service.dto.CreateUserResponseDto;
 import org.harper.otms.auth.service.util.PasswordUtil;
 import org.harper.otms.common.mail.VelocityHtmlMessagePreparator;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.StringUtils;
 
 public class DefaultUserService implements UserService {
 
@@ -46,9 +47,13 @@ public class DefaultUserService implements UserService {
 
 		user.setName(request.getUsername());
 		user.setEmail(request.getEmail());
-		user.setPassword(PasswordUtil.digest(request.getPassword()));
+		if (!StringUtils.isEmpty(request.getPassword())) {
+			user.setPassword(PasswordUtil.digest(request.getPassword()));
+		}
 		user.setDisplayName(request.getDisplayName());
-		user.setTimezone(TimeZone.getTimeZone(request.getTimezone()));
+		if (!StringUtils.isEmpty(request.getTimezone())) {
+			user.setTimezone(TimeZone.getTimeZone(request.getTimezone()));
+		}
 		user.setActivated(false);
 		if (!VALID_TYPE.contains(request.getType())) {
 			return new CreateUserResponseDto(ErrorCode.SYSTEM_INVALID_PARAM);
@@ -58,20 +63,20 @@ public class DefaultUserService implements UserService {
 		getUserDao().save(user);
 
 		result.setUserId(user.getId());
+		if (request.isLinkUser()) {
+			// Send out registration email
 
-		// Send out registration email
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("username", user.getDisplayName());
-		params.put("uuid", user.getActivationCode());
-		getMailSender()
-				.send(new VelocityHtmlMessagePreparator(
-						"harper@tutorcan.com",
-						new String[] { user.getEmail() },
-						"Activate your TutorCan account",
-						"/org/harper/otms/calendar/service/impl/mail/signup_mail.vm",
-						params));
-
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("username", user.getDisplayName());
+			params.put("uuid", user.getActivationCode());
+			getMailSender()
+					.send(new VelocityHtmlMessagePreparator(
+							"harper@tutorcan.com",
+							new String[] { user.getEmail() },
+							"Activate your TutorCan account",
+							"/org/harper/otms/calendar/service/impl/mail/signup_mail.vm",
+							params));
+		}
 		return result;
 	}
 

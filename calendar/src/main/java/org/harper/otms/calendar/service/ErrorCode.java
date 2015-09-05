@@ -1,6 +1,6 @@
 package org.harper.otms.calendar.service;
 
-public interface ErrorCode {
+public interface ErrorCode extends org.harper.otms.auth.service.ErrorCode {
 
 	int CALENDAR_SERVICE = 1100;
 

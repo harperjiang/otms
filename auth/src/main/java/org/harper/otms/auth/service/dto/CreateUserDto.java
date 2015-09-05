@@ -16,6 +16,8 @@ public class CreateUserDto extends RequestDto {
 
 	private String type;
 
+	private boolean linkUser;
+
 	public String getUsername() {
 		return username;
 	}
@@ -62,6 +64,14 @@ public class CreateUserDto extends RequestDto {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean isLinkUser() {
+		return linkUser;
+	}
+
+	public void setLinkUser(boolean linkUser) {
+		this.linkUser = linkUser;
 	}
 
 }

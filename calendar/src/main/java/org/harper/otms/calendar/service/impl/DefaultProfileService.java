@@ -3,13 +3,19 @@ package org.harper.otms.calendar.service.impl;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import org.eclipse.persistence.tools.file.FileUtil;
 import org.harper.otms.auth.dao.UserDao;
 import org.harper.otms.auth.entity.User;
+import org.harper.otms.auth.external.ExternalSystem;
+import org.harper.otms.auth.external.TokenProcessor;
 import org.harper.otms.auth.service.UserService;
+import org.harper.otms.auth.service.dto.CreateUserDto;
 import org.harper.otms.auth.service.dto.CreateUserResponseDto;
+import org.harper.otms.auth.service.dto.LinkUserDto;
+import org.harper.otms.auth.service.dto.LinkUserResponseDto;
 import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.Client;
@@ -23,6 +29,8 @@ import org.harper.otms.calendar.service.dto.GetClientInfoDto;
 import org.harper.otms.calendar.service.dto.GetClientInfoResponseDto;
 import org.harper.otms.calendar.service.dto.GetTutorInfoDto;
 import org.harper.otms.calendar.service.dto.GetTutorInfoResponseDto;
+import org.harper.otms.calendar.service.dto.LinkAddInfoDto;
+import org.harper.otms.calendar.service.dto.LinkAddInfoResponseDto;
 import org.harper.otms.calendar.service.dto.RegisterUserDto;
 import org.harper.otms.calendar.service.dto.RegisterUserResponseDto;
 import org.harper.otms.calendar.service.dto.SetupClientDto;
@@ -32,6 +40,7 @@ import org.harper.otms.calendar.service.dto.SetupTutorResponseDto;
 import org.harper.otms.calendar.service.dto.TutorInfoDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 public class DefaultProfileService implements ProfileService {
 
@@ -57,6 +66,68 @@ public class DefaultProfileService implements ProfileService {
 		} else {
 			return new RegisterUserResponseDto(resp.getErrorCode());
 		}
+	}
+
+	@Override
+	public LinkUserResponseDto linkUser(LinkUserDto request) {
+
+		ExternalSystem sourceSystem = null;
+
+		try {
+			sourceSystem = ExternalSystem.valueOf(request.getSourceSystem());
+		} catch (Exception e) {
+			return new LinkUserResponseDto(ErrorCode.USER_UNKNOWN_SOURCE);
+		}
+		// Verify User information first
+		String sourceId = TokenProcessor.getInstance(sourceSystem).process(
+				request.getSourceId());
+		if (StringUtils.isEmpty(sourceId)) {
+			return new LinkUserResponseDto(ErrorCode.USER_LINK_FAILED);
+		}
+
+		CreateUserDto create = new CreateUserDto();
+		create.setDisplayName(request.getDisplayName());
+		create.setEmail(request.getEmail());
+		create.setUsername(MessageFormat.format("{0}-{1}",
+				request.getSourceSystem(), sourceId));
+		create.setType(request.getType());
+		create.setTimezone("GMT");
+		CreateUserResponseDto resp = getUserService().createUser(create);
+
+		if (resp.isSuccess()) {
+			User user = getUserDao().findById(resp.getUserId());
+			user.setSourceSystem(sourceSystem);
+			user.setSourceId(sourceId);
+			// Activate Linked user by default
+			user.setActivated(true);
+			user.setActivationCode(null);
+			if ("tutor".equals(request.getType())) {
+				Tutor tutor = new Tutor();
+				tutor.setUser(user);
+				tutor.setPictureUrl(request.getPictureUrl());
+				getTutorDao().save(tutor);
+			} else {
+				Client client = new Client();
+				client.setUser(user);
+				client.setPictureUrl(request.getPictureUrl());
+				getClientDao().save(client);
+			}
+			return new LinkUserResponseDto();
+		} else {
+			return new LinkUserResponseDto(resp.getErrorCode());
+		}
+	}
+
+	@Override
+	public LinkAddInfoResponseDto linkAddInfo(LinkAddInfoDto request) {
+		User user = getUserDao().findById(request.getCurrentUser());
+		User dup = getUserDao().findByName(request.getUsername());
+		if (null != dup) {
+			return new LinkAddInfoResponseDto(ErrorCode.USER_EXIST_ID);
+		}
+		user.setName(request.getUsername());
+		user.setTimezone(TimeZone.getTimeZone(request.getTimezone()));
+		return new LinkAddInfoResponseDto();
 	}
 
 	@Override

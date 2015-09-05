@@ -15,11 +15,15 @@ public class TimezoneConverter implements Converter {
 
 	@Override
 	public Object convertDataValueToObjectValue(Object arg0, Session arg1) {
+		if (arg0 == null)
+			return null;
 		return TimeZone.getTimeZone(arg0.toString());
 	}
 
 	@Override
 	public Object convertObjectValueToDataValue(Object arg0, Session arg1) {
+		if (arg0 == null)
+			return null;
 		return ((TimeZone) arg0).getID();
 	}
 

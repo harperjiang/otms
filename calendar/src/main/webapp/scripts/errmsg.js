@@ -22,7 +22,10 @@ otms.ErrorMsg.data = {
 	'en_US' : {
 		"101" : "The user id has been used",
 		"102" : "The user email has been used",
-		"103" : "User name doesn't exists",
+		"103" : "Failed to login. Please check your username and password",
+		"104" : "This user is not activated",
+		"105" : "This user has been activated",
+		"106" : "Unknown source",
 		"201" : "Session has expired. Please re-login",
 		"202" : "Please login first",
 		"1101" : "Cannot find the tutor",
@@ -33,7 +36,10 @@ otms.ErrorMsg.data = {
 	'zh_CN' : {
 		"101" : "该用户名已被使用",
 		"102" : "该电子邮件地址已被使用",
-		"103" : "用户名不存在",
+		"103" : "登录失败，请检查用户名和密码",
+		"104" : "该用户未激活",
+		"105" : "该用户已激活",
+		"106" : "未知的来源",
 		"201" : "您太长时间未操作，请重新登录",
 		"202" : "请先登录系统再进行此操作",
 		"1101" : "找不到指定的信息",

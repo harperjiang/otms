@@ -28,6 +28,8 @@
 		<create creator="spring" javascript="ProfileService">
 			<param name="beanName" value="profileService" />
 			<include method="registerUser" />
+			<include method="linkUser" />
+			<include method="linkAddInfo" />
 			<include method="getClientInfo" />
 			<include method="getTutorInfo" />
 			<include method="uploadProfileImage" />

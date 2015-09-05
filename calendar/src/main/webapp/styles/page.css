@@ -6,6 +6,7 @@
 	margin-right: auto;
 	z-index: 50000;
 	background-color: #f6f6f6;
+	color: #82888a;
 }
 
 #footer {
@@ -14,6 +15,7 @@
 	background-color: #ddd;
 	text-align: center;
 	overflow: auto;
+	color: #82888a;
 }
 
 #page {
@@ -23,6 +25,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	padding-left: 20px;
+	color: #82888a;
 }
 
 #page_content {
@@ -38,11 +41,11 @@
 }
 
 #page_content_thin {
-	min-height: 600px;
+	min-height: 500px;
 	padding-top: 5px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 600px;
+	width: 400px;
 }
 
 .page_title {

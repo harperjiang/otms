@@ -3,9 +3,12 @@ package org.harper.otms.auth.entity;
 import java.util.TimeZone;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import org.eclipse.persistence.annotations.Convert;
+import org.harper.otms.auth.external.ExternalSystem;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
@@ -36,6 +39,16 @@ public class User extends Entity {
 
 	@Column(name = "activate_code")
 	private String activationCode;
+
+	/*
+	 * Allow user to login with id from other system
+	 */
+	@Column(name = "source_system")
+	@Enumerated(EnumType.STRING)
+	private ExternalSystem sourceSystem;
+
+	@Column(name = "source_id")
+	private String sourceId;
 
 	public String getName() {
 		return name;
@@ -99,6 +112,22 @@ public class User extends Entity {
 
 	public void setActivationCode(String activationCode) {
 		this.activationCode = activationCode;
+	}
+
+	public ExternalSystem getSourceSystem() {
+		return sourceSystem;
+	}
+
+	public void setSourceSystem(ExternalSystem sourceSystem) {
+		this.sourceSystem = sourceSystem;
+	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
 	}
 
 }

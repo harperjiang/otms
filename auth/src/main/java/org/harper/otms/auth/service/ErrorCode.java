@@ -8,11 +8,17 @@ public interface ErrorCode {
 
 	int USER_EXIST_EMAIL = USER + 2;
 
-	int USER_NAME_NOTEXIST = USER + 3;
+	int USER_FAIL_LOGIN = USER + 3;
 
 	int USER_NOT_ACTIVATED = USER + 4;
 
 	int USER_ALREADY_ACTIVATED = USER + 5;
+
+	int USER_UNKNOWN_SOURCE = USER + 6;
+
+	int USER_NOT_LINKED = USER + 7;
+
+	int USER_LINK_FAILED = USER + 8;
 
 	int SESSION = 200;
 

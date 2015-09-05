@@ -8,6 +8,7 @@ import org.harper.otms.auth.service.dto.CreateUserResponseDto;
 public interface UserService {
 
 	CreateUserResponseDto createUser(CreateUserDto request);
-	
+
 	ActivateUserResponseDto activateUser(ActivateUserDto request);
+
 }

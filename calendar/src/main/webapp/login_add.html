@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>完成注册</title>
+<!--#include virtual="head.html" -->
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
+<script>
+	$(function() {
+		// Load timezone data
+		otms.loadTzSelect($('#timezone_select'));
+		new otms.validator.NonemptyValidator($('#name_input'));
+
+		var callback = function(success, data) {
+			if (success) {
+				window.location = 'dashboard.html';
+			}
+		};
+
+		$('#commit').click(function() {
+			var name = $('#name_input').val();
+			var tz = $('#timezone_select').val();
+			ProfileService.addLink(otms.auth.req({
+				'username' : name,
+				'timezone' : tz
+			}), otms.ui.MessageBox.shan(callback));
+		});
+	});
+</script>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<div id="page_content_thin">
+			<div class="page_title">注册已成功！</div>
+			<div class="page_block">
+				<div class="page_row">感谢您注册乐教营，请提供一些补充信息</div>
+			</div>
+			<div class="page_block">
+				<div class="page_row">
+					<input type="text" id="name_input" placeholder="请选择一个用户名" />
+				</div>
+				<div class="page_row">
+					<label style="margin-bottom: 10px">您所在的时区:</label><select
+						id="timezone_select"></select>
+				</div>
+				<div class="page_row">
+					<button id="commit" class="btn_normal">完成</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

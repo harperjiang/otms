@@ -3,89 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="google-signin-client_id"
-	content="222968453652-mgvonsdfonrqka6pob72qb5gqumd5u1s.apps.googleusercontent.com">
+	content="222968453652-2ln3k6n7s5shrc4gau16k7l65gntlrcu.apps.googleusercontent.com">
 <title>User Login</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/AuthService.js'></script>
+<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
-
+<script src="code/login.js"></script>
 <script>
-	function googleSignin(googleUser) {
-		var profile = googleUser.getBasicProfile();
-		console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-		console.log('Name: ' + profile.getName());
-		console.log('Image URL: ' + profile.getImageUrl());
-		console.log('Email: ' + profile.getEmail());
-	}
-
-	$(function() {
-
-		otms.namespace('otms.loginPage');
-
-		new otms.validator.NonemptyValidator($('#username'));
-		new otms.validator.NonemptyValidator($('#password'));
-
-		var bm = new otms.validator.BeanManager();
-		bm.reg('username', $('#username'));
-		bm.reg('password', $('#password'));
-
-		otms.loginPage.bm = bm;
-
-		var callback = function(success, data) {
-			if (success) {
-				// Put token in local storage
-				localStorage.setItem("otms.token", otms.json({
-					"userId" : data.userId,
-					"username" : data.username,
-					"type" : data.type,
-					"token" : data.token
-				}));
-				window.location = "dashboard.html";
-			}
-		};
-		var login = function() {
-			var bean = bm.getBean();
-			if (null != bean) {
-				AuthService.login(bean, otms.ui.MessageBox.handler(
-						$('#form_errmsg_panel'), callback));
-			}
-		};
-
-		$('#signin_btn').click(login);
-
-		$('#password').keydown(function(e) {
-			if (e.keyCode == 13) {
-				login();
-			}
-		})
-	});
+	$(onload);
 </script>
+<script type="text/javascript"
+	src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+	data-appid="101249406" data-redirecturi="REDIRECTURI" charset="utf-8"></script>
+<style type="text/css">
+.external_login_button {
+	color: #fff;
+}
+</style>
 </head>
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
-		<div id="form_errmsg_panel"></div>
 		<div id="page_content_thin" class="form">
-			<div class="form_title">Sign In</div>
+			<div id="errmsg_panel"></div>
+			<div class="form_title">登录</div>
 
 			<input id="username" type="text" name="username"
-				placeholder="Username" /> <input id="password" type="password"
-				name="password" placeholder="Password" />
+				placeholder="请输入用户名或电子邮件地址" /> <input id="password" type="password"
+				name="password" placeholder="请输入密码" />
 
 			<div>
-				<button id="signin_btn" class="btn_large">Sign In</button>
+				<button id="signin_btn" class="btn_large">登录</button>
 				<div style="display: inline-block; margin-left: 20px;">
-					<a href="forgetpass.html">Forget password?</a>
+					<a href="forgetpass.html">忘记密码？</a>
 				</div>
 			</div>
-			<div class="g-signin2 external_login_button" data-width="170"
-				data-height="35" data-longtitle="true" data-theme="dark"
+			<div class="g-signin2 external_login_button" style="color: #fff"
+				data-width="170" data-height="32" data-longtitle="true"
+				data-theme="dark"
 				data-scope='https://www.googleapis.com/auth/plus.login'
 				data-onsuccess='onGoogleSignin'></div>
-
+			<!--  span id="qqLoginBtn"></span>
+			<script type="text/javascript">
+				QC.Login({
+					btnId : "qqLoginBtn", //插入按钮的节点id
+					size : 'A_L'
+				});
+			</script-->
 			<div>
-				New User? <a href="signup.html">Sign up</a> for free
+				新用户？<a href="signup.html">点击此处免费注册</a>
 			</div>
 		</div>
 

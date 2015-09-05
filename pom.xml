@@ -8,7 +8,6 @@
   <name>Online Tutor Management System</name>
   <modules>
     <module>calendar</module>
-    <module>user</module>
     <module>auth</module>
     <module>common</module>
   </modules>
