@@ -70,6 +70,11 @@
 			<include method="getFeedback" />
 		</create>
 
+		<create creator="spring" javascript="MessageService">
+			<param name="beanName" value="messageService" />
+			<include method="contactUs" />
+		</create>
+
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.common.dto.*" />

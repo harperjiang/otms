@@ -4,12 +4,36 @@
 <meta charset="UTF-8">
 <title>联系我们</title>
 <!--#include virtual="head.html" -->
+<script type='text/javascript' src='dwr/interface/MessageService.js'></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
 <script>
 	$(function() {
-		$('#submit').click(function() {
-			$('#main_panel').css('display', 'none');
-			$('#success_panel').css('display', 'block');
-		});
+
+		new otms.validator.NonemptyValidator($('#from_text'));
+		new otms.validator.EmailValidator($('#email_text'));
+		new otms.validator.NonemptyValidator($('#context_text'));
+
+		var bm = new otms.validator.BeanManager();
+		bm.reg('from', $('#from_text'));
+		bm.reg('email', $('#email_text'));
+		bm.reg('content', $('#content_text'));
+
+		var callback = function(success, data) {
+			if (success) {
+				$('#main_panel').css('display', 'none');
+				$('#success_panel').css('display', 'block');
+			}
+		};
+
+		var submitClick = function() {
+			debugger;
+			var bean = bm.getBean();
+			if (bean != null) {
+				MessageService.contactUs(otms.auth.req(bean),
+						otms.ui.MessageBox.shan(callback));
+			}
+		};
+		$('#submit').click(submitClick);
 	});
 </script>
 </head>
@@ -24,13 +48,13 @@
 				<div class="page_block">请说明您遇到的问题，并留下您的联系方式。我们将尽快与您取得联系。</div>
 				<div id="message_panel" class="page_block">
 					<div class="page_row">
-						<input type="text" placeholder='您的姓名' />
+						<input id="from_text" type="text" placeholder='您的姓名' />
 					</div>
 					<div class="page_row">
-						<input type="text" placeholder='您的电子邮件' />
+						<input id="email_text" type="text" placeholder='您的电子邮件' />
 					</div>
 					<div class="page_row">
-						<textarea placeholder="请说明您想询问的问题"></textarea>
+						<textarea id="content_text" placeholder="请说明您想询问的问题"></textarea>
 					</div>
 					<button id="submit" class="btn_normal">提交问题</button>
 				</div>
