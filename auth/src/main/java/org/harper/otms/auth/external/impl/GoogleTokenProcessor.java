@@ -13,7 +13,14 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.harper.otms.auth.external.TokenProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -27,12 +34,18 @@ public class GoogleTokenProcessor extends TokenProcessor {
 
 	private Map<String, JsonObject> publicKeys;
 
-	private static String publicKeyFileName = "GooglePublicKey.json";
+	private static String appIdFileName = "appId.json";
+
+	private static String publicKeyLocation = "https://www.googleapis.com/oauth2/v3/certs";
+
+	private HttpClient defaultClient;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	public GoogleTokenProcessor() {
 		super();
 		Reader jsonReader = new InputStreamReader(this.getClass()
-				.getResourceAsStream(publicKeyFileName));
+				.getResourceAsStream(appIdFileName));
 		JsonObject data = parser.parse(jsonReader).getAsJsonObject();
 		try {
 			jsonReader.close();
@@ -42,10 +55,11 @@ public class GoogleTokenProcessor extends TokenProcessor {
 		this.appId = data.get("appId").getAsString();
 
 		publicKeys = new HashMap<String, JsonObject>();
-		for (JsonElement key : data.get("keys").getAsJsonArray()) {
-			JsonObject jobj = key.getAsJsonObject();
-			publicKeys.put(jobj.get("kid").getAsString(), jobj);
-		}
+
+		// Request public key from the given address
+		defaultClient = HttpClientBuilder.create().build();
+
+		refreshPublicKeys();
 	}
 
 	@Override
@@ -134,6 +148,26 @@ public class GoogleTokenProcessor extends TokenProcessor {
 
 		public void setPayload(JsonObject payload) {
 			this.payload = payload;
+		}
+
+	}
+
+	private void refreshPublicKeys() {
+		publicKeys.clear();
+		try {
+			HttpResponse resp = defaultClient.execute(new HttpGet(
+					publicKeyLocation));
+			if (resp.getStatusLine().getStatusCode() == 200) {
+				JsonObject data = parser.parse(
+						new InputStreamReader(resp.getEntity().getContent()))
+						.getAsJsonObject();
+				for (JsonElement key : data.get("keys").getAsJsonArray()) {
+					JsonObject jobj = key.getAsJsonObject();
+					publicKeys.put(jobj.get("kid").getAsString(), jobj);
+				}
+			}
+		} catch (Exception e) {
+			logger.warn("Failed to refresh google public key");
 		}
 
 	}

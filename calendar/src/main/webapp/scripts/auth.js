@@ -1,16 +1,25 @@
 otms.namespace('otms.auth');
 
-otms.auth.token = function() {
-	if (otms.auth.tokenCache !== undefined) {
-		return otms.auth.tokenCache;
+otms.auth.token = function(data) {
+	if (data === undefined) {
+		if (otms.auth.tokenCache !== undefined) {
+			return otms.auth.tokenCache;
+		}
+		var token = localStorage.getItem('otms.token');
+		if (token != undefined && token != null) {
+			token = otms.json(token);
+			otms.auth.tokenCache = token;
+			return token;
+		}
+		return undefined;
+	} else {
+		localStorage.setItem("otms.token", otms.json({
+			"userId" : data.userId,
+			"username" : data.username,
+			"type" : data.type,
+			"token" : data.token
+		}));
 	}
-	var token = localStorage.getItem('otms.token');
-	if (token != undefined && token != null) {
-		token = otms.json(token);
-		otms.auth.tokenCache = token;
-		return token;
-	}
-	return undefined;
 }
 
 otms.auth.cleartoken = function() {
@@ -67,10 +76,15 @@ otms.auth.userType = function() {
 	return undefined;
 };
 
-otms.auth.username = function() {
+otms.auth.username = function(val) {
 	var token = otms.auth.token();
-	if (token != undefined && token != null) {
-		return token.username;
+	if (val === undefined) {
+		if (token != undefined && token != null) {
+			return token.username;
+		}
+		return undefined;
+	} else {
+		token['username'] = val;
+		otms.auth.token(token);
 	}
-	return undefined;
 };

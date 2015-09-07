@@ -9,6 +9,7 @@ function loginSuccess(data) {
 };
 
 function onGoogleSignin(googleUser) {
+	debugger;
 	var basicProfile = googleUser.getBasicProfile();
 	var regCallback = function(success, data) {
 		if (success) {

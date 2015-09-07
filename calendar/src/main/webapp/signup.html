@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sign Up</title>
+<title>${webpageTitle}</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
@@ -71,12 +71,12 @@
 		<!--#include virtual="header.html" -->
 		<div id='errmsg_panel'></div>
 		<div id="page_content_thin" class="form">
-			<div class="form_title">Sign Up</div>
-			<input type="text" id="name_input" placeholder="Username" /> <input
-				type="text" id="display_input" placeholder="Display Name" /><input
-				type="text" id="email_input" placeholder="Email Address" /> <input
+			<div class="form_title">${pageTitle}</div>
+			<input type="text" id="name_input" placeholder="${usernamePh}" /> <input
+				type="text" id="display_input" placeholder="${displayNamePh}" /><input
+				type="text" id="email_input" placeholder="${emailAddressPh}" /> <input
 				id="password_input" type="password"
-				placeholder="Password (length > 8, with letter, number and symbol)" />
+				placeholder="${passwordPh}" />
 			<div class="form_row">
 				<label style="margin-bottom: 10px">Local TimeZone:</label><select
 					id="timezone_select"></select>

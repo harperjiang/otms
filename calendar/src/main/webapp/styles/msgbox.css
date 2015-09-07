@@ -2,25 +2,26 @@
 	display: none;
 }
 
-.msgbox_error,.msgbox_info,.msgbox_warning,.msgbox_success {
+.msgbox_error, .msgbox_info, .msgbox_warning, .msgbox_success {
 	margin: 0px;
 	font-weight: bold;
 	font-size: 13px;
 	-moz-border-radius: 6px 6px 6px 6px;
-	height: 36px;
-	margin-bottom:10px;
+	height: 38px;
+	line-height: 36px;
+	overflow: auto;
+	
 }
 
 .msgbox_icon {
 	width: 16px;
 	height: 16px;
 	float: left;
-	margin:10px 10px 0px 10px;
+	margin: 10px 10px 0px 10px;
 }
 
 #msgbox_msg {
 	float: left;
-	margin: 10px 6px 0px 6px;
 }
 
 .msgbox_error {

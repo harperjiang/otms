@@ -100,7 +100,7 @@ public class DefaultProfileService implements ProfileService {
 			user.setSourceId(sourceId);
 			// Activate Linked user by default
 			user.setActivated(true);
-			user.setActivationCode(null);
+			user.setActivationCode("modify_username");
 			if ("tutor".equals(request.getType())) {
 				Tutor tutor = new Tutor();
 				tutor.setUser(user);
@@ -121,13 +121,19 @@ public class DefaultProfileService implements ProfileService {
 	@Override
 	public LinkAddInfoResponseDto linkAddInfo(LinkAddInfoDto request) {
 		User user = getUserDao().findById(request.getCurrentUser());
+		if (!"modify_username".equals(user.getActivationCode())) {
+			return new LinkAddInfoResponseDto(ErrorCode.SYS_NO_AUTH);
+		}
 		User dup = getUserDao().findByName(request.getUsername());
 		if (null != dup) {
 			return new LinkAddInfoResponseDto(ErrorCode.USER_EXIST_ID);
 		}
 		user.setName(request.getUsername());
+		user.setActivationCode(null);
 		user.setTimezone(TimeZone.getTimeZone(request.getTimezone()));
-		return new LinkAddInfoResponseDto();
+		LinkAddInfoResponseDto response = new LinkAddInfoResponseDto();
+		response.setUsername(user.getName());
+		return response;
 	}
 
 	@Override

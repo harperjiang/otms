@@ -4,6 +4,12 @@
 			<a href="index.html"><img src="resource/logo.png" width="100%"
 				height="100%"></a>
 		</div>
+		<div class="topbar_rightitem">
+			<select id="language_select" onchange="changeLang(this)">
+				<option value="en_US">English</option>
+				<option value="zh_CN">简体中文</option>
+			</select>
+		</div>
 		<div class="topbar_rightitem" id="before_login_panel"
 			style="display: none;">
 			<a href="login.html">登录</a>
@@ -26,6 +32,42 @@
 	</div>
 </div>
 <script>
+	function requestWithLang(lang) {
+		var url = window.location.toString().split('?')[0];
+		window.location = url + "?lang=" + lang;
+		localStorage.setItem("otms.lang", lang);
+	};
+
+	function changeLang(item) {
+		var lang = $(item).val();
+		requestWithLang(lang);
+	};
+
+	function handleLang() {
+		// Set the language to be selected
+		var lang = localStorage.getItem('otms.lang');
+		var serverLang = $('meta[name=lang]').attr("content");
+
+		if(otms.isEmpty(lang)) {
+			lang = 'en_US';
+		}
+		if(otms.isEmpty(serverLang)) {
+			serverLang = 'en_US';
+		}
+		
+		if (lang != serverLang) {
+			// Always use local lang, Resend current request
+			requestWithLang(lang);
+			return;
+		}
+
+		if (!otms.isEmpty(lang)) {
+			$("#language_select").val(lang);
+		}
+	};
+
+	handleLang();
+
 	otms.namespace('otms.headerPage');
 	otms.headerPage.refreshLoginOption = function() {
 		if (otms.auth.isLoggedin()) {

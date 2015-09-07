@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>联系我们</title>
+<title>${webpageTitle}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/MessageService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
@@ -34,6 +34,7 @@
 			}
 		};
 		$('#submit').click(submitClick);
+		
 	});
 </script>
 </head>
@@ -41,31 +42,31 @@
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
-		<div id="page_content">
+		<div id="page_content_nomenu">
 
-			<div class="page_title">联系我们</div>
+			<div class="page_title">${pageTitle}</div>
 			<div id="main_panel">
-				<div class="page_block">请说明您遇到的问题，并留下您的联系方式。我们将尽快与您取得联系。</div>
+				<div class="page_block">${descText}</div>
 				<div id="message_panel" class="page_block">
 					<div class="page_row">
-						<input id="from_text" type="text" placeholder='您的姓名' />
+						<input id="from_text" type="text" placeholder='${namePn}' />
 					</div>
 					<div class="page_row">
-						<input id="email_text" type="text" placeholder='您的电子邮件' />
+						<input id="email_text" type="text" placeholder='${emailPn}' />
 					</div>
 					<div class="page_row">
-						<textarea id="content_text" placeholder="请说明您想询问的问题"></textarea>
+						<textarea id="content_text" placeholder="${problemPn}"></textarea>
 					</div>
-					<button id="submit" class="btn_normal">提交问题</button>
+					<button id="submit" class="btn_normal">${submitBtn}</button>
 				</div>
 			</div>
 
 			<div id="success_panel" style="display: none;">
 				<div class="page_block">
-					<div class="page_row">谢谢您！您的问题已经提交，我们将尽快与您取得联系。</div>
-					<div class="page_row">您还可以</div>
+					<div class="page_row">${finishText1}</div>
+					<div class="page_row">${finishText2}</div>
 					<div class="page_row">
-						<button class="btn_green" onclick="window.location='help.html'">访问帮助中心</button>
+						<button class="btn_green" onclick="window.location='help.html'">${helpBtn}</button>
 					</div>
 				</div>
 

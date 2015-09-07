@@ -2,23 +2,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${webpageTitle}</title>
+<title>Template</title>
 <!--#include virtual="head.html" -->
 <script>
-	$(function() {
-		otms.auth.cleartoken();
-		otms.headerPage.refreshLoginOption();
-	});
+	
 </script>
 </head>
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
-		<div id="page_content_thin" class="form">
-			<div class="page_title">${pageTitle}</div>
-			<div>${promptInfo}</div>
-		</div>
+		<div id="page_content_thin"></div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

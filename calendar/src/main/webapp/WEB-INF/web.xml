@@ -9,6 +9,19 @@
 		<param-value>WEB-INF/spring/application-context.xml</param-value>
 	</context-param>
 
+	<filter>
+		<filter-name>i18nFilter</filter-name>
+		<filter-class>org.harper.otms.common.i18n.I18nFilter</filter-class>
+		<init-param>
+			<param-name>propertyPath</param-name>
+			<param-value>/org/harper/otms/calendar/i18n</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>i18nFilter</filter-name>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>

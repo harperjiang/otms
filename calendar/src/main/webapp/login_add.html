@@ -14,6 +14,7 @@
 
 		var callback = function(success, data) {
 			if (success) {
+				otms.auth.username(data.username);
 				window.location = 'dashboard.html';
 			}
 		};
@@ -21,7 +22,7 @@
 		$('#commit').click(function() {
 			var name = $('#name_input').val();
 			var tz = $('#timezone_select').val();
-			ProfileService.addLink(otms.auth.req({
+			ProfileService.linkAddInfo(otms.auth.req({
 				'username' : name,
 				'timezone' : tz
 			}), otms.ui.MessageBox.shan(callback));
