@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
@@ -53,9 +54,8 @@ public class I18nFilter implements Filter {
 		String lang = req.getParameter("lang");
 		if (StringUtils.isEmpty(lang)) {
 			Object langObj = req.getSession(true).getAttribute("lang");
-			if (langObj != null) {
+			if (langObj != null)
 				lang = String.valueOf(langObj);
-			}
 			if (StringUtils.isEmpty(lang))
 				lang = "";
 		} else {
@@ -73,28 +73,31 @@ public class I18nFilter implements Filter {
 			try {
 				// Translate the content of html text
 				byte[] content = wrapper.getBufferContent();
-
-				String[] paths = req.getRequestURI().split("/");
-				String pageName = paths[paths.length - 1].split("\\.")[0];
-
-				Properties prop = getProperties(pageName, lang);
-
-				if (null == prop) {
-					response.getOutputStream().write(content);
+				String uri = req.getRequestURI();
+				String pageName = null;
+				if (uri.endsWith("/")) {
+					pageName = "index";
 				} else {
-					// Pass current language information to client
-					prop.put("lang", lang);
-					ByteArrayOutputStream baos = new ByteArrayOutputStream();
-					PrintWriter buffer = new PrintWriter(baos);
-					SharedVelocityEngine.get().evaluate(
-							new VelocityContext(prop), buffer, pageName,
-							new String(content, "utf8"));
-					buffer.flush();
-					buffer.close();
-					byte[] newdata = baos.toByteArray();
-					resp.setContentLength(newdata.length);
-					resp.getOutputStream().write(newdata);
+					String[] paths = req.getRequestURI().split("/");
+					pageName = paths[paths.length - 1].split("\\.")[0];
 				}
+				Properties prop = null;
+				try {
+					prop = getProperties(pageName, lang);
+				} catch (MissingResourceException mre) {
+					prop = new Properties();
+				}
+				// Pass current language information to client
+				prop.put("lang", lang);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				PrintWriter buffer = new PrintWriter(baos);
+				SharedVelocityEngine.get().evaluate(new VelocityContext(prop),
+						buffer, pageName, new String(content, "utf8"));
+				buffer.flush();
+				buffer.close();
+				byte[] newdata = baos.toByteArray();
+				resp.setContentLength(newdata.length);
+				resp.getOutputStream().write(newdata);
 			} catch (Exception e) {
 				logger.error("Failed to translate webpage", e);
 				response.getOutputStream().write(wrapper.getBufferContent());
