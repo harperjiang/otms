@@ -54,28 +54,28 @@ public class DefaultUserService implements UserService {
 		if (!StringUtils.isEmpty(request.getTimezone())) {
 			user.setTimezone(TimeZone.getTimeZone(request.getTimezone()));
 		}
-		user.setActivated(false);
 		if (!VALID_TYPE.contains(request.getType())) {
 			return new CreateUserResponseDto(ErrorCode.SYSTEM_INVALID_PARAM);
 		}
 		user.setType(request.getType());
-		user.setActivationCode(UUID.randomUUID().toString());
+
 		getUserDao().save(user);
-
 		result.setUserId(user.getId());
-		if (!request.isLinkUser()) {
+		if (request.isVerifyEmail()) {
+			user.setActivated(false);
+			user.setActivationCode(UUID.randomUUID().toString());
 			// Send out registration email
-
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("username", user.getDisplayName());
 			params.put("uuid", user.getActivationCode());
 			getMailSender()
 					.send(new VelocityHtmlMessagePreparator(
-							"harper@tutorcan.com",
 							new String[] { user.getEmail() },
 							"Activate your TutorCan account",
 							"/org/harper/otms/auth/service/impl/mail/signup_mail.vm",
 							params));
+		} else {
+			user.setActivated(true);
 		}
 		return result;
 	}

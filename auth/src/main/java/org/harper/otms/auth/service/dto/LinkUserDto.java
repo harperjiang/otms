@@ -13,6 +13,8 @@ public class LinkUserDto extends RequestDto {
 
 	private String email;
 
+	private boolean verifyEmail;
+
 	private String type;
 
 	private String pictureUrl;
@@ -67,6 +69,14 @@ public class LinkUserDto extends RequestDto {
 
 	public void setPictureUrl(String pictureUrl) {
 		this.pictureUrl = pictureUrl;
+	}
+
+	public boolean isVerifyEmail() {
+		return verifyEmail;
+	}
+
+	public void setVerifyEmail(boolean verifyEmail) {
+		this.verifyEmail = verifyEmail;
 	}
 
 }

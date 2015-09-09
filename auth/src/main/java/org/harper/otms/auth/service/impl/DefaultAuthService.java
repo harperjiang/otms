@@ -101,9 +101,8 @@ public class DefaultAuthService implements AuthService {
 		params.put("uuid", user.getActivationCode());
 		getMailSender()
 				.send(new VelocityHtmlMessagePreparator(
-						"harper@tutorcan.com",
 						new String[] { user.getEmail() },
-						"Activate your TutorCan account",
+						"Recover your password at TutorCan",
 						"/org/harper/otms/auth/service/impl/mail/resetpass_mail.vm",
 						params));
 

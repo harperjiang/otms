@@ -10,6 +10,8 @@ public class CreateUserDto extends RequestDto {
 
 	private String email;
 
+	private boolean verifyEmail;
+
 	private String password;
 
 	private String timezone;
@@ -72,6 +74,14 @@ public class CreateUserDto extends RequestDto {
 
 	public void setLinkUser(boolean linkUser) {
 		this.linkUser = linkUser;
+	}
+
+	public boolean isVerifyEmail() {
+		return verifyEmail;
+	}
+
+	public void setVerifyEmail(boolean verifyEmail) {
+		this.verifyEmail = verifyEmail;
 	}
 
 }

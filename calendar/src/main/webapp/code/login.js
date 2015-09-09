@@ -1,10 +1,5 @@
 function loginSuccess(data) {
-	localStorage.setItem("otms.token", otms.json({
-		"userId" : data.userId,
-		"username" : data.username,
-		"type" : data.type,
-		"token" : data.token
-	}));
+	otms.auth.token(data);
 	window.location = "dashboard.html";
 };
 
@@ -13,7 +8,7 @@ function onGoogleSignin(googleUser) {
 	var basicProfile = googleUser.getBasicProfile();
 	var regCallback = function(success, data) {
 		if (success) {
-			loginSuccess(data);
+			otms.auth.token(data);
 			window.location = 'login_add.html';
 		}
 	};
@@ -31,7 +26,9 @@ function onGoogleSignin(googleUser) {
 				'type' : 'client',
 				'sourceSystem' : 'Google',
 				'sourceId' : googleUser.getAuthResponse().id_token,
-				'linkUser' : true
+				'linkUser' : true,
+				'verifyEmail' : false
+			// Email is provided by Google
 			}, otms.ui.MessageBox.shan(regCallback));
 		} else {
 			// Error that should not happen

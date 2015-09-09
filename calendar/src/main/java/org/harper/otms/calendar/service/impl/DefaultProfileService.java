@@ -55,7 +55,7 @@ public class DefaultProfileService implements ProfileService {
 				IPMonitorFilter.ipAddress.get())) {
 			return new RegisterUserResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
 		}
-
+		request.setVerifyEmail(true);
 		CreateUserResponseDto resp = getUserService().createUser(request);
 		if (resp.isSuccess()) {
 			User user = getUserDao().findById(resp.getUserId());
@@ -99,14 +99,14 @@ public class DefaultProfileService implements ProfileService {
 				request.getSourceSystem(), sourceId));
 		create.setType(request.getType());
 		create.setTimezone("GMT");
+		create.setVerifyEmail(request.isVerifyEmail());
+		create.setLinkUser(true);
 		CreateUserResponseDto resp = getUserService().createUser(create);
 
 		if (resp.isSuccess()) {
 			User user = getUserDao().findById(resp.getUserId());
 			user.setSourceSystem(sourceSystem);
 			user.setSourceId(sourceId);
-			// Activate Linked user by default
-			user.setActivated(true);
 			user.setActivationCode("modify_username");
 			if ("tutor".equals(request.getType())) {
 				Tutor tutor = new Tutor();

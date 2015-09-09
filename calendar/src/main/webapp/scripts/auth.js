@@ -20,7 +20,7 @@ otms.auth.token = function(data) {
 			"token" : data.token
 		}));
 	}
-}
+};
 
 otms.auth.cleartoken = function() {
 	localStorage.removeItem('otms.token');

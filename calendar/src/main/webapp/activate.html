@@ -2,12 +2,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>Activate Your Account</title>
 
 <!--#include virtual="head.html" -->
+<script type='text/javascript' src='dwr/interface/UserService.js'></script>
 <script>
 	$(function() {
-		debugger;
+		if (otms.headerPage.needReload)
+			// Wait for reload
+			return;
 		var uuid = otms.getUrlParam("uuid");
 		if (uuid === undefined) {
 			$('#failed_panel').css('display', 'block');
@@ -35,7 +38,10 @@
 				<div class="page_title">Account Activated</div>
 				<div class="page_row">You can now sign in the system to use
 					all the functions TutorCan provides.</div>
-				<div class="page_row">Quick Starts</div>
+				<div class="page_row">
+					<button class="btn_normal"
+						onclick="window.location=quick_start.html">Quick Starts</button>
+				</div>
 			</div>
 			<div id="failed_panel" style="display: none;">
 				<div class="page_title">Account Activation Failed</div>

@@ -4,10 +4,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
+		<property name="host" value="email-smtp.us-west-2.amazonaws.com" />
 		<property name="port" value="587" />
-		<property name="username" value="harper@tutorcan.com" />
-		<property name="password" value="Goodboy@1234" />
+		<property name="username" value="AKIAIWZ5VVFC734IXSEA" />
+		<property name="password" value="AgLEx9MtBuiqLmi0ypyyA5lqgrT5HvtaWDpi6xzzy73Z" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.auth">true</prop>

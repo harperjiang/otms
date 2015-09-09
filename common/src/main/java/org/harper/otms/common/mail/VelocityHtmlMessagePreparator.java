@@ -10,7 +10,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 public class VelocityHtmlMessagePreparator implements MimeMessagePreparator {
 
-	private String sender;
+	private String sender = "webmaster@tutorcan.com";
 
 	private String[] receiver;
 
@@ -20,10 +20,9 @@ public class VelocityHtmlMessagePreparator implements MimeMessagePreparator {
 
 	private Map<String, Object> params;
 
-	public VelocityHtmlMessagePreparator(String sender, String[] receiver,
-			String title, String template, Map<String, Object> params) {
+	public VelocityHtmlMessagePreparator(String[] receiver, String title,
+			String template, Map<String, Object> params) {
 		super();
-		this.sender = sender;
 		this.receiver = receiver;
 		this.title = title;
 		this.template = template;

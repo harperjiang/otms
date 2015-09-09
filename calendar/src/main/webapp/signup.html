@@ -58,7 +58,7 @@
 						var captcharesp = grecaptcha.getResponse();
 						bean['captcha'] = captcharesp;
 						ProfileService.registerUser(otms.auth.req(bean),
-								otms.ui.MessageBox.han(callback));
+								otms.ui.MessageBox.shan(callback));
 					} else {
 						$(this).removeAttr('disabled');
 					}
