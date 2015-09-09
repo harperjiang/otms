@@ -1,8 +1,8 @@
 otms.namespace('otms.ErrorMsg');
 
 otms.ErrorMsg.msg = function(code, locale) {
-	if (locale === undefined) {
-		locale = 'zh_CN';
+	if (otms.isEmpty(locale)) {
+		locale = 'en_US';
 	}
 	var result = otms.ErrorMsg.data[locale][String(code)];
 	if (undefined == result) {
@@ -28,10 +28,11 @@ otms.ErrorMsg.data = {
 		"106" : "Unknown source",
 		"201" : "Session has expired. Please re-login",
 		"202" : "Please login first",
-		"1101" : "Cannot find the tutor",
-		"1401" : "Data not found",
-		"1501" : "No such user",
-		"1502" : "You are not allowed to access the information"
+		"302" : "Captcha Verification Failed",
+		"305" : "Data not found",
+		"303" : "No such user",
+		"304" : "You are not allowed to access the information",
+		"1101" : "Cannot find the tutor"
 	},
 	'zh_CN' : {
 		"101" : "该用户名已被使用",
@@ -42,10 +43,11 @@ otms.ErrorMsg.data = {
 		"106" : "未知的来源",
 		"201" : "您太长时间未操作，请重新登录",
 		"202" : "请先登录系统再进行此操作",
-		"1101" : "找不到指定的信息",
-		"1401" : "找不到指定的信息",
-		"1501" : "用户不存在",
-		"1502" : "您不能查看该信息"
+		"302" : "验证码错误",
+		"305" : "找不到指定的信息",
+		"303" : "用户不存在",
+		"304" : "您不能查看该信息",
+		"1101" : "找不到指定的信息"
 	}
 };
 

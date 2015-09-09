@@ -33,11 +33,14 @@ public class I18nFilter implements Filter {
 
 	private String propertyPath;
 
+	private String defaultFileName;
+
 	private Map<String, Properties> props;
 
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		this.propertyPath = config.getInitParameter("propertyPath");
+		this.defaultFileName = config.getInitParameter("defaultFileName");
 		this.props = new HashMap<String, Properties>();
 	}
 
@@ -68,24 +71,30 @@ public class I18nFilter implements Filter {
 		chain.doFilter(request, wrapper);
 		wrapper.getWriter().flush();
 		wrapper.getOutputStream().flush();
-
-		if (wrapper.getContentType().startsWith("text/html")) {
+		if (!StringUtils.isEmpty(wrapper.getContentType())
+				&& (wrapper.getContentType().startsWith("text/html") || wrapper
+						.getContentType().startsWith("text/javascript"))) {
 			try {
 				// Translate the content of html text
 				byte[] content = wrapper.getBufferContent();
 				String uri = req.getRequestURI();
 				String pageName = null;
 				if (uri.endsWith("/")) {
-					pageName = "index";
+					pageName = "index.html";
 				} else {
 					String[] paths = req.getRequestURI().split("/");
-					pageName = paths[paths.length - 1].split("\\.")[0];
+					pageName = paths[paths.length - 1];
 				}
+				pageName = pageName.replace('.', '_');
 				Properties prop = null;
 				try {
 					prop = getProperties(pageName, lang);
 				} catch (MissingResourceException mre) {
-					prop = new Properties();
+					try {
+						prop = getProperties(defaultFileName, lang);
+					} catch (MissingResourceException mre2) {
+						prop = new Properties();
+					}
 				}
 				// Pass current language information to client
 				prop.put("lang", lang);

@@ -63,7 +63,7 @@ public class DefaultUserService implements UserService {
 		getUserDao().save(user);
 
 		result.setUserId(user.getId());
-		if (request.isLinkUser()) {
+		if (!request.isLinkUser()) {
 			// Send out registration email
 
 			Map<String, Object> params = new HashMap<String, Object>();
@@ -74,7 +74,7 @@ public class DefaultUserService implements UserService {
 							"harper@tutorcan.com",
 							new String[] { user.getEmail() },
 							"Activate your TutorCan account",
-							"/org/harper/otms/calendar/service/impl/mail/signup_mail.vm",
+							"/org/harper/otms/auth/service/impl/mail/signup_mail.vm",
 							params));
 		}
 		return result;

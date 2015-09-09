@@ -14,6 +14,8 @@ public class LoginRequestDto extends RequestDto {
 
 	private String sourceId;
 
+	private String captcha;
+
 	public String getUsername() {
 		return username;
 	}
@@ -52,6 +54,14 @@ public class LoginRequestDto extends RequestDto {
 
 	public void setSourceId(String sourceId) {
 		this.sourceId = sourceId;
+	}
+
+	public String getCaptcha() {
+		return captcha;
+	}
+
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
 	}
 
 }

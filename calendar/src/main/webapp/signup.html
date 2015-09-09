@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>${webpageTitle}</title>
 <!--#include virtual="head.html" -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script>
@@ -33,7 +34,7 @@
 						'Please accept the agreement');
 				return false;
 			}
-			return true;
+			return otms.validator.BeanManager.prototype.validate.call(this, bean, vresult);
 		};
 
 		var callback = function(success) {
@@ -44,6 +45,7 @@
 				$('#signup_confirm_panel').css('display', "block");
 			} else {
 				$('#signup_btn').removeAttr('disabled');
+				grecaptcha.reset();
 			}
 		};
 
@@ -52,6 +54,9 @@
 					$(this).attr('disabled', 'true');
 					var bean = window.beanManager.getBean();
 					if (bean != null) {
+						// gcaptcha
+						var captcharesp = grecaptcha.getResponse();
+						bean['captcha'] = captcharesp;
 						ProfileService.registerUser(otms.auth.req(bean),
 								otms.ui.MessageBox.han(callback));
 					} else {
@@ -70,66 +75,77 @@
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id='errmsg_panel'></div>
-		<div id="page_content_thin" class="form">
-			<div class="form_title">${pageTitle}</div>
-			<input type="text" id="name_input" placeholder="${usernamePh}" /> <input
-				type="text" id="display_input" placeholder="${displayNamePh}" /><input
-				type="text" id="email_input" placeholder="${emailAddressPh}" /> <input
-				id="password_input" type="password"
-				placeholder="${passwordPh}" />
-			<div class="form_row">
-				<label style="margin-bottom: 10px">Local TimeZone:</label><select
-					id="timezone_select"></select>
+		<div id="page_content_thin">
+			<div id="signup_info_panel">
+				<div class="page_title">${pageTitle}</div>
+				<div class="page_row">
+					<input type="text" id="name_input" placeholder="${usernamePh}" />
+				</div>
+				<div class="page_row">
+					<input type="text" id="display_input"
+						placeholder="${displayNamePh}" />
+				</div>
+				<div class="page_row">
+					<input type="text" id="email_input" placeholder="${emailAddressPh}" />
+				</div>
+				<div class="page_row">
+					<input id="password_input" type="password"
+						placeholder="${passwordPh}" />
+				</div>
+				<div class="page_row">
+					<label style="margin-bottom: 10px">${timezoneLabel}</label><select
+						id="timezone_select"></select>
+				</div>
+				<div class="page_row" style="display: none">
+					<div>
+						<label style='width: 80px'>I am </label> <label><input
+							type="radio" name="role" value="client" checked /> looking for a
+							tutor</label>
+					</div>
+					<div>
+						<label style='width: 80px'>&nbsp;</label> <label><input
+							type="radio" name="role" value="tutor"> willing to teach
+							students</label>
+					</div>
+				</div>
+				<div class="page_row">
+					<label style="width: 350px" for="agree_checkbox"><input
+						name="agree" id="agree_checkbox" type="checkbox"
+						style="display: inline-block; width: 30px" />${agreeLabel}</label>
+				</div>
+				<div class="page_row" style="overflow-y: hidden;">
+					<div class="g-recaptcha"
+						data-sitekey="6Lc7fQwTAAAAANTSNgx5tcafhe2ZlABr1fFBkjuU"></div>
+				</div>
+				<div>
+					<button id="signup_btn" class="btn_large">${signupBtn}</button>
+					<button id="switch_btn" style="display: none" class="btn_large">Switch</button>
+				</div>
 			</div>
-			<div class="form_row" style="display: none">
-				<div>
-					<label style='width: 80px'>I am </label> <label><input
-						type="radio" name="role" value="client" checked /> looking for a
-						tutor</label>
-				</div>
-				<div>
-					<label style='width: 80px'>&nbsp;</label> <label><input
-						type="radio" name="role" value="tutor"> willing to teach
-						students</label>
-				</div>
 
-			</div>
-			<div class="form_row">
-				<input name="agree" id="agree_checkbox" type="checkbox"
-					style="display: inline-block; width: 30px" /><label
-					style="width: 350px" for="agree_checkbox">I accept to the
-					terms and user agreements</label>
-			</div>
-			<div>
-				<button id="signup_btn" class="btn_large">Sign Up</button>
-				<button id="switch_btn" style="display: none" class="btn_large">Switch</button>
-			</div>
-		</div>
-		<div id="signup_confirm_panel" class="form centerpanel"
-			style="display: none;">
-			<div class="form_title">Success!</div>
-			<div class="form_row">
-				We have sent an email to <span id="email_span"
-					style="font-weight: bold"></span>. Please follow the instruction to
-				complete registration.
-			</div>
-			<div class="form_row">Didn't see the email? Check if it is in
-				your spam folder.</div>
-			<div class="form_row">
-				Here's some introductions you can start with.
-				<div class="form_section">For students:</div>
-				<div>
-					<a href="">How can I find a good tutor?</a>
+			<div id="signup_confirm_panel" style="display: none;">
+				<div class="form_title">${successTitle}</div>
+				<div class="form_row">
+					${activationPrompt1}<span id="email_span" style="font-weight: bold"></span>.
+					${activationPrompt2}
 				</div>
-				<div>
-					<a href="">How can I find a good tutor?</a>
-				</div>
-				<div class="form_section">For tutors:</div>
-				<div>
-					<a href="">How can I find a good tutor?</a>
-				</div>
-				<div>
-					<a href="">How can I find a good tutor?</a>
+				<div class="form_row">${noemailPrompt}</div>
+				<div class="form_row" style="display: none;">
+					Here's some introductions you can start with.
+					<div class="form_section">For students:</div>
+					<div>
+						<a href="">How can I find a good tutor?</a>
+					</div>
+					<div>
+						<a href="">How can I find a good tutor?</a>
+					</div>
+					<div class="form_section">For tutors:</div>
+					<div>
+						<a href="">How can I find a good tutor?</a>
+					</div>
+					<div>
+						<a href="">How can I find a good tutor?</a>
+					</div>
 				</div>
 			</div>
 		</div>

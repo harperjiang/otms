@@ -16,6 +16,7 @@ import org.harper.otms.auth.service.dto.CreateUserDto;
 import org.harper.otms.auth.service.dto.CreateUserResponseDto;
 import org.harper.otms.auth.service.dto.LinkUserDto;
 import org.harper.otms.auth.service.dto.LinkUserResponseDto;
+import org.harper.otms.auth.service.util.CaptchaUtil;
 import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.Client;
@@ -38,6 +39,7 @@ import org.harper.otms.calendar.service.dto.SetupClientResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTutorDto;
 import org.harper.otms.calendar.service.dto.SetupTutorResponseDto;
 import org.harper.otms.calendar.service.dto.TutorInfoDto;
+import org.harper.otms.common.servlet.IPMonitorFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -48,6 +50,11 @@ public class DefaultProfileService implements ProfileService {
 
 	@Override
 	public RegisterUserResponseDto registerUser(RegisterUserDto request) {
+
+		if (!CaptchaUtil.verify(request.getCaptcha(),
+				IPMonitorFilter.ipAddress.get())) {
+			return new RegisterUserResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
+		}
 
 		CreateUserResponseDto resp = getUserService().createUser(request);
 		if (resp.isSuccess()) {
@@ -122,7 +129,7 @@ public class DefaultProfileService implements ProfileService {
 	public LinkAddInfoResponseDto linkAddInfo(LinkAddInfoDto request) {
 		User user = getUserDao().findById(request.getCurrentUser());
 		if (!"modify_username".equals(user.getActivationCode())) {
-			return new LinkAddInfoResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new LinkAddInfoResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 		User dup = getUserDao().findByName(request.getUsername());
 		if (null != dup) {
@@ -183,7 +190,7 @@ public class DefaultProfileService implements ProfileService {
 	@Override
 	public SetupClientResponseDto setupClient(SetupClientDto request) {
 		if (request.getCurrentUser() != request.getClientInfo().getClientId()) {
-			return new SetupClientResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new SetupClientResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 		Client client = getClientDao().findById(request.getCurrentUser());
 		request.getClientInfo().to(client);
@@ -193,7 +200,7 @@ public class DefaultProfileService implements ProfileService {
 	@Override
 	public SetupTutorResponseDto setupTutor(SetupTutorDto request) {
 		if (request.getCurrentUser() != request.getTutorInfo().getTutorId()) {
-			return new SetupTutorResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new SetupTutorResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 		Tutor tutor = getTutorDao().findById(request.getCurrentUser());
 		request.getTutorInfo().to(tutor);

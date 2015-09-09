@@ -44,25 +44,24 @@
 	};
 
 	function handleLang() {
-		debugger;
 		// Set the language to be selected
 		var lang = localStorage.getItem('otms.lang');
 		var serverLang = $('meta[name=lang]').attr("content");
 
-		if(otms.isEmpty(lang)) {
+		if (otms.isEmpty(lang)) {
 			lang = 'en_US';
 		}
-		if(otms.isEmpty(serverLang)) {
+		if (otms.isEmpty(serverLang)) {
 			serverLang = 'en_US';
 		}
-		
+
 		if (lang != serverLang) {
 			// Always use local lang, Resend current request
 			requestWithLang(lang);
 			return;
 		}
 
-		if (!otms.isEmpty(lang)) {
+		if (!otms.isEmpty(lang) && $('#language_select').val() != lang) {
 			$("#language_select").val(lang);
 		}
 	};

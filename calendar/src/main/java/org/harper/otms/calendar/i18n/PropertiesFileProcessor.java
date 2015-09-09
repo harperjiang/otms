@@ -57,10 +57,9 @@ public class PropertiesFileProcessor {
 						bufWriter.println("#{");
 
 						for (Object key : includeProp.keySet()) {
-							bufWriter
-									.println(MessageFormat.format("{0}={1}",
-											key, includeProp
-													.getProperty((String) key)));
+							bufWriter.println(MessageFormat.format("{0}={1}",
+									key, encode(includeProp
+											.getProperty((String) key))));
 						}
 
 						bufWriter.println("#}");
@@ -86,5 +85,23 @@ public class PropertiesFileProcessor {
 			replace.write(buffer.toByteArray());
 			replace.close();
 		}
+	}
+
+	protected static String encode(String input) {
+		StringBuilder sb = new StringBuilder();
+		for (char c : input.toCharArray()) {
+			if (c < 256) {
+				sb.append(c);
+			} else {
+				String hex = Integer.toString(c, 16);
+				sb.append("\\u");
+				for (int i = 0; i < 4 - hex.length(); i++) {
+					sb.append("0");
+				}
+				sb.append(hex.toUpperCase());
+			}
+		}
+		return sb.toString();
+
 	}
 }

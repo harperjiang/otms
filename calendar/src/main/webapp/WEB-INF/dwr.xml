@@ -13,6 +13,8 @@
 		<create creator="spring" javascript="AuthService">
 			<param name="beanName" value="authService" />
 			<include method="login" />
+			<include method="reqResetPass" />
+			<include method="confirmResetPass" />
 		</create>
 
 		<create creator="spring" javascript="UserService">

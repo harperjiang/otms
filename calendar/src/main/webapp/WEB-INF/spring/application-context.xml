@@ -48,6 +48,7 @@
 	<bean id="authService" class="org.harper.otms.auth.service.impl.DefaultAuthService">
 		<property name="userDao" ref="userDao" />
 		<property name="tokenManager" ref="tokenManager" />
+		<property name="mailSender" ref="mailSender" />
 	</bean>
 
 	<bean id="calendarService"

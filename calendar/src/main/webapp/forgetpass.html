@@ -2,17 +2,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>Forget Password</title>
 <!--#include virtual="head.html" -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script type='text/javascript' src='dwr/interface/AuthService.js'></script>
 <script>
-	
+	function callback(success, data) {
+		if (success) {
+			$('#main_panel').css('display', 'none');
+			$('#confirm_panel').css('display', 'block');
+		} else {
+			grecaptcha.reset();
+			$('#submit').removeProp('disabled');
+		}
+	};
+
+	function onload() {
+
+		new otms.validator.NonemptyValidator($('#username'));
+
+		var bm = new otms.validator.BeanManager();
+		bm.reg('username', $('#username'));
+
+		$('#submit').click(
+				function() {
+					var bean = bm.getBean();
+					if (bean != null) {
+						$('#submit').prop('disabled', 'disabled');
+						var captcharesp = grecaptcha.getResponse();
+						bean['captcha'] = captcharesp;
+						AuthService.reqResetPass(bean, otms.ui.MessageBox
+								.shan(callback));
+					}
+				});
+
+	};
+
+	$(onload);
 </script>
 </head>
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
-		<div id="page_content_thin"></div>
+		<div id="page_content_thin">
+			<div class="page_title">Forget Password</div>
+			<div class="page_block" id="main_panel">
+				<div class="page_row">
+					<input type='text' id="username"
+						placeholder="Please input your username or email address" />
+				</div>
+				<div class="page_row" style="overflow-y: hidden;">
+					<div class="g-recaptcha"
+						data-sitekey="6Lc7fQwTAAAAANTSNgx5tcafhe2ZlABr1fFBkjuU"></div>
+				</div>
+
+				<div class="page_row">
+					<button id="submit" class="btn_normal">Submit</button>
+				</div>
+			</div>
+			<div id="confirm_panel" class="page_block" style="display: none">
+				<div class="page_row">Thank you! A confirmation email had been
+					sent to your email box. Follow the instruction to recover your
+					password.</div>
+			</div>
+		</div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

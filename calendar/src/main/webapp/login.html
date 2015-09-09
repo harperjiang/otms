@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="google-signin-client_id"
-	content="222968453652-2ln3k6n7s5shrc4gau16k7l65gntlrcu.apps.googleusercontent.com">
-<title>User Login</title>
+	content="383423582512-5fk92dcul5rjrah9s4rhmjnmtt0rna4o.apps.googleusercontent.com">
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<title>${webpageTitle}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/AuthService.js'></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
@@ -28,18 +29,27 @@
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
-		<div id="page_content_thin" class="form">
+		<div id="page_content_thin">
 			<div id="errmsg_panel"></div>
-			<div class="form_title">登录</div>
+			<div class="page_title">${pageTitle}</div>
 
-			<input id="username" type="text" name="username"
-				placeholder="请输入用户名或电子邮件地址" /> <input id="password" type="password"
-				name="password" placeholder="请输入密码" />
+			<div class="page_row">
+				<input id="username" type="text" name="username"
+					placeholder="${usernamePh}" />
+			</div>
+			<div class="page_row">
+				<input id="password" type="password" name="password"
+					placeholder="${passwordPh}" />
+			</div>
 
-			<div>
-				<button id="signin_btn" class="btn_large">登录</button>
+			<div class="page_row" style="overflow-y: hidden;">
+				<div class="g-recaptcha"
+					data-sitekey="6Lc7fQwTAAAAANTSNgx5tcafhe2ZlABr1fFBkjuU"></div>
+			</div>
+			<div class="page_row">
+				<button id="signin_btn" class="btn_large">${loginBtn}</button>
 				<div style="display: inline-block; margin-left: 20px;">
-					<a href="forgetpass.html">忘记密码？</a>
+					<a href="forgetpass.html">${forgetpassLink}</a>
 				</div>
 			</div>
 			<div class="g-signin2 external_login_button" style="color: #fff"
@@ -55,7 +65,7 @@
 				});
 			</script-->
 			<div>
-				新用户？<a href="signup.html">点击此处免费注册</a>
+				${newuserText}<a href="signup.html">${signupLink}</a>
 			</div>
 		</div>
 

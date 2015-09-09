@@ -64,11 +64,17 @@ function onload() {
 		if (success) {
 			// Put token in local storage
 			loginSuccess(data);
+		} else {
+			// Reset Captcha
+			grecaptcha.reset();
 		}
 	};
 	var login = function() {
 		var bean = bm.getBean();
 		if (null != bean) {
+			// gcaptcha
+			var captcharesp = grecaptcha.getResponse();
+			bean['captcha'] = captcharesp;
 			AuthService.login(bean, otms.ui.MessageBox.han(callback));
 		}
 	};

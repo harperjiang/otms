@@ -30,4 +30,11 @@ public interface ErrorCode {
 
 	int SYSTEM_INVALID_PARAM = SYSTEM + 1;
 
+	int SYSTEM_CAPTCHA_FAIL = SYSTEM + 2;
+
+	int SYSTEM_NO_USER = SYSTEM + 3;
+
+	int SYSTEM_NO_AUTH = SYSTEM + 4;
+
+	int SYSTEM_DATA_NOT_FOUND = SYSTEM + 5;
 }

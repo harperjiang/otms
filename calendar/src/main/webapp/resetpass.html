@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Reset Password</title>
+<!--#include virtual="head.html" -->
+<script type='text/javascript' src='dwr/interface/AuthService.js'></script>
+<script>
+	function callback(success, data) {
+		$('#main_panel').css('display', 'none');
+		if (success) {
+			$('#correct_panel').css('display', 'block');
+		} else {
+			$('#wrong_panel').css('display', 'block');
+		}
+	};
+
+	$(function() {
+
+		otms.validator.NonemptyValidator($('#password'));
+		otms.validator.NonemptyValidator($('#password2'));
+
+		var bm = new otms.validator.BeanManager();
+		bm.reg('password', $('#password'));
+
+		$('#confirm').click(
+				function() {
+					var bean = bm.getBean();
+					if (bean != null) {
+						$('#confirm').prop('disabled', 'disabled');
+						bean['uuid'] = otms.getUrlParam('uuid');
+						AuthService.confirmResetPass(bean, otms.ui.MessageBox
+								.shan(callback));
+					}
+				});
+	});
+</script>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<div id="page_content_thin">
+			<div id="main_panel">
+				<div class="page_title">Reset Password</div>
+				<div class="page_block">
+					<div class="page_row">
+						<input type="password" id="password"
+							placeholder="Your New Password" />
+					</div>
+					<div class="page_row">
+						<input type="password" id="password2"
+							placeholder="Confirm Your New Password" />
+					</div>
+					<div class="page_row">
+						<button class="btn_normal" id="confirm">Confirm</button>
+					</div>
+				</div>
+			</div>
+			<div id="correct_panel" style="display: none;">
+				<div class="page_title">Reset Password</div>
+				<div class="page_block">
+					<div class="page_row">Congratulations! Your password has been
+						reset. You can now use your new password to login the system.</div>
+				</div>
+			</div>
+			<div id="wrong_panel" style="display: none;">
+				<div class="page_title">Reset Password</div>
+				<div class="page_block">
+					<div class="page_row">The information you provided is
+						incorrect. Please confirm your information and try again.</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

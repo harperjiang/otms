@@ -27,10 +27,11 @@ public class DefaultFeedbackService implements FeedbackService {
 		LessonItem item = getLessonItemDao()
 				.findById(request.getLessonItemId());
 		if (item == null) {
-			return new ClientFeedbackResponseDto(ErrorCode.DATA_NOT_FOUND);
+			return new ClientFeedbackResponseDto(
+					ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		}
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()) {
-			return new ClientFeedbackResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new ClientFeedbackResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 
 		/*
@@ -74,10 +75,10 @@ public class DefaultFeedbackService implements FeedbackService {
 		Feedback feedback = getFeedbackDao().findByLessonItemId(
 				request.getLessonItemId());
 		if (feedback == null)
-			return new GetFeedbackResponseDto(ErrorCode.DATA_NOT_FOUND);
+			return new GetFeedbackResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		if (feedback.getTutor().getId() != request.getCurrentUser()
 				&& feedback.getClient().getId() != request.getCurrentUser()) {
-			return new GetFeedbackResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new GetFeedbackResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 
 		GetFeedbackResponseDto response = new GetFeedbackResponseDto();

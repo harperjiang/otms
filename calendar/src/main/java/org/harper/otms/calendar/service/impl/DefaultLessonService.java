@@ -78,11 +78,11 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		Lesson lesson = getLessonDao().findById(request.getLessonId());
 		// Check whether current user is owner
 		if (null == lesson)
-			return new GetLessonResponseDto(ErrorCode.DATA_NOT_FOUND);
+			return new GetLessonResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 
 		if (lesson.getClient().getId() != request.getCurrentUser()
 				&& lesson.getTutor().getId() != request.getCurrentUser())
-			return new GetLessonResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new GetLessonResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 
 		if (lesson.getClient().getId() != request.getCurrentUser()) {
 			result.setOwner(false);
@@ -103,12 +103,12 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		LessonItem item = getLessonItemDao()
 				.findById(request.getLessonItemId());
 		if (null == item)
-			return new GetLessonItemResponseDto(ErrorCode.DATA_NOT_FOUND);
+			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()
 				&& item.getLesson().getTutor().getId() != request
 						.getCurrentUser())
-			return new GetLessonItemResponseDto(ErrorCode.SYS_NO_AUTH);
+			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()) {
 			result.setOwner(false);
@@ -194,7 +194,7 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		Client client = getClientDao().findById(request.getCurrentUser());
 		if (client == null) {
 			SetupLessonResponseDto result = new SetupLessonResponseDto();
-			result.setErrorCode(ErrorCode.SYS_NO_USER);
+			result.setErrorCode(ErrorCode.SYSTEM_NO_USER);
 			return result;
 		}
 		lesson.setClient(client);
@@ -254,7 +254,8 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		// Verify that user can do this operation
 		if (lesson.getStatus() == Status.REQUESTED) {
 			if (lesson.getTutor().getId() != request.getCurrentUser()) {
-				return new ChangeLessonStatusResponseDto(ErrorCode.SYS_NO_AUTH);
+				return new ChangeLessonStatusResponseDto(
+						ErrorCode.SYSTEM_NO_AUTH);
 			}
 		}
 

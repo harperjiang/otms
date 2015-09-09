@@ -79,7 +79,8 @@ otms.ui.MessageBox.handler = function(container, mycallback) {
 			} else {
 				var errorMsg = response.errorMessage;
 				if (response.errorCode != undefined) {
-					errorMsg = otms.ErrorMsg.msg(response.errorCode);
+					var lang = localStorage.getItem('otms.lang');
+					errorMsg = otms.ErrorMsg.msg(response.errorCode, lang);
 				}
 				if (errorMsg === undefined) {
 					errorMsg = 'Server Error';
