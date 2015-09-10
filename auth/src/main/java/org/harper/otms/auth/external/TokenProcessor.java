@@ -8,12 +8,19 @@ public abstract class TokenProcessor {
 
 	private static GoogleTokenProcessor google = new GoogleTokenProcessor();
 
+	private static TokenProcessor def = new TokenProcessor() {
+		@Override
+		public String process(String token) {
+			return token;
+		}
+	};
+
 	public static TokenProcessor getInstance(ExternalSystem system) {
 		switch (system) {
 		case Google:
 			return google;
 		default:
-			return null;
+			return def;
 		}
 	}
 }

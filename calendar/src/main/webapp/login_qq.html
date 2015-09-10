@@ -2,17 +2,79 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>Login</title>
 <!--#include virtual="head.html" -->
+<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
+<script type="text/javascript"
+	src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js"
+	data-appid="101249406" charset="utf-8"></script>
 <script>
-	
+	function onQQGetOpenId(openId, accessToken) {
+		debugger;
+		var bean = otms.loginQQPage.bean;
+		bean['sourceId'] = openId;
+		QC.api("get_user_info", {}).success(onQQSuccess).error(onQQFail)
+				.complete(function(c) {
+				});
+	};
+
+	function onQQSuccess(qqresp, status, xhr) {
+		debugger;
+		var qqdata = qqresp.data;
+		var displayName = qqdata.nickname;
+		var pictureurl = qqdata.figureurl_2;
+		if (otms.isEmpty(pictureurl)) {
+			pictureurl = qqdata.figureurl_1;
+		}
+		if (otms.isEmpty(pictureurl)) {
+			pictureurl = qqdata.figureurl;
+		}
+		if (otms.isEmpty(pictureurl)) {
+			pictureurl = qqdata.figureurl_qq_2;
+		}
+		if (otms.isEmpty(pictureurl)) {
+			pictureurl = qqdata.figureurl_qq_1;
+		}
+
+		var bean = otms.loginQQPage.bean;
+
+		bean['displayName'] = displayName;
+		bean['verifyEmail'] = true;
+		bean['type'] = 'client';
+		bean['pictureUrl'] = pictureurl;
+		bean['sourceSystem'] = 'QQ';
+		window.opener.onQQSignIn(true, bean);
+		window.opener.focus();
+		window.close();
+	};
+
+	function onQQFail(xhr, status, err) {
+		debugger;
+		window.opener.onQQSignIn(false);
+		window.opener.focus();
+		window.close();
+	};
+
+	function onload() {
+		otms.namespace('otms.loginQQPage');
+		otms.loginQQPage.bean = {};
+		QC.Login.getMe(onQQGetOpenId);
+	};
+
+	$(onload);
 </script>
 </head>
 <body>
 	<div id="page">
 		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
-		<div id="page_content_thin"></div>
+		<div id="page_content_thin">
+			<div class="page_title">Success!</div>
+			<div class="page_block">
+				<div class="page_row">You have successfully logged in with
+					your QQ account. Please wait while we process your information...</div>
+			</div>
+		</div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

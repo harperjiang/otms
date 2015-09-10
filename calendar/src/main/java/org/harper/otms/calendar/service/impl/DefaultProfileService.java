@@ -14,8 +14,6 @@ import org.harper.otms.auth.external.TokenProcessor;
 import org.harper.otms.auth.service.UserService;
 import org.harper.otms.auth.service.dto.CreateUserDto;
 import org.harper.otms.auth.service.dto.CreateUserResponseDto;
-import org.harper.otms.auth.service.dto.LinkUserDto;
-import org.harper.otms.auth.service.dto.LinkUserResponseDto;
 import org.harper.otms.auth.service.util.CaptchaUtil;
 import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.TutorDao;
@@ -32,6 +30,8 @@ import org.harper.otms.calendar.service.dto.GetTutorInfoDto;
 import org.harper.otms.calendar.service.dto.GetTutorInfoResponseDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoResponseDto;
+import org.harper.otms.calendar.service.dto.LinkUserDto;
+import org.harper.otms.calendar.service.dto.LinkUserResponseDto;
 import org.harper.otms.calendar.service.dto.RegisterUserDto;
 import org.harper.otms.calendar.service.dto.RegisterUserResponseDto;
 import org.harper.otms.calendar.service.dto.SetupClientDto;
@@ -95,10 +95,15 @@ public class DefaultProfileService implements ProfileService {
 		CreateUserDto create = new CreateUserDto();
 		create.setDisplayName(request.getDisplayName());
 		create.setEmail(request.getEmail());
-		create.setUsername(MessageFormat.format("{0}-{1}",
-				request.getSourceSystem(), sourceId));
+		if (StringUtils.isEmpty(request.getUsername())) {
+			create.setUsername(MessageFormat.format("{0}-{1}",
+					request.getSourceSystem(), sourceId));
+		} else {
+			create.setUsername(request.getUsername());
+		}
+
 		create.setType(request.getType());
-		create.setTimezone("GMT");
+		create.setTimezone(request.getTimezone());
 		create.setVerifyEmail(request.isVerifyEmail());
 		create.setLinkUser(true);
 		CreateUserResponseDto resp = getUserService().createUser(create);
@@ -107,7 +112,8 @@ public class DefaultProfileService implements ProfileService {
 			User user = getUserDao().findById(resp.getUserId());
 			user.setSourceSystem(sourceSystem);
 			user.setSourceId(sourceId);
-			user.setActivationCode("modify_username");
+			if (StringUtils.isEmpty(request.getUsername()))
+				user.setActivationCode("modify_username");
 			if ("tutor".equals(request.getType())) {
 				Tutor tutor = new Tutor();
 				tutor.setUser(user);
@@ -119,7 +125,7 @@ public class DefaultProfileService implements ProfileService {
 				client.setPictureUrl(request.getPictureUrl());
 				getClientDao().save(client);
 			}
-			return new LinkUserResponseDto();
+			return new LinkUserResponseDto(request.isVerifyEmail());
 		} else {
 			return new LinkUserResponseDto(resp.getErrorCode());
 		}

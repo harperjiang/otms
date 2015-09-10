@@ -1,13 +1,13 @@
 package org.harper.otms.calendar.service;
 
-import org.harper.otms.auth.service.dto.LinkUserDto;
-import org.harper.otms.auth.service.dto.LinkUserResponseDto;
 import org.harper.otms.calendar.service.dto.GetClientInfoDto;
 import org.harper.otms.calendar.service.dto.GetClientInfoResponseDto;
 import org.harper.otms.calendar.service.dto.GetTutorInfoDto;
 import org.harper.otms.calendar.service.dto.GetTutorInfoResponseDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoResponseDto;
+import org.harper.otms.calendar.service.dto.LinkUserDto;
+import org.harper.otms.calendar.service.dto.LinkUserResponseDto;
 import org.harper.otms.calendar.service.dto.RegisterUserDto;
 import org.harper.otms.calendar.service.dto.RegisterUserResponseDto;
 import org.harper.otms.calendar.service.dto.SetupClientDto;
