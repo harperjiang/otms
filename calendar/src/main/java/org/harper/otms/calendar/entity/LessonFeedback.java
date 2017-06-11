@@ -8,8 +8,8 @@ import javax.persistence.Table;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
-@Table(name = "feedback")
-public class Feedback extends Entity {
+@Table(name = "lesson_feedback")
+public class LessonFeedback extends Entity {
 
 	@OneToOne
 	@JoinColumn(name = "tutor_id")

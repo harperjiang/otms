@@ -10,8 +10,6 @@ function refreshList() {
 };
 
 function popupRenderer(popupDiv) {
-	popupDiv.prop('width', 160);
-
 	var confirmBtn = $(document.createElement('button'));
 	confirmBtn.addClass('btn_small');
 	confirmBtn.attr('id', 'confirm_btn');
@@ -30,6 +28,15 @@ function popupRenderer(popupDiv) {
 	rejectBtn.append("Reject");
 	popupDiv.append(rejectBtn);
 
+	popupDiv.prop('width', 160);
+	// Only display Cancel button for client
+	if (otms.auth.userType() == 'client') {
+		confirmBtn.css('display', 'none');
+		rejectBtn.empty();
+		rejectBtn.append("Cancel");
+		popupDiv.prop('width', 90);
+	}
+
 	var callback = function(success, data) {
 		if (success) {
 			refreshList();
@@ -40,6 +47,7 @@ function popupRenderer(popupDiv) {
 			'click',
 			'#confirm_btn',
 			function() {
+				var list = otms.reqLessonPage.list;
 				var item = list.currentItem;
 				list.hidePopup();
 				var req = otms.auth.req({
@@ -54,6 +62,7 @@ function popupRenderer(popupDiv) {
 			'click',
 			'#reject_btn',
 			function() {
+				var list = otms.reqLessonPage.list;
 				var item = list.currentItem;
 				list.hidePopup();
 				var req = otms.auth.req({

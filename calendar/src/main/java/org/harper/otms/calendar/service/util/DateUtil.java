@@ -71,10 +71,9 @@ public class DateUtil {
 		cal.setTime(date);
 		cal.setTimeZone(to);
 		DateFormat format = new SimpleDateFormat("yyyy-M-d H:m");
-		String timeString = MessageFormat.format("{0}-{1}-{2} {3}:{4}",
-				Integer.toString(cal.get(Calendar.YEAR)),
-				cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH),
-				cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+		String timeString = MessageFormat.format("{0}-{1}-{2} {3}:{4}", Integer.toString(cal.get(Calendar.YEAR)),
+				cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY),
+				cal.get(Calendar.MINUTE));
 		return format.parse(timeString, new ParsePosition(0));
 	}
 
@@ -100,18 +99,16 @@ public class DateUtil {
 	public static Date datewithtz(Date input, TimeZone newtz) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(input);
-		String localString = MessageFormat.format("{0}-{1}-{2} {3}:{4}",
-				Integer.toString(cal.get(Calendar.YEAR)),
-				cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH),
-				cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE));
+		String localString = MessageFormat.format("{0}-{1}-{2} {3}:{4}", Integer.toString(cal.get(Calendar.YEAR)),
+				cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY),
+				cal.get(Calendar.MINUTE));
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		df.setTimeZone(newtz);
 		return df.parse(localString, new ParsePosition(0));
 	}
 
 	public static int offset(Date newDate, Date ref) {
-		return Days.daysBetween(new DateTime(ref), new DateTime(newDate))
-				.getDays();
+		return Days.daysBetween(new DateTime(ref), new DateTime(newDate)).getDays();
 	}
 
 	public static int extract(Date date) {
@@ -125,5 +122,14 @@ public class DateUtil {
 		cal.setTime(new Date());
 		cal.add(Calendar.DAY_OF_MONTH, num);
 		return cal.getTime();
+	}
+
+	public static int dateDiff(Date newStartTs, Date startTs) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(newStartTs);
+		int newdate = cal.get(Calendar.DAY_OF_YEAR);
+		cal.setTime(startTs);
+		int olddate = cal.get(Calendar.DAY_OF_YEAR);
+		return newdate - olddate;
 	}
 }

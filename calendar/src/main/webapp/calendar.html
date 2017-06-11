@@ -15,12 +15,26 @@
 				calendar.onAddButton = function() {
 					if (otms.auth.userType() == 'client') {
 						// Go to setup meeting page
-						window.sessionStorage.removeItem('eventId');
+						otms.clearPageParam('eventId');
+						otms.clearPageParam('lessonId');
 						window.location = 'lesson.html';
 					} else {
 						otms.ui.MessageBox.info($('#errmsg_panel'),
 								'You are not allowed to schedule new lesson');
 					}
+				};
+
+				calendar.eventRenderer = function(eventObj) {
+					var userType = otms.auth.userType();
+					var partnerName = "";
+					if (userType == 'tutor') {
+						partnerName = eventObj.clientName;
+					} else if (userType == 'client') {
+						partnerName = eventObj.tutorName;
+					}
+
+					return otms.DateUtil.formattime(eventObj.fromTime)
+							+ " with " + partnerName;
 				};
 
 				calendar.onEventClick = function(obj, event) {

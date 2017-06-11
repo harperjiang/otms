@@ -60,19 +60,20 @@ otms.ui.MessageBox.showMessageWithClass = function(component, message, style) {
 
 // The slient default handler
 otms.ui.MessageBox.shan = function(callback) {
-	return otms.ui.MessageBox.errhandler($('#errmsg_panel'), callback);
+	return otms.ui.MessageBox.handler($('#errmsg_panel'), callback, true);
 };
 
 otms.ui.MessageBox.han = function(callback) {
-	return otms.ui.MessageBox.handler($('#errmsg_panel'), callback);
+	return otms.ui.MessageBox.handler($('#errmsg_panel'), callback, false);
 };
 
-otms.ui.MessageBox.handler = function(container, mycallback) {
+otms.ui.MessageBox.handler = function(container, mycallback, slient) {
 	return {
 		callback : function(response) {
 			console.log(response);
 			if (response.success) {
-				otms.ui.MessageBox.success(container, 'Operation Succeed');
+				if (!slient)
+					otms.ui.MessageBox.success(container, 'Operation Succeed');
 				if (mycallback != undefined) {
 					mycallback(true, response);
 				}

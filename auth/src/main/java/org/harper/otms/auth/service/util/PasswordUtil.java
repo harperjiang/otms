@@ -19,4 +19,8 @@ public class PasswordUtil {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(digest("jieninan"));
+	}
 }

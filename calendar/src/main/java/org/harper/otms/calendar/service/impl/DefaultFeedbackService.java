@@ -5,7 +5,7 @@ import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.dao.FeedbackDao;
 import org.harper.otms.calendar.dao.LessonItemDao;
 import org.harper.otms.calendar.dao.TodoDao;
-import org.harper.otms.calendar.entity.Feedback;
+import org.harper.otms.calendar.entity.LessonFeedback;
 import org.harper.otms.calendar.entity.LessonItem;
 import org.harper.otms.calendar.entity.LessonItem.FeedbackStatus;
 import org.harper.otms.calendar.entity.Todo;
@@ -37,7 +37,7 @@ public class DefaultFeedbackService implements FeedbackService {
 		/*
 		 * Save feedback item
 		 */
-		Feedback feedback = new Feedback();
+		LessonFeedback feedback = new LessonFeedback();
 		feedback.setLessonItem(item);
 		feedback.setClient(item.getLesson().getClient());
 		feedback.setTutor(item.getLesson().getTutor());
@@ -72,7 +72,7 @@ public class DefaultFeedbackService implements FeedbackService {
 	@Override
 	public GetFeedbackResponseDto getFeedback(GetFeedbackDto request) {
 		User currentUser = getUserDao().findById(request.getCurrentUser());
-		Feedback feedback = getFeedbackDao().findByLessonItemId(
+		LessonFeedback feedback = getFeedbackDao().findByLessonItemId(
 				request.getLessonItemId());
 		if (feedback == null)
 			return new GetFeedbackResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);

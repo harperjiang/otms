@@ -10,5 +10,6 @@
     <module>calendar</module>
     <module>auth</module>
     <module>common</module>
+    <module>accounting</module>
   </modules>
 </project>

@@ -115,7 +115,7 @@ public class RepeatEntry extends CalendarEntry {
 		setFromTime(DateUtil.extract(newStartTs));
 		setToTime(DateUtil.extract(newStopTs));
 
-		int offset = DateUtil.offset(newStartTs, startTs);
+		int offset = DateUtil.dateDiff(newStartTs, startTs);
 
 		// The date expression need to be updated if time difference is more
 		// than one day

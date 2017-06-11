@@ -1,17 +1,40 @@
 <!DOCTYPE html>
+<!-- Please be aware that this page does not use common pages -->
 <html>
 <head>
 <meta charset="UTF-8">
-<title>出错了！</title>
-<!--#include virtual="head.html" -->
+<title>Error Page - 出错了！</title>
+<meta name="lang" content="en_US" />
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="styles/all.css" />
 <script>
-	
+function returnToMain() {
+	window.location='index.html';
+}
+setTimeout(returnToMain, 2000);
 </script>
 </head>
 <body>
 	<div id="page">
-		<!--#include virtual="header.html" -->
-		<div id="errmsg_panel"></div>
+		<div id="header">
+			<div class="topbar">
+				<div class="topbar_logo">
+					<a href="index.html"><img src="resource/logo.png" width="100%"
+						height="100%"></a>
+				</div>
+			</div>
+			<div id="navbar" class="navbar">
+				<ul>
+					<li><a id="nav_home" href="dashboard.html"><span>Dashboard</span></a></li>
+					<li><a href="quick_start.html"><span>Quick Start</span></a></li>
+					<!-- li><a href="lesson_intro.html"><span>课程介绍</span></a></li -->
+					<li><a href="find_tutor.html"><span>Find Tutor</span></a></li>
+					<li><a href="help.html"><span>Help</span></a></li>
+					<li><a href="about.html"><span>About</span></a></li>
+				</ul>
+			</div>
+		</div>
 		<div id="page_content_thin">This is an error page</div>
 	</div>
 	<!--#include virtual="footer.html" -->

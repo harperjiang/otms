@@ -16,7 +16,7 @@
 		<class>org.harper.otms.auth.entity.User</class>
 		<class>org.harper.otms.calendar.entity.ActionLog</class>
 		<class>org.harper.otms.calendar.entity.Todo</class>
-		<class>org.harper.otms.calendar.entity.Feedback</class>
+		<class>org.harper.otms.calendar.entity.LessonFeedback</class>
 		<class>org.harper.otms.calendar.entity.ContactUs</class>
 		<properties>
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />

@@ -25,9 +25,9 @@ public class LessonItemDto {
 
 	private Date date;
 
-	private int fromTime;
+	private TimeDto fromTime;
 
-	private int toTime;
+	private TimeDto toTime;
 
 	private String status;
 
@@ -46,8 +46,10 @@ public class LessonItemDto {
 		item.convert(utc, viewer.getTimezone());
 
 		setDate(DateUtil.truncate(item.getFromTime()));
-		setFromTime(DateUtil.extract(item.getFromTime()));
-		setToTime(DateUtil.extract(item.getToTime()));
+
+		setFromTime(new TimeDto(DateUtil.extract(item.getFromTime())));
+		setToTime(new TimeDto(DateUtil.extract(item.getToTime())));
+
 		setStatus(item.getStatus().name());
 		setFeedbackStatus(item.getFeedbackStatus().name());
 	}
@@ -57,9 +59,9 @@ public class LessonItemDto {
 
 		item.setTitle(getTitle());
 		item.setDescription(getDescription());
-		
-		item.setFromTime(DateUtil.form(getDate(), getFromTime()));
-		item.setToTime(DateUtil.form(getDate(), getToTime()));
+
+		item.setFromTime(DateUtil.form(getDate(), getFromTime().total()));
+		item.setToTime(DateUtil.form(getDate(), getToTime().total()));
 
 		/*
 		 * Changing status directly with this method is not allowed
@@ -129,19 +131,19 @@ public class LessonItemDto {
 		this.date = date;
 	}
 
-	public int getFromTime() {
+	public TimeDto getFromTime() {
 		return fromTime;
 	}
 
-	public void setFromTime(int fromTime) {
+	public void setFromTime(TimeDto fromTime) {
 		this.fromTime = fromTime;
 	}
 
-	public int getToTime() {
+	public TimeDto getToTime() {
 		return toTime;
 	}
 
-	public void setToTime(int toTime) {
+	public void setToTime(TimeDto toTime) {
 		this.toTime = toTime;
 	}
 

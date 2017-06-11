@@ -12,7 +12,7 @@ import org.harper.otms.calendar.dao.ActionLogDao;
 import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.dao.LessonItemDao;
-import org.harper.otms.calendar.dao.SnapshotDao;
+import org.harper.otms.calendar.dao.SchedulerDao;
 import org.harper.otms.calendar.dao.TodoDao;
 import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.ActionLog;
@@ -27,10 +27,10 @@ import org.harper.otms.calendar.entity.Todo;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.ErrorCode;
 import org.harper.otms.calendar.service.LessonService;
-import org.harper.otms.calendar.service.dto.CancelLessonDto;
+import org.harper.otms.calendar.service.dto.CancelLessonItemDto;
+import org.harper.otms.calendar.service.dto.CancelLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusResponseDto;
-import org.harper.otms.calendar.service.dto.ConfirmCancelDto;
 import org.harper.otms.calendar.service.dto.GetLessonDto;
 import org.harper.otms.calendar.service.dto.GetLessonHistoryDto;
 import org.harper.otms.calendar.service.dto.GetLessonHistoryResponseDto;
@@ -50,24 +50,13 @@ import org.harper.otms.calendar.service.dto.SetupLessonResponseDto;
 import org.harper.otms.calendar.service.dto.TriggerLessonDto;
 import org.harper.otms.calendar.service.dto.TriggerLessonResponseDto;
 import org.harper.otms.calendar.service.util.DateUtil;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
-public class DefaultLessonService implements LessonService, InitializingBean {
+public class DefaultLessonService implements LessonService {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		getScheduler().addJob(new TriggerLessonJobDetail(), true);
-	}
 
 	@Override
 	public GetLessonResponseDto getLesson(GetLessonDto request) {
@@ -100,14 +89,12 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		GetLessonItemResponseDto result = new GetLessonItemResponseDto();
 		User viewer = getUserDao().findById(request.getCurrentUser());
 
-		LessonItem item = getLessonItemDao()
-				.findById(request.getLessonItemId());
+		LessonItem item = getLessonItemDao().findById(request.getLessonItemId());
 		if (null == item)
 			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()
-				&& item.getLesson().getTutor().getId() != request
-						.getCurrentUser())
+				&& item.getLesson().getTutor().getId() != request.getCurrentUser())
 			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()) {
@@ -122,8 +109,7 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 	}
 
 	@Override
-	public GetLessonHistoryResponseDto getLessonHistory(
-			GetLessonHistoryDto request) {
+	public GetLessonHistoryResponseDto getLessonHistory(GetLessonHistoryDto request) {
 		User owner = getUserDao().findById(request.getCurrentUser());
 
 		TimeZone fromzone = owner.getTimezone();
@@ -131,8 +117,8 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 		List<LessonItem> records = getLessonItemDao().findWithin(owner,
 				DateUtil.convert(request.getFromTime(), fromzone, tozone),
-				DateUtil.convert(request.getToTime(), fromzone, tozone),
-				LessonItem.Status.SNAPSHOT, request.getPaging());
+				DateUtil.convert(request.getToTime(), fromzone, tozone), LessonItem.Status.SNAPSHOT,
+				request.getPaging());
 
 		GetLessonHistoryResponseDto response = new GetLessonHistoryResponseDto();
 
@@ -150,40 +136,25 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 	}
 
 	@Override
-	public MakeLessonItemResponseDto makeLessonItem(MakeLessonItemDto request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void cancelLesson(CancelLessonDto request) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void confirmCancel(ConfirmCancelDto request) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public SetupLessonResponseDto setupLesson(SetupLessonDto request) {
 		Lesson lesson = new Lesson();
-		lesson.setRequestDate(DateUtil.convert(new Date(),
-				TimeZone.getDefault(), TimeZone.getTimeZone("UTC")));
+		lesson.setRequestDate(DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("UTC")));
 		User owner = getUserDao().findById(request.getCurrentUser());
 
 		if (request.getLesson().getLessonId() != 0) {
 			lesson = getLessonDao().findById(request.getLesson().getLessonId());
+			if (!lesson.getItems().isEmpty()) {
+				SetupLessonResponseDto result = new SetupLessonResponseDto();
+				result.setErrorCode(ErrorCode.LESSON_IN_PROGRESS);
+				return result;
+			}
 		} else {
 			lesson.setStatus(Status.REQUESTED);
 			// This function generate 1-1 lessons
 			lesson.setCapacity(1);
 		}
 
-		Tutor tutor = getTutorDao().findByName(
-				request.getLesson().getTutorName());
+		Tutor tutor = getTutorDao().findByName(request.getLesson().getTutorName());
 		if (tutor == null) {
 			SetupLessonResponseDto result = new SetupLessonResponseDto();
 			result.setErrorCode(ErrorCode.TUTOR_NOT_FOUND);
@@ -205,106 +176,60 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		return new SetupLessonResponseDto();
 	}
 
-	@Override
-	public GetRequestedLessonResponseDto getRequestedLessons(
-			GetRequestedLessonDto request) {
-		User user = getUserDao().findById(request.getCurrentUser());
-		List<Lesson> lessons = getLessonDao().findByStatus(user,
-				Status.REQUESTED);
+	protected LessonItem createLessonItem(Lesson lesson, Date from, Date to) {
 
-		LessonDto[] dtos = new LessonDto[lessons.size()];
-
-		for (int i = 0; i < lessons.size(); i++) {
-			dtos[i] = new LessonDto();
-			dtos[i].from(lessons.get(i), user);
-		}
-
-		GetRequestedLessonResponseDto result = new GetRequestedLessonResponseDto();
-		result.setLessons(dtos);
-
-		return result;
+		return null;
 	}
 
 	@Override
-	public GetOngoingLessonResponseDto getOngoingLessons(
-			GetOngoingLessonDto request) {
-		User user = getUserDao().findById(request.getCurrentUser());
-		List<Lesson> lessons = getLessonDao().findByStatus(user, Status.VALID);
+	public MakeLessonItemResponseDto makeLessonItem(MakeLessonItemDto request) {
+		User owner = getUserDao().findById(request.getCurrentUser());
 
-		List<LessonDto> dtos = new ArrayList<LessonDto>();
+		LessonItem item = null;
+		// Find the lesson item if exists
+		if (!StringUtils.isEmpty(request.getLessonItemId())) {
+			item = getLessonItemDao().findById(request.getLessonItemId());
+			if (item == null)
+				return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
+		} else if (!StringUtils.isEmpty(request.getLessonId())) {
+			// Create one if not exists
+			Lesson lesson = getLessonDao().findById(request.getLessonId());
+			if (lesson == null)
+				return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
+			item = new LessonItem();
 
-		for (int i = 0; i < lessons.size(); i++) {
-			LessonDto dto = new LessonDto();
-			dto.from(lessons.get(i), user);
-			dtos.add(dto);
-		}
+			item.setStatus(LessonItem.Status.VALID);
 
-		GetOngoingLessonResponseDto result = new GetOngoingLessonResponseDto();
-		result.setLessons(dtos);
-
-		return result;
-	}
-
-	@Override
-	public ChangeLessonStatusResponseDto changeLessonStatus(
-			ChangeLessonStatusDto request) {
-		Lesson lesson = getLessonDao().findById(request.getLessonId());
-		Status toStatus = Status.valueOf(request.getToStatus());
-
-		// Verify that user can do this operation
-		if (lesson.getStatus() == Status.REQUESTED) {
-			if (lesson.getTutor().getId() != request.getCurrentUser()) {
-				return new ChangeLessonStatusResponseDto(
-						ErrorCode.SYSTEM_NO_AUTH);
+			int fromTime = 0;
+			if (lesson.getCalendar() instanceof OneoffEntry) {
+				fromTime = DateUtil.extract(((OneoffEntry) lesson.getCalendar()).getFromTime());
+			} else if (lesson.getCalendar() instanceof RepeatEntry) {
+				fromTime = ((RepeatEntry) lesson.getCalendar()).getFromTime();
 			}
+			Date itemDate = DateUtil.form(request.getLessonItem().getDate(), fromTime);
+			Date utcItemDate = DateUtil
+					.truncate(DateUtil.convert(itemDate, owner.getTimezone(), TimeZone.getTimeZone("UTC")));
+
+			lesson.getItems().put(utcItemDate, item);
 		}
 
-		// Generate an actionlog for the operation
-		ActionLog actionLog = new ActionLog();
-		actionLog.setActionDate(DateUtil.convert(new Date(),
-				TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
-		actionLog.setOperator(lesson.getTutor().getUser());
-		actionLog.setType("LESSON STATUS");
-		actionLog.setFrom(lesson.getStatus().name());
-		actionLog.setTo(toStatus.name());
-		actionLog.setComment("User Operation");
-		getActionLogDao().save(actionLog);
-
-		lesson.setStatus(toStatus);
-
-		// Setup lesson scheduler and reminder scheduler
-		String triggerId = MessageFormat.format("trigger_{0}_{1}", "lesson",
-				Integer.toString(lesson.getId()));
-		TriggerBuilder<Trigger> tBuilder = TriggerBuilder.newTrigger()
-				.withIdentity(triggerId, "calendar")
-				.forJob("triggerLessonJob", "calendar");
-		Trigger trigger = null;
-		if (lesson.getCalendar() instanceof OneoffEntry) {
-			OneoffEntry oe = (OneoffEntry) lesson.getCalendar();
-			trigger = tBuilder.startAt(oe.getFromTime()).build();
-		} else {
-			RepeatEntry re = (RepeatEntry) lesson.getCalendar();
-			trigger = tBuilder
-					.startAt(re.getStartDate())
-					.endAt(DateUtil.dayend(re.getStopDate()))
-					.withSchedule(
-							CronScheduleBuilder.cronSchedule(re.cronExp()))
-					.build();
+		// Not owner
+		if (!(item.getLesson().getTutor().getId() == owner.getId()
+				|| item.getLesson().getClient().getId() == owner.getId())) {
+			return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
-		trigger.getJobDataMap().put(TriggerLessonJobDetail.LESSON_ID,
-				String.valueOf(lesson.getId()));
-		TriggerKey tkey = trigger.getKey();
-		try {
-			if (getScheduler().checkExists(tkey)) {
-				getScheduler().rescheduleJob(tkey, trigger);
-			} else {
-				getScheduler().scheduleJob(trigger);
-			}
-		} catch (SchedulerException e) {
-			throw new RuntimeException(e);
+		// Time expired
+		if (item.getFromTime().compareTo(new Date()) < 0) {
+			return new MakeLessonItemResponseDto(ErrorCode.LESSON_ITEM_EXPIRED);
 		}
+		request.getLessonItem().to(item, owner);
+		getLessonItemDao().save(item);
+		// Update Scheduler
+		getSchedulerDao().setupScheduler(item);
 
-		return new ChangeLessonStatusResponseDto();
+		MakeLessonItemResponseDto resp = new MakeLessonItemResponseDto();
+		resp.setLessonItemId(item.getId());
+		return resp;
 	}
 
 	@Override
@@ -312,9 +237,17 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		LessonItem item = null;
 		if (request.getLessonItemId() != 0) {
 			item = getLessonItemDao().findById(request.getLessonItemId());
+			if (item.getStatus() != LessonItem.Status.VALID) {
+				logger.info(MessageFormat.format("Lesson Item is invalid:{0}", item.getId()));
+				return new TriggerLessonResponseDto();
+			}
 			item.setStatus(LessonItem.Status.SNAPSHOT);
 		} else {
 			Lesson lesson = getLessonDao().findById(request.getLessonId());
+			if (lesson.getStatus() != Lesson.Status.VALID) {
+				logger.info(MessageFormat.format("Lesson is invalid:{0}", lesson.getId()));
+				return new TriggerLessonResponseDto();
+			}
 			CalendarEntry entry = lesson.getCalendar();
 
 			Date today = DateUtil.truncate(new Date());
@@ -347,18 +280,25 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 				lesson.setStatus(Lesson.Status.INVALID);
 				// Generate an actionlog for the operation
 				ActionLog actionLog = new ActionLog();
-				actionLog.setActionDate(DateUtil.convert(new Date(),
-						TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
+				actionLog.setActionDate(
+						DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
 				actionLog.setOperator(null);
 				actionLog.setType("LESSON STATUS");
 				actionLog.setFrom(Lesson.Status.VALID.name());
 				actionLog.setTo(Lesson.Status.INVALID.name());
-				actionLog.setComment("Lesson Triggered");
+				actionLog.setComment(String.valueOf(lesson.getId()));
 				getActionLogDao().save(actionLog);
 			}
 		}
 		// Assign Id
 		getLessonItemDao().save(item);
+		// Add an action log for triggering lesson
+		ActionLog actionLog = new ActionLog();
+		actionLog.setActionDate(DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
+		actionLog.setOperator(null);
+		actionLog.setType("LESSON TRIGGER");
+		actionLog.setComment(String.valueOf(item.getLesson().getId()));
+		getActionLogDao().save(actionLog);
 
 		// Add a todo list for commenting this snapshot
 		Todo todo = new Todo();
@@ -366,18 +306,141 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		todo.setOwner(item.getLesson().getClient().getUser());
 		todo.setExpireTime(DateUtil.offset(7));
 		todo.setRefId(item.getId());
-		todo.getContext().addProperty(Todo.DK_LESSON_TUTORID,
-				item.getLesson().getTutor().getId());
+		todo.getContext().addProperty(Todo.DK_LESSON_TUTORID, item.getLesson().getTutor().getId());
 		todo.getContext().addProperty(Todo.DK_LESSON_TITLE, item.getTitle());
-		todo.getContext().addProperty(Todo.DK_LESSON_WITH,
-				item.getLesson().getTutor().getUser().getName());
-		todo.getContext().addProperty(Todo.DK_LESSON_FROM,
-				item.getFromTime().getTime());
-		todo.getContext().addProperty(Todo.DK_LESSON_TO,
-				item.getToTime().getTime());
+		todo.getContext().addProperty(Todo.DK_LESSON_WITH, item.getLesson().getTutor().getUser().getName());
+		todo.getContext().addProperty(Todo.DK_LESSON_FROM, item.getFromTime().getTime());
+		todo.getContext().addProperty(Todo.DK_LESSON_TO, item.getToTime().getTime());
 		getTodoDao().save(todo);
 
 		return new TriggerLessonResponseDto();
+	}
+
+	@Override
+	public CancelLessonItemResponseDto cancelLessonItem(CancelLessonItemDto request) {
+		LessonItem item = getLessonItemDao().findById(request.getLessonItemId());
+		if (item == null) {
+			return new CancelLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
+		}
+		if (item.getStatus() != LessonItem.Status.VALID) {
+			return new CancelLessonItemResponseDto(ErrorCode.LESSON_INVALID);
+		}
+		if (item.getLesson().getTutor().getId() != request.getCurrentUser()
+				&& item.getLesson().getClient().getId() != request.getCurrentUser()) {
+			return new CancelLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+		}
+		item.setStatus(LessonItem.Status.DELETED);
+		getSchedulerDao().cancelScheduler(item);
+		return new CancelLessonItemResponseDto();
+	}
+
+	@Override
+	public GetRequestedLessonResponseDto getRequestedLessons(GetRequestedLessonDto request) {
+		User user = getUserDao().findById(request.getCurrentUser());
+		List<Lesson> lessons = getLessonDao().findByStatus(user, Status.REQUESTED);
+
+		LessonDto[] dtos = new LessonDto[lessons.size()];
+
+		for (int i = 0; i < lessons.size(); i++) {
+			dtos[i] = new LessonDto();
+			dtos[i].from(lessons.get(i), user);
+		}
+
+		GetRequestedLessonResponseDto result = new GetRequestedLessonResponseDto();
+		result.setLessons(dtos);
+
+		return result;
+	}
+
+	@Override
+	public GetOngoingLessonResponseDto getOngoingLessons(GetOngoingLessonDto request) {
+		User user = getUserDao().findById(request.getCurrentUser());
+		List<Lesson> lessons = getLessonDao().findByStatus(user, Status.VALID);
+
+		List<LessonDto> dtos = new ArrayList<LessonDto>();
+
+		for (int i = 0; i < lessons.size(); i++) {
+			LessonDto dto = new LessonDto();
+			dto.from(lessons.get(i), user);
+			dtos.add(dto);
+		}
+
+		GetOngoingLessonResponseDto result = new GetOngoingLessonResponseDto();
+		result.setLessons(dtos);
+
+		return result;
+	}
+
+	@Override
+	public ChangeLessonStatusResponseDto changeLessonStatus(ChangeLessonStatusDto request) {
+		Lesson lesson = getLessonDao().findById(request.getLessonId());
+		Status fromStatus = lesson.getStatus();
+		Status toStatus = Status.valueOf(request.getToStatus());
+
+		// Verify that user can do this operation
+		switch (lesson.getStatus()) {
+		case REQUESTED:
+			switch (toStatus) {
+			case VALID:
+				if (lesson.getTutor().getId() != request.getCurrentUser()) {
+					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+				}
+				break;
+			case INVALID:
+				if (lesson.getTutor().getId() != request.getCurrentUser()
+						&& lesson.getClient().getId() != request.getCurrentUser()) {
+					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+				}
+				break;
+			default:
+				break;
+			}
+			break;
+		case INVALID:
+			if (toStatus != Status.INVALID) {
+				return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+			}
+			break;
+		case VALID:
+			switch (toStatus) {
+			case VALID:
+				break;
+			case INVALID:
+				if (lesson.getTutor().getId() != request.getCurrentUser()
+						&& lesson.getClient().getId() != request.getCurrentUser()) {
+					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+				}
+				break;
+			default:
+				return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+			}
+			break;
+		default:
+			break;
+		}
+
+		// Generate an actionlog for the operation
+		ActionLog actionLog = new ActionLog();
+		actionLog.setActionDate(DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
+		actionLog.setOperator(lesson.getTutor().getUser());
+		actionLog.setType("LESSON STATUS");
+		actionLog.setFrom(lesson.getStatus().name());
+		actionLog.setTo(toStatus.name());
+		actionLog.setComment(String.valueOf(lesson.getId()));
+		getActionLogDao().save(actionLog);
+
+		lesson.setStatus(toStatus);
+
+		if (fromStatus == Status.REQUESTED && toStatus == Status.VALID) {
+			// Setup Scheduler
+			getSchedulerDao().setupScheduler(lesson);
+		}
+		if (fromStatus == Status.VALID && toStatus == Status.INVALID) {
+			// Cancel Scheduler
+			getSchedulerDao().cancelScheduler(lesson);
+		}
+
+		return new ChangeLessonStatusResponseDto();
 	}
 
 	private LessonDao lessonDao;
@@ -388,15 +451,13 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 
 	private LessonItemDao lessonItemDao;
 
-	private SnapshotDao snapshotDao;
-
 	private UserDao userDao;
 
 	private ActionLogDao actionLogDao;
 
 	private TodoDao todoDao;
 
-	private Scheduler scheduler;
+	private SchedulerDao schedulerDao;
 
 	public LessonDao getLessonDao() {
 		return lessonDao;
@@ -430,14 +491,6 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		this.lessonItemDao = lessonItemDao;
 	}
 
-	public SnapshotDao getSnapshotDao() {
-		return snapshotDao;
-	}
-
-	public void setSnapshotDao(SnapshotDao snapshotDao) {
-		this.snapshotDao = snapshotDao;
-	}
-
 	public UserDao getUserDao() {
 		return userDao;
 	}
@@ -462,12 +515,12 @@ public class DefaultLessonService implements LessonService, InitializingBean {
 		this.todoDao = todoDao;
 	}
 
-	public Scheduler getScheduler() {
-		return scheduler;
+	public SchedulerDao getSchedulerDao() {
+		return schedulerDao;
 	}
 
-	public void setScheduler(Scheduler scheduler) {
-		this.scheduler = scheduler;
+	public void setSchedulerDao(SchedulerDao schedulerDao) {
+		this.schedulerDao = schedulerDao;
 	}
 
 }

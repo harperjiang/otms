@@ -20,7 +20,7 @@ function lessonListRenderer() {
 		content.append(titleSpan);
 
 		if (userType === 'tutor') {
-			content.append(", requested by ");
+			content.append(" with ");
 
 			var link = $(document.createElement('a'));
 			link
@@ -168,8 +168,10 @@ function lessonEventListRenderer() {
 };
 
 function viewLessonDetail(event, lesson) {
-	otms.UIUtil.stopMessage(event);
 	debugger;
+	otms.UIUtil.stopMessage(event);
+	otms.setPageParam('otms.lessonPage.id',lesson.lessonId)
+	window.location = 'lesson.html'
 };
 
 function viewLessonItemDetail(event, lessonItem) {

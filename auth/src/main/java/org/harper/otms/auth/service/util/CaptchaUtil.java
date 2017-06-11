@@ -13,7 +13,7 @@ import com.google.gson.JsonParser;
 
 public class CaptchaUtil {
 
-	private static String SECRET_KEY = "6Lc7fQwTAAAAAIB97QK6PEQybSNRB9fExGgNtAdH";
+	private static String SECRET_KEY = "6LcVwCQUAAAAAO5w76MF6dM6mmvonHsWv2jzvfBD";
 
 	private static String VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 
