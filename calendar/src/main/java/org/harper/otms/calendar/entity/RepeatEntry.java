@@ -79,23 +79,6 @@ public class RepeatEntry extends CalendarEntry {
 		this.dateExpression = dateExpression;
 	}
 
-	public List<Date> matchIn(Date from, Date to) {
-		DateExpression de = new DateExpression(getDateExpression());
-		List<Date> result = new ArrayList<Date>();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(from);
-		while (cal.getTime().compareTo(to) < 0) {
-			Date current = cal.getTime();
-			if (current.compareTo(getStartDate()) >= 0
-					&& current.compareTo(getStopDate()) <= 0
-					&& de.match(current)) {
-				result.add(current);
-			}
-			cal.add(Calendar.DAY_OF_YEAR, 1);
-		}
-		return result;
-	}
-
 	@Override
 	public void convert(TimeZone from, TimeZone to) {
 
@@ -179,8 +162,7 @@ public class RepeatEntry extends CalendarEntry {
 		}
 	}
 
-	static final String[] CRON_WEEK = { "SUN", "MON", "TUE", "WED", "THU",
-			"FRI", "SAT" };
+	static final String[] CRON_WEEK = { "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT" };
 
 	// Follow Quartz format
 	public String cronExp() {
@@ -196,9 +178,55 @@ public class RepeatEntry extends CalendarEntry {
 		}
 		week.deleteCharAt(week.length() - 1);
 
-		String cron = MessageFormat.format("0 {0} {1} ? * {2} *", min, hour,
-				week.toString());
+		String cron = MessageFormat.format("0 {0} {1} ? * {2} *", min, hour, week.toString());
 
 		return cron;
+	}
+
+	public List<Date> matchIn(Date from, Date to) {
+		DateExpression de = new DateExpression(getDateExpression());
+		List<Date> result = new ArrayList<Date>();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(from);
+		while (cal.getTime().compareTo(to) <= 0) {
+			Date current = cal.getTime();
+			if (de.match(current)) {
+				result.add(current);
+			}
+			cal.add(Calendar.DAY_OF_YEAR, 1);
+		}
+		return result;
+	}
+
+	@Override
+	public Date firstTime() {
+		// Find first valid day
+		DateExpression de = new DateExpression(getDateExpression());
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(getStartDate());
+		while (cal.getTime().compareTo(getStopDate()) <= 0) {
+			Date current = cal.getTime();
+			if (de.match(current)) {
+				return DateUtil.form(current, getFromTime());
+			}
+			cal.add(Calendar.DAY_OF_YEAR, 1);
+		}
+		return null;
+	}
+
+	@Override
+	public Date lastTime() {
+		// Find last valid day
+		DateExpression de = new DateExpression(getDateExpression());
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(getStopDate());
+		while (cal.getTime().compareTo(getStartDate()) >= 0) {
+			Date current = cal.getTime();
+			if (de.match(current)) {
+				return DateUtil.form(current, getFromTime());
+			}
+			cal.add(Calendar.DAY_OF_YEAR, -1);
+		}
+		return null;
 	}
 }

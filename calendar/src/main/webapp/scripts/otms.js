@@ -293,7 +293,7 @@ otms.DateUtil.comingweek = function() {
 };
 
 otms.tzData = [ 'US/Mountain', 'US/Central', 'US/Pacific', 'US/Eastern',
-		'Asia/Shanghai' ];
+		'Asia/Shanghai', 'Australia/Sydney', 'Europe/London', 'Europe/Paris' ];
 
 otms.loadTzSelect = function(select) {
 	var tzList = otms.tzData;

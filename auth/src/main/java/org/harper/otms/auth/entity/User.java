@@ -130,4 +130,9 @@ public class User extends Entity {
 		this.sourceId = sourceId;
 	}
 
+	public static final String TYPE_ADMIN = "admin";
+	
+	public static final String TYPE_CLIENT = "client";
+	
+	public static final String TYPE_TUTOR = "tutor";
 }

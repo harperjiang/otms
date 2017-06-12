@@ -1,6 +1,7 @@
 package org.harper.otms.calendar.dao.external;
 
 import java.text.MessageFormat;
+import java.util.TimeZone;
 
 import org.harper.otms.calendar.dao.SchedulerDao;
 import org.harper.otms.calendar.entity.Lesson;
@@ -52,8 +53,10 @@ public class QuartzSchedulerDao implements SchedulerDao, InitializingBean {
 				trigger = tBuilder.startAt(oe.getFromTime()).build();
 			} else {
 				RepeatEntry re = (RepeatEntry) lesson.getCalendar();
+				CronScheduleBuilder csbuilder = CronScheduleBuilder.cronSchedule(re.cronExp())
+						.inTimeZone(TimeZone.getTimeZone("UTC"));
 				trigger = tBuilder.startAt(re.getStartDate()).endAt(DateUtil.dayend(re.getStopDate()))
-						.withSchedule(CronScheduleBuilder.cronSchedule(re.cronExp())).build();
+						.withSchedule(csbuilder).build();
 			}
 			trigger.getJobDataMap().put(TriggerLessonJobDetail.LESSON_ID, String.valueOf(lesson.getId()));
 		} else if (entity instanceof LessonItem) {

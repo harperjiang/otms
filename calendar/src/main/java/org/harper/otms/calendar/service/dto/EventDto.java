@@ -1,10 +1,15 @@
 package org.harper.otms.calendar.service.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.harper.otms.calendar.entity.Client;
+import org.harper.otms.calendar.entity.Lesson;
 import org.harper.otms.calendar.entity.LessonItem;
+import org.harper.otms.calendar.entity.OneoffEntry;
+import org.harper.otms.calendar.entity.RepeatEntry;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.util.DateUtil;
 
@@ -40,8 +45,8 @@ public class EventDto {
 
 	}
 
-	public EventDto(String type, int id, Date date, String title, int fromTime,
-			int toTime, Tutor tutor, Client client) {
+	public EventDto(String type, int id, Date date, String title, int fromTime, int toTime, Tutor tutor,
+			Client client) {
 		this.type = type;
 		this.id = id;
 		this.date = date;
@@ -55,17 +60,14 @@ public class EventDto {
 	}
 
 	public EventDto(LessonItem item) {
-		this(EventDto.LESSON_ITEM, item.getId(), DateUtil.truncate(item
-				.getFromTime()), item.getTitle(), DateUtil.extract(item
-				.getFromTime()), DateUtil.extract(item.getToTime()), item
-				.getLesson().getTutor(), item.getLesson().getClient());
+		this(EventDto.LESSON_ITEM, item.getId(), DateUtil.truncate(item.getFromTime()), item.getTitle(),
+				DateUtil.extract(item.getFromTime()), DateUtil.extract(item.getToTime()), item.getLesson().getTutor(),
+				item.getLesson().getClient());
 	}
 
 	public void convert(TimeZone from, TimeZone to) {
-		Date newfromdates = DateUtil.convert(
-				DateUtil.form(getDate(), getFromTime()), from, to);
-		Date newtodates = DateUtil.convert(
-				DateUtil.form(getDate(), getToTime()), from, to);
+		Date newfromdates = DateUtil.convert(DateUtil.form(getDate(), getFromTime()), from, to);
+		Date newtodates = DateUtil.convert(DateUtil.form(getDate(), getToTime()), from, to);
 
 		setDate(DateUtil.truncate(newfromdates));
 		setFromTime(DateUtil.extract(newfromdates));
@@ -156,6 +158,41 @@ public class EventDto {
 		Date myfrom = DateUtil.form(getDate(), getFromTime());
 		Date myto = DateUtil.form(getDate(), getToTime());
 		return myto.compareTo(fromDate) > 0 && myfrom.compareTo(toDate) < 0;
+	}
+
+	public static List<EventDto> fromLesson(Lesson lesson, Date fromDate, Date toDate) {
+		ArrayList<EventDto> result = new ArrayList<EventDto>();
+		if (lesson.getCalendar() instanceof OneoffEntry) {
+			OneoffEntry ofe = (OneoffEntry) lesson.getCalendar();
+			result.add(new EventDto(EventDto.LESSON, lesson.getId(),
+					DateUtil.truncate(ofe.getFromTime()),
+					lesson.getTitle(), DateUtil.extract(ofe.getFromTime()),
+					DateUtil.extract(ofe.getToTime()), lesson.getTutor(),
+					lesson.getClient()));
+		}
+		if (lesson.getCalendar() instanceof RepeatEntry) {
+			RepeatEntry rpe = (RepeatEntry) lesson.getCalendar();
+			for (Date date : rpe.matchIn(fromDate, toDate)) {
+				if (lesson.getItems().containsKey(date)) {
+					// Has Item on this day, use item to replace this
+					// information
+					LessonItem item = lesson.getItems().get(date);
+					if (item.getStatus() != LessonItem.Status.DELETED) {
+						EventDto event = new EventDto(item);
+						if (event.within(fromDate, toDate))
+							result.add(event);
+					}
+				} else {
+					EventDto event = new EventDto(EventDto.LESSON,
+							lesson.getId(), date, lesson.getTitle(),
+							rpe.getFromTime(), rpe.getToTime(),
+							lesson.getTutor(), lesson.getClient());
+					if (event.within(fromDate, toDate))
+						result.add(event);
+				}
+			}
+		}
+		return result;
 	}
 
 }

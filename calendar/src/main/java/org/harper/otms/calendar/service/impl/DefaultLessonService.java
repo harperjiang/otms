@@ -50,6 +50,7 @@ import org.harper.otms.calendar.service.dto.SetupLessonResponseDto;
 import org.harper.otms.calendar.service.dto.TriggerLessonDto;
 import org.harper.otms.calendar.service.dto.TriggerLessonResponseDto;
 import org.harper.otms.calendar.service.util.DateUtil;
+import org.harper.otms.common.service.DataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -138,15 +139,13 @@ public class DefaultLessonService implements LessonService {
 	@Override
 	public SetupLessonResponseDto setupLesson(SetupLessonDto request) {
 		Lesson lesson = new Lesson();
-		lesson.setRequestDate(DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("UTC")));
+		lesson.setRequestDate(DateUtil.nowUTC());
 		User owner = getUserDao().findById(request.getCurrentUser());
 
 		if (request.getLesson().getLessonId() != 0) {
 			lesson = getLessonDao().findById(request.getLesson().getLessonId());
 			if (!lesson.getItems().isEmpty()) {
-				SetupLessonResponseDto result = new SetupLessonResponseDto();
-				result.setErrorCode(ErrorCode.LESSON_IN_PROGRESS);
-				return result;
+				return new SetupLessonResponseDto(ErrorCode.LESSON_IN_PROGRESS);
 			}
 		} else {
 			lesson.setStatus(Status.REQUESTED);
@@ -156,23 +155,28 @@ public class DefaultLessonService implements LessonService {
 
 		Tutor tutor = getTutorDao().findByName(request.getLesson().getTutorName());
 		if (tutor == null) {
-			SetupLessonResponseDto result = new SetupLessonResponseDto();
-			result.setErrorCode(ErrorCode.TUTOR_NOT_FOUND);
-			return result;
+			return new SetupLessonResponseDto(ErrorCode.TUTOR_NOT_FOUND);
 		}
-		lesson.setTutor(tutor);
 
 		Client client = getClientDao().findById(request.getCurrentUser());
 		if (client == null) {
-			SetupLessonResponseDto result = new SetupLessonResponseDto();
-			result.setErrorCode(ErrorCode.SYSTEM_NO_USER);
-			return result;
+			return new SetupLessonResponseDto(ErrorCode.SYSTEM_NO_USER);
 		}
+		
+		lesson.setTutor(tutor);
 		lesson.setClient(client);
 
 		request.getLesson().to(lesson, owner);
-		getLessonDao().save(lesson);
+		Date firstDate = lesson.getCalendar().firstTime();
+		if (firstDate == null) {
+			throw new DataException(ErrorCode.LESSON_INVALID_SCHEDULE);
+		}
+		if (firstDate.compareTo(lesson.getRequestDate()) < 0) {
+			// Can only schedule a future lesson
+			throw new DataException(ErrorCode.LESSON_IN_PAST);
+		}
 
+		getLessonDao().save(lesson);
 		return new SetupLessonResponseDto();
 	}
 
@@ -250,7 +254,7 @@ public class DefaultLessonService implements LessonService {
 			}
 			CalendarEntry entry = lesson.getCalendar();
 
-			Date today = DateUtil.truncate(new Date());
+			Date today = DateUtil.truncate(DateUtil.nowUTC());
 
 			if (lesson.getItems().containsKey(today)) {
 				// Today has an item, the lesson should not be fired
@@ -384,6 +388,10 @@ public class DefaultLessonService implements LessonService {
 			case VALID:
 				if (lesson.getTutor().getId() != request.getCurrentUser()) {
 					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+				}
+				Date currentTime = DateUtil.nowUTC();
+				if (lesson.getCalendar().lastTime().compareTo(currentTime) < 0) {
+					return new ChangeLessonStatusResponseDto(ErrorCode.LESSON_IN_PAST);
 				}
 				break;
 			case INVALID:

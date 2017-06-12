@@ -132,4 +132,8 @@ public class DateUtil {
 		int olddate = cal.get(Calendar.DAY_OF_YEAR);
 		return newdate - olddate;
 	}
+
+	public static Date nowUTC() {
+		return DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("UTC"));
+	}
 }

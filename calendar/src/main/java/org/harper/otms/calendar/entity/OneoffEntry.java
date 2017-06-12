@@ -45,4 +45,14 @@ public class OneoffEntry extends CalendarEntry {
 		setToTime(DateUtil.convert(getToTime(), from, to));
 	}
 
+	@Override
+	public Date firstTime() {
+		return getFromTime();
+	}
+	
+	@Override
+	public Date lastTime() {
+		return getFromTime();
+	}
+
 }

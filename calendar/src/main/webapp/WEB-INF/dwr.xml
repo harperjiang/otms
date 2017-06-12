@@ -58,6 +58,13 @@
 			<include method="cancelLesson" />
 		</create>
 
+		<create creator="spring" javascript="AdminService">
+			<param name="beanName" value="adminService" />
+			<include method="scheduleLesson" />
+			<include method="searchLesson" />
+			<include method="updateLesson" />
+		</create>
+
 		<create creator="spring" javascript="TodoService">
 			<param name="beanName" value="todoService" />
 			<include method="getTodos" />

@@ -36,8 +36,7 @@ public class DefaultAuthService implements AuthService {
 			} catch (Exception e) {
 				return new LoginResponseDto(ErrorCode.USER_UNKNOWN_SOURCE);
 			}
-			String id = TokenProcessor.getInstance(system).process(
-					request.getSourceId());
+			String id = TokenProcessor.getInstance(system).process(request.getSourceId());
 			if (StringUtils.isEmpty(id)) {
 				return new LoginResponseDto(ErrorCode.USER_FAIL_LOGIN);
 			}
@@ -58,10 +57,10 @@ public class DefaultAuthService implements AuthService {
 				return new LoginResponseDto(ErrorCode.USER_FAIL_LOGIN);
 			}
 			// Verify Captcha
-			if (!CaptchaUtil.verify(request.getCaptcha(),
-					IPMonitorFilter.ipAddress.get())) {
-				return new LoginResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
-			}
+			// if (!CaptchaUtil.verify(request.getCaptcha(),
+			// IPMonitorFilter.ipAddress.get())) {
+			// return new LoginResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
+			// }
 
 		}
 		if (!user.isActivated()) {
@@ -78,8 +77,7 @@ public class DefaultAuthService implements AuthService {
 
 	@Override
 	public ReqResetPassResponseDto reqResetPass(ReqResetPassDto request) {
-		if (!CaptchaUtil.verify(request.getCaptcha(),
-				IPMonitorFilter.ipAddress.get())) {
+		if (!CaptchaUtil.verify(request.getCaptcha(), IPMonitorFilter.ipAddress.get())) {
 			return new ReqResetPassResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
 		}
 		User user = getUserDao().findByName(request.getUsername());
@@ -99,23 +97,18 @@ public class DefaultAuthService implements AuthService {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("uuid", user.getActivationCode());
-		getMailSender()
-				.send(new VelocityHtmlMessagePreparator(
-						new String[] { user.getEmail() },
-						"Recover your password at TutorCan",
-						"/org/harper/otms/auth/service/impl/mail/resetpass_mail.vm",
-						params));
+		getMailSender().send(
+				new VelocityHtmlMessagePreparator(new String[] { user.getEmail() }, "Recover your password at TutorCan",
+						"/org/harper/otms/auth/service/impl/mail/resetpass_mail.vm", params));
 
 		return new ReqResetPassResponseDto();
 	}
 
 	@Override
-	public ConfirmResetPassResponseDto confirmResetPass(
-			ConfirmResetPassDto request) {
+	public ConfirmResetPassResponseDto confirmResetPass(ConfirmResetPassDto request) {
 		User user = getUserDao().findByActivateCode(request.getUuid());
 		if (null == user) {
-			return new ConfirmResetPassResponseDto(
-					ErrorCode.SYSTEM_DATA_NOT_FOUND);
+			return new ConfirmResetPassResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		}
 		user.setActivationCode(null);
 		user.setPassword(request.getNewpass());

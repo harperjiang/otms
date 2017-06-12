@@ -279,7 +279,9 @@ otms.ui.calendar.Calendar.prototype.refresh = function() {
 					eventDiv.click(function(event) {
 						calendar.onEventClick(this, event);
 					});
-					eventDiv.append(calendar.eventRenderer(eventObj));
+					var eventContent = calendar.eventRenderer(eventObj);
+					eventDiv.append(eventContent);
+					eventDiv.prop('title', eventContent);
 					itemDiv.append(eventDiv);
 				}
 				// Add a 'View More' Link

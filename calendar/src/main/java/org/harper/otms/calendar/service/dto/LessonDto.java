@@ -10,7 +10,6 @@ import org.harper.otms.calendar.entity.OneoffEntry;
 import org.harper.otms.calendar.entity.RepeatEntry;
 import org.harper.otms.calendar.entity.RepeatEntry.DateExpression;
 import org.harper.otms.calendar.service.util.DateUtil;
-import org.mortbay.util.StringUtil;
 import org.springframework.util.StringUtils;
 
 public class LessonDto {
