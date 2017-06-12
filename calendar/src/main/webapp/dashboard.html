@@ -20,11 +20,16 @@
 		var userType = otms.auth.userType();
 		var lessonList = new otms.ui.list.List($('#lesson_list_container'));
 		lessonList.setRenderer(lessonEventListRenderer());
+		/*
 		lessonList.rowClicked = function(event, itemdata) {
-			debugger;
-			sessionStorage.setItem("otms.lessonPage.id", itemdata.id);
-			window.location = 'lesson.html';
-		};
+			if (userType === 'admin') {
+				sessionStorage.setItem('otms.adminLessonPage.id',itemdata.id);
+				window.location = 'admin_lesson.html';
+			} else {
+				sessionStorage.setItem("otms.lessonPage.id", itemdata.id);
+				window.location = 'lesson.html';
+			}
+		};*/
 		lessonList.titleContainer = $('#lesson_title');
 		lessonList.renderTitle = function(length) {
 			var msgtop = "You have {0} lessons in the coming week.";

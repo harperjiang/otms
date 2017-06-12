@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${webpage_title}</title>
+<!--#include virtual="head.html" -->
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
+<script type='text/javascript' src='dwr/interface/AdminService.js'></script>
+<script type="text/javascript" src="code/lessonlist_renderer.js"></script>
+<script type='text/javascript' src='code/admin_search.js'></script>
+<script>
+	
+</script>
+</head>
+<body>
+	<div id="page">
+		<!--#include virtual="header.html" -->
+		<div id="errmsg_panel"></div>
+		<!--#include virtual="menu.html" -->
+		<div id="page_content">
+			<div id="main_panel">
+				<div id='form_title_div' class='page_title'>${title}</div>
+				<div class="page_block">
+					<div class="page_row">
+						<div style="display: inline-block;">
+							<input type="text" id='tutor_input' placeholder="Tutor id"></input>
+						</div>
+						<div style="display: inline-block;">
+							<input type="text" id='client_input' placeholder="Client id"></input>
+						</div>
+					</div>
+					<div class="page_row">
+						<div style='display: inline-block;'>
+							<label class='timelabel2'>Start Date:</label> <input type='text'
+								id='datefrom_input' placeholder='mm/dd/year' class='timeinput2' />
+						</div>
+						<div style='display: inline-block;'>
+							<label class='timelabel2'>Stop Date:</label> <input type='text'
+								id='dateto_input' placeholder='mm/dd/year' class='timeinput2' />
+						</div>
+					</div>
+					<div class="page_row">
+						<button class="btn_large" id="btn_search">${search}</button>
+					</div>
+				</div>
+				<div class="page_block">
+					<div id="event_list_container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--#include virtual="footer.html" -->
+</body>
+</html>

@@ -56,7 +56,8 @@ public class Lesson extends Entity {
 	@JoinColumn(name = "calendar")
 	private CalendarEntry calendar;
 
-	@OneToMany(mappedBy = "lesson",cascade={CascadeType.ALL})
+	// This date is the user date
+	@OneToMany(mappedBy = "lesson", cascade = { CascadeType.ALL })
 	@MapKey(name = "maskDate")
 	private Map<Date, LessonItem> items = new HashMap<Date, LessonItem>();
 

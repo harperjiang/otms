@@ -12,8 +12,6 @@ import org.harper.otms.calendar.dao.LessonItemDao;
 import org.harper.otms.calendar.dao.TutorDao;
 import org.harper.otms.calendar.entity.Lesson;
 import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.OneoffEntry;
-import org.harper.otms.calendar.entity.RepeatEntry;
 import org.harper.otms.calendar.service.CalendarService;
 import org.harper.otms.calendar.service.dto.EventDto;
 import org.harper.otms.calendar.service.dto.GetCalendarEventDto;
@@ -29,58 +27,23 @@ public class DefaultCalendarService implements CalendarService {
 		// Use custom time zone conversion instead of DWR's
 		TimeZone utc = TimeZone.getTimeZone("UTC");
 
-		Date fromDate = DateUtil.convert(request.getFromDate(),
-				user.getTimezone(), utc);
-		Date toDate = DateUtil.convert(request.getToDate(), user.getTimezone(),
-				utc);
+		Date fromDate = DateUtil.convert(request.getFromDate(), user.getTimezone(), utc);
+		Date toDate = DateUtil.convert(request.getToDate(), user.getTimezone(), utc);
 
-		Date now = new Date();
+		Date now = DateUtil.nowUTC();
 
 		// The past
-		List<LessonItem> snapshotItems = getLessonItemDao().findWithin(user,
-				fromDate, now, LessonItem.Status.SNAPSHOT, null);
+		List<LessonItem> snapshotItems = getLessonItemDao().findWithin(user, fromDate, now, LessonItem.Status.SNAPSHOT,
+				null);
 		// The new
-		List<Lesson> lessons = getLessonDao().findWithin(user, now, toDate,
-				Lesson.Status.VALID);
+		List<Lesson> lessons = getLessonDao().findWithin(user, now, toDate, Lesson.Status.VALID);
 
 		GetCalendarEventResponseDto result = new GetCalendarEventResponseDto();
 
-		for (LessonItem item : snapshotItems) {
-			result.addEvent(new EventDto(item));
-		}
+		snapshotItems.forEach((LessonItem item) -> result.addEvent(new EventDto(item)));
 
-		for (Lesson lesson : lessons) {
-			if (lesson.getCalendar() instanceof OneoffEntry) {
-				OneoffEntry ofe = (OneoffEntry) lesson.getCalendar();
-				result.addEvent(new EventDto(EventDto.LESSON, lesson.getId(),
-						DateUtil.truncate(ofe.getFromTime()),
-						lesson.getTitle(), DateUtil.extract(ofe.getFromTime()),
-						DateUtil.extract(ofe.getToTime()), lesson.getTutor(),
-						lesson.getClient()));
-			}
-			if (lesson.getCalendar() instanceof RepeatEntry) {
-				RepeatEntry rpe = (RepeatEntry) lesson.getCalendar();
-				for (Date date : rpe.matchIn(fromDate, toDate)) {
-					if (lesson.getItems().containsKey(date)) {
-						// Has Item on this day, use item to replace this
-						// information
-						LessonItem item = lesson.getItems().get(date);
-						if (item.getStatus() != LessonItem.Status.DELETED) {
-							EventDto event = new EventDto(item);
-							if (event.within(fromDate, toDate))
-								result.addEvent(event);
-						}
-					} else {
-						EventDto event = new EventDto(EventDto.LESSON,
-								lesson.getId(), date, lesson.getTitle(),
-								rpe.getFromTime(), rpe.getToTime(),
-								lesson.getTutor(), lesson.getClient());
-						if (event.within(fromDate, toDate))
-							result.addEvent(event);
-					}
-				}
-			}
-		}
+		lessons.forEach((Lesson lesson) -> EventDto.fromLesson(lesson, fromDate, toDate)
+				.forEach((EventDto e) -> result.addEvent(e)));
 
 		result.convert(TimeZone.getTimeZone("UTC"), user.getTimezone());
 

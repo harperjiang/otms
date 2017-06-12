@@ -10,18 +10,21 @@ otms.validator.ValidatorBase = function(control) {
 	control.focusout(function(event) {
 		validator.trigger();
 	});
+	control.change(function(event){
+		validator.trigger();
+	});
 };
 
 otms.validator.ValidatorBase.prototype.trigger = function() {
 	var control = this.control;
 	if (!this.check(control.val())) {
 		control.addClass('validate_fail');
-		this.oldTooltip = control.attr('title');
+		// this.oldTooltip = control.attr('title');
 		control.attr('title', this.message());
 		this.success = false;
 	} else {
 		control.removeClass('validate_fail');
-		control.attr('title', this.oldTooltip);
+		control.attr('title', '');
 		this.success = true;
 	}
 };
@@ -29,7 +32,7 @@ otms.validator.ValidatorBase.prototype.trigger = function() {
 otms.validator.ValidatorBase.prototype.force = function(message) {
 	var control = $(this.control);
 	control.addClass('validate_fail');
-	control.prop('oldTooltip', control.attr('title'));
+	// control.prop('oldTooltip', control.attr('title'));
 	control.attr('title', message);
 	this.success = false;
 	this.message(message);

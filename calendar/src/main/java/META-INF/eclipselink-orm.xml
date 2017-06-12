@@ -67,14 +67,6 @@
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.Snapshot">
-		<attributes>
-			<id name="id">
-				<column name="id" />
-				<generated-value strategy="IDENTITY" />
-			</id>
-		</attributes>
-	</entity>
 
 	<entity class="org.harper.otms.calendar.entity.ActionLog">
 		<attributes>
@@ -94,7 +86,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.Feedback">
+	<entity class="org.harper.otms.calendar.entity.LessonFeedback">
 		<attributes>
 			<id name="id">
 				<column name="id" />

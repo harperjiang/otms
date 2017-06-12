@@ -1,6 +1,6 @@
 package org.harper.otms.calendar.service.dto;
 
-import org.harper.otms.calendar.entity.Feedback;
+import org.harper.otms.calendar.entity.LessonFeedback;
 
 public class FeedbackDto {
 
@@ -16,7 +16,7 @@ public class FeedbackDto {
 
 	private String comment;
 
-	public void from(Feedback fb) {
+	public void from(LessonFeedback fb) {
 		setId(fb.getId());
 		setSuccess(fb.isSuccess());
 		setFailReason(fb.getFailReason());
@@ -25,7 +25,7 @@ public class FeedbackDto {
 		setComment(fb.getComment());
 	}
 
-	public void to(Feedback fb) {
+	public void to(LessonFeedback fb) {
 		throw new RuntimeException("not implemented");
 	}
 

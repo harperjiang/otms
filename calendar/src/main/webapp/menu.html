@@ -1,26 +1,30 @@
 <div id="menubar">
 	<div id="menu">
 		<ul>
-			<li><a href='dashboard.html'><span>Dashboard</span></a></li>
-			<li><a href='profile.html'><span>Profile</span></a></li>
-			<li><a href='calendar.html'><span>My Calendar</span></a></li>
-			<li class="menu_title"><span>My Lessons</span></li>
-			<li class="menu_sub" showon="client"><a href="lesson.html">
-					<span>Schedule Lesson</span>
+			<li><a href='dashboard.html'><span>${menu_dashboard}</span></a></li>
+			<li showon="client,tutor"><a href='profile.html'><span>${menu_profile}</span></a></li>
+			<li><a href='calendar.html'><span>${menu_calendar}</span></a></li>
+			<li class="menu_title"><span>${menu_lesson}</span></li>
+			<li class="menu_sub" showon="client,tutor"><a href="lesson.html">
+					<span>${menu_lesson_schedule}</span>
 			</a></li>
-			<li class="menu_sub"><a href="requested_lesson.html"> <span>Requested
-						Lessons</span>
+			<li class="menu_sub" showon="client,tutor"><a
+				href="lesson_requested.html"> <span>${menu_lesson_requested}</span>
 			</a></li>
-			<li class="menu_sub"><a href="ongoing_lesson.html"> <span>On-going
-						Lessons</span>
+			<li class="menu_sub" showon="client,tutor"><a
+				href="lesson_ongoing.html"> <span>${menu_lesson_ongoing}</span>
 			</a></li>
-			<li class="menu_sub"><a href="lesson_history.html"> <span>Lesson
-						History</span>
+			<li class="menu_sub" showon="client,tutor"><a
+				href="lesson_history.html"> <span>${menu_lesson_history}</span>
 			</a></li>
 			<!--li class="menu_title"><span>Message</span></li>
 			<li class="menu_sub"><a href="message_inbox.html"> <span>Inbox</span></a></li>
 			<li class="menu_sub"><a href="message_question.html"> <span>Questions</span></a></li-->
-			<li class='menu_last'><a href='help.html'> <span>Help</span>
+
+			<li class="menu_title" showon="client,tutor"><span>${menu_account}</span></li>
+			<li class="menu_sub" showon="client,tutor"><a
+				href="account_summary.html"><span>${menu_account_summary}</span></a>
+			<li class='menu_last'><a href='help.html'> <span>${menu_help}</span>
 			</a></li>
 		</ul>
 	</div>
@@ -40,17 +44,19 @@
 
 	<script>
 		var currentPage = window.location.pathname.split('/').pop();
-		$('#menu li').each(function(index, element) {
-			// Script for switching to current page
-			if ($(element).find('a').attr('href') == currentPage) {
-				$(element).addClass('menu_current');
-			}
-			// Script for hide menus not belonging to current user
-			var showon = $(element).attr('showon');
-			var usertype = otms.auth.userType();
-			if (showon != undefined && showon != usertype) {
-				$(element).css('display', 'none');
-			}
-		});
+		$('#menu li').each(
+				function(index, element) {
+					// Script for switching to current page
+					if ($(element).find('a').attr('href') == currentPage) {
+						$(element).addClass('menu_current');
+					}
+					// Script for hide menus not belonging to current user
+					var showon = $(element).attr('showon');
+					var usertype = otms.auth.userType();
+					if (showon != undefined
+							&& $.inArray(usertype, showon.split(",")) == -1) {
+						$(element).css('display', 'none');
+					}
+				});
 	</script>
 </div>

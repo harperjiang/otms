@@ -8,7 +8,7 @@
 		<artifactId>otms</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>calendar</artifactId>
+	<artifactId>otms-calendar</artifactId>
 	<packaging>war</packaging>
 	<name>OTMS Calendar Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -34,25 +34,25 @@
 			<version>4.12</version>
 		</dependency>
 		<dependency>
-			<groupId>org.harper</groupId>
-			<artifactId>common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.harper</groupId>
-			<artifactId>auth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.36</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-auth</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

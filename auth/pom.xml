@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>auth</artifactId>
+	<artifactId>otms-auth</artifactId>
 	<packaging>jar</packaging>
 	<name>OTMS Auth</name>
 	<url>http://maven.apache.org</url>
@@ -34,14 +34,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.harper</groupId>
-			<artifactId>common</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

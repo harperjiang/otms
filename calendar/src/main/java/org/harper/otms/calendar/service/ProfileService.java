@@ -14,6 +14,8 @@ import org.harper.otms.calendar.service.dto.SetupClientDto;
 import org.harper.otms.calendar.service.dto.SetupClientResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTutorDto;
 import org.harper.otms.calendar.service.dto.SetupTutorResponseDto;
+import org.harper.otms.calendar.service.dto.UploadProfileImageDto;
+import org.harper.otms.calendar.service.dto.UploadProfileImageResponseDto;
 
 public interface ProfileService {
 

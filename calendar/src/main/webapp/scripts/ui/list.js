@@ -101,8 +101,7 @@ otms.ui.list.List.prototype.showPopup = function(row) {
 	if (this.popupDiv === undefined && this.popupRenderer === undefined)
 		// No popup
 		return;
-
-	var hasPopup = this.hasPopup(data);
+	var hasPopup = this.hasPopup(row.dataItem);
 	if (!hasPopup) {
 		return;
 	}

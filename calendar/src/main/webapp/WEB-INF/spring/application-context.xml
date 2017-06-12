@@ -34,6 +34,10 @@
 	<bean id="feedbackDao" class="org.harper.otms.calendar.dao.jpa.JpaFeedbackDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
+	<bean id="schedulerDao"
+		class="org.harper.otms.calendar.dao.external.QuartzSchedulerDao">
+		<property name="scheduler" ref="scheduler" />
+	</bean>
 	<bean id="contactUsDao" class="org.harper.otms.calendar.dao.jpa.JpaContactUsDao">
 		<property name="entityManager" ref="entityManager" />
 	</bean>
@@ -69,7 +73,18 @@
 		<property name="userDao" ref="userDao" />
 		<property name="actionLogDao" ref="actionLogDao" />
 		<property name="todoDao" ref="todoDao" />
-		<property name="scheduler" ref="scheduler" />
+		<property name="schedulerDao" ref="schedulerDao" />
+	</bean>
+
+	<bean id="adminService"
+		class="org.harper.otms.calendar.service.impl.DefaultAdminService">
+		<property name="tutorDao" ref="tutorDao" />
+		<property name="clientDao" ref="clientDao" />
+		<property name="lessonDao" ref="lessonDao" />
+		<property name="lessonItemDao" ref="lessonItemDao" />
+		<property name="userDao" ref="userDao" />
+		<property name="actionLogDao" ref="actionLogDao" />
+		<property name="schedulerDao" ref="schedulerDao" />
 	</bean>
 
 	<bean id="profileService"

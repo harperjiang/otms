@@ -1,9 +1,9 @@
 package org.harper.otms.calendar.service;
 
-import org.harper.otms.calendar.service.dto.CancelLessonDto;
+import org.harper.otms.calendar.service.dto.CancelLessonItemDto;
+import org.harper.otms.calendar.service.dto.CancelLessonItemResponseDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusDto;
 import org.harper.otms.calendar.service.dto.ChangeLessonStatusResponseDto;
-import org.harper.otms.calendar.service.dto.ConfirmCancelDto;
 import org.harper.otms.calendar.service.dto.GetLessonDto;
 import org.harper.otms.calendar.service.dto.GetLessonHistoryDto;
 import org.harper.otms.calendar.service.dto.GetLessonHistoryResponseDto;
@@ -40,7 +40,7 @@ public interface LessonService {
 	GetLessonItemResponseDto getLessonItem(GetLessonItemDto request);
 
 	/**
-	 * Make a lesson item from its lesson
+	 * Make or modify a lesson item from its lesson
 	 * 
 	 * @param request
 	 * @return
@@ -59,8 +59,7 @@ public interface LessonService {
 	 * @param request
 	 * @return
 	 */
-	GetRequestedLessonResponseDto getRequestedLessons(
-			GetRequestedLessonDto request);
+	GetRequestedLessonResponseDto getRequestedLessons(GetRequestedLessonDto request);
 
 	/**
 	 * 
@@ -81,24 +80,16 @@ public interface LessonService {
 	 * @param request
 	 * @return
 	 */
-	ChangeLessonStatusResponseDto changeLessonStatus(
-			ChangeLessonStatusDto request);
+	ChangeLessonStatusResponseDto changeLessonStatus(ChangeLessonStatusDto request);
 
 	/**
-	 * Both client and tutor can propose the cancellation of a meeting. Client
-	 * can directly cancel a meeting Tutor always need to get approval from
-	 * client to cancel a meeting
+	 * Both client and tutor can propose the cancellation of a lesson item
+	 * before it occurs
 	 * 
 	 * @param request
+	 * @return
 	 */
-	void cancelLesson(CancelLessonDto request);
-
-	/**
-	 * Client confirm tutor's request of canceling a meeting or a item
-	 * 
-	 * @param request
-	 */
-	void confirmCancel(ConfirmCancelDto request);
+	CancelLessonItemResponseDto cancelLessonItem(CancelLessonItemDto request);
 
 	/**
 	 * Trigger a given lesson at specific time. This is generally achieved via a

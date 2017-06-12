@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="google-signin-client_id"
 	content="383423582512-5fk92dcul5rjrah9s4rhmjnmtt0rna4o.apps.googleusercontent.com">
-<script src='https://www.google.com/recaptcha/api.js'></script>
+
 <title>${webpageTitle}</title>
 <!--#include virtual="head.html" -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script type='text/javascript' src='dwr/interface/AuthService.js'></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
@@ -41,15 +42,14 @@
 					<input id="password" type="password" name="password"
 						placeholder="${passwordPh}" />
 				</div>
-
-				<div class="page_row" style="overflow-y: hidden;">
+				<!-- div class="page_row" style="overflow-y: hidden;">
 					<div class="g-recaptcha"
-						data-sitekey="6Lc7fQwTAAAAANTSNgx5tcafhe2ZlABr1fFBkjuU"></div>
-				</div>
+						data-sitekey="6LcVwCQUAAAAABkbKjftIBw5snuZWUYcdaQLSrfW"></div>
+				</div-->
 				<div class="page_row">
 					<button id="signin_btn" class="btn_large">${loginBtn}</button>
 					<div style="display: inline-block; margin-left: 20px;">
-						<a href="forgetpass.html">${forgetpassLink}</a>
+						<a href="usr_forgetpass.html">${forgetpassLink}</a>
 					</div>
 				</div>
 				<div class="g-signin2 external_login_button" style="color: #fff"
@@ -62,7 +62,7 @@
 					<span id="qqLoginBtn"></span>
 				</div>
 				<div>
-					${newuserText}<a href="signup.html">${signupLink}</a>
+					${newuserText}<a href="usr_signup.html">${signupLink}</a>
 				</div>
 			</div>
 

@@ -5,4 +5,5 @@ import org.harper.otms.common.dao.Dao;
 
 public interface ClientDao extends Dao<Client> {
 
+	public Client findByName(String name);
 }

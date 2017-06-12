@@ -21,7 +21,7 @@
 			<p>We have received your request of reset your password at
 				TutorCan. Please click the button below:</p>
 			<p>
-				<a href="http://www.tutorcan.com/resetpass.html?uuid=${uuid}"><button
+				<a href="http://www.tutorcan.com/usr_resetpass.html?uuid=${uuid}"><button
 						style="-webkit-border-radius: 8; -moz-border-radius: 8; border-radius: 8px; font-family: Arial; color: #ffffff; font-size: 18px; background: #54b4f5; padding: 7px 15px 7px 15px; text-decoration: none; border: none;">Reset
 						Password</button></a>
 			</p>

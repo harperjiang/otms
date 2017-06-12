@@ -1,5 +1,6 @@
 package org.harper.otms.calendar.entity;
 
+import java.util.Date;
 import java.util.TimeZone;
 
 import javax.persistence.DiscriminatorColumn;
@@ -23,4 +24,8 @@ public abstract class CalendarEntry extends Entity {
 	 * @param to
 	 */
 	public abstract void convert(TimeZone from, TimeZone to);
+	
+	public abstract Date firstTime();
+	
+	public abstract Date lastTime();
 }

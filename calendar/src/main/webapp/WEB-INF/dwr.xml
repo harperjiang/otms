@@ -54,6 +54,15 @@
 			<include method="getSnapshot" />
 			<include method="changeLessonStatus" />
 			<include method="triggerLesson" />
+			<include method="makeLessonItem" />
+			<include method="cancelLesson" />
+		</create>
+
+		<create creator="spring" javascript="AdminService">
+			<param name="beanName" value="adminService" />
+			<include method="scheduleLesson" />
+			<include method="searchLessons" />
+			<include method="updateLesson" />
 		</create>
 
 		<create creator="spring" javascript="TodoService">

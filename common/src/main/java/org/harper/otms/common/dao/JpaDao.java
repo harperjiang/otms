@@ -34,34 +34,26 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 	public Cursor<T> all() {
 		Class<T> param = getParamClass();
 		ScrollableCursor sc = (ScrollableCursor) getEntityManager()
-				.createQuery(
-						MessageFormat.format("select i from {0} i",
-								param.getSimpleName()))
-				.setHint("eclipselink.cursor.scrollable", true)
-				.getSingleResult();
+				.createQuery(MessageFormat.format("select i from {0} i", param.getSimpleName()))
+				.setHint("eclipselink.cursor.scrollable", true).getSingleResult();
 		return new DefaultCursor<T>(sc);
 	}
 
 	public List<T> allatonce() {
 		Class<T> param = getParamClass();
-		return getEntityManager().createQuery(
-				MessageFormat.format("select a from {0} a",
-						param.getSimpleName()), param).getResultList();
+		return getEntityManager().createQuery(MessageFormat.format("select a from {0} a", param.getSimpleName()), param)
+				.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Class<T> getParamClass() {
-		return (Class<T>) (((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0]);
+		return (Class<T>) (((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
 
 	public T findById(int id) {
-		String sql = MessageFormat.format(
-				"select t from {0} t where t.id = :id", getParamClass()
-						.getSimpleName());
+		String sql = MessageFormat.format("select t from {0} t where t.id = :id", getParamClass().getSimpleName());
 		try {
-			return getEntityManager().createQuery(sql, getParamClass())
-					.setParameter("id", id).getSingleResult();
+			return getEntityManager().createQuery(sql, getParamClass()).setParameter("id", id).getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
@@ -70,6 +62,9 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 	public T save(T object) {
 		if (0 == object.getId()) {
 			// Pre-acquire object id if using table sequence
+			// int id =
+			// getEntityManager().unwrap(Session.class).getNextSequenceNumberValue(object.getClass()).intValue();
+			// object.setId(id);
 			getEntityManager().persist(object);
 		} else {
 			object = getEntityManager().merge(object);
@@ -85,8 +80,7 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 		}
 	}
 
-	public static final class DefaultCursor<T> implements Cursor<T>,
-			Iterator<T> {
+	public static final class DefaultCursor<T> implements Cursor<T>, Iterator<T> {
 
 		static final int BUFFER_SIZE = 1000;
 
@@ -148,8 +142,7 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 		QueryImpl queryImpl = (QueryImpl) query;
 		DatabaseQuery databaseQuery = queryImpl.getDatabaseQuery();
 
-		AbstractRecord row = databaseQuery.rowFromArguments(
-				paramValues(queryImpl), (AbstractSession) session);
+		AbstractRecord row = databaseQuery.rowFromArguments(paramValues(queryImpl), (AbstractSession) session);
 
 		String sql = databaseQuery.getTranslatedSQLString(session, row);
 
@@ -157,8 +150,7 @@ public abstract class JpaDao<T extends Entity> implements Dao<T> {
 		Query countQuery = getEntityManager().createNativeQuery(countSql);
 
 		Long count = (Long) countQuery.getSingleResult();
-		Long totalPage = count / paging.getPageSize()
-				+ (count % paging.getPageSize() > 0 ? 1 : 0);
+		Long totalPage = count / paging.getPageSize() + (count % paging.getPageSize() > 0 ? 1 : 0);
 		paging.setTotalPage(totalPage.intValue());
 
 		query.setFirstResult(paging.getCurrentPage() * paging.getPageSize());
