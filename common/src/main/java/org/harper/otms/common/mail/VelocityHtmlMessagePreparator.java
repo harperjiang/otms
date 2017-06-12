@@ -10,7 +10,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 public class VelocityHtmlMessagePreparator implements MimeMessagePreparator {
 
-	private String sender = "webmaster@tutorcan.com";
+	private String sender = "TutorCan<webmaster@tutorcan.com>";
 
 	private String[] receiver;
 
