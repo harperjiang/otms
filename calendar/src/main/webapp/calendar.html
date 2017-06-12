@@ -8,93 +8,85 @@
 <script type="text/javascript" src="scripts/ui/calendar.js"></script>
 <script type='text/javascript' src='dwr/interface/CalendarService.js'></script>
 <script>
-	$(document).ready(
-			function() {
-				var calendar = new otms.ui.calendar.Calendar($('#container'));
+	$(function() {
+		var calendar = new otms.ui.calendar.Calendar($('#container'));
 
-				calendar.onAddButton = function() {
-					if (otms.auth.userType() == 'client') {
-						// Go to setup meeting page
-						otms.clearPageParam('eventId');
-						otms.clearPageParam('lessonId');
+		calendar.onAddButton = function() {
+			if (otms.auth.userType() == 'client') {
+				// Go to setup meeting page
+				otms.clearPageParam('eventId');
+				otms.clearPageParam('lessonId');
+				window.location = 'lesson.html';
+			} else {
+				otms.ui.MessageBox.info($('#errmsg_panel'),
+						'You are not allowed to schedule new lesson');
+			}
+		};
+
+		calendar.eventRenderer = function(eventObj) {
+			var userType = otms.auth.userType();
+
+			if (userType === 'tutor') {
+				return otms.DateUtil.formattime(eventObj.fromTime) + " with "
+						+ eventObj.clientName;
+			} else if (userType === 'client') {
+				return otms.DateUtil.formattime(eventObj.fromTime) + " with "
+						+ eventObj.tutorName;
+			} else if (userType === 'admin') {
+				return otms.DateUtil.formattime(eventObj.fromTime) + ", "
+						+ eventObj.tutorName + " with " + eventObj.clientName;
+			}
+
+		};
+
+		calendar.onEventClick = function(obj, event) {
+			// Show a dialog
+			var dialog = new otms.ui.calendar.ChooseEventDialog($('#container'));
+			var event = obj.eventData;
+			if (event.type === 'lesson') {
+				dialog.onConfirm = function() {
+					var checked = dialog.panel.find(
+							'input[name="modify_type"]:checked').val();
+					if (checked == 'meeting') {
+						sessionStorage.setItem('otms.lessonPage.id', event.id);
 						window.location = 'lesson.html';
 					} else {
-						otms.ui.MessageBox.info($('#errmsg_panel'),
-								'You are not allowed to schedule new lesson');
-					}
-				};
-
-				calendar.eventRenderer = function(eventObj) {
-					var userType = otms.auth.userType();
-
-					if (userType === 'tutor') {
-						return otms.DateUtil.formattime(eventObj.fromTime)
-								+ " with " + eventObj.clientName;
-					} else if (userType === 'client') {
-						return otms.DateUtil.formattime(eventObj.fromTime)
-								+ " with " + eventObj.tutorName;
-					} else if (userType === 'admin') {
-						return otms.DateUtil.formattime(eventObj.fromTime)
-								+ ", " + eventObj.tutorName + " with "
-								+ eventObj.clientName;
-					}
-
-				};
-
-				calendar.onEventClick = function(obj, event) {
-					// Show a dialog
-					var dialog = new otms.ui.calendar.ChooseEventDialog(
-							$('#container'));
-					var event = obj.eventData;
-					if (event.type === 'lesson') {
-						dialog.onConfirm = function() {
-							debugger;
-							var checked = dialog.panel.find(
-									'input[name="modify_type"]:checked').val();
-							if (checked == 'meeting') {
-								sessionStorage.setItem('otms.lessonPage.id',
-										event.id);
-								window.location = 'lesson.html';
-							} else {
-								sessionStorage.setItem(
-										'otms.lessonItemPage.lessonId',
-										event.id);
-								sessionStorage.setItem(
-										'otms.lessonItemPage.lessonDate',
-										event.date.getTime());
-								window.location = 'lesson_item.html';
-							}
-						};
-						dialog.show();
-					} else {
-						// Show lesson_item page
-						sessionStorage.setItem('otms.lessonItemPage.id',
+						sessionStorage.setItem('otms.lessonItemPage.lessonId',
 								event.id);
+						sessionStorage.setItem(
+								'otms.lessonItemPage.lessonDate', event.date
+										.getTime());
 						window.location = 'lesson_item.html';
 					}
 				};
+				dialog.show();
+			} else {
+				// Show lesson_item page
+				sessionStorage.setItem('otms.lessonItemPage.id', event.id);
+				window.location = 'lesson_item.html';
+			}
+		};
 
-				calendar.model.load = function(fromDate, toDate) {
-					var model = this;
-					var calendar = this.calendar;
-					var callback = function(success, data) {
-						if (success) {
-							model.setData(data);
-						} else {
-							// Make sure a correct calendar is displayed even on error
-							model.setData([]);
-						}
-					};
-					CalendarService.getEvents(otms.auth.req({
-						'fromDate' : fromDate,
-						'toDate' : toDate
-					}), otms.ui.MessageBox.errhandler($('#errmsg_panel'),
-							callback));
+		calendar.model.load = function(fromDate, toDate) {
+			var model = this;
+			var calendar = this.calendar;
+			var callback = function(success, data) {
+				if (success) {
+					model.setData(data);
+				} else {
+					// Make sure a correct calendar is displayed even on error
+					model.setData([]);
+				}
+			};
+			CalendarService.getEvents(otms.auth.req({
+				'fromDate' : fromDate,
+				'toDate' : toDate
+			}), otms.ui.MessageBox.errhandler($('#errmsg_panel'), callback));
 
-				};
+		};
 
-				calendar.model.setDate(new Date());
-			});
+		calendar.model.setDate(new Date());
+	});
 </script>
 </head>
 <body>
