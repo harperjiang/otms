@@ -16,10 +16,7 @@ $(function() {
 
 	var eventList = new otms.ui.list.List($('#event_list_container'));
 	eventList.setRenderer(lessonEventListRenderer());
-	eventList.rowClicked = function(event, itemdata) {
-		sessionStorage.setItem("otms.adminLessonPage.id", itemdata.id);
-		window.location = 'admin_lesson.html';
-	};
+	eventList.rowClicked = lessonEventClick;
 
 	var callback = function(success, data) {
 		$('#btn_search').removeAttr('disabled');

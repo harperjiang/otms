@@ -131,8 +131,20 @@ public class User extends Entity {
 	}
 
 	public static final String TYPE_ADMIN = "admin";
-	
+
 	public static final String TYPE_CLIENT = "client";
-	
+
 	public static final String TYPE_TUTOR = "tutor";
+
+	public boolean isAdmin() {
+		return TYPE_ADMIN.equals(getType());
+	}
+
+	public boolean isClient() {
+		return TYPE_CLIENT.equals(getType());
+	}
+
+	public boolean isTutor() {
+		return TYPE_TUTOR.equals(getType());
+	}
 }

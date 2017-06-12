@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Setup Meeting</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
@@ -15,21 +15,20 @@
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">
 			<div id="main_panel">
-				<div id='form_title_div' class='page_title'>Schedule Lesson</div>
+				<div id='form_title_div' class='page_title'>${schedule_lesson}</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Information</div>
+					<div class="page_block_title">${lesson_info}</div>
 
 					<div class="page_row">
-						<input type="text" id='tutor_input' placeholder="Your tutor id">
-						<input type="text" id='client_input' placeholder="Your client id"
-							style="display: none">
+						<input type="text" id='tutor_input' placeholder="${tutor_id}"></input>
+						<input type="text" id='client_input' placeholder="${client_id}"></input>
 					</div>
 					<div class="page_row">
-						<textarea id='meetingdesc_text' placeholder="Lesson Description"></textarea>
+						<textarea id='meetingdesc_text' placeholder="${lesson_desc}"></textarea>
 					</div>
 				</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Time ( your local time )</div>
+					<div class="page_block_title">${lesson_time}</div>
 					<div class='page_row'>
 						<div style='display: inline-block;'>
 							<label class='timelabel2'>From:</label> <input type='text'
@@ -89,11 +88,9 @@
 				</div>
 				<div class="page_block">
 					<div class="page_row">
-						<button class="btn_large" id='confirm_btn'>Confirm</button>
-						<button class="btn_large" id='confirm_btn' style="display: none;">Modify
-							this occurance</button>
+						<button class="btn_large" id='confirm_btn'>${confirm}</button>
 						<button class="btn_danger" id='delete_btn'
-							style='margin-left: 20px; display: none;'>Cancel Lesson</button>
+							style='margin-left: 20px; display: none;'>${cancel_lesson}</button>
 					</div>
 				</div>
 			</div>
@@ -105,10 +102,8 @@
 				<div class="page_row">The lesson will automatically be added
 					to your calendar when confirmed by your tutor.</div>
 				<div class="page_row">
-					<button class="btn_large" id='req_lesson_btn'>View
-						requested lessons</button>
-					<button class="btn_large" id='calendar_btn'>Go to my
-						calendar</button>
+					<button class="btn_large" id='req_lesson_btn'>${view_request_lesson}</button>
+					<button class="btn_large" id='calendar_btn'>${goto_calendar}</button>
 				</div>
 			</div>
 			<div id="cancel_panel" class="page_block" style="display: none;">
@@ -117,10 +112,8 @@
 				<div class="page_row">The lesson will automatically be removed
 					from your calendar.</div>
 				<div class="page_row">
-					<button class="btn_large" id='req_lesson_btn'>View
-						requested lessons</button>
-					<button class="btn_large" id='calendar_btn'>Go to my
-						calendar</button>
+					<button class="btn_large" id='req_lesson_btn'>${view_request_lesson}</button>
+					<button class="btn_large" id='calendar_btn'>${goto_calendar}</button>
 				</div>
 			</div>
 		</div>

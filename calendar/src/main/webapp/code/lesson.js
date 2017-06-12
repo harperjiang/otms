@@ -1,5 +1,4 @@
-function switch_div(checkbox) {
-	debugger;
+function switch_calendar(checkbox) {
 	if (checkbox.checked) {
 		$('#repeat_option_div').css('display', 'block');
 		$('#oneoff_option_div').css('display', 'none');
@@ -9,16 +8,22 @@ function switch_div(checkbox) {
 	}
 };
 
-function enter_tutor_view() {
-	$('#form_title_div').empty();
-	$('#form_title_div').append('View Lesson Info');
+function tutor_view() {
 	$('#client_input').css('display', 'inline');
-	$('#client_input').attr('readonly', 'readonly');
-	$('#client_input').attr('disabled', 'disabled');
 	$('#tutor_input').css('display', 'none');
 }
 
-function enter_modify_mode() {
+function client_view() {
+	$('#tutor_input').css('display', 'inline');
+	$('#client_input').css('display', 'none');
+}
+
+function admin_view() {
+	$('#tutor_input').css('display', 'inline');
+	$('#client_input').css('display', 'inline');
+}
+
+function mode_modify() {
 	$('#form_title_div').empty();
 	$('#form_title_div').append('Modify Lesson');
 	$('#delete_btn').css('display', 'inline');
@@ -26,7 +31,7 @@ function enter_modify_mode() {
 	$('#tutor_input').attr('disabled', 'disabled');
 }
 
-function enter_readonly_mode() {
+function mode_readonly() {
 	$('#title_input').attr('readonly', 'readonly');
 	$('#tutor_input').attr('readonly', 'readonly');
 	$('#meetingdesc_text').attr('readonly', 'readonly');
@@ -152,25 +157,21 @@ $(function() {
 
 		return true;
 	};
+
 	// Check storage for input parameter
 	var lessonId = otms.getPageParam('otms.lessonPage.id');
 	if (lessonId != undefined) {
-		enter_modify_mode();
+		mode_modify();
 		// Load data from server
 		var callback = function(success, data) {
 			if (success) {
 				bm.setBean(data.lesson);
-				// Manually trigger div flip
-				switch_div($('#repeat_checkbox').get()[0]);
+				// Manually trigger calendar flip
+				switch_calendar($('#repeat_checkbox').get()[0]);
 				if (data.lesson.status == 'INVALID') {
-					enter_readonly_mode();
-				}
-				if (otms.auth.userType() == 'tutor') {
-					enter_readonly_mode();
-					enter_tutor_view();
+					mode_readonly();
 				}
 			}
-
 		};
 		LessonService.getLesson(otms.auth.req({
 			"lessonId" : lessonId
@@ -184,6 +185,21 @@ $(function() {
 			$('#tutor_input').attr('readonly', 'readonly');
 		}
 	}
+
+	switch (otms.auth.userType()) {
+	case 'admin':
+		admin_view();
+		break;
+	case 'tutor':
+		tutor_view();
+		break;
+	case 'client':
+		client_view();
+		break;
+	default:
+		break;
+	}
+
 	var confirmCallback = function(success) {
 		if (success) {
 			// Display a confirmation page
@@ -198,10 +214,20 @@ $(function() {
 				var bean = bm.getBean();
 				// Call Server
 				if (bean != null) {
-					$(this).prop('disabled', 'true');
-					LessonService.setupLesson(otms.auth.req({
-						"lesson" : bean
-					}), otms.ui.MessageBox.han(confirmCallback));
+					$(this).attr('disabled', 'disabled');
+
+					switch (otms.auth.userType()) {
+					case 'admin':
+						AdminService.scheduleLesson(otms.auth.req({
+							"lesson" : bean
+						}), otms.ui.MessageBox.han(confirmCallback));
+						break;
+					default:
+						LessonService.setupLesson(otms.auth.req({
+							"lesson" : bean
+						}), otms.ui.MessageBox.han(confirmCallback));
+						break;
+					}
 				} else {
 					otms.ui.MessageBox.warning($('#errmsg_panel'),
 							'Validation Failed');
@@ -229,7 +255,7 @@ $(function() {
 			});
 
 	$('#req_lesson_btn').click(function(event) {
-		window.location = 'requested_lesson.html';
+		window.location = 'lesson_requested.html';
 	});
 	$('#calendar_btn').click(function(event) {
 		window.location = 'calendar.html';

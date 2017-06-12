@@ -181,8 +181,8 @@ function lessonEventListRenderer() {
 			container.append('. ');
 		} else if (userType === 'admin') {
 			var clientLink = $(document.createElement('a'));
-			clientLink.attr('onclick', 'client_clicked(event, ' + event.clientId
-					+ ')');
+			clientLink.attr('onclick', 'client_clicked(event, '
+					+ event.clientId + ')');
 			clientLink.append(event.clientName);
 			container.append(clientLink);
 
@@ -209,6 +209,19 @@ function lessonEventListRenderer() {
 
 		container.prop('dataItem', event);
 	};
+};
+
+function lessonEventClick(event, itemdata) {
+	switch (itemdata.type) {
+	case 'lesson':
+		otms.setPageParam('otms.lessonItemPage.lessonId', itemdata.id);
+		otms.setPageParam('otms.lessonItemPage.lessonDate', itemdata.date);
+		break;
+	case 'lesson_item':
+		otms.setPageParam('otms.lessonItemPage.id', itemdata.id)
+		break;
+	}
+	window.location = 'lesson_item.html';
 };
 
 function viewLessonDetail(event, lesson) {

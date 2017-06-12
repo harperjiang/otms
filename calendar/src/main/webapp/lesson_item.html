@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Setup Lesson</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
@@ -19,22 +19,26 @@
 		<!--#include virtual="menu.html" -->
 		<div id="page_content">
 			<div id="modify_panel">
-				<div id="title_panel" class='page_title'>Modify Lesson</div>
+				<div id="title_panel" class='page_title'>${update_lesson}</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Information</div>
+					<div class="page_block_title">${lesson_info}</div>
 					<!-- div class="page_row">
 						<input type="text" id='title_input' placeholder="Lesson Title">
 					</div-->
 					<div class="page_row">
-						<input type="text" id='tutor_input' placeholder="Your tutor id"
-							disabled="disabled">
+						<input type="text" id='tutor_input' placeholder="${tutor_id}"
+							disabled></input>
 					</div>
 					<div class="page_row">
-						<textarea id="desc_text" placeholder="Lesson Description"></textarea>
+						<input type="text" id="client_input" placeholder="${client_id}"
+							disabled></input>
+					</div>
+					<div class="page_row">
+						<textarea id="desc_text" placeholder="${lesson_desc}"></textarea>
 					</div>
 				</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Time (your local time)</div>
+					<div class="page_block_title">${lesson_time}</div>
 					<div class='page_row'>
 						<div style='display: inline-block; width: 49%'>
 							<label class='timelabel2'>From:</label> <input type='text'
@@ -47,35 +51,38 @@
 					</div>
 					<div class='page_row'>
 						<label>Meet On:</label> <input type='text' id='date_input'
-							placeholder='01/01/2015' class='timeinput' />
+							placeholder='mm/dd/YYYY' class='timeinput' />
 					</div>
 				</div>
 				<div class="page_block">
 					<div class="page_row">
-						<button id="confirm_btn" class="btn_large">Confirm</button>
+						<button id="confirm_btn" class="btn_large">${confirm}</button>
 						<button id="delete_btn" class="btn_danger"
-							style='margin-left: 20px;'>Cannot make it</button>
+							style='margin-left: 20px;'>${cancel}</button>
 					</div>
 				</div>
 			</div>
 
 			<div id="view_panel" style="display: none;">
-				<div id="title_panel" class='page_title'>View Lesson History</div>
+				<div id="title_panel" class='page_title'>${view_lesson_history}</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Information</div>
+					<div class="page_block_title">${lesson_info}</div>
 					<!-- div class="page_row">
 						<label>Title: </label><span id="title_span"></span>
 					</div-->
-					<div class="page_row">
-						<label>Tutor:</label><span id="tutor_span"></span>
+					<div class="page_row" id="tutor_row">
+						<label>${tutor}:</label><span id="tutor_span"></span>
+					</div>
+					<div class="page_row" id="client_row">
+						<label>${client}:</label><span id="client_span"></span>
 					</div>
 					<div class="page_row">
-						<label class="textarea_label">Lesson Description:</label> <span
+						<label class="textarea_label">${lesson_desc}</label> <span
 							id="desc_span" class="textarea"></span>
 					</div>
 				</div>
 				<div class="page_block">
-					<div class="page_block_title">Lesson Time (your local time)</div>
+					<div class="page_block_title">${lesson_time}</div>
 					<div class='page_row'>
 						<div style='display: inline-block; width: 49%'>
 							<label class='timelabel2'>From:</label> <span id='timefrom_span'
@@ -92,8 +99,7 @@
 				</div>
 				<div class="page_block">
 					<div class="page_row">
-						<button id="feedback_btn" class="btn_large">Write
-							Feedback</button>
+						<button id="feedback_btn" class="btn_large">${write_feedback}</button>
 					</div>
 				</div>
 			</div>

@@ -70,8 +70,7 @@ public class DefaultLessonService implements LessonService {
 		if (null == lesson)
 			return new GetLessonResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 
-		if (lesson.getClient().getId() != request.getCurrentUser()
-				&& lesson.getTutor().getId() != request.getCurrentUser())
+		if (!viewer.isAdmin() && !lesson.isOwner(viewer))
 			return new GetLessonResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 
 		if (lesson.getClient().getId() != request.getCurrentUser()) {
@@ -94,8 +93,7 @@ public class DefaultLessonService implements LessonService {
 		if (null == item)
 			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 
-		if (item.getLesson().getClient().getId() != request.getCurrentUser()
-				&& item.getLesson().getTutor().getId() != request.getCurrentUser())
+		if (!viewer.isAdmin() && !item.getLesson().isOwner(viewer))
 			return new GetLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()) {
@@ -162,7 +160,7 @@ public class DefaultLessonService implements LessonService {
 		if (client == null) {
 			return new SetupLessonResponseDto(ErrorCode.SYSTEM_NO_USER);
 		}
-		
+
 		lesson.setTutor(tutor);
 		lesson.setClient(client);
 
@@ -218,8 +216,7 @@ public class DefaultLessonService implements LessonService {
 		}
 
 		// Not owner
-		if (!(item.getLesson().getTutor().getId() == owner.getId()
-				|| item.getLesson().getClient().getId() == owner.getId())) {
+		if (!owner.isAdmin() && !item.getLesson().isOwner(owner)) {
 			return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 		}
 		// Time expired
@@ -377,7 +374,11 @@ public class DefaultLessonService implements LessonService {
 
 	@Override
 	public ChangeLessonStatusResponseDto changeLessonStatus(ChangeLessonStatusDto request) {
+		User user = getUserDao().findById(request.getCurrentUser());
+		boolean isAdmin = User.TYPE_ADMIN.equals(user.getType());
 		Lesson lesson = getLessonDao().findById(request.getLessonId());
+		if (user == null || lesson == null)
+			return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		Status fromStatus = lesson.getStatus();
 		Status toStatus = Status.valueOf(request.getToStatus());
 
@@ -386,7 +387,7 @@ public class DefaultLessonService implements LessonService {
 		case REQUESTED:
 			switch (toStatus) {
 			case VALID:
-				if (lesson.getTutor().getId() != request.getCurrentUser()) {
+				if (!isAdmin && lesson.getTutor().getId() != request.getCurrentUser()) {
 					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 				}
 				Date currentTime = DateUtil.nowUTC();
@@ -395,7 +396,7 @@ public class DefaultLessonService implements LessonService {
 				}
 				break;
 			case INVALID:
-				if (lesson.getTutor().getId() != request.getCurrentUser()
+				if (!isAdmin && lesson.getTutor().getId() != request.getCurrentUser()
 						&& lesson.getClient().getId() != request.getCurrentUser()) {
 					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 				}
@@ -414,7 +415,7 @@ public class DefaultLessonService implements LessonService {
 			case VALID:
 				break;
 			case INVALID:
-				if (lesson.getTutor().getId() != request.getCurrentUser()
+				if (!isAdmin && lesson.getTutor().getId() != request.getCurrentUser()
 						&& lesson.getClient().getId() != request.getCurrentUser()) {
 					return new ChangeLessonStatusResponseDto(ErrorCode.SYSTEM_NO_AUTH);
 				}
@@ -430,7 +431,7 @@ public class DefaultLessonService implements LessonService {
 		// Generate an actionlog for the operation
 		ActionLog actionLog = new ActionLog();
 		actionLog.setActionDate(DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("GMT")));
-		actionLog.setOperator(lesson.getTutor().getUser());
+		actionLog.setOperator(user);
 		actionLog.setType("LESSON STATUS");
 		actionLog.setFrom(lesson.getStatus().name());
 		actionLog.setTo(toStatus.name());

@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.harper.otms.auth.entity.User;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
@@ -127,6 +128,10 @@ public class Lesson extends Entity {
 
 	public void setRequestDate(Date requestDate) {
 		this.requestDate = requestDate;
+	}
+
+	public boolean isOwner(User user) {
+		return getClient().getId() == user.getId() || getTutor().getId() == user.getId();
 	}
 
 }
