@@ -26,15 +26,19 @@
 
 				calendar.eventRenderer = function(eventObj) {
 					var userType = otms.auth.userType();
-					var partnerName = "";
-					if (userType == 'tutor') {
-						partnerName = eventObj.clientName;
-					} else if (userType == 'client') {
-						partnerName = eventObj.tutorName;
+
+					if (userType === 'tutor') {
+						return otms.DateUtil.formattime(eventObj.fromTime)
+								+ " with " + eventObj.clientName;
+					} else if (userType === 'client') {
+						return otms.DateUtil.formattime(eventObj.fromTime)
+								+ " with " + eventObj.tutorName;
+					} else if (userType === 'admin') {
+						return otms.DateUtil.formattime(eventObj.fromTime)
+								+ ", " + eventObj.tutorName + " with "
+								+ eventObj.clientName;
 					}
 
-					return otms.DateUtil.formattime(eventObj.fromTime)
-							+ " with " + partnerName;
 				};
 
 				calendar.onEventClick = function(obj, event) {

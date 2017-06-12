@@ -26,7 +26,7 @@ public interface AdminService {
 	 * @param request
 	 * @return
 	 */
-	AdminSearchLessonResponseDto searchLesson(AdminSearchLessonDto request);
+	AdminSearchLessonResponseDto searchLessons(AdminSearchLessonDto request);
 
 	/**
 	 * Update Lesson / LessonItem time or cancel lesson

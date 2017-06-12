@@ -61,7 +61,7 @@
 		<create creator="spring" javascript="AdminService">
 			<param name="beanName" value="adminService" />
 			<include method="scheduleLesson" />
-			<include method="searchLesson" />
+			<include method="searchLessons" />
 			<include method="updateLesson" />
 		</create>
 

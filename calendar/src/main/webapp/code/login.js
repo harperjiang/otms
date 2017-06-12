@@ -152,18 +152,18 @@ function onload() {
 			// Put token in local storage
 			loginSuccess(data);
 		} else {
-			$('#signin_btn').prop('disabled', false);
+			$('#signin_btn').removeAttr('disabled');
 			// Reset Captcha
-			//grecaptcha.reset();
+			// grecaptcha.reset();
 		}
 	};
 	var login = function() {
 		debugger;
-		$('#signin_btn').prop('disabled', true);
+		$('#signin_btn').attr('disabled', 'disabled');
 		var bean = bm.getBean();
 		if (null != bean) {
 			// gcaptcha
-			//var captcharesp = grecaptcha.getResponse();
+			// var captcharesp = grecaptcha.getResponse();
 			// bean['captcha'] = captcharesp;
 			AuthService.login(bean, otms.ui.MessageBox.han(callback));
 		}

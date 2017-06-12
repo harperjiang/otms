@@ -95,7 +95,7 @@ public class DefaultAdminService implements AdminService {
 	}
 
 	@Override
-	public AdminSearchLessonResponseDto searchLesson(AdminSearchLessonDto request) {
+	public AdminSearchLessonResponseDto searchLessons(AdminSearchLessonDto request) {
 		User admin = checkAdmin(request.getCurrentUser());
 		Tutor tutor = getTutorDao().findByName(request.getTutorName());
 

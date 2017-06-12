@@ -35,7 +35,9 @@ public class JpaLessonItemDao extends JpaDao<LessonItem> implements LessonItemDa
 		}
 
 		TypedQuery<LessonItem> query = getEntityManager().createQuery(sql.toString(), LessonItem.class)
-				.setParameter("status", status).setParameter("toDate", toDate).setParameter("id", user.getId());
+				.setParameter("status", status).setParameter("toDate", toDate);
+		if (User.TYPE_CLIENT.equals(user.getType()) || User.TYPE_CLIENT.equals(user.getType()))
+			query.setParameter("id", user.getId());
 		if (fromDate != null)
 			query.setParameter("fromDate", fromDate);
 		if (paging == null) {

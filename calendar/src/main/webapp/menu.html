@@ -1,7 +1,7 @@
 <div id="menubar">
 	<div id="menu">
 		<ul>
-			<li showon="client,tutor"><a href='dashboard.html'><span>${menu_dashboard}</span></a></li>
+			<li><a href='dashboard.html'><span>${menu_dashboard}</span></a></li>
 			<li showon="client,tutor"><a href='profile.html'><span>${menu_profile}</span></a></li>
 			<li><a href='calendar.html'><span>${menu_calendar}</span></a></li>
 			<li class="menu_title"><span>${menu_lesson}</span></li>
@@ -50,7 +50,6 @@
 					if ($(element).find('a').attr('href') == currentPage) {
 						$(element).addClass('menu_current');
 					}
-					debugger;
 					// Script for hide menus not belonging to current user
 					var showon = $(element).attr('showon');
 					var usertype = otms.auth.userType();

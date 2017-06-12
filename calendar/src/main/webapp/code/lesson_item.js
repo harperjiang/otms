@@ -8,6 +8,8 @@ function onload() {
 	otms.namespace('otms.lessonItemPage');
 	otms.lessonItemPage.snapshotMode = false;
 
+	$('#date_input').datepicker();
+	
 	// Install validator
 	new otms.validator.TimeValidator($('#timefrom_input'));
 	new otms.validator.TimeValidator($('#timeto_input'));

@@ -51,6 +51,11 @@ function enter_readonly_mode() {
 $(function() {
 
 	otms.namespace('otms.lessonPage');
+
+	$('#repeat_datefrom_input').datepicker();
+	$('#repeat_dateto_input').datepicker();
+	$('#oneoff_date_input').datepicker();
+
 	// Install validator
 	// new otms.validator.NonemptyValidator($('#title_input'));
 	new otms.validator.NonemptyValidator($('#tutor_input'));
@@ -151,7 +156,7 @@ $(function() {
 	var lessonId = otms.getPageParam('otms.lessonPage.id');
 	if (lessonId != undefined) {
 		enter_modify_mode();
-		// TODO Load data from server
+		// Load data from server
 		var callback = function(success, data) {
 			if (success) {
 				bm.setBean(data.lesson);
