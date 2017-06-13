@@ -12,31 +12,48 @@
 		var calendar = new otms.ui.calendar.Calendar($('#container'));
 
 		calendar.onAddButton = function() {
-			if (otms.auth.userType() == 'client') {
+
+			switch (otms.auth.userType()) {
+			case 'client':
+			case 'admin':
 				// Go to setup meeting page
 				otms.clearPageParam('eventId');
 				otms.clearPageParam('lessonId');
 				window.location = 'lesson.html';
-			} else {
-				otms.ui.MessageBox.info($('#errmsg_panel'),
+				break;
+			case 'tutor':
+				otms.ui.MessageBox.warn($('#errmsg_panel'),
 						'You are not allowed to schedule new lesson');
+				break;
 			}
 		};
 
-		calendar.eventRenderer = function(eventObj) {
-			var userType = otms.auth.userType();
+		calendar.eventRenderer = function(eventDiv, eventObj) {
+			var eventContent = '';
 
-			if (userType === 'tutor') {
-				return otms.DateUtil.formattime(eventObj.fromTime) + " with "
+			switch (otms.auth.userType()) {
+			case 'tutor':
+				eventContent = otms.DateUtil.formattime(eventObj.fromTime)
+						+ " with " + eventObj.clientName;
+				break;
+			case 'client':
+				eventContent = otms.DateUtil.formattime(eventObj.fromTime)
+						+ " with " + eventObj.tutorName;
+				break;
+			case 'admin':
+				eventContent = otms.DateUtil.formattime(eventObj.fromTime)
+						+ ", " + eventObj.tutorName + " with "
 						+ eventObj.clientName;
-			} else if (userType === 'client') {
-				return otms.DateUtil.formattime(eventObj.fromTime) + " with "
-						+ eventObj.tutorName;
-			} else if (userType === 'admin') {
-				return otms.DateUtil.formattime(eventObj.fromTime) + ", "
-						+ eventObj.tutorName + " with " + eventObj.clientName;
+				break;
+			default:
+				break;
 			}
-
+			eventDiv.append(eventContent);
+			eventDiv.prop('title', eventContent);
+			// For event in the past, update background color
+			if (eventObj.past) {
+				eventDiv.addClass('calendar_event_past');
+			}
 		};
 
 		calendar.onEventClick = function(obj, event) {

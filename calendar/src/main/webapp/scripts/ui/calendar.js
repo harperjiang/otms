@@ -239,8 +239,10 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	this.popupDiv.append(popupContentDiv);
 };
 
-otms.ui.calendar.Calendar.prototype.eventRenderer = function(eventObj) {
-	return otms.DateUtil.formattime(eventObj.fromTime);
+otms.ui.calendar.Calendar.prototype.eventRenderer = function(eventDiv, eventObj) {
+	/*eventContent = otms.DateUtil.formattime(eventObj.fromTime);
+	eventDiv.append(eventContent);
+	eventDiv.prop('title', eventContent);*/
 };
 
 otms.ui.calendar.Calendar.prototype.refresh = function() {
@@ -279,9 +281,7 @@ otms.ui.calendar.Calendar.prototype.refresh = function() {
 					eventDiv.click(function(event) {
 						calendar.onEventClick(this, event);
 					});
-					var eventContent = calendar.eventRenderer(eventObj);
-					eventDiv.append(eventContent);
-					eventDiv.prop('title', eventContent);
+					calendar.eventRenderer(eventDiv, eventObj);
 					itemDiv.append(eventDiv);
 				}
 				// Add a 'View More' Link

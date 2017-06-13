@@ -94,6 +94,10 @@
 	overflow: hidden;
 }
 
+.calendar_event_past {
+	background-color: #CCCCCC;
+}
+
 .calendar_item a {
 	font-size: 12px;
 	cursor: pointer;

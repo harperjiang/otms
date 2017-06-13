@@ -23,6 +23,8 @@ public class EventDto {
 
 	private String type;
 
+	private boolean past;
+
 	private int id;
 
 	private Date date;
@@ -63,6 +65,7 @@ public class EventDto {
 		this(EventDto.LESSON_ITEM, item.getId(), DateUtil.truncate(item.getFromTime()), item.getTitle(),
 				DateUtil.extract(item.getFromTime()), DateUtil.extract(item.getToTime()), item.getLesson().getTutor(),
 				item.getLesson().getClient());
+		setPast(item.getStatus() == LessonItem.Status.SNAPSHOT);
 	}
 
 	public void convert(TimeZone from, TimeZone to) {
@@ -154,6 +157,14 @@ public class EventDto {
 		this.clientId = clientId;
 	}
 
+	public boolean isPast() {
+		return past;
+	}
+
+	public void setPast(boolean past) {
+		this.past = past;
+	}
+
 	public boolean within(Date fromDate, Date toDate) {
 		Date myfrom = DateUtil.form(getDate(), getFromTime());
 		Date myto = DateUtil.form(getDate(), getToTime());
@@ -164,11 +175,9 @@ public class EventDto {
 		ArrayList<EventDto> result = new ArrayList<EventDto>();
 		if (lesson.getCalendar() instanceof OneoffEntry) {
 			OneoffEntry ofe = (OneoffEntry) lesson.getCalendar();
-			result.add(new EventDto(EventDto.LESSON, lesson.getId(),
-					DateUtil.truncate(ofe.getFromTime()),
-					lesson.getTitle(), DateUtil.extract(ofe.getFromTime()),
-					DateUtil.extract(ofe.getToTime()), lesson.getTutor(),
-					lesson.getClient()));
+			result.add(new EventDto(EventDto.LESSON, lesson.getId(), DateUtil.truncate(ofe.getFromTime()),
+					lesson.getTitle(), DateUtil.extract(ofe.getFromTime()), DateUtil.extract(ofe.getToTime()),
+					lesson.getTutor(), lesson.getClient()));
 		}
 		if (lesson.getCalendar() instanceof RepeatEntry) {
 			RepeatEntry rpe = (RepeatEntry) lesson.getCalendar();
@@ -183,10 +192,8 @@ public class EventDto {
 							result.add(event);
 					}
 				} else {
-					EventDto event = new EventDto(EventDto.LESSON,
-							lesson.getId(), date, lesson.getTitle(),
-							rpe.getFromTime(), rpe.getToTime(),
-							lesson.getTutor(), lesson.getClient());
+					EventDto event = new EventDto(EventDto.LESSON, lesson.getId(), date, lesson.getTitle(),
+							rpe.getFromTime(), rpe.getToTime(), lesson.getTutor(), lesson.getClient());
 					if (event.within(fromDate, toDate))
 						result.add(event);
 				}
