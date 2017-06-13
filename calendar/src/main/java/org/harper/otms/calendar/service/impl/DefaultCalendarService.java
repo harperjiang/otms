@@ -42,8 +42,12 @@ public class DefaultCalendarService implements CalendarService {
 
 		snapshotItems.forEach((LessonItem item) -> result.addEvent(new EventDto(item)));
 
-		lessons.forEach((Lesson lesson) -> EventDto.fromLesson(lesson, fromDate, toDate)
-				.forEach((EventDto e) -> result.addEvent(e)));
+		lessons.stream().flatMap((Lesson lesson) -> EventDto.fromLesson(lesson, fromDate, toDate).stream())
+				.sorted((EventDto a, EventDto b) -> {
+					Date aDate = DateUtil.form(a.getDate(), a.getFromTime());
+					Date bDate = DateUtil.form(b.getDate(), b.getFromTime());
+					return aDate.compareTo(bDate);
+				}).forEach((EventDto e) -> result.addEvent(e));
 
 		result.convert(TimeZone.getTimeZone("UTC"), user.getTimezone());
 

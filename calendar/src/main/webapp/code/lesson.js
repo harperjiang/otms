@@ -214,6 +214,7 @@ $(function() {
 				var bean = bm.getBean();
 				// Call Server
 				if (bean != null) {
+					bean.lessonId = lessonId;
 					$(this).attr('disabled', 'disabled');
 
 					switch (otms.auth.userType()) {
@@ -254,10 +255,16 @@ $(function() {
 						.shan(deleteCallback));
 			});
 
-	$('#req_lesson_btn').click(function(event) {
+	$('#cfm_req_lesson_btn').click(function(event) {
 		window.location = 'lesson_requested.html';
 	});
-	$('#calendar_btn').click(function(event) {
+	$('#cfm_calendar_btn').click(function(event) {
+		window.location = 'calendar.html';
+	});
+	$('#ccl_req_lesson_btn').click(function(event) {
+		window.location = 'lesson_requested.html';
+	});
+	$('#ccl_calendar_btn').click(function(event) {
 		window.location = 'calendar.html';
 	});
 });

@@ -110,21 +110,32 @@ function onload() {
 		}, 1000);
 	}
 
-	$('#confirm_btn').click(function(event) {
-		debugger;
-		var req = otms.auth.req({
-			"lessonItem" : mbm.getBean(),
-			"lessonId" : lessonId,
-			"lessonItemId" : eventId
-		});
-		var callback = function(success, data) {
-			if (success) {
-				// Retrieve the generated item id if so
-				otms.setPageParam('otms.lessonItemPage.id', data.lessonItemId);
-			}
-		};
-		LessonService.makeLessonItem(req, otms.ui.MessageBox.han(callback));
-	});
+	$('#confirm_btn').click(
+			function(event) {
+				debugger;
+				var bean = mbm.getBean();
+				if (otms.isEmpty(bean)) {
+					otms.ui.MessageBox.warning($('#errmsg_panel'),
+							'Validation Failed');
+					return;
+				}
+				var req = otms.auth.req({
+					"lessonItem" : mbm.getBean(),
+					"lessonId" : lessonId,
+					"lessonItemId" : otms.isEmpty(eventId) ? -1 : eventId
+				});
+				var callback = function(success, data) {
+					if (success) {
+						// Retrieve the generated item id if so
+						otms.setPageParam('otms.lessonItemPage.id',
+								data.lessonItemId);
+						$('#modify_panel').css('display', 'none');
+						$('#confirm_panel').css('display', 'block');
+					}
+				};
+				LessonService.makeLessonItem(req, otms.ui.MessageBox
+						.han(callback));
+			});
 
 	$('#delete_btn').click(function(event) {
 		// TODO Cancel Event Item
@@ -132,5 +143,9 @@ function onload() {
 
 	$('#feedback_btn').click(function(event) {
 		// TODO Leave feedback
+	});
+
+	$('#calendar_btn').click(function(event) {
+		window.location = 'calendar.html';
 	});
 };

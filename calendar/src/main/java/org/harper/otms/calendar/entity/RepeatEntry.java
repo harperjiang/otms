@@ -187,8 +187,12 @@ public class RepeatEntry extends CalendarEntry {
 		DateExpression de = new DateExpression(getDateExpression());
 		List<Date> result = new ArrayList<Date>();
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(from);
-		while (cal.getTime().compareTo(to) <= 0) {
+
+		Date since = from.compareTo(getStartDate()) >= 0 ? from : getStartDate();
+		Date until = to.compareTo(getStopDate()) >= 0 ? getStopDate() : to;
+
+		cal.setTime(since);
+		while (cal.getTime().compareTo(until) <= 0) {
 			Date current = cal.getTime();
 			if (de.match(current)) {
 				result.add(current);

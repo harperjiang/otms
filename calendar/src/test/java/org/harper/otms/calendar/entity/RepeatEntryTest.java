@@ -3,8 +3,11 @@ package org.harper.otms.calendar.entity;
 import static org.junit.Assert.assertEquals;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.junit.Test;
@@ -55,6 +58,20 @@ public class RepeatEntryTest extends RepeatEntry {
 		re.setFromTime(850);
 		re.setDateExpression("\t\t0,0,1,1,0,1,1");
 		assertEquals("0 10 14 ? * TUE,WED,FRI,SAT *", re.cronExp());
+	}
+
+	@Test
+	public void testMatchIn() throws ParseException {
+		RepeatEntry re = new RepeatEntry();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		re.setStartDate(df.parse("2017-06-12 00:00", new ParsePosition(0)));
+		re.setStopDate(df.parse("2017-06-15 00:00", new ParsePosition(0)));
+		re.setFromTime(1380); // 23:00
+		re.setToTime(1410); // 23:30
+		re.setDateExpression("\t\t1,0,0,1,0,0,1");
+
+		List<Date> dates = re.matchIn(df.parse("2010-01-01 00:00"), df.parse("2019-01-01 00:00"));
+		assertEquals(1, dates.size());
 	}
 
 	@Test

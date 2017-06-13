@@ -28,15 +28,18 @@ public class JpaLessonItemDao extends JpaDao<LessonItem> implements LessonItemDa
 		if (fromDate != null) {
 			sql.append(" and li.toTime >= :fromDate");
 		}
-		if (User.TYPE_CLIENT.equals(user.getType())) {
+		if (user.isClient()) {
 			sql.append(" and li.lesson.client.id =:id");
-		} else if (User.TYPE_TUTOR.equals(user.getType())) {
+		} else if (user.isTutor()) {
 			sql.append(" and li.lesson.tutor.id =:id");
+		} else if (user.isAdmin()) {
+
 		}
+		sql.append(" order by li.fromTime");
 
 		TypedQuery<LessonItem> query = getEntityManager().createQuery(sql.toString(), LessonItem.class)
 				.setParameter("status", status).setParameter("toDate", toDate);
-		if (User.TYPE_CLIENT.equals(user.getType()) || User.TYPE_CLIENT.equals(user.getType()))
+		if (user.isClient() || user.isTutor())
 			query.setParameter("id", user.getId());
 		if (fromDate != null)
 			query.setParameter("fromDate", fromDate);
@@ -56,7 +59,7 @@ public class JpaLessonItemDao extends JpaDao<LessonItem> implements LessonItemDa
 		StringBuilder sql = new StringBuilder().append("select li from LessonItem li")
 				.append(" where li.status = :status").append(" and li.fromTime <= :toDate")
 				.append(" and li.toTime >= :fromDate").append(" and li.lesson.client.id =:client_id")
-				.append(" and li.lesson.tutor.id =:tutor_id");
+				.append(" and li.lesson.tutor.id =:tutor_id order by li.fromTime");
 
 		TypedQuery<LessonItem> query = getEntityManager().createQuery(sql.toString(), LessonItem.class)
 				.setParameter("toDate", toDate).setParameter("tutor_id", tutor.getId())

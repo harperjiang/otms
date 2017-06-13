@@ -29,7 +29,7 @@ public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 		if (client != null) {
 			sql.append(" and l.client_id = ?");
 		}
-		sql.append(" and ce.oneoff_to_time >= ? and ce.oneoff_from_time <= ?");
+		sql.append(" and ce.oneoff_to_time >= ? and ce.oneoff_from_time <= ? order by ce.oneoff_from_time");
 		Query query = getEntityManager().createNativeQuery(sql.toString(), Lesson.class);
 		int counter = 1;
 		query.setParameter(counter++, status.name());

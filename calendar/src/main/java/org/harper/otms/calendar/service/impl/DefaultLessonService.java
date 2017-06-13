@@ -53,7 +53,6 @@ import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.service.DataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 public class DefaultLessonService implements LessonService {
 
@@ -149,20 +148,18 @@ public class DefaultLessonService implements LessonService {
 			lesson.setStatus(Status.REQUESTED);
 			// This function generate 1-1 lessons
 			lesson.setCapacity(1);
-		}
+			Tutor tutor = getTutorDao().findByName(request.getLesson().getTutorName());
+			if (tutor == null) {
+				return new SetupLessonResponseDto(ErrorCode.TUTOR_NOT_FOUND);
+			}
 
-		Tutor tutor = getTutorDao().findByName(request.getLesson().getTutorName());
-		if (tutor == null) {
-			return new SetupLessonResponseDto(ErrorCode.TUTOR_NOT_FOUND);
+			Client client = getClientDao().findById(request.getCurrentUser());
+			if (client == null) {
+				return new SetupLessonResponseDto(ErrorCode.SYSTEM_NO_USER);
+			}
+			lesson.setTutor(tutor);
+			lesson.setClient(client);
 		}
-
-		Client client = getClientDao().findById(request.getCurrentUser());
-		if (client == null) {
-			return new SetupLessonResponseDto(ErrorCode.SYSTEM_NO_USER);
-		}
-
-		lesson.setTutor(tutor);
-		lesson.setClient(client);
 
 		request.getLesson().to(lesson, owner);
 		Date firstDate = lesson.getCalendar().firstTime();
@@ -189,11 +186,11 @@ public class DefaultLessonService implements LessonService {
 
 		LessonItem item = null;
 		// Find the lesson item if exists
-		if (!StringUtils.isEmpty(request.getLessonItemId())) {
+		if (request.getLessonItemId() != -1) {
 			item = getLessonItemDao().findById(request.getLessonItemId());
 			if (item == null)
 				return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
-		} else if (!StringUtils.isEmpty(request.getLessonId())) {
+		} else if (request.getLessonId() != -1) {
 			// Create one if not exists
 			Lesson lesson = getLessonDao().findById(request.getLessonId());
 			if (lesson == null)
@@ -211,19 +208,23 @@ public class DefaultLessonService implements LessonService {
 			Date itemDate = DateUtil.form(request.getLessonItem().getDate(), fromTime);
 			Date utcItemDate = DateUtil
 					.truncate(DateUtil.convert(itemDate, owner.getTimezone(), TimeZone.getTimeZone("UTC")));
-
+			item.setLesson(lesson);
+			item.setMaskDate(utcItemDate);
 			lesson.getItems().put(utcItemDate, item);
+		} else {
+			return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_INVALID_PARAM);
 		}
 
 		// Not owner
 		if (!owner.isAdmin() && !item.getLesson().isOwner(owner)) {
-			return new MakeLessonItemResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+			throw new DataException(ErrorCode.SYSTEM_NO_AUTH);
 		}
-		// Time expired
-		if (item.getFromTime().compareTo(new Date()) < 0) {
-			return new MakeLessonItemResponseDto(ErrorCode.LESSON_ITEM_EXPIRED);
-		}
+
 		request.getLessonItem().to(item, owner);
+		// Time expired
+		if (item.getFromTime().compareTo(DateUtil.nowUTC()) < 0) {
+			throw new DataException(ErrorCode.LESSON_ITEM_EXPIRED);
+		}
 		getLessonItemDao().save(item);
 		// Update Scheduler
 		getSchedulerDao().setupScheduler(item);
@@ -445,6 +446,14 @@ public class DefaultLessonService implements LessonService {
 			getSchedulerDao().setupScheduler(lesson);
 		}
 		if (fromStatus == Status.VALID && toStatus == Status.INVALID) {
+			// Cancel all items
+			lesson.getItems().values().forEach((LessonItem item) -> {
+				if (item.getStatus() == LessonItem.Status.VALID) {
+					item.setStatus(LessonItem.Status.DELETED);
+					getSchedulerDao().cancelScheduler(item);
+				}
+			});
+
 			// Cancel Scheduler
 			getSchedulerDao().cancelScheduler(lesson);
 		}
