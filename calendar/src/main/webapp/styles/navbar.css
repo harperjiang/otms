@@ -45,3 +45,9 @@
 	border-color: transparent;
 	color: #54b4f5;
 }
+
+.affix {
+	position: fixed;
+	top: 0px;
+	width: 100%;
+}

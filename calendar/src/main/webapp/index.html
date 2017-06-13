@@ -2,7 +2,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-
 <title>来乐教营 寻找您孩子的私人外教</title>
 <!--#include virtual="head.html" -->
 <script>
@@ -16,15 +15,84 @@
 	});
 </script>
 <style>
-.adv_block {
-	display: inline-block;
-	text-align: center;
-	width: 24%;
-	vertical-align: top;
-	cursor: pointer;
+img.frontpage {
+	width: 98%;
+	margin-left: auto;
+	margin-right: auto;
+	max-height: 800px;
 }
 
-.adv_block:hover {
+div.frontpage {
+	height: 900px;
+	background-image: url(resource/wallpaper.jpg);
+	background-size: 98% 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+div.frontpage-block {
+	width: 600px;
+	/*background-color: rgba(220, 200, 235, 0.7);*/
+	margin-left: 60px;
+	margin-top: 240px;
+	padding: 20px;
+}
+
+div.frontpage-title {
+	font-weight: bold;
+	font-size: 40px;
+	color: #FDFDFD;
+}
+
+div.frontpage-title-light {
+	font-size: 30px;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+div.frontpage-text {
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	color: #fdfdfd;
+}
+
+div.frontpage-btngroup {
+	text-align: center;
+	width: 70%;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+button.frontpage-btn {
+	width: 80%;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#video-block {
+	background-color: #fff;
+	padding-top: 60px;
+	padding-bottom: 90px;
+}
+
+#video-block p {
+	font-size: 18px;
+}
+
+div.video-text {
+	padding-top: 20px;
+}
+
+div.video-container {
+	margin: 10px;
+	margin-left: 20px;
+}
+
+#choose-block .col-sm-3:hover {
 	color: #842422;
 }
 
@@ -33,58 +101,142 @@
 	width: 60%;
 }
 
-.adv_title {
-	margin-top: 10px;
-	margin-bottom: 10px;
+#choose-block {
+	padding-top: 30px;
+	padding-bottom: 60px;
+	background-color: #f6f6f6;
+}
+
+#choose-block h3 {
+	display: block;
+	margin-top: 20px;
+	padding-top: 10px;
 	font-size: 20px;
 	font-weight: bold;
 	height: 50px;
 	color: inherit;
+	font-size: 20px;
 }
 
-.adv_content {
-	text-align: left;
+#choose-block p {
+	display: block;
 	font-size: 14px;
 	width: 70%;
 	margin-left: auto;
 	margin-right: auto;
 	color: inherit;
+	text-align: left;
 }
 
-.why_title {
-	font-size: 30px;
-	font-weight: bold;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	border-top: 1px solid lightgray;
-	padding-top: 20px;
+#carousel-block {
+	padding-top: 100px;
+	padding-bottom: 150px;
+}
+
+.carousel-control.right, .carousel-control.left {
+	background-image: none;
+	color: #54b4f5;
+}
+
+.carousel-indicators li {
+	border-color: #54b4f5;
+}
+
+.carousel-indicators li.active {
+	background-color: #54b4f5;
+}
+
+.item h4 {
+	font-size: 19px;
+	line-height: 1.375em;
+	font-weight: 400;
+	font-style: italic;
+	margin: 70px 0;
+}
+
+.item span {
+	font-style: normal;
+}
+
+.panel {
+	border: 1px solid #54b4f5;
+	border-radius: 0;
+	transition: box-shadow 0.5s;
+}
+
+.panel:hover {
+	box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+}
+
+.panel-footer .btn:hover {
+	border: 1px solid #54b4f5;
+	background-color: #fff;
+	color: #54b4f5;
+}
+
+#pricing-block {
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+#pricing-block .panel-heading {
+	color: #fff;
+	background-color: #54b4f5;
+	padding: 20px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.panel-footer {
+	background-color: #fff;
+}
+
+.panel-footer h3 {
+	font-size: 32px;
+}
+
+.panel-footer h4 {
+	color: #aaa;
+	font-size: 14px;
+}
+
+.panel-footer .btn {
+	margin: 15px 0;
+	background-color: #54b4f5;
+	color: #fff;
 }
 </style>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
-		<div id="errmsg_panel"></div>
-		<div id="page_content_nomenu">
-
-			<div
-				style="width: 540px; height: 300px; float: left; margin: 5px; padding-top: 30px;">
-				<div style="font-size: 40px; font-weight: bold;">每个孩子都应该拥有私人外教</div>
-				<div
-					style="margin-top: 20px; margin-bottom: 20px; font-size: 30px; color: gray;">
-					在乐教营为您的孩子寻找一对一的私人网络外教，随时随地进行英语浸入式教学</div>
-				<div
-					style="text-align: center; width: 70%; padding-top: 15px; padding-bottom: 15px; margin-left: auto; margin-right: auto;"
-					class="bg_blue">
-					<button class="btn_green" onclick="window.location='usr_signup.html'"
-						style="width: 80%; margin-top: 10px; margin-bottom: 5px;">现在注册，寻找专属私人外教</button>
-					<button class="btn_normal" onclick="window.location='login.html'"
-						style="width: 80%; margin-top: 5px; margin-bottom: 10px;">登录系统</button>
-				</div>
+	<!--#include virtual="navbar.html" -->
+	<div id="errmsg_panel"></div>
+	<div id="frontpage" class="container-fluid frontpage">
+		<div class="img-responsive frontpage-block">
+			<div class="frontpage-title">每个孩子都应该拥有私人外教</div>
+			<div class="frontpage-text">在乐教营为您的孩子寻找一对一的私人网络外教，随时随地进行英语浸入式教学</div>
+			<div class="frontpage-btngroup">
+				<button class="btn_green frontpage-btn"
+					onclick="window.location='usr_signup.html'">现在注册，寻找专属私人外教</button>
+				<button class="btn_normal frontpage-btn"
+					onclick="window.location='login.html'" style="">登录系统</button>
 			</div>
-			<div
-				style="width: 480px; float: left; margin: 10px; margin-left: 20px;">
-				<video id="webad_video" width="480" height="360" controls
+		</div>
+	</div>
+	<div id="video-block" class="container-fluid text-center">
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-3 video-text">
+				<div class="frontpage-title-light">为什么需要私人外教?</div>
+				<p>摆脱“哑巴英文”的窘境</p>
+				<p>浸入式的英語学习体验</p>
+				<p>纯正的英美文化滋养</p>
+				<button class="btn btn-default btn-lg">了解更多</button>
+			</div>
+			<div class="video-container col-sm-5">
+				<video id="webad_video" width="100%" height="100%"
 					poster="resource/video.png">
 					<source src="resource/websitead.webm" type="video/webm">
 					<source src="resource/websitead.ogg" type="video/ogg">
@@ -92,41 +244,231 @@
 					Your browser does not support the video tag.
 				</video>
 			</div>
-			<div style="clear: both;"></div>
-			<div class="why_title">为什么选择乐教营?</div>
-			<div id="adv_panel" style="margin-top: 10px; margin-bottom: 20px;">
-				<div class="adv_block">
-					<div class="adv_imgholder">
-						<img src="resource/index_certified.png" width="100%" />
-					</div>
-					<div class="adv_title">教师认证</div>
-					<div class="adv_content">教师均以英语为母语。毕业于儿童教育相关专业，拥有丰富的早教经验</div>
+		</div>
+	</div>
+	<div id="choose-block" class="container-fluid text-center">
+		<div class="frontpage-title-light">为什么选择乐教营?</div>
+		<div class="row">
+			<div class="col-sm-2"></div>
+			<div class="col-sm-2">
+				<div class="adv_imgholder">
+					<img src="resource/index_certified.png" width="100%" />
 				</div>
-				<div class="adv_block">
-					<div class="adv_imgholder">
-						<img src="resource/index_course.png" width="100%" />
-					</div>
-					<div class="adv_title">专业课程设计</div>
-					<div class="adv_content">课程设计基于美国小学教育系统，并针对中国孩子特点进行针对性改进</div>
+				<h3>教师认证</h3>
+				<p>教师均以英语为母语。毕业于儿童教育相关专业，拥有丰富的早教经验</p>
+			</div>
+			<div class="col-sm-2">
+				<div class="adv_imgholder">
+					<img src="resource/index_course.png" width="100%" />
 				</div>
-				<div class="adv_block">
-					<div class="adv_imgholder">
-						<img src="resource/index_access.png" width="100%" />
-					</div>
-					<div class="adv_title">访问灵活</div>
-					<div class="adv_content">通过网络参加课程，不受时间、地点限制</div>
+				<h3>专业课程设计</h3>
+				<p>课程设计基于美国小学教育系统，并针对中国孩子特点进行针对性改进</p>
+			</div>
+			<div class="col-sm-2">
+				<div class="adv_imgholder">
+					<img src="resource/index_access.png" width="100%" />
 				</div>
-				<div class="adv_block">
-					<div class="adv_imgholder">
-						<img src="resource/index_price.png" width="100%" />
-					</div>
-					<div class="adv_title">价格实惠</div>
-					<div class="adv_content">无须提前付费。仅当每节课程满意后付费。工薪家庭也能承担的私人外教</div>
+				<h3>访问灵活</h3>
+				<p>通过网络参加课程，不受时间、地点限制</p>
+			</div>
+			<div class="col-sm-2">
+				<div class="adv_imgholder">
+					<img src="resource/index_price.png" width="100%" />
+				</div>
+				<h3>价格实惠</h3>
+				<p>无须提前付费。仅当每节课程满意后付费。工薪家庭也能承担的私人外教</p>
+			</div>
+
+			<div class="col-sm-2"></div>
+		</div>
+		<div class="page_row" style="text-align: center;">
+			<button class="btn btn-primary btn-lg"
+				onclick="window.location='quick_start.html'">快速开始</button>
+		</div>
+	</div>
+
+	<div id="carousel-block" class="container text-center">
+		<h2>What our customers say</h2>
+		<div id="myCarousel" class="carousel slide text-center"
+			data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<h4>
+						"This company is the best. I am so happy with the result!"<br>
+						<span style="font-style: normal;">Michael Roe, Vice
+							President, Comment Box</span>
+					</h4>
+				</div>
+				<div class="item">
+					<h4>
+						"One word... WOW!!"<br> <span style="font-style: normal;">John
+							Doe, Salesman, Rep Inc</span>
+					</h4>
+				</div>
+				<div class="item">
+					<h4>
+						"Could I... BE any more happy with this company?"<br> <span
+							style="font-style: normal;">Chandler Bing, Actor,
+							FriendsAlot</span>
+					</h4>
 				</div>
 			</div>
-			<div class="page_row" style="text-align: center;">
-				<button class="btn_green"
-					onclick="window.location='quick_start.html'">快速开始</button>
+
+			<!-- Left and right controls -->
+			<a class="left carousel-control" href="#myCarousel" role="button"
+				data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#myCarousel" role="button"
+				data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+
+	</div>
+
+	<div id="pricing-block" class="container-fluid bg_gray">
+		<div class="text-center">
+			<h2>Pricing</h2>
+			<h4>Choose a payment plan that works for you</h4>
+		</div>
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-2">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>Basic</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>20</strong> Lorem
+						</p>
+						<p>
+							<strong>15</strong> Ipsum
+						</p>
+						<p>
+							<strong>5</strong> Dolor
+						</p>
+						<p>
+							<strong>2</strong> Sit
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$19</h3>
+						<h4>per month</h4>
+						<button class="btn btn-lg">Sign Up</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>Pro</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>50</strong> Lorem
+						</p>
+						<p>
+							<strong>25</strong> Ipsum
+						</p>
+						<p>
+							<strong>10</strong> Dolor
+						</p>
+						<p>
+							<strong>5</strong> Sit
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$29</h3>
+						<h4>per month</h4>
+						<button class="btn btn-lg">Sign Up</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="panel panel-default text-center">
+					<div class="panel-heading">
+						<h1>Premium</h1>
+					</div>
+					<div class="panel-body">
+						<p>
+							<strong>100</strong> Lorem
+						</p>
+						<p>
+							<strong>50</strong> Ipsum
+						</p>
+						<p>
+							<strong>25</strong> Dolor
+						</p>
+						<p>
+							<strong>10</strong> Sit
+						</p>
+						<p>
+							<strong>Endless</strong> Amet
+						</p>
+					</div>
+					<div class="panel-footer">
+						<h3>$49</h3>
+						<h4>per month</h4>
+						<button class="btn btn-lg">Sign Up</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+	</div>
+
+	<div id="contact-block" class="container bg-grey">
+		<h2 class="text-center">CONTACT</h2>
+		<div class="row">
+			<div class="col-sm-4">
+				<p>Contact us and we'll get back to you within 24 hours.</p>
+				<p>
+					<span class="glyphicon glyphicon-map-marker"></span> Chicago, US
+				</p>
+				<p>
+					<span class="glyphicon glyphicon-phone"></span> +00 1515151515
+				</p>
+				<p>
+					<span class="glyphicon glyphicon-envelope"></span>
+					myemail@something.com
+				</p>
+			</div>
+			<div class="col-sm-8">
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<input class="form-control" id="name" name="name"
+							placeholder="Name" type="text" required>
+					</div>
+					<div class="col-sm-6 form-group">
+						<input class="form-control" id="email" name="email"
+							placeholder="Email" type="email" required>
+					</div>
+				</div>
+				<textarea class="form-control" id="comments" name="comments"
+					placeholder="Comment" rows="5"></textarea>
+				<br>
+				<div class="row">
+					<div class="col-sm-12 form-group">
+						<button class="btn btn-default pull-right" type="submit">Send</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
