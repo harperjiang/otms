@@ -1,3 +1,5 @@
+$(onload);
+
 function onGoogleSignin(googleUser) {
 	var basicProfile = googleUser.getBasicProfile();
 
@@ -112,7 +114,6 @@ function onSubmit(success, data) {
 };
 
 function loginSuccess(data) {
-	debugger;
 	otms.auth.token(data);
 	window.location = "dashboard.html";
 };

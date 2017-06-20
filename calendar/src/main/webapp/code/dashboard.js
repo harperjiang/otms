@@ -26,3 +26,58 @@ function todoClicked(event, dataitem) {
 		break;
 	}
 };
+
+$(function() {
+	if (!otms.auth.isLoggedin()) {
+		window.location = 'index.html';
+	}
+	otms.namespace('otms.dashboardPage');
+
+	var userType = otms.auth.userType();
+	var lessonList = new otms.ui.list.List($('#lesson_list_container'));
+	lessonList.setRenderer(lessonEventListRenderer());
+
+	lessonList.rowClicked = lessonEventClick;
+
+	lessonList.titleContainer = $('#lesson_title');
+	lessonList.renderTitle = function(length) {
+		var msgtop = "You have {0} lessons in the coming week.";
+		var append = " You will receive notification 30 minutes before lesson starts."
+		var result = otms.FormatUtil
+				.format(msgtop, length == 0 ? 'no' : length);
+		if (length > 0)
+			result += append;
+		return result;
+	}
+
+	var todoList = new otms.ui.list.List($('#todo_list_container'));
+	todoList.setRenderer(todo_renderer);
+	todoList.titleContainer = $('#todo_title');
+	todoList.rowClicked = todoClicked;
+	todoList.renderTitle = function(length) {
+		var msgtop = "You have {0} todo events.";
+		var result = otms.FormatUtil
+				.format(msgtop, length == 0 ? 'no' : length);
+		return result;
+	}
+
+	var lessonListCallback = function(success, data) {
+		if (success) {
+			lessonList.model.setData(data.events);
+		}
+	};
+
+	var comingweek = otms.DateUtil.comingweek();
+	CalendarService.getEvents(otms.auth.req({
+		'fromDate' : comingweek.fromDate,
+		'toDate' : comingweek.toDate
+	}), otms.ui.MessageBox.shan(lessonListCallback));
+
+	var todoCallback = function(success, data) {
+		if (success) {
+			todoList.model.setData(data.todos);
+		}
+	};
+	TodoService.getTodos(otms.auth.req({}), otms.ui.MessageBox
+			.shan(todoCallback));
+});

@@ -1,14 +1,21 @@
 otms.namespace('otms.auth');
 
+otms.auth.validateToken = function(token) {
+	// validate the timestamp
+	// 30 min
+	return (Date.now() - token.timestamp >= 1800000) ? undefined : token;
+}
+
 otms.auth.token = function(data) {
 	if (data === undefined) {
-		if (otms.auth.tokenCache !== undefined) {
-			return otms.auth.tokenCache;
-		}
-		var token = localStorage.getItem('otms.token');
-		if (token != undefined && token != null) {
-			token = otms.json(token);
-			otms.auth.tokenCache = token;
+		var token = undefined;
+
+		var jsonToken = localStorage.getItem('otms.token');
+		if (!otms.isEmpty(jsonToken))
+			token = otms.json(jsonToken);
+
+		if (!otms.isEmpty(token)) {
+			token = otms.auth.validateToken(token);
 			return token;
 		}
 		return undefined;
@@ -17,7 +24,8 @@ otms.auth.token = function(data) {
 			"userId" : data.userId,
 			"username" : data.username,
 			"type" : data.type,
-			"token" : data.token
+			"token" : data.token,
+			"timestamp" : Date.now()
 		}));
 	}
 };
@@ -42,6 +50,11 @@ otms.auth.req = function(request) {
 		request['userType'] = '';
 	// Convert all date to string in format yyyy-MM-dd HH:mm:ss
 	otms.auth.filter(request);
+
+	// renew local token
+	var newtoken = otms.auth.token();
+	newtoken.timestamp = Date.now();
+	otms.auth.token(newtoken);
 	return request;
 };
 

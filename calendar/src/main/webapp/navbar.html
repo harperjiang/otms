@@ -9,7 +9,7 @@
 			<a class="navbar-brand" href="index.html">TutorCan</a>
 		</div>
 		<div class="collapse navbar-collapse" id="myNavbar">
-			<form class="navbar-form navbar-right">
+			<!-- form class="navbar-form navbar-right">
 				<div class="form-group">
 					<select class="form-control" id="nav_lang_select"
 						onchange="changeLang(this)">
@@ -17,19 +17,19 @@
 						<option value="zh_CN">简体中文</option>
 					</select>
 				</div>
-			</form>
+			</form-->
 			<ul id="nav_login_panel" class="nav navbar-nav navbar-right">
-				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
-						${nav_signup}</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span>
-						${nav_login}</a></li>
+				<li><a href="usr_signup.html"><span
+						class="glyphicon glyphicon-user"></span> ${nav_signup}</a></li>
+				<li><a href="login.html"><span
+						class="glyphicon glyphicon-log-in"></span> ${nav_login}</a></li>
 			</ul>
 			<ul id="nav_account_panel" class="nav navbar-nav navbar-right"
 				style="display: none;">
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
 						${nav_account}</a></li>
-				<li><a href="#"><span class="glyphicon glyphicon-log-out"></span>
-						${nav_logout}</a></li>
+				<li><a href="#" id="nav_logout"><span
+						class="glyphicon glyphicon-log-out"></span> ${nav_logout}</a></li>
 			</ul>
 
 			<ul class="nav navbar-nav navbar-right navbar-text1">
@@ -58,18 +58,25 @@
 </nav>
 <script>
 	otms.namespace('otms.headerPage');
-	handleLang();
+	check_login();
 
-	if (otms.auth.isLoggedin()) {
-		$('#nav_login_panel').css('display', 'none');
-		$('#nav_account_panel').css('display', 'block');
-		/* $('#topbar_username_link').empty();
-		$('#topbar_username_link').append(otms.auth.username()); */
-	} else {
-		$('#nav_login_panel').css('display', 'block');
-		$('#nav_account_panel').css('display', 'none');
+	function check_login() {
+		if (otms.auth.isLoggedin()) {
+			$('#nav_login_panel').css('display', 'none');
+			$('#nav_account_panel').css('display', 'block');
+			/* $('#topbar_username_link').empty();
+			$('#topbar_username_link').append(otms.auth.username()); */
+		} else {
+			$('#nav_login_panel').css('display', 'block');
+			$('#nav_account_panel').css('display', 'none');
+		}
 	}
 
+	$('#nav_logout').click(function(event) {
+		otms.auth.cleartoken();
+		otms.headerPage.refreshLoginOption();
+		check_login();
+	});
 	/*
 	if (!otms.auth.isLoggedin()) {
 		// Point to index instead of dashboard

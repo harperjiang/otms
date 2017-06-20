@@ -9,8 +9,11 @@
 		$('#adv_panel').click(function() {
 			window.location = 'about.html';
 		});
-		$('#webad_video').click(function(event) {
-			this.paused ? this.play() : this.pause();
+		$('#webad_video').mouseover(function(event) {
+			this.play();
+		});
+		$('#webad_video').mouseout(function(event) {
+			this.pause();
 		});
 	});
 </script>
@@ -288,7 +291,7 @@ div.video-container {
 	</div>
 
 	<div id="carousel-block" class="container text-center">
-		<h2>What our customers say</h2>
+		<div class="text-center frontpage-title-light">What our customers say</div>
 		<div id="myCarousel" class="carousel slide text-center"
 			data-ride="carousel">
 			<!-- Indicators -->
@@ -338,7 +341,7 @@ div.video-container {
 
 	<div id="pricing-block" class="container-fluid bg_gray">
 		<div class="text-center">
-			<h2>Pricing</h2>
+			<div class="frontpage-title-light">Pricing</div>
 			<h4>Choose a payment plan that works for you</h4>
 		</div>
 		<div class="row">
@@ -435,22 +438,23 @@ div.video-container {
 	</div>
 
 	<div id="contact-block" class="container bg-grey">
-		<h2 class="text-center">CONTACT</h2>
+		<div class="frontpage-title-light text-center">CONTACT</div>
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-5">
 				<p>Contact us and we'll get back to you within 24 hours.</p>
 				<p>
 					<span class="glyphicon glyphicon-map-marker"></span> Chicago, US
 				</p>
 				<p>
-					<span class="glyphicon glyphicon-phone"></span> +00 1515151515
+					<span class="glyphicon glyphicon-comment"></span> +00 1515151515
 				</p>
 				<p>
 					<span class="glyphicon glyphicon-envelope"></span>
-					myemail@something.com
+					admin@tutorcan.com
 				</p>
 			</div>
-			<div class="col-sm-8">
+			<div class="col-sm-5">
 				<div class="row">
 					<div class="col-sm-6 form-group">
 						<input class="form-control" id="name" name="name"
@@ -470,6 +474,7 @@ div.video-container {
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-1"></div>
 		</div>
 	</div>
 	<!--#include virtual="footer.html" -->
