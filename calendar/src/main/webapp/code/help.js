@@ -1,6 +1,7 @@
 otms.helpPage.histStack = [];
 otms.helpPage.currentItem = undefined;
 
+$(onload);
 function onload() {
 	otms.helpPage.histStack.push(otms.helpPage.topicRoot);
 	otms.helpPage.currentItem = otms.helpPage.topicRoot;

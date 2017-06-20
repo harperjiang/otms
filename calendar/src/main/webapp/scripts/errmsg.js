@@ -12,7 +12,7 @@ otms.ErrorMsg.msg = function(code, locale) {
 	if (code >= 200 && code < 300) {
 		console.log("Session related error, clear token");
 		otms.auth.cleartoken();
-		otms.headerPage.refreshLoginOption();
+		window.location = 'index.html';
 	}
 
 	return result;

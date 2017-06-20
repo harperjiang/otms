@@ -53,8 +53,10 @@ otms.auth.req = function(request) {
 
 	// renew local token
 	var newtoken = otms.auth.token();
-	newtoken.timestamp = Date.now();
-	otms.auth.token(newtoken);
+	if (!otms.isEmpty(newtoken)) {
+		newtoken.timestamp = Date.now();
+		otms.auth.token(newtoken);
+	}
 	return request;
 };
 

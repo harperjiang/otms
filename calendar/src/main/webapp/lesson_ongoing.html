@@ -7,31 +7,12 @@
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
 <script type="text/javascript" src="scripts/ui/list.js"></script>
 <script type="text/javascript" src="code/lessonlist_renderer.js"></script>
-<script type="text/javascript" src="code/ongoing_lesson.js"></script>
-<script>
-	$(function() {
-		otms.namespace('otms.ongoingLessonPage');
-
-		var list = new otms.ui.list.List($('#lesson_list_container'));
-		list.setRenderer(lessonListRenderer());
-		list.rowClicked = viewLessonDetail;
-
-		list.titleContainer = $('#title_container');
-		list.renderTitle = function(length) {
-			var msg = 'You have {0} on-going lessons';
-			return otms.FormatUtil.format(msg, length == 0 ? 'no' : length);
-		};
-
-		otms.ongoingLessonPage.list = list;
-		refreshList();
-	});
-</script>
+<script type="text/javascript" src="code/lesson_ongoing.js"></script>
 </head>
 <body>
+	<!--#include virtual="menu.html" -->
 	<div id="page">
-		<!--#include virtual="header.html" -->
 		<div id="errmsg_panel"></div>
-		<!--#include virtual="menu.html" -->
 		<div id="page_content">
 			<div class='page_title'>Ongoing Lessons</div>
 			<div class="page_block">
@@ -40,6 +21,5 @@
 			</div>
 		</div>
 	</div>
-	<!--#include virtual="footer.html" -->
 </body>
 </html>

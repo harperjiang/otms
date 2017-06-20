@@ -78,3 +78,26 @@ function popupRenderer(popupDiv) {
 		rejectBtn.css('top', height / 2 - 12);
 	};
 };
+
+$(function() {
+
+	otms.namespace('otms.reqLessonPage');
+
+	var list = new otms.ui.list.List($('#list_container'));
+	list.setRenderer(lessonListRenderer());
+	list.setPopupRenderer(popupRenderer);
+
+	list.titleContainer = $('#title_container');
+	list.renderTitle = function(length) {
+		var msg = 'You have {0} requested lessons';
+		return otms.FormatUtil.format(msg, length == 0 ? 'no' : length);
+	};
+
+	list.hasPopup = function(data) {
+		return true;
+	};
+
+	otms.reqLessonPage.list = list;
+
+	refreshList();
+});

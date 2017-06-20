@@ -6,9 +6,6 @@
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="code/help_topic.js"></script>
 <script type="text/javascript" src="code/help.js"></script>
-<script>
-	$(onload);
-</script>
 <style type="text/css">
 .banner_panel {
 	height: 180px;
@@ -119,32 +116,34 @@
 </style>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
+	<!--#include virtual="navbar.html" -->
+	<div class="container-fluid">
 		<div id="errmsg_panel"></div>
-		<div id="page_content_nomenu">
-			<div class="banner_panel">
-				<div class="searchbox_panel">
-					<input type="text" class="searchbox" placeholder="搜寻帮助信息" />
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-8">
+				<div class="banner_panel">
+					<div class="searchbox_panel">
+						<input type="text" class="searchbox" placeholder="搜寻帮助信息" />
+					</div>
+					<div class="help_header">
+						<ul id="hist_ul">
+						</ul>
+					</div>
 				</div>
-				<div class="help_header">
-					<ul id="hist_ul">
+
+				<div class="help_menu">
+					<ul id="menu_ul">
 					</ul>
 				</div>
+				<div class="help_content">
+					<div id="title_panel" class="help_title"></div>
+					<div id="data_panel" class="help_data"></div>
+				</div>
 			</div>
-
-			<div class="help_menu">
-				<ul id="menu_ul">
-				</ul>
-			</div>
-			<div class="help_content">
-				<div id="title_panel" class="help_title"></div>
-				<div id="data_panel" class="help_data"></div>
-
-			</div>
+			<div class="col-sm-1"></div>
 		</div>
 	</div>
 
-	<!--#include virtual="footer.html" -->
 </body>
 </html>

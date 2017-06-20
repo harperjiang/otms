@@ -34,3 +34,27 @@ function query(pagingData) {
 		"paging" : pagingData
 	}), otms.ui.MessageBox.shan(callback));
 };
+$(function() {
+	otms.namespace('otms.lessonHistoryPage');
+
+	var list = new otms.ui.list.List($('#lesson_list_container'));
+	list.setRenderer(lessonItemListRenderer());
+	list.rowClicked = viewLessonItemDetail;
+	list.titleContainer = $('#title_container');
+	list.renderTitle = function(length) {
+		var msg = '{0} results found';
+		return otms.FormatUtil.format(msg, length == 0 ? 'no' : length);
+	};
+	otms.lessonHistoryPage.list = list;
+
+	var pagingControl = new otms.ui.paging.PagingControl($('#paging_control'));
+	pagingControl.callback = query;
+	otms.lessonHistoryPage.paging = pagingControl;
+
+	$('#time_period').change(function() {
+		pagingControl.changePage();
+	});
+
+	// Goto first page
+	pagingControl.changePage();
+});
