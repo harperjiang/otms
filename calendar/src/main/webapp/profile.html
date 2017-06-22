@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/util.js'></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
@@ -13,10 +13,12 @@
 </head>
 <body>
 	<!--#include virtual="menu.html" -->
-	<div id="page">
+	<div class="page-menu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content">
-			<div class="page_block">
+		<div class="page-content">
+			<div class="page-title">User Profile</div>
+			<div class="page-block">
+				<div class="page-block-title">Personal Information</div>
 				<div style="margin-right: 20px; float: left;">
 					<div style="width: 120px; height: 120px; display: block;">
 						<img id="profile_img" src="resource/default_profile.jpg"
@@ -29,48 +31,59 @@
 				</div>
 				<div style="display: block; overflow: hidden;">
 					<div style="float: left; min-height: 120px; width: 100%">
-						<div class='page_row '>
-							<input id="name_input" placeholder="Your display name"
-								type='text' style="font-size: 25px; font-weight: bold" />
+						<div class='page-row '>
+							<input id="name_input" class="form-control"
+								placeholder="Your display name" type='text' />
 						</div>
-						<div class="page_row ">
+						<div class="page-row ">
 							<div style="display: inline-block; width: 49%">
 								<label>username:</label>
 								<span id="username_span" style="font-weight: bold">&nbsp;</span>
 							</div>
 							<div style="display: inline-block; width: 49%">
-								<label>timezone:</label> <select id="timezone_select"></select>
+								<label>timezone:</label> <select class="custom-select"
+									id="timezone_select"></select>
 							</div>
 						</div>
-						<div class="page_row">
+						<div class="page-row">
 							<label>Email for receiving alert:</label>
 							<span class="inputcontainer">
-								<input class="withlabel" id="email_input"
+								<input class="withlabel form-control" id="email_input"
 									placeholder="Email to receive notification and newsletters"
 									type='text' />
 							</span>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div id="client_profile_panel" style="display: none;">
 
-				<div class="page_row ">
+			</div>
+
+			<div class="page-block">
+				<div class="page-block-title">Preference</div>
+			</div>
+
+			<div class="page-block">
+				<button id="client_confirm_btn" class="btn_large">Save</button>
+			</div>
+
+			<!-- div id="client_profile_panel" style="display: none;">
+
+				<div class="page-row ">
 					<input id="client_stmt_input"
 						placeholder="Describe the tutor you are looking for" type='text' />
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">Personal Statement</div>
-					<div class="page_row ">
+				<div class="page-block">
+					<div class="page-block-title">Personal Statement</div>
+					<div class="page-row ">
 						<textarea id="client_desc_text"
 							placeholder="An introduction about yourself. A typical personal statement includes your background, hobby, advantages, etc."></textarea>
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">English Proficiency Level</div>
-					<div class="page_row">Read the following text and record your
+				<div class="page-block">
+					<div class="page-block-title">English Proficiency Level</div>
+					<div class="page-row">Read the following text and record your
 						result.</div>
-					<div class="page_row">
+					<div class="page-row">
 						<div class="text_hl">
 							<p>Alice was beginning to get very tired of sitting by her
 								sister on the bank, and of having nothing to do: once or twice
@@ -84,55 +97,53 @@
 								White Rabbit with pink eyes ran close by her.</p>
 						</div>
 					</div>
-					<div class="page_row ">
+					<div class="page-row ">
 						<input type='text' placeholder="URL of your recording"
 							id="client_audiourl_input" />
 					</div>
 				</div>
-				<div class="page_block">
-					<button id="client_confirm_btn" class="btn_large">Save</button>
-				</div>
-			</div>
+				
+			</div-->
 			<div id="tutor_profile_panel" style="display: none;">
-				<div class="page_row ">
+				<div class="page-row ">
 					<input id="tutor_stmt_input"
 						placeholder="Describe the students you are looking for"
 						type='text' />
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">Self Introduction</div>
-					<div class="page_row">
+				<div class="page-block">
+					<div class="page-block-title">Self Introduction</div>
+					<div class="page-row">
 						<textarea id='tutor_desc_text'
 							placeholder='Write some words about yourself and let the potential client find you!'></textarea>
 					</div>
-					<div class="page_row">Or make a self-introduction video</div>
-					<div class="page_row">
+					<div class="page-row">Or make a self-introduction video</div>
+					<div class="page-row">
 						<input type='text' id='tutor_video_input'
 							placeholder="Video self-introduction URL" />
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">About Me</div>
-					<div class="page_row">
+				<div class="page-block">
+					<div class="page-block-title">About Me</div>
+					<div class="page-row">
 						<textarea id='tutor_aboutme_text'
 							placeholder='More background about you'></textarea>
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">Education Background</div>
-					<div class="page_row">
+				<div class="page-block">
+					<div class="page-block-title">Education Background</div>
+					<div class="page-row">
 						<textarea id='tutor_edu_text'
 							placeholder='Your education background. Please include information like school, degree and major'></textarea>
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">Working Experience</div>
-					<div class="page_row">
+				<div class="page-block">
+					<div class="page-block-title">Working Experience</div>
+					<div class="page-row">
 						<textarea id='tutor_working_text'
 							placeholder='Do you have education related working experience? Describe it here.'></textarea>
 					</div>
 				</div>
-				<div class="page_block">
+				<div class="page-block">
 					<button id="tutor_confirm_btn" class="btn_large">Save</button>
 				</div>
 			</div>

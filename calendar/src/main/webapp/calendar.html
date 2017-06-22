@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Calendar</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/ui/dialog.js"></script>
 <script type="text/javascript" src="scripts/ui/calendar.js"></script>
@@ -12,10 +12,10 @@
 </head>
 <body>
 	<!--#include virtual="menu.html" -->
-	<div id="page">
+	<div class="page-menu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content">
-			<div class="page_title">My Calendar</div>
+		<div class="page-content">
+			<div class="page-title">${title}</div>
 			<div id="container"></div>
 		</div>
 	</div>

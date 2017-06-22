@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${webpage_title}</title>
+<title>${webpage-title}</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
@@ -10,25 +10,25 @@
 </head>
 <body>
 	<!--#include virtual="menu.html" -->
-	<div id="page">
+	<div class="page-menu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content">
+		<div class="page-content">
 			<div id="main_panel">
-				<div id='form_title_div' class='page_title'>${schedule_lesson}</div>
-				<div class="page_block">
-					<div class="page_block_title">${lesson_info}</div>
+				<div id='form_title_div' class='page-title'>${schedule_lesson}</div>
+				<div class="page-block">
+					<div class="page-block-title">${lesson_info}</div>
 
-					<div class="page_row">
+					<div class="page-row">
 						<input type="text" id='tutor_input' placeholder="${tutor_id}"></input>
 						<input type="text" id='client_input' placeholder="${client_id}"></input>
 					</div>
-					<div class="page_row">
+					<div class="page-row">
 						<textarea id='meetingdesc_text' placeholder="${lesson_desc}"></textarea>
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_block_title">${lesson_time}</div>
-					<div class='page_row'>
+				<div class="page-block">
+					<div class="page-block-title">${lesson_time}</div>
+					<div class='page-row'>
 						<div style='display: inline-block;'>
 							<label class='timelabel2'>From:</label> <input type='text'
 								placeholder='8:00' id='timefrom_input' class='timeinput2'
@@ -41,12 +41,12 @@
 						</div>
 					</div>
 
-					<div class='page_row'>
+					<div class='page-row'>
 						<label>Repeated lesson?<input id='repeat_checkbox'
 							type="checkbox" checked onclick='switch_calendar(this)'></label>
 					</div>
 					<div id='repeat_option_div'>
-						<div class='page_row'>
+						<div class='page-row'>
 							<div style='display: inline-block;'>
 								<label class='timelabel2'>Start Date:</label> <input type='text'
 									id='repeat_datefrom_input' placeholder='mm/dd/year'
@@ -58,7 +58,7 @@
 									class='timeinput2' />
 							</div>
 						</div>
-						<div class="page_row">
+						<div class="page-row">
 							<label>Repeat every</label>
 							<div style="overflow: auto;">
 								<label style='width: 120px;'><input type='checkbox'
@@ -79,38 +79,38 @@
 						</div>
 					</div>
 					<div id='oneoff_option_div' style='display: none'>
-						<div class="page_row">
+						<div class="page-row">
 							<label>Meet On:</label> <input type='text' id='oneoff_date_input'
 								placeholder='mm/dd/yyyy' class='timeinput' />
 						</div>
 					</div>
 				</div>
-				<div class="page_block">
-					<div class="page_row">
+				<div class="page-block">
+					<div class="page-row">
 						<button class="btn_large" id='confirm_btn'>${confirm}</button>
 						<button class="btn_danger" id='delete_btn'
 							style='margin-left: 20px; display: none;'>${cancel_lesson}</button>
 					</div>
 				</div>
 			</div>
-			<div id="confirm_panel" class="page_block" style="display: none;">
-				<div class="page_title">Lesson Setup Success!</div>
-				<div class="page_row">We have sent your lesson request to your
+			<div id="confirm_panel" class="page-block" style="display: none;">
+				<div class="page-title">Lesson Setup Success!</div>
+				<div class="page-row">We have sent your lesson request to your
 					tutor. You will receive a notification when he/she confirms your
 					lesson request.</div>
-				<div class="page_row">The lesson will automatically be added
+				<div class="page-row">The lesson will automatically be added
 					to your calendar when confirmed by your tutor.</div>
-				<div class="page_row">
+				<div class="page-row">
 					<button class="btn_large" id='cfm_req_lesson_btn'>${view_request_lesson}</button>
 					<button class="btn_large" id='cfm_calendar_btn'>${goto_calendar}</button>
 				</div>
 			</div>
-			<div id="cancel_panel" class="page_block" style="display: none;">
-				<div class="page_title">Lesson Cancellation Success!</div>
-				<div class="page_row">We have cancelled your lesson</div>
-				<div class="page_row">The lesson will automatically be removed
+			<div id="cancel_panel" class="page-block" style="display: none;">
+				<div class="page-title">Lesson Cancellation Success!</div>
+				<div class="page-row">We have cancelled your lesson</div>
+				<div class="page-row">The lesson will automatically be removed
 					from your calendar.</div>
-				<div class="page_row">
+				<div class="page-row">
 					<button class="btn_large" id='ccl_req_lesson_btn'>${view_request_lesson}</button>
 					<button class="btn_large" id='ccl_calendar_btn'>${goto_calendar}</button>
 				</div>

@@ -4,8 +4,13 @@
 		"Hiragino Sans GB", "WenQuanYi Micro Hei", sans-serif;
 }
 
+html {
+	height: 100%;
+}
+
 body {
 	/*background-color: #f6f6f6;*/
+	height: 100%;
 }
 
 div {

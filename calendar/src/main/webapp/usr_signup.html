@@ -12,30 +12,30 @@
 <body>
 
 	<!--#include virtual="navbar.html" -->
-	<div id="page">
+	<div class="page">
 		<div id='errmsg_panel'></div>
-		<div id="page_content_thin">
+		<div class="page-content-thin">
 			<div id="signup_info_panel">
-				<div class="page_title">${pageTitle}</div>
-				<div class="page_row">
+				<div class="page-title">${pageTitle}</div>
+				<div class="page-row">
 					<input type="text" id="name_input" placeholder="${usernamePh}" />
 				</div>
-				<div class="page_row">
+				<div class="page-row">
 					<input type="text" id="display_input"
 						placeholder="${displayNamePh}" />
 				</div>
-				<div class="page_row">
+				<div class="page-row">
 					<input type="text" id="email_input" placeholder="${emailAddressPh}" />
 				</div>
-				<div class="page_row">
+				<div class="page-row">
 					<input id="password_input" type="password"
 						placeholder="${passwordPh}" />
 				</div>
-				<div class="page_row">
+				<div class="page-row">
 					<label style="margin-bottom: 10px">${timezoneLabel}</label><select
 						id="timezone_select"></select>
 				</div>
-				<div class="page_row" style="display: none">
+				<div class="page-row" style="display: none">
 					<div>
 						<label style='width: 80px'>I am </label> <label><input
 							type="radio" name="role" value="client" checked /> looking for a
@@ -47,12 +47,12 @@
 							students</label>
 					</div>
 				</div>
-				<div class="page_row">
+				<div class="page-row">
 					<label style="width: 380px" for="agree_checkbox"><input
 						name="agree" id="agree_checkbox" type="checkbox"
 						style="display: inline-block; width: 30px" />${agreeLabel}</label>
 				</div>
-				<div class="page_row" style="overflow-y: hidden;">
+				<div class="page-row" style="overflow-y: hidden;">
 					<div class="g-recaptcha"
 						data-sitekey="6LcVwCQUAAAAABkbKjftIBw5snuZWUYcdaQLSrfW"></div>
 				</div>

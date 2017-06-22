@@ -15,13 +15,13 @@ otms.ui.paging.PagingControl.prototype.init = function() {
 	var prevButton = $(document.createElement('button'));
 	prevButton.append('&#9664;');
 	prevButton.addClass('btn_small');
-	prevButton.addClass('paging_control');
+	prevButton.addClass('paging-control');
 	prevButton.prop('id', 'paging_btn_prev');
 	this.container.append(prevButton);
 
 	var input = $(document.createElement('input'));
 	input.prop('type', 'text');
-	input.addClass('paging_input');
+	input.addClass('paging-input');
 	this.container.append(input);
 
 	this.currentPageInput = input;
@@ -29,7 +29,7 @@ otms.ui.paging.PagingControl.prototype.init = function() {
 	this.container.append(" of ");
 
 	var totalSpan = $(document.createElement('span'));
-	totalSpan.addClass('paging_total');
+	totalSpan.addClass('paging-total');
 	this.container.append(totalSpan);
 
 	this.totalSpan = totalSpan;
@@ -37,14 +37,14 @@ otms.ui.paging.PagingControl.prototype.init = function() {
 	var goButton = $(document.createElement('button'));
 	goButton.append("Go");
 	goButton.addClass('btn_small');
-	goButton.addClass('paging_control');
+	goButton.addClass('paging-control');
 	goButton.prop('id', 'paging_btn_go');
 	this.container.append(goButton);
 
 	var nextButton = $(document.createElement('button'));
 	nextButton.append('&#9654;');
 	nextButton.addClass('btn_small');
-	nextButton.addClass('paging_control');
+	nextButton.addClass('paging-control');
 	nextButton.prop('id', 'paging_btn_next');
 	this.container.append(nextButton);
 

@@ -96,7 +96,6 @@ function signIn(userinfo, successCallback, needRegCallback) {
 
 function onSubmit(success, data) {
 	if (success) {
-		debugger;
 		if (data.needActivate) {
 			$('#google_panel').css('display', 'none');
 			$('#qq_panel').css('display', 'none');
@@ -148,7 +147,6 @@ function onload() {
 	otms.loginPage.qqBm = qqBm;
 
 	var callback = function(success, data) {
-		debugger;
 		if (success) {
 			// Put token in local storage
 			loginSuccess(data);
@@ -159,7 +157,6 @@ function onload() {
 		}
 	};
 	var login = function() {
-		debugger;
 		$('#signin_btn').attr('disabled', 'disabled');
 		var bean = bm.getBean();
 		if (null != bean) {

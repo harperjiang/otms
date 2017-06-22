@@ -1,55 +1,71 @@
-#page {
-	overflow: auto;
-	margin-left: 500px;
-	margin-right: auto;
-	margin-bottom: 20px;
-	margin-top: 80px;
-	/*color: #82888a;*/
+@media ( min-width : 768px) {
+	.page {
+		overflow: auto;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 20px;
+		padding-top: 80px;
+		padding-left: 30%;
+		background-color: #FAF8FD;
+		min-height: 100%;
+	}
+	.page-content-thin {
+		width: 60%;
+		overflow: auto;
+		max-width: 500px;
+		min-height: 500px;
+		padding-top: 5px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.page-menu {
+		margin-left: 300px;
+		padding-top: 50px;
+		background-color: #FAF8FD;
+		min-height: 100%;
+	}
+	.page-content {
+		margin-left: auto;
+		margin-right: auto;
+		overflow: auto;
+		max-width: 900px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
 }
 
 @media ( max-width : 767px) {
-	#page {
+	.page {
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 10px;
+		background-color: #FAF8FD;
 	}
-	#page_content {
-		width: 100%;
+	.page-content-thin {
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.page-menu {
+		background-color: #FAF8FD;
+	}
+	.page-content {
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 }
 
-#page_content {
-	overflow: auto;
-	max-width: 900px;
-}
-
-#page_content_nomenu {
-	margin-left: 10px;
-	overflow: auto;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-#page_content_thin {
-	min-height: 500px;
-	padding-top: 5px;
-	margin-left: auto;
-	margin-right: auto;
-	width: 400px;
-}
-
-.page_title {
+.page-title {
 	margin-bottom: 30px;
 	font-size: 30px;
 }
 
-.page_block {
+.page-block {
 	font-size: 16px;
 	overflow: auto;
 	margin-bottom: 20px;
 }
 
-.page_block_border {
+.page-block-border {
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	-webkit-border-radius: 5;
@@ -57,35 +73,36 @@
 	padding: 20px;
 }
 
-.page_block_title {
+.page-block-title {
 	margin-bottom: 20px;
 	font-size: 20px;
 	font-weight: bold;
 	color: #54b4f5
 }
 
-.page_row {
+.page-row {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	line-height: 160%;
 	overflow: auto;
 }
 
-.page_row input[type='text'], .page_row input[type='password'],
-	.page_row textarea {
+.page-row input[type='text'], .page-row input[type='password'],
+	.page-row textarea {
 	font-size: 15px;
 	width: 100%;
-	padding: 10px;
+	padding: 5px;
+	padding-left:10px;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
-.page_row input[type='checkbox'] {
+.page-row input[type='checkbox'] {
 	margin-right: 10px;
 }
 
-.page_row textarea {
+.page-row textarea {
 	width: 100%;
 	height: 120px;
 	resize: none;
@@ -95,7 +112,7 @@
 	box-sizing: border-box;
 }
 
-.page_row select {
+.page-row select {
 	font-size: 15px;
 	height: 30px;
 	border-color: #999;
@@ -104,11 +121,11 @@
 	margin-left: 10px;
 }
 
-.page_row span {
+.page-row span {
 	line-height: 40px;
 }
 
-.page_row label {
+.page-row label {
 	font-size: 16px;
 	display: inline-block;
 	margin-right: 10px;
@@ -116,13 +133,13 @@
 	line-height: 42px;
 }
 
-.page_row label.textarea_label {
+.page-row label.textarea_label {
 	display: block;
 	width: 100%;
 	float: none;
 }
 
-.page_row div.textarea {
+.page-row div.textarea {
 	display: block;
 	font-size: 14px;
 	line-height: 100%;
@@ -134,18 +151,19 @@
 	box-sizing: border-box;
 }
 
-.page_row div.textarea_small {
+.page-row div.textarea_small {
 	font-size: 14px;
 	line-height: 100%;
 	font-style: italic;
 }
 
-.page_row span.inputcontainer {
+.page-row span.inputcontainer {
+	line-height: 24px;
 	overflow: hidden;
 	display: block;
 }
 
-.page_row span.contentspan {
+.page-row span.contentspan {
 	display: block;
 	font-size: 15px;
 	padding: 10px;
@@ -154,34 +172,34 @@
 	box-sizing: border-box;
 }
 
-.page_row span.timeinput {
+.page-row span.timeinput {
 	display: inline-block;
 	width: 140px;
 }
 
-.page_row input[type='text'].timeinput {
+.page-row input[type='text'].timeinput {
 	display: inline-block;
 	width: 140px;
 }
 
-.page_row input[type='text'].timeinput2 {
+.page-row input[type='text'].timeinput2 {
 	display: inline-block;
 	width: 140px;
 }
 
-.page_row p {
+.page-row p {
 	font-size: 14px;
 	line-height: 150%;
 }
 
-.page_row div.inlinelabel {
+.page-row div.inlinelabel {
 	display: inline-block;
 	line-height: 40px;
 	vertical-align: middle;
 	min-width: 250px;
 }
 
-.page_row div.inlinecontainer {
+.page-row div.inlinecontainer {
 	display: inline-block;
 	vertical-align: middle;
 }

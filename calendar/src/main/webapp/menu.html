@@ -5,83 +5,58 @@
 		data-target="#menu-content"></i>
 	<div class="menu-list">
 		<ul id="menu-content" class="menu-content collapse out">
-			<li>
-				<a href='dashboard.html'>
+			<li><a href='dashboard.html'>
 					<span class="glyphicon glyphicon-dashboard"></span>
 					<span>${menu_dashboard}</span>
-				</a>
-			</li>
-			<li>
-				<a href='profile.html'>
+				</a></li>
+			<li><a href='profile.html'>
 					<span class="glyphicon glyphicon-user"></span>
 					<span>${menu_profile}</span>
-				</a>
-			</li>
-			<li>
-				<a href='calendar.html'>
+				</a></li>
+			<li><a href='calendar.html'>
 					<span class="glyphicon glyphicon-calendar"></span>
 					<span>${menu_calendar}</span>
-				</a>
-			</li>
+				</a></li>
 			<li data-toggle="collapse" data-target="#menu-lesson"
-				class="collapsed">
-				<span class="glyphicon glyphicon-book"></span>
-				<span>${menu_lesson}</span>
-				<span class="arrow"></span>
-			</li>
+				class="collapsed"><span class="glyphicon glyphicon-book"></span>
+				<span>${menu_lesson}</span> <span class="arrow"></span></li>
 			<ul id="menu-lesson" class="sub-menu collapse">
-				<li show-on="client">
-					<a href="lesson.html">
+				<li show-on="client"><a href="lesson.html">
 						<span>${menu_lesson_schedule}</span>
-					</a>
-				</li>
-				<li show-on="client,tutor">
-					<a href="lesson_requested.html">
+					</a></li>
+				<li show-on="client,tutor"><a href="lesson_requested.html">
 						<span>${menu_lesson_requested}</span>
-					</a>
-				</li>
-				<li show-on="client,tutor">
-					<a href="lesson_ongoing.html">
+					</a></li>
+				<li show-on="client,tutor"><a href="lesson_ongoing.html">
 						<span>${menu_lesson_ongoing}</span>
-					</a>
-				</li>
-				<li show-on="client,tutor">
-					<a href="lesson_history.html">
+					</a></li>
+				<li show-on="client,tutor"><a href="lesson_history.html">
 						<span>${menu_lesson_history}</span>
-					</a>
-				</li>
+					</a></li>
 			</ul>
 			<!--li class="menu_title"><span>Message</span></li>
 			<li class="menu_sub"><a href="message_inbox.html"> <span>Inbox</span></a></li>
 			<li class="menu_sub"><a href="message_question.html"> <span>Questions</span></a></li-->
 
 			<li data-toggle="collapse" data-target="#menu-account"
-				class="collapsed">
-				<span class="glyphicon glyphicon-usd"></span>
-				<span>${menu_account}</span>
-				<span class="arrow"></span>
-			</li>
+				class="collapsed"><span class="glyphicon glyphicon-usd"></span>
+				<span>${menu_account}</span> <span class="arrow"></span></li>
 			<ul id="menu-account" class="sub-menu collapse">
-				<li>
-					<a href="account_summary.html">
+				<li><a href="account_summary.html">
 						<span>${menu_account_summary}</span>
-					</a>
-				</li>
+					</a></li>
 			</ul>
-			<li>
-				<a href='help.html'>
+			<li><a href='help.html'>
 					<span class="glyphicon glyphicon-question-sign"></span>
 					<span>${menu_help}</span>
-				</a>
-			</li>
+				</a></li>
 			<hr>
-			<div style="padding: 20px 0px 20px 0px;"
-				class="container menu-bottom">
-				<hr style="margin-top: 5px; margin-bottom: 20px;">
-				<div class="row" style="width: 100%">
+			<div class="container menu-bottom">
+				<hr>
+				<div class="row">
 					<div class="col-sm-1"></div>
 					<div class="col-sm-6">
-						<select class="form-control input-sm">
+						<select class="input-sm custom-select">
 							<option>English</option>
 							<option>简体中文</option>
 						</select>
@@ -92,22 +67,26 @@
 	</div>
 </div>
 
-
 <script>
 	var currentPage = window.location.pathname.split('/').pop();
 	// Expand active li
-	$('#menu-content li').each(
-			function(index, element) {
-				// Script for switching to current page
-				if ($(element).find('a').attr('href') == currentPage) {
-					$(element).addClass('active');
-				}
-				// Script for hide menus not belonging to current user
-				var showon = $(element).attr('show-on');
-				var usertype = otms.auth.userType();
-				if (showon != undefined
-						&& $.inArray(usertype, showon.split(",")) == -1) {
-					$(element).css('display', 'none');
-				}
-			});
+	function update_menu(index, element) {
+		// Script for switching to current page
+		var node = $(element);
+		if (node.find('a').attr('href') == currentPage) {
+			node.addClass('active');
+			if (node.parent().is(":hidden")) {
+				node.parent().toggle();
+			}
+		}
+		// Script for hide menus not belonging to current user
+		var showon = node.attr('show-on');
+		var usertype = otms.auth.userType();
+		if (showon != undefined && $.inArray(usertype, showon.split(",")) == -1) {
+			node.css('display', 'none');
+		}
+	}
+
+	$('#menu-content li').each(update_menu);
+	$('#menu-content ul.sub-menu li').each(update_menu);
 </script>

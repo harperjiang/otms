@@ -1,16 +1,16 @@
-.page_row input.paging_input {
+.page-row input.paging-input {
 	display: inline-block;
 	width: 40px;
 	padding: 5px;
 	text-align: center;
 }
 
-button.paging_control {
+button.paging-control {
 	margin-left: 2px;
 	margin-right: 2px;
 }
 
-span.paging_total {
+span.paging-total {
 	display: inline-block;
 	margin-right: 5px;
 }

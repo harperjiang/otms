@@ -19,7 +19,6 @@ $(function() {
 	};
 
 	calendar.eventRenderer = function(eventDiv, eventObj) {
-		debugger;
 		var eventContent = '';
 
 		switch (otms.auth.userType()) {

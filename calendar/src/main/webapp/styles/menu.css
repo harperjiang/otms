@@ -74,17 +74,11 @@
 
 .nav-side-menu ul .active, .nav-side-menu li .active {
 	border-left: 6px solid #d19b3d;
-	background-color: #54b4f5;
 }
 
 .nav-side-menu ul .sub-menu li.active, .nav-side-menu li .sub-menu li.active
 	{
-	color: #d19b3d;
-}
-
-.nav-side-menu ul .sub-menu li.active a, .nav-side-menu li .sub-menu li.active a
-	{
-	color: #d19b3d;
+	border-left: 6px solid #d19b3d;
 }
 
 .nav-side-menu ul .sub-menu li, .nav-side-menu li .sub-menu li {
@@ -115,9 +109,26 @@
 }
 
 .nav-side-menu .menu-bottom {
+	background-color: #54b4f5;
 	position: absolute;
 	bottom: 0px;
+	padding: 0px;
+	padding-bottom: 20px;
 	width: 100%;
+	margin: 0px;
+}
+
+.nav-side-menu .menu-bottom hr {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+.nav-side-menu .menu-bottom select {
+	color: #000;
+}
+
+.nav-side-menu .menu-bottom div.row {
+	width: 100%
 }
 
 @media ( max-width : 767px) {
