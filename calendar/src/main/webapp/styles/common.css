@@ -42,21 +42,6 @@ a:hover {
 	padding: 10px 20px;
 }
 
-a.favorite {
-	background: url(images/icon-favorite.png) no-repeat;
-	padding-left: 18px;
-}
-
-a.timesheet {
-	background: url(images/icon-timesheet.png) no-repeat;
-	padding-left: 18px;
-}
-
-a.schedule {
-	background: url(images/icon-schedule.png) no-repeat;
-	padding-left: 18px;
-}
-
 button {
 	cursor: pointer;
 }

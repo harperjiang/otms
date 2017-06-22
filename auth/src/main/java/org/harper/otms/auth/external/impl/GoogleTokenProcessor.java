@@ -16,7 +16,6 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.harper.otms.auth.external.TokenProcessor;
 import org.slf4j.Logger;

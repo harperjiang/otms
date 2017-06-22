@@ -19,97 +19,96 @@
 			<div class="page-title">User Profile</div>
 			<div class="page-block">
 				<div class="page-block-title">Personal Information</div>
-				<div style="margin-right: 20px; float: left;">
-					<div style="width: 120px; height: 120px; display: block;">
-						<img id="profile_img" src="resource/default_profile.jpg"
-							width="100%" height="100%" />
-					</div>
-					<div style="text-align: center; margin-top: 10px">
-						<button class="btn_small" id="btn_upload_image">Uplaod
-							Photo</button>
-					</div>
-				</div>
-				<div style="display: block; overflow: hidden;">
-					<div style="float: left; min-height: 120px; width: 100%">
-						<div class='page-row '>
-							<input id="name_input" class="form-control"
-								placeholder="Your display name" type='text' />
-						</div>
-						<div class="page-row ">
-							<div style="display: inline-block; width: 49%">
-								<label>username:</label>
-								<span id="username_span" style="font-weight: bold">&nbsp;</span>
+				<div class="container" style="width: 100%">
+					<div class="row">
+						<div class="col-2 text-center" style="margin-bottom: 10px;">
+							<div
+								style="width: 120px; height: 120px; display: block; margin-left: auto; margin-right: auto;">
+								<img id="profile_img" src="resource/default_profile.jpg"
+									width="100%" height="100%" class="rounded-image" />
 							</div>
-							<div style="display: inline-block; width: 49%">
-								<label>timezone:</label> <select class="custom-select"
-									id="timezone_select"></select>
+							<div style="text-align: center; margin-top: 10px">
+								<button class="btn_small" id="btn_upload_image">Upload
+									Photo</button>
 							</div>
 						</div>
-						<div class="page-row">
-							<label>Email for receiving alert:</label>
-							<span class="inputcontainer">
-								<input class="withlabel form-control" id="email_input"
-									placeholder="Email to receive notification and newsletters"
-									type='text' />
-							</span>
+						<div class="col-9 form-horizontal" style="margin-left: 20px;">
+							<div class='form-group row'>
+								<div class="col-12">
+									<input id="name_input" class="form-control"
+										placeholder="Your display name" type='text' />
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="username_span" class="col-2 col-form-label">username:</label>
+
+								<span id="username_span"
+									class="form-control-static static-control col-4"
+									style="font-weight: bold">&nbsp;</span>
+
+								<label for="timezone_select" class="col-2 col-form-label">timezone:</label>
+								<div class="col-4">
+									<select class="form-contorl custom-select" id="timezone_select"></select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="email_input" class="col-2  col-form-label text-left">Email:</label>
+								<div class="col-10">
+									<input class="form-control" id="email_input"
+										placeholder="Email to receive notification and newsletters"
+										type='text' />
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-
 			</div>
-
 			<div class="page-block">
-				<div class="page-block-title">Preference</div>
-			</div>
-
-			<div class="page-block">
-				<button id="client_confirm_btn" class="btn_large">Save</button>
-			</div>
-
-			<!-- div id="client_profile_panel" style="display: none;">
-
-				<div class="page-row ">
-					<input id="client_stmt_input"
-						placeholder="Describe the tutor you are looking for" type='text' />
-				</div>
-				<div class="page-block">
-					<div class="page-block-title">Personal Statement</div>
-					<div class="page-row ">
-						<textarea id="client_desc_text"
-							placeholder="An introduction about yourself. A typical personal statement includes your background, hobby, advantages, etc."></textarea>
-					</div>
-				</div>
-				<div class="page-block">
-					<div class="page-block-title">English Proficiency Level</div>
-					<div class="page-row">Read the following text and record your
-						result.</div>
-					<div class="page-row">
-						<div class="text_hl">
-							<p>Alice was beginning to get very tired of sitting by her
-								sister on the bank, and of having nothing to do: once or twice
-								she had peeped into the book her sister was reading, but it had
-								no pictures or conversations in it, 'and what is the use of a
-								book,' thought Alice 'without pictures or conversations?'</p>
-							<p>So she was considering in her own mind (as well as she
-								could, for the hot day made her feel very sleepy and stupid),
-								whether the pleasure of making a daisy-chain would be worth the
-								trouble of getting up and picking the daisies, when suddenly a
-								White Rabbit with pink eyes ran close by her.</p>
+				<div class="page-block-title">Email Preference</div>
+				<div class="row container">
+					<div class="col-2">Receive Email:</div>
+					<div class="col-8">
+						<div class="form-check">
+							<label class="form-check-label">
+								<input type="checkbox" class="form-check-input"
+									id="email_class_check" checked>
+								Before Class
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label">
+								<input type="checkbox" class="form-check-input"
+									id="email_booking_check" checked>
+								On Meeting Room Booking
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label">
+								<input type="checkbox" class="form-check-input"
+									id="email_schedule_check" checked>
+								On Change of Class 
+							</label>
 						</div>
 					</div>
-					<div class="page-row ">
-						<input type='text' placeholder="URL of your recording"
-							id="client_audiourl_input" />
+				</div>
+			</div>
+
+			<div id="client_profile_panel" style="display: none;">
+				<div class="page-block">
+					<div class="page-block-title">Self Introduction</div>
+					<div class="form-group">
+						<label for="client_intro_text" class="sr-only">Self
+							Introduction</label>
+						<textarea class="form-control" id="client_intro_text" rows="3"></textarea>
 					</div>
 				</div>
-				
-			</div-->
+
+				<div class="page-block">
+					<button id="client_confirm_btn" class="btn_large">Save</button>
+				</div>
+			</div>
+			
 			<div id="tutor_profile_panel" style="display: none;">
-				<div class="page-row ">
-					<input id="tutor_stmt_input"
-						placeholder="Describe the students you are looking for"
-						type='text' />
-				</div>
 				<div class="page-block">
 					<div class="page-block-title">Self Introduction</div>
 					<div class="page-row">
@@ -120,13 +119,6 @@
 					<div class="page-row">
 						<input type='text' id='tutor_video_input'
 							placeholder="Video self-introduction URL" />
-					</div>
-				</div>
-				<div class="page-block">
-					<div class="page-block-title">About Me</div>
-					<div class="page-row">
-						<textarea id='tutor_aboutme_text'
-							placeholder='More background about you'></textarea>
 					</div>
 				</div>
 				<div class="page-block">
@@ -143,6 +135,7 @@
 							placeholder='Do you have education related working experience? Describe it here.'></textarea>
 					</div>
 				</div>
+
 				<div class="page-block">
 					<button id="tutor_confirm_btn" class="btn_large">Save</button>
 				</div>

@@ -16,20 +16,14 @@ public class Client extends org.harper.otms.common.dao.Entity {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@Column(name = "description")
-	private String description;
-
 	@Column(name = "picture_url")
 	private String pictureUrl;
 
 	@Column(name = "statement")
 	private String statement;
 
-	@Column(name = "audio_url")
-	private String audioUrl;
-
-	@Column(name = "audio_text")
-	private String audioText;
+	@Column(name = "email_setting")
+	private int emailSetting;
 
 	public User getUser() {
 		return user;
@@ -40,14 +34,6 @@ public class Client extends org.harper.otms.common.dao.Entity {
 		this.setId(user.getId());
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public String getPictureUrl() {
 		return pictureUrl;
 	}
@@ -56,20 +42,38 @@ public class Client extends org.harper.otms.common.dao.Entity {
 		this.pictureUrl = pictureUrl;
 	}
 
-	public String getAudioUrl() {
-		return audioUrl;
+	public String getStatement() {
+		return statement;
 	}
 
-	public void setAudioUrl(String audioUrl) {
-		this.audioUrl = audioUrl;
+	public void setStatement(String statement) {
+		this.statement = statement;
 	}
 
-	public String getAudioText() {
-		return audioText;
+	public int getEmailSetting() {
+		return emailSetting;
 	}
 
-	public void setAudioText(String audioText) {
-		this.audioText = audioText;
+	public void setEmailSetting(int emailSetting) {
+		this.emailSetting = emailSetting;
+	}
+
+	public void setEmailSetting(boolean[] emailSetting) {
+		int sum = 0;
+		for (int i = 0; i < emailSetting.length; i++) {
+			sum |= (emailSetting[i] ? 1 : 0) << i;
+		}
+		this.emailSetting = sum;
+	}
+
+	protected static int CLIENT_EMAIL_SIZE = 3;
+
+	public boolean[] getEmailSettings() {
+		boolean[] result = new boolean[CLIENT_EMAIL_SIZE];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = ((1 << i) | emailSetting) > 0;
+		}
+		return result;
 	}
 
 }

@@ -43,13 +43,8 @@
 	color: #888a85;
 }
 
-.navbar-default .navbar-toggle {
+.navbar-default .navbar-toggler {
+	font-size: 30px;
 	border-color: transparent;
 	color: #54b4f5;
-}
-
-.affix {
-	position: fixed;
-	top: 0px;
-	width: 100%;
 }

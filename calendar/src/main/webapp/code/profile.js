@@ -48,13 +48,13 @@ $(function() {
 	commonbm.reg('timezone', $('#timezone_select'));
 	commonbm.reg('email', $('#email_input'));
 	commonbm.reg('pictureUrl', $('#profile_img'));
+	commonbm.reg('emailClass',$('#email_class_check'));
+	commonbm.reg('emailBooking',$('#email_booking_check'));
+	commonbm.reg('emailSchedule',$('#email_schedule_check'));
 	otms.profilePage.commonbm = commonbm;
 
 	var clientbm = new otms.validator.BeanManager();
-	clientbm.reg('statement', $('#client_stmt_input'));
-	clientbm.reg('description', $('#client_desc_text'));
-	// cbm.reg('audioText', $('#eel_span'));
-	clientbm.reg('audioUrl', $('#client_audiourl_input'));
+	clientbm.reg('statement', $('#client_intro_input'));
 	otms.profilePage.clientbm = clientbm;
 
 	var tutorbm = new otms.validator.BeanManager();

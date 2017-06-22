@@ -37,7 +37,6 @@ div.frontpage-block {
 	width: 600px;
 	/*background-color: rgba(220, 200, 235, 0.7);*/
 	margin-left: 60px;
-	margin-top: 240px;
 	padding: 20px;
 }
 
@@ -136,17 +135,28 @@ div.video-container {
 	padding-bottom: 150px;
 }
 
-.carousel-control.right, .carousel-control.left {
-	background-image: none;
+#carousel-block .carousel-control-prev, .carousel-control-next,
+	#carousel-block .carousel-control-prev:hover, .carousel-control-next:hover
+	{
 	color: #54b4f5;
+	font-size: 40px;
 }
 
-.carousel-indicators li {
+#carousel-block .carousel-indicators li {
+	list-style: circle;
 	border-color: #54b4f5;
 }
 
-.carousel-indicators li.active {
-	background-color: #54b4f5;
+#carousel-block .carousel-indicators li .active {
+	color: #54b4f5;
+}
+
+.carousel-content {
+	color: black;
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .item h4 {
@@ -238,7 +248,7 @@ div.video-container {
 				<p>纯正的英美文化滋养</p>
 				<button class="btn btn-default btn-lg">了解更多</button>
 			</div>
-			<div class="video-container col-sm-5">
+			<div class="video-container col-sm-6">
 				<video id="webad_video" width="100%" height="100%"
 					poster="resource/video.png">
 					<source src="resource/websitead.webm" type="video/webm">
@@ -252,29 +262,29 @@ div.video-container {
 	<div id="choose-block" class="container-fluid text-center">
 		<div class="frontpage-title-light">为什么选择乐教营?</div>
 		<div class="row">
-			<div class="col-sm-2"></div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-md-0"></div>
+			<div class="col-sm-2 col-md">
 				<div class="adv_imgholder">
 					<img src="resource/index_certified.png" width="100%" />
 				</div>
 				<h3>教师认证</h3>
 				<p>教师均以英语为母语。毕业于儿童教育相关专业，拥有丰富的早教经验</p>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-md">
 				<div class="adv_imgholder">
 					<img src="resource/index_course.png" width="100%" />
 				</div>
 				<h3>专业课程设计</h3>
 				<p>课程设计基于美国小学教育系统，并针对中国孩子特点进行针对性改进</p>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-md">
 				<div class="adv_imgholder">
 					<img src="resource/index_access.png" width="100%" />
 				</div>
 				<h3>访问灵活</h3>
 				<p>通过网络参加课程，不受时间、地点限制</p>
 			</div>
-			<div class="col-sm-2">
+			<div class="col-sm-2 col-md">
 				<div class="adv_imgholder">
 					<img src="resource/index_price.png" width="100%" />
 				</div>
@@ -282,7 +292,7 @@ div.video-container {
 				<p>无须提前付费。仅当每节课程满意后付费。工薪家庭也能承担的私人外教</p>
 			</div>
 
-			<div class="col-sm-2"></div>
+			<div class="col-sm-2 col-md"></div>
 		</div>
 		<div class="page_row" style="text-align: center;">
 			<button class="btn btn-primary btn-lg"
@@ -290,10 +300,11 @@ div.video-container {
 		</div>
 	</div>
 
-	<div id="carousel-block" class="container text-center">
-		<div class="text-center frontpage-title-light">What our customers say</div>
-		<div id="myCarousel" class="carousel slide text-center"
-			data-ride="carousel">
+	<div id="carousel-block" class="container text-center"
+		data-ride="carousel">
+		<div class="text-center frontpage-title-light">What our
+			customers say</div>
+		<div id="myCarousel" class="carousel slide text-center">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -303,36 +314,44 @@ div.video-container {
 
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<div class="item active">
-					<h4>
-						"This company is the best. I am so happy with the result!"<br>
-						<span style="font-style: normal;">Michael Roe, Vice
-							President, Comment Box</span>
-					</h4>
+				<div class="carousel-item active">
+					<div class="carousel-content">
+						<h4>
+							"This company is the best. I am so happy with the result!"<br>
+							<span style="font-style: normal;">Michael Roe, Vice
+								President, Comment Box</span>
+						</h4>
+					</div>
 				</div>
-				<div class="item">
-					<h4>
-						"One word... WOW!!"<br> <span style="font-style: normal;">John
-							Doe, Salesman, Rep Inc</span>
-					</h4>
+				<div class="carousel-item">
+					<div class="carousel-content">
+						<h4>
+							"One word... WOW!!"<br>
+							<span style="font-style: normal;">John Doe, Salesman, Rep
+								Inc</span>
+						</h4>
+					</div>
 				</div>
-				<div class="item">
-					<h4>
-						"Could I... BE any more happy with this company?"<br> <span
-							style="font-style: normal;">Chandler Bing, Actor,
-							FriendsAlot</span>
-					</h4>
+				<div class="carousel-item">
+					<div class="carousel-content">
+						<h4>
+							"Could I... BE any more happy with this company?"<br>
+							<span style="font-style: normal;">Chandler Bing, Actor,
+								FriendsAlot</span>
+						</h4>
+					</div>
 				</div>
 			</div>
 
 			<!-- Left and right controls -->
-			<a class="left carousel-control" href="#myCarousel" role="button"
-				data-slide="prev"> <span
-				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+			<a class="carousel-control-prev" href="#myCarousel" role="button"
+				data-slide="prev">
+				<i class="fa fa-chevron-left" aria-hidden="true"></i>
 				<span class="sr-only">Previous</span>
-			</a> <a class="right carousel-control" href="#myCarousel" role="button"
-				data-slide="next"> <span
-				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			</a>
+			<a class="carousel-control-next" href="#myCarousel" role="button"
+				data-slide="next">
+				<i class="fa fa-chevron-right" aria-hidden="true"></i>
 				<span class="sr-only">Next</span>
 			</a>
 		</div>
@@ -444,10 +463,12 @@ div.video-container {
 			<div class="col-sm-5">
 				<p>Contact us and we'll get back to you within 24 hours.</p>
 				<p>
-					<span class="glyphicon glyphicon-map-marker"></span> Chicago, US
+					<span class="glyphicon glyphicon-map-marker"></span>
+					Chicago, US
 				</p>
 				<p>
-					<span class="glyphicon glyphicon-comment"></span> +00 1515151515
+					<span class="glyphicon glyphicon-comment"></span>
+					+00 1515151515
 				</p>
 				<p>
 					<span class="glyphicon glyphicon-envelope"></span>

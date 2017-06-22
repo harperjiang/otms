@@ -5,51 +5,75 @@
 		data-target="#menu-content"></i>
 	<div class="menu-list">
 		<ul id="menu-content" class="menu-content collapse out">
-			<li><a href='dashboard.html'>
-					<span class="glyphicon glyphicon-dashboard"></span>
+			<li>
+				<a href='dashboard.html'>
+					<i class="fa fa-tachometer" aria-hidden="true"></i>
 					<span>${menu_dashboard}</span>
-				</a></li>
-			<li><a href='profile.html'>
-					<span class="glyphicon glyphicon-user"></span>
+				</a>
+			</li>
+			<li>
+				<a href='profile.html'>
+					<i class="fa fa-user" aria-hidden="true"></i>
 					<span>${menu_profile}</span>
-				</a></li>
-			<li><a href='calendar.html'>
-					<span class="glyphicon glyphicon-calendar"></span>
+				</a>
+			</li>
+			<li>
+				<a href='calendar.html'>
+					<i class="fa fa-calendar" aria-hidden="true"></i>
 					<span>${menu_calendar}</span>
-				</a></li>
+				</a>
+			</li>
 			<li data-toggle="collapse" data-target="#menu-lesson"
-				class="collapsed"><span class="glyphicon glyphicon-book"></span>
-				<span>${menu_lesson}</span> <span class="arrow"></span></li>
+				class="collapsed">
+				<i class="fa fa-book" aria-hidden="true"></i>
+				<span>${menu_lesson}</span>
+				<span class="arrow"></span>
+			</li>
 			<ul id="menu-lesson" class="sub-menu collapse">
-				<li show-on="client"><a href="lesson.html">
+				<li show-on="client">
+					<a href="lesson.html">
 						<span>${menu_lesson_schedule}</span>
-					</a></li>
-				<li show-on="client,tutor"><a href="lesson_requested.html">
+					</a>
+				</li>
+				<li show-on="client,tutor">
+					<a href="lesson_requested.html">
 						<span>${menu_lesson_requested}</span>
-					</a></li>
-				<li show-on="client,tutor"><a href="lesson_ongoing.html">
+					</a>
+				</li>
+				<li show-on="client,tutor">
+					<a href="lesson_ongoing.html">
 						<span>${menu_lesson_ongoing}</span>
-					</a></li>
-				<li show-on="client,tutor"><a href="lesson_history.html">
+					</a>
+				</li>
+				<li show-on="client,tutor">
+					<a href="lesson_history.html">
 						<span>${menu_lesson_history}</span>
-					</a></li>
+					</a>
+				</li>
 			</ul>
 			<!--li class="menu_title"><span>Message</span></li>
 			<li class="menu_sub"><a href="message_inbox.html"> <span>Inbox</span></a></li>
 			<li class="menu_sub"><a href="message_question.html"> <span>Questions</span></a></li-->
 
 			<li data-toggle="collapse" data-target="#menu-account"
-				class="collapsed"><span class="glyphicon glyphicon-usd"></span>
-				<span>${menu_account}</span> <span class="arrow"></span></li>
+				class="collapsed">
+				<i class="fa fa-credit-card" aria-hidden="true"></i>
+				<span>${menu_account}</span>
+				<span class="arrow"></span>
+			</li>
 			<ul id="menu-account" class="sub-menu collapse">
-				<li><a href="account_summary.html">
+				<li>
+					<a href="account_summary.html">
 						<span>${menu_account_summary}</span>
-					</a></li>
+					</a>
+				</li>
 			</ul>
-			<li><a href='help.html'>
+			<li>
+				<a href='help.html'>
 					<span class="glyphicon glyphicon-question-sign"></span>
 					<span>${menu_help}</span>
-				</a></li>
+				</a>
+			</li>
 			<hr>
 			<div class="container menu-bottom">
 				<hr>
@@ -72,6 +96,9 @@
 	// Expand active li
 	function update_menu(index, element) {
 		// Script for switching to current page
+		// Only work when page size is large
+		if ($(window).width() < 768)
+			return;
 		var node = $(element);
 		if (node.find('a').attr('href') == currentPage) {
 			node.addClass('active');
@@ -87,6 +114,6 @@
 		}
 	}
 
-	$('#menu-content li').each(update_menu);
-	$('#menu-content ul.sub-menu li').each(update_menu);
+	//$('#menu-content li').each(update_menu);
+	//$('#menu-content ul.sub-menu li').each(update_menu);
 </script>

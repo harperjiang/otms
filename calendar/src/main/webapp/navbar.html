@@ -1,59 +1,88 @@
-<nav class="navbar navbar-default" data-spy="affix" data-offset-top="1">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#myNavbar">
-				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="index.html">TutorCan</a>
-		</div>
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<!-- form class="navbar-form navbar-right">
-				<div class="form-group">
-					<select class="form-control" id="nav_lang_select"
-						onchange="changeLang(this)">
-						<option value="en_US">English</option>
-						<option value="zh_CN">简体中文</option>
-					</select>
-				</div>
-			</form-->
-			<ul id="nav_login_panel" class="nav navbar-nav navbar-right">
-				<li><a href="usr_signup.html"><span
-						class="glyphicon glyphicon-user"></span> ${nav_signup}</a></li>
-				<li><a href="login.html"><span
-						class="glyphicon glyphicon-log-in"></span> ${nav_login}</a></li>
-			</ul>
-			<ul id="nav_account_panel" class="nav navbar-nav navbar-right"
-				style="display: none;">
-				<li><a href="dashboard.html"><span class="glyphicon glyphicon-user"></span>
-						${nav_account}</a></li>
-				<li><a href="#" id="nav_logout"><span
-						class="glyphicon glyphicon-log-out"></span> ${nav_logout}</a></li>
-			</ul>
+<nav class="navbar navbar-toggleable-md navbar-default bg-faded">
 
-			<ul class="nav navbar-nav navbar-right navbar-text1">
-				<li><a href="index.html">${nav_home}</a></li>
-				<li><a href="#">${nav_quickstart}</a></li>
-				<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">${nav_lessonintro}<span
-						class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">Pre-K</a></li>
-						<li><a href="#">School Student</a></li>
-						<li><a href="#">Adult</a></li>
-					</ul></li>
-				<li><a href="#">${nav_findtutor}</a></li>
-				<li><a class="dropdown-toggle" data-toggle="dropdown" href="#">${nav_more}<span
-						class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="#">${nav_about}</a></li>
-						<li><a href="#">${nav_support}</a></li>
-						<li><a href="#">${nav_blog}</a></li>
-						<li><a href="#">${nav_contact}</a></li>
-					</ul></li>
-			</ul>
+	<button class="navbar-toggler navbar-toggler-right" type="button"
+		data-toggle="collapse" data-target="#myNavbar"
+		aria-controls="myNavbar" aria-expanded="false"
+		aria-label="Toggle navigation">
+		<i class="fa fa-bars" aria-hidden="true"></i>
+	</button>
+	<a class="navbar-brand" href="index.html">TutorCan</a>
 
-		</div>
+	<div class="collapse navbar-collapse" id="myNavbar">
+		<ul class="navbar-nav mx-auto justify-content-center navbar-text1">
+			<li class="nav-item">
+				<a class="nav-link" href="index.html">${nav_home}</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">${nav_quickstart}</a>
+			</li>
+			<li class="nav-item btn-group">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+					${nav_lessonintro}
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="dropdown-item" href="#">Pre-K</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">School Student</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">Adult</a>
+					</li>
+				</ul>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">${nav_findtutor}</a>
+			</li>
+			<li class="nav-item btn-group">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+					${nav_more}
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="dropdown-item" href="#">${nav_about}</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">${nav_support}</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">${nav_blog}</a>
+					</li>
+					<li>
+						<a class="dropdown-item" href="#">${nav_contact}</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ul id="nav_login_panel"
+			class="navbar-nav ml-auto justify-content-end">
+			<li class="nav-item">
+				<a class="nav-link" href="usr_signup.html">
+					<i class="fa fa-user" aria-hidden="true"></i> ${nav_signup}
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="login.html">
+					<i class="fa fa-sign-in" aria-hidden="true"></i> ${nav_login}
+				</a>
+			</li>
+		</ul>
+		<ul id="nav_account_panel"
+			class="navbar-nav ml-auto justify-content-end" style="display: none;">
+			<li class="nav-item">
+				<a class="nav-link" href="dashboard.html">
+					<i class="fa fa-user" aria-hidden="true"></i> ${nav_account}
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#" id="nav_logout">
+					<i class="fa fa-sign-out" aria-hidden="true"></i> ${nav_logout}
+				</a>
+			</li>
+		</ul>
 	</div>
 </nav>
 <script>
@@ -63,11 +92,11 @@
 	function check_login() {
 		if (otms.auth.isLoggedin()) {
 			$('#nav_login_panel').css('display', 'none');
-			$('#nav_account_panel').css('display', 'block');
+			$('#nav_account_panel').css('display', 'flex');
 			/* $('#topbar_username_link').empty();
 			$('#topbar_username_link').append(otms.auth.username()); */
 		} else {
-			$('#nav_login_panel').css('display', 'block');
+			$('#nav_login_panel').css('display', 'flex');
 			$('#nav_account_panel').css('display', 'none');
 		}
 	}
