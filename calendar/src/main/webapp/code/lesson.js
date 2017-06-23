@@ -9,18 +9,18 @@ function switch_calendar(checkbox) {
 };
 
 function tutor_view() {
-	$('#client_input').css('display', 'inline');
-	$('#tutor_input').css('display', 'none');
+	$('#client_ig').css('display', 'flex');
+	$('#tutor_ig').css('display', 'none');
 }
 
 function client_view() {
-	$('#tutor_input').css('display', 'inline');
-	$('#client_input').css('display', 'none');
+	$('#tutor_ig').css('display', 'flex');
+	$('#client_ig').css('display', 'none');
 }
 
 function admin_view() {
-	$('#tutor_input').css('display', 'inline');
-	$('#client_input').css('display', 'inline');
+	$('#tutor_ig').css('display', 'initial');
+	$('#client_ig').css('display', 'initial');
 }
 
 function mode_modify() {

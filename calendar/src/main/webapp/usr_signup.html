@@ -8,6 +8,11 @@
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script type='text/javascript' src='code/usr_signup.js'></script>
+<style>
+#signup_info_panel .input-group-addon {
+	width: 45px;
+}
+</style>
 </head>
 <body>
 
@@ -17,77 +22,104 @@
 		<div class="page-content-thin">
 			<div id="signup_info_panel">
 				<div class="page-title">${pageTitle}</div>
-				<div class="page-row">
-					<input type="text" id="name_input" placeholder="${usernamePh}" />
-				</div>
-				<div class="page-row">
-					<input type="text" id="display_input"
-						placeholder="${displayNamePh}" />
-				</div>
-				<div class="page-row">
-					<input type="text" id="email_input" placeholder="${emailAddressPh}" />
-				</div>
-				<div class="page-row">
-					<input id="password_input" type="password"
-						placeholder="${passwordPh}" />
-				</div>
-				<div class="page-row">
-					<label style="margin-bottom: 10px">${timezoneLabel}</label><select
-						id="timezone_select"></select>
-				</div>
-				<div class="page-row" style="display: none">
-					<div>
-						<label style='width: 80px'>I am </label> <label><input
-							type="radio" name="role" value="client" checked /> looking for a
-							tutor</label>
-					</div>
-					<div>
-						<label style='width: 80px'>&nbsp;</label> <label><input
-							type="radio" name="role" value="tutor"> willing to teach
-							students</label>
+
+				<div class="form-group row">
+					<div class="input-group">
+						<label for="name_input" class="sr-only">Name</label>
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+						<input class="form-control" type="text" id="name_input"
+							placeholder="${usernamePh}" />
 					</div>
 				</div>
-				<div class="page-row">
-					<label style="width: 380px" for="agree_checkbox"><input
-						name="agree" id="agree_checkbox" type="checkbox"
-						style="display: inline-block; width: 30px" />${agreeLabel}</label>
+
+				<div class="form-group row">
+					<div class="input-group">
+						<label for="display_input" class="sr-only">Display Name</label>
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-tv" aria-hidden="true"></i>
+						</span>
+						<input class="form-control" type="text" id="display_input"
+							placeholder="${displayNamePh}" />
+					</div>
 				</div>
-				<div class="page-row" style="overflow-y: hidden;">
+
+				<div class="form-group row">
+					<div class="input-group">
+						<label for="email_input" class="sr-only">Email</label>
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						</span>
+						<input class="form-control" type="text" id="email_input"
+							placeholder="${emailAddressPh}" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="input-group">
+						<label for="password_input" class="sr-only">Password</label>
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+						</span>
+						<input class="form-control" id="password_input" type="password"
+							placeholder="${passwordPh}" />
+					</div>
+				</div>
+
+				<div class="form-group row">
+					<label for="timezone_select" class="col-form-label col-4">${timezoneLabel}</label>
+					<select id="timezone_select"
+						class="form-control custom-select col-8"></select>
+				</div>
+				<div class="form-group row">
+					<div class="form-check form-check-inline">
+						<label for="agree_checkbox" class="form-check-label">
+							<input name="agree" class="form-check-input" id="agree_checkbox"
+								type="checkbox" />
+							${agreeLabel}
+						</label>
+					</div>
+
+				</div>
+				<!-- div class="page-row" style="overflow-y: hidden;">
 					<div class="g-recaptcha"
 						data-sitekey="6LcVwCQUAAAAABkbKjftIBw5snuZWUYcdaQLSrfW"></div>
-				</div>
-				<div>
+				</div-->
+				<div class="form-group">
 					<button id="signup_btn" class="btn_large">${signupBtn}</button>
-					<button id="switch_btn" style="display: none" class="btn_large">Switch</button>
 				</div>
-			</div>
 
-			<div id="signup_confirm_panel" style="display: none;">
-				<div class="form_title">${successTitle}</div>
-				<div class="form_row">
-					${activationPrompt1}<span id="email_span" style="font-weight: bold"></span>.
-					${activationPrompt2}
-				</div>
-				<div class="form_row">${noemailPrompt}</div>
-				<div class="form_row" style="display: none;">
-					Here's some introductions you can start with.
-					<div class="form_section">For students:</div>
-					<div>
-						<a href="">How can I find a good tutor?</a>
-					</div>
-					<div>
-						<a href="">How can I find a good tutor?</a>
-					</div>
-					<div class="form_section">For tutors:</div>
-					<div>
-						<a href="">How can I find a good tutor?</a>
-					</div>
-					<div>
-						<a href="">How can I find a good tutor?</a>
-					</div>
-				</div>
 			</div>
 		</div>
+	</div>
+
+	<div id="signup_confirm_panel" style="display: none;">
+		<div class="form_title">${successTitle}</div>
+		<div class="form_row">
+			${activationPrompt1}
+			<span id="email_span" style="font-weight: bold"></span>
+			. ${activationPrompt2}
+		</div>
+		<div class="form_row">${noemailPrompt}</div>
+		<div class="form_row" style="display: none;">
+			Here's some introductions you can start with.
+			<div class="form_section">For students:</div>
+			<div>
+				<a href="">How can I find a good tutor?</a>
+			</div>
+			<div>
+				<a href="">How can I find a good tutor?</a>
+			</div>
+			<div class="form_section">For tutors:</div>
+			<div>
+				<a href="">How can I find a good tutor?</a>
+			</div>
+			<div>
+				<a href="">How can I find a good tutor?</a>
+			</div>
+		</div>
+	</div>
+	</div>
 	</div>
 
 	<!--#include virtual="footer.html" -->

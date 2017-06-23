@@ -18,26 +18,42 @@
 	});
 </script>
 <style>
-img.frontpage {
-	width: 98%;
-	margin-left: auto;
-	margin-right: auto;
-	max-height: 800px;
+@media ( min-width :768px) {
+	div.frontpage {
+		
+	}
+	div.frontpage-image {
+		height: 900px;
+		background-image: url(resource/wallpaper.jpg);
+		background-size: 98% 100%;
+		background-repeat: no-repeat;
+		background-position: center center;
+	}
+	div.frontpage-block {
+		width: 600px;
+		/*background-color: rgba(220, 200, 235, 0.7);*/
+		margin-left: 60px;
+		padding: 20px;
+		padding-top: 240px;
+	}
 }
 
-div.frontpage {
-	height: 900px;
-	background-image: url(resource/wallpaper.jpg);
-	background-size: 98% 100%;
-	background-repeat: no-repeat;
-	background-position: center center;
-}
-
-div.frontpage-block {
-	width: 600px;
-	/*background-color: rgba(220, 200, 235, 0.7);*/
-	margin-left: 60px;
-	padding: 20px;
+@media ( max-width :767px) {
+	div.frontpage-block {
+		/*background-color: rgba(220, 200, 235, 0.7);*/
+		padding: 20px;
+		text-align: center;
+	}
+	div.frontpage {
+		overflow: hide !important;
+	}
+	div.frontpage-image {
+		background-image: url(resource/wallpaper.jpg);
+		background-size: 98% 100%;
+		background-repeat: no-repeat;
+		background-position: center center;
+		width: 100%;
+	}
 }
 
 div.frontpage-title {
@@ -135,8 +151,10 @@ div.video-container {
 	padding-bottom: 150px;
 }
 
-#carousel-block .carousel-control-prev, .carousel-control-next,
-	#carousel-block .carousel-control-prev:hover, .carousel-control-next:hover
+#carousel-block .carousel-control-prev, #carousel-block .carousel-control-next,
+	#carousel-block .carousel-control-prev:hover, #carousel-block .carousel-control-next:hover,
+	#carousel-block .carousel-control-prev:active, #carousel-block .carousel-control-next:active,
+	#carousel-block .carousel-control-prev:visited, #carousel-block .carousel-control-next:visited
 	{
 	color: #54b4f5;
 	font-size: 40px;
@@ -227,17 +245,20 @@ div.video-container {
 	<!--#include virtual="navbar.html" -->
 	<div id="errmsg_panel"></div>
 	<div id="frontpage" class="container-fluid frontpage">
-		<div class="img-responsive frontpage-block">
-			<div class="frontpage-title">每个孩子都应该拥有私人外教</div>
-			<div class="frontpage-text">在乐教营为您的孩子寻找一对一的私人网络外教，随时随地进行英语浸入式教学</div>
-			<div class="frontpage-btngroup">
-				<button class="btn_green frontpage-btn"
-					onclick="window.location='usr_signup.html'">现在注册，寻找专属私人外教</button>
-				<button class="btn_normal frontpage-btn"
-					onclick="window.location='login.html'" style="">登录系统</button>
+		<div class="frontpage-image">
+			<div class="frontpage-block">
+				<div class="frontpage-title">每个孩子都应该拥有私人外教</div>
+				<div class="frontpage-text">在乐教营为您的孩子寻找一对一的私人网络外教，随时随地进行英语浸入式教学</div>
+				<div class="frontpage-btngroup">
+					<button class="btn_green frontpage-btn"
+						onclick="window.location='usr_signup.html'">现在注册，寻找专属私人外教</button>
+					<button class="btn_normal frontpage-btn"
+						onclick="window.location='login.html'" style="">登录系统</button>
+				</div>
 			</div>
 		</div>
 	</div>
+
 	<div id="video-block" class="container-fluid text-center">
 		<div class="row">
 			<div class="col-sm-2"></div>

@@ -236,10 +236,10 @@ function viewLessonItemDetail(event, lessonItem) {
 	var usertype = otms.auth.userType();
 	if (usertype == 'client' && lessonItem.feedbackStatus == 'NO_FEEDBACK') {
 		otms.setPageParam('otms.feedbackPage.itemId', lessonItem.itemId);
-		window.location = 'client_feedback.html';
+		window.location = 'feedback_client.html';
 	}
 	if (usertype == 'tutor' && lessonItem.feedbackStatus == 'CLIENT_FEEDBACK') {
 		otms.setPageParam('otms.feedbackPage.itemId', lessonItem.itemId);
-		window.location = 'tutor_feedback.html';
+		window.location = 'feedback_tutor.html';
 	}
 };

@@ -70,7 +70,7 @@ otms.ui.MessageBox.han = function(callback) {
 otms.ui.MessageBox.handler = function(container, mycallback, slient) {
 	return {
 		callback : function(response) {
-			//console.log(response);
+			// console.log(response);
 			if (response.success) {
 				if (!slient)
 					otms.ui.MessageBox.success(container, 'Operation Succeed');

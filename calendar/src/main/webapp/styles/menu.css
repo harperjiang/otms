@@ -22,6 +22,20 @@
 	padding-left: 20px;
 }
 
+.nav-side-menu .menu-brand {
+	line-height: 40px;
+	font-size: 25px;
+	font-weight: bold;
+	padding-left: 20px;
+}
+
+.nav-side-menu .menu-brand a, .nav-side-menu .menu-brand a:hover,
+	.nav-side-menu .menu-brand a:active, .nav-side-menu .menu-brand a:visited
+	{
+	color: #e1ffff;
+	text-decoration: none;
+}
+
 .nav-side-menu ul {
 	list-style: none;
 	padding: 0px;

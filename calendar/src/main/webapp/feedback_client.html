@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Feedback</title>
+<!--#include virtual="head.html" -->
+<script type='text/javascript' src='dwr/interface/FeedbackService.js'></script>
+<script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/starrate.js"></script>
+<script type="text/javascript" src="code/feedback_client.js"></script>
+</head>
+<body>
+	<!--#include virtual="menu.html" -->
+	<div class="page-menu">
+		<div id="errmsg_panel"></div>
+		<div class="page-content">
+			<div class="page-title">Lesson Feedback</div>
+			<div id="title_panel" class="page-block"></div>
+			<div id="operation_panel" class="page-block container"
+				style="width: 100%">
+				<div class="row form-group">
+					<label>Have you attended the lesson?</label>
+				</div>
+				<div class="row form-group">
+					<div class="form-check">
+						<label class="form-check-label">
+							<input class="form-check-input" type="radio" name="attend"
+								id="attend_yes_radio" value="yes" checked>
+							Yes
+						</label>
+						<label class="form-check-label">
+							<input class="form-check-input" type="radio" name="attend"
+								id="attend_no_radio" value="no">
+							No
+						</label>
+					</div>
+				</div>
+				<div id="attend_panel">
+					<div class="row form-group">How do you rate the lesson?</div>
+					<div class="row form-group">
+						<div id="lesson_rate"></div>
+					</div>
+					<div class="row form-group">How do you rate your tutor?</div>
+					<div class="row form-group">
+						<div id="tutor_rate"></div>
+					</div>
+
+				</div>
+
+				<div id="noattend_panel" style="display: none;">
+					<div class="row form-group">Please choose the reason you
+						didn't attend the lesson.</div>
+					<div class="row form-group">
+						<select id="select_noattend_reason"
+							class="form-control custom-select">
+							<option value="1">I cannot make it.</option>
+							<option value="2">The tutor cannot make it.</option>
+							<option value="3">The tutor didn't appear.</option>
+							<option value="4">We encounter technical problems.</option>
+							<option value="5">Other (Please specify in comment).</option>
+						</select>
+					</div>
+					<div class="row form-group">How do you rate your tutor?</div>
+					<div class="row form-group">
+						<div id="tutor_noattend_rate"></div>
+					</div>
+
+				</div>
+				<div class="row form-group">
+					<label for="comment" class="col-form-label">Please leave
+						your comment.</label>
+					<textarea id="comment" class="form-control"></textarea>
+				</div>
+				<div class="page-block">
+					<button id="btn_submit" class="btn_normal">Submit</button>
+					<button id="btn_reset" class="btn_yellow">Reset</button>
+				</div>
+			</div>
+			<div id="complete_panel" style="display: none;">
+				<div class="form-group">Thank you! Your feedback has been
+					submitted. You can now</div>
+				<div class="form-group">
+					<button id="btn_dashboard" class="btn_normal">View
+						Dashboard</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</body>
+</html>

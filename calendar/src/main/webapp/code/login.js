@@ -168,6 +168,12 @@ function onload() {
 	};
 
 	$('#signin_btn').click(login);
+	$('#signup_btn').click(function() {
+		window.location = 'usr_signup.html';
+	});
+	$('#forgetpass_btn').click(function() {
+		window.location = 'usr_forgetpass.html';
+	});
 	$('#google_submit').click(googleReg);
 	$('#qq_submit').click(qqReg);
 

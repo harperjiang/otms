@@ -1,5 +1,5 @@
 function formatTitle(lessonItem) {
-	var message = 'Please leave your feedback to the lesson <span class="list_row_title">{0}</span> with <a onclick="tutor_clicked(event,{1})">{2}</a> on {3}, {4}.';
+	var message = 'Please leave your feedback to the lesson with <a onclick="tutor_clicked(event,{1})">{2}</a> on {3}, {4}.';
 	return otms.FormatUtil.format(message, lessonItem.title,
 			lessonItem.tutorId, lessonItem.tutorName, otms.DateUtil
 					.formattime(lessonItem.fromTime), otms.DateUtil
@@ -86,3 +86,5 @@ function onload() {
 		"lessonItemId" : lessonItemId
 	}), otms.ui.MessageBox.shan(loadLessonCb));
 };
+
+$(onload);

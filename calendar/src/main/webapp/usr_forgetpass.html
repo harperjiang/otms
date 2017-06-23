@@ -4,41 +4,40 @@
 <meta charset="UTF-8">
 <title>Forget Password</title>
 <!--#include virtual="head.html" -->
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<!-- script src='https://www.google.com/recaptcha/api.js'></script-->
 <script type='text/javascript' src='dwr/interface/AuthService.js'></script>
+<script type="text/javascript" src="scripts/validator.js"></script>
 <script>
-	function callback(success, data) {
-		if (success) {
-			$('#main_panel').css('display', 'none');
-			$('#confirm_panel').css('display', 'block');
-		} else {
-			grecaptcha.reset();
-			$('#submit').removeProp('disabled');
-		}
-	};
-
-	function onload() {
-
+	$(function() {
+		debugger;
 		new otms.validator.NonemptyValidator($('#username'));
 
 		var bm = new otms.validator.BeanManager();
 		bm.reg('username', $('#username'));
+
+		var callback = function(success, data) {
+			if (success) {
+				$('#main_panel').css('display', 'none');
+				$('#confirm_panel').css('display', 'block');
+			} else {
+				//grecaptcha.reset();
+				$('#submit').removeProp('disabled');
+			}
+		};
 
 		$('#submit').click(
 				function() {
 					var bean = bm.getBean();
 					if (bean != null) {
 						$('#submit').prop('disabled', 'disabled');
-						var captcharesp = grecaptcha.getResponse();
-						bean['captcha'] = captcharesp;
+						//var captcharesp = grecaptcha.getResponse();
+						//bean['captcha'] = captcharesp;
 						AuthService.reqResetPass(bean, otms.ui.MessageBox
 								.shan(callback));
 					}
 				});
 
-	};
-
-	$(onload);
+	});
 </script>
 </head>
 <body>
@@ -47,17 +46,22 @@
 		<div id="errmsg_panel"></div>
 		<div class="page-content-thin">
 			<div class="page-title">Forget Password</div>
-			<div class="page-block" id="main_panel">
-				<div class="page-row">
-					<input type='text' id="username"
-						placeholder="Please input your username or email address" />
+			<div id="main_panel">
+				<div class="row form-group">
+					<div class="input-group">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+						<input type='text' id="username" class="form-control"
+							placeholder="Please input your username or email address" />
+					</div>
 				</div>
-				<div class="page-row" style="overflow-y: hidden;">
+				<!-- div class="page-row" style="overflow-y: hidden;">
 					<div class="g-recaptcha"
 						data-sitekey="6LcVwCQUAAAAABkbKjftIBw5snuZWUYcdaQLSrfW"></div>
-				</div>
+				</div-->
 
-				<div class="page-row">
+				<div class="row form-group">
 					<button id="submit" class="btn_normal">Submit</button>
 				</div>
 			</div>

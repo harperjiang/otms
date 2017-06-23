@@ -16,10 +16,10 @@
 	<div class="page-menu">
 		<div id="errmsg_panel"></div>
 		<div class="page-content">
-			<div class="page-title">User Profile</div>
+			<div class="page-title">${title}</div>
 			<div class="page-block">
-				<div class="page-block-title">Personal Information</div>
-				<div class="container" style="width: 100%">
+				<div class="page-block-title">${personal_info}</div>
+				<div class="container w-100">
 					<div class="row">
 						<div class="col-2 text-center" style="margin-bottom: 10px;">
 							<div
@@ -28,35 +28,41 @@
 									width="100%" height="100%" class="rounded-image" />
 							</div>
 							<div style="text-align: center; margin-top: 10px">
-								<button class="btn_small" id="btn_upload_image">Upload
-									Photo</button>
+								<button class="btn_small" id="btn_upload_image">${upload_photo}</button>
 							</div>
 						</div>
 						<div class="col-9 form-horizontal" style="margin-left: 20px;">
-							<div class='form-group row'>
-								<div class="col-12">
-									<input id="name_input" class="form-control"
-										placeholder="Your display name" type='text' />
-								</div>
-							</div>
 							<div class="form-group row">
-								<label for="username_span" class="col-2 col-form-label">username:</label>
+								<label for="username_span" class="col-3 col-form-label">${user_name}</label>
 
 								<span id="username_span"
-									class="form-control-static static-control col-4"
+									class="form-control-static static-control col-3"
 									style="font-weight: bold">&nbsp;</span>
 
-								<label for="timezone_select" class="col-2 col-form-label">timezone:</label>
-								<div class="col-4">
+								<label for="timezone_select" class="col-3 col-form-label">${time_zone}</label>
+								<div class="col-3">
 									<select class="form-contorl custom-select" id="timezone_select"></select>
 								</div>
 							</div>
+							<div class='form-group row'>
+								<div class="col-12 input-group" title="${display_name}">
+									<span class="input-group-addon" id="btnGroupAddon">
+										<i class="fa fa-tv" aria-hidden="true"></i>
+									</span>
+									<input id="name_input" class="form-control"
+										placeholder="${display_name}" type='text' />
+								</div>
+							</div>
+
 							<div class="form-group row">
-								<label for="email_input" class="col-2  col-form-label text-left">Email:</label>
-								<div class="col-10">
+								<label for="email_input"
+									class="sr-only col-form-label text-left">Email:</label>
+								<div class="col-12 input-group" title="${email_notification}">
+									<span class="input-group-addon" id="btnGroupAddon">
+										<i class="fa fa-envelope-o" aria-hidden="true"></i>
+									</span>
 									<input class="form-control" id="email_input"
-										placeholder="Email to receive notification and newsletters"
-										type='text' />
+										placeholder="${email_notification}" type='text' />
 								</div>
 							</div>
 						</div>
@@ -64,29 +70,29 @@
 				</div>
 			</div>
 			<div class="page-block">
-				<div class="page-block-title">Email Preference</div>
+				<div class="page-block-title">${email_pref}</div>
 				<div class="row container">
-					<div class="col-2">Receive Email:</div>
+					<div class="col-2"></div>
 					<div class="col-8">
 						<div class="form-check">
 							<label class="form-check-label">
 								<input type="checkbox" class="form-check-input"
 									id="email_class_check" checked>
-								Before Class
+								${email_before_class}
 							</label>
 						</div>
 						<div class="form-check">
 							<label class="form-check-label">
 								<input type="checkbox" class="form-check-input"
 									id="email_booking_check" checked>
-								On Meeting Room Booking
+								${email_on_meeting_room}
 							</label>
 						</div>
 						<div class="form-check">
 							<label class="form-check-label">
 								<input type="checkbox" class="form-check-input"
 									id="email_schedule_check" checked>
-								On Change of Class 
+								${email_change_class}
 							</label>
 						</div>
 					</div>
@@ -95,49 +101,50 @@
 
 			<div id="client_profile_panel" style="display: none;">
 				<div class="page-block">
-					<div class="page-block-title">Self Introduction</div>
+					<div class="page-block-title">${self_intro}</div>
 					<div class="form-group">
-						<label for="client_intro_text" class="sr-only">Self
-							Introduction</label>
+						<label for="client_intro_text" class="sr-only">${self_intro}</label>
 						<textarea class="form-control" id="client_intro_text" rows="3"></textarea>
 					</div>
 				</div>
 
 				<div class="page-block">
-					<button id="client_confirm_btn" class="btn_large">Save</button>
+					<button id="client_confirm_btn" class="btn_large">${save}</button>
 				</div>
 			</div>
-			
+
 			<div id="tutor_profile_panel" style="display: none;">
-				<div class="page-block">
-					<div class="page-block-title">Self Introduction</div>
-					<div class="page-row">
-						<textarea id='tutor_desc_text'
+				<div class="page-block container w-100">
+					<div class="page-block-title">${self_intro}</div>
+					<div class="form-group row">
+						<textarea id='tutor_desc_text' class='form-control'
 							placeholder='Write some words about yourself and let the potential client find you!'></textarea>
 					</div>
-					<div class="page-row">Or make a self-introduction video</div>
-					<div class="page-row">
-						<input type='text' id='tutor_video_input'
-							placeholder="Video self-introduction URL" />
+					<div class="form-group row">${self_video}</div>
+					<div class="form-group row">
+						<div class="input-group col-12">
+							<span class="input-group-addon" id="btnGroupAddon">
+								<i class="fa fa-video-camera" aria-hidden="true"></i>
+							</span>
+							<input type='text' class="form-control" id='tutor_video_input'
+								placeholder="Video self-introduction URL" />
+
+						</div>
 					</div>
-				</div>
-				<div class="page-block">
-					<div class="page-block-title">Education Background</div>
-					<div class="page-row">
-						<textarea id='tutor_edu_text'
-							placeholder='Your education background. Please include information like school, degree and major'></textarea>
+					<div class="page-block-title">${edu_background}</div>
+					<div class="form-group row">
+						<textarea id='tutor_edu_text' class="form-control"
+							placeholder='${edu_background_desc}'></textarea>
 					</div>
-				</div>
-				<div class="page-block">
 					<div class="page-block-title">Working Experience</div>
-					<div class="page-row">
-						<textarea id='tutor_working_text'
-							placeholder='Do you have education related working experience? Describe it here.'></textarea>
+					<div class="form-group row">
+						<textarea id='tutor_working_text' class="form-control"
+							placeholder='${work_exp}'></textarea>
 					</div>
 				</div>
 
 				<div class="page-block">
-					<button id="tutor_confirm_btn" class="btn_large">Save</button>
+					<button id="tutor_confirm_btn" class="btn_large">${save}</button>
 				</div>
 			</div>
 		</div>

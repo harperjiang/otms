@@ -31,36 +31,55 @@
 			<div id="errmsg_panel"></div>
 			<div id="main_panel">
 				<div class="page-title">${pageTitle}</div>
-				<div class="page-row">
-					<input id="username" class="form-control" type="text" name="username"
-						placeholder="${usernamePh}" />
+				<div class="row form-group ">
+					<div class="input-group">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-user" aria-hidden="true"></i>
+						</span>
+						<input id="username" class="form-control" type="text"
+							name="username" placeholder="${usernamePh}" />
+					</div>
 				</div>
-				<div class="page-row">
-					<input id="password" class="form-control"  type="password" name="password"
-						placeholder="${passwordPh}" />
+				<div class="row form-group">
+					<div class="input-group">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-unlock-alt" aria-hidden="true"></i>
+						</span>
+						<input id="password" class="form-control" type="password"
+							name="password" placeholder="${passwordPh}" />
+					</div>
 				</div>
 				<!-- div class="page-row" style="overflow-y: hidden;">
 					<div class="g-recaptcha"
 						data-sitekey="6LcVwCQUAAAAABkbKjftIBw5snuZWUYcdaQLSrfW"></div>
 				</div-->
-				<div class="page-row">
-					<button id="signin_btn" class="btn_large">${loginBtn}</button>
-					<div style="display: inline-block; margin-left: 20px;">
-						<a href="usr_forgetpass.html">${forgetpassLink}</a>
+				<div class="row form-group">
+					<div class="col">
+						<button id="signin_btn" class="btn_large">${loginBtn}</button>
 					</div>
 				</div>
-				<div class="g-signin2 external_login_button" style="color: #fff"
-					data-width="170" data-height="32" data-longtitle="true"
-					data-theme="dark"
-					data-scope='https://www.googleapis.com/auth/plus.login'
-					data-onsuccess='onGoogleSignin'></div>
-
-				<div class="page-row">
-					<span id="qqLoginBtn"></span>
+				<div class="row form-group">
+					<div class="col-4">
+						<button id="signup_btn" class="btn btn-success">${signupLink}</button>
+					</div>
+					<div class="col-6">
+						<button id="forgetpass_btn" class="btn btn-info">${forgetpassLink}</button>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-4">
+						<div class="g-signin2 external_login_button" style="color: #fff"
+							data-width="170" data-height="32" data-longtitle="true"
+							data-theme="light"
+							data-scope='https://www.googleapis.com/auth/plus.login'
+							data-onsuccess='onGoogleSignin'></div>
+					</div>
 				</div>
 				<div>
-					${newuserText}<a href="usr_signup.html">${signupLink}</a>
+					<span id="qqLoginBtn"></span>
 				</div>
+
+
 			</div>
 
 			<div id="google_panel" style="display: none;">
@@ -73,8 +92,8 @@
 						<input type="text" id="google_username" placeholder="请选择一个用户名" />
 					</div>
 					<div class="page-row">
-						<label style="margin-bottom: 10px">您所在的时区:</label><select
-							id="google_timezone_select"></select>
+						<label style="margin-bottom: 10px">您所在的时区:</label>
+						<select id="google_timezone_select"></select>
 					</div>
 					<div class="page-row">
 						<button id="google_submit" class="btn_normal">完成</button>
@@ -96,8 +115,8 @@
 							placeholder="Please input your email address" />
 					</div>
 					<div class="page-row">
-						<label style="margin-bottom: 10px">您所在的时区:</label><select
-							id="qq_timezone_select"></select>
+						<label style="margin-bottom: 10px">您所在的时区:</label>
+						<select id="qq_timezone_select"></select>
 					</div>
 					<div class="page-row">
 						<button id="qq_submit" class="btn_normal">完成</button>

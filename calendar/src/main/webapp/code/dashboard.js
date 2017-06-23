@@ -18,19 +18,17 @@ function todo_renderer(container, item) {
 };
 
 function todoClicked(event, dataitem) {
+	debugger;
 	switch (dataitem.type) {
 	case 'CLIENT_FEEDBACK':
 		otms.setPageParam('otms.feedbackPage.itemId', dataitem.refId);
-		window.location = 'client_feedback.html';
+		window.location = 'feedback_client.html';
 	default:
 		break;
 	}
 };
 
 $(function() {
-	if (!otms.auth.isLoggedin()) {
-		window.location = 'index.html';
-	}
 	otms.namespace('otms.dashboardPage');
 
 	var userType = otms.auth.userType();
