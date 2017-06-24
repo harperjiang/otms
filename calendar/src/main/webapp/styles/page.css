@@ -80,12 +80,15 @@
 	color: #54b4f5
 }
 
-
 .page-row {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	line-height: 160%;
 	overflow: auto;
+}
+
+.page-note {
+	color: gray;
 }
 /*
 .page-row input[type='text'], .page-row input[type='password'],

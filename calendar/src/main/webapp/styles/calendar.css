@@ -1,9 +1,9 @@
-.calendar_container {
+.calendar-container {
 	width: 700px;
 	overflow: auto;
 }
 
-.calendar_title {
+.calendar-title {
 	text-align: center;
 	font-weight: bold;
 	font-size: 20px;
@@ -12,12 +12,12 @@
 	padding-bottom: 5px;
 }
 
-.calendar_column {
+.calendar-column {
 	float: left;
 	width: 100px;
 }
 
-.calendar_column_header {
+.calendar-column_header {
 	text-align: center;
 	font-size: 14px;
 	padding-top: 5px;
@@ -27,7 +27,7 @@
 	border-width: 1px 0px 1px 1px;
 }
 
-.calendar_item {
+.calendar-item {
 	height: 95px;
 	border-style: solid;
 	border-color: lightgray;
@@ -35,21 +35,21 @@
 	overflow: hidden;
 }
 
-.calendar_item_today {
+.calendar-item_today {
 	background-color: #ffd;
 }
 
-.calendar_item_old {
+.calendar-item_old {
 	background-color: #eee;
 }
 
-.calendar_item_end {
+.calendar-item_end {
 	border-style: solid;
 	border-color: lightgray;
 	border-right-width: 1px;
 }
 
-.calendar_item_date {
+.calendar-item_date {
 	text-align: right;
 	padding-top: 1px;
 	padding-right: 3px;
@@ -57,35 +57,24 @@
 	color: black;
 }
 
-.calendar_item_notcurrent {
+.calendar-item_notcurrent {
 	color: lightgray;
 }
 
-.calendar_btn {
+.calendar-btnbar {
 	float: left;
-	background: #8ccefa;
-	-webkit-border-radius: 1;
-	-moz-border-radius: 1;
-	border-radius: 1px;
-	font-family: Arial;
-	color: #ffffff;
-	font-size: 13px;
-	padding: 5px 10px 5px 10px;
-	text-decoration: none;
-	background: #54b4f5;
-	border-style: none;
+	margin-left: 20px;
 }
 
-.calendar_btn:hover {
-	background: #2982ba;
-	text-decoration: none;
+.calendar-btn {
+	
 }
 
-.calendar_event {
+.calendar-event {
 	margin-top: 1px;
 	margin-bottom: 1px;
-	border-radius: 5px;
-	background-color: #2982ba;
+	border-radius: 2px;
+	background-color: #aaeeaa;
 	color: white;
 	padding: 2px;
 	font-size: 12px;
@@ -94,22 +83,23 @@
 	overflow: hidden;
 }
 
-.calendar_event_past {
+.calendar-event-past {
 	background-color: #CCCCCC;
+	color: gray;
 }
 
-.calendar_item a {
+.calendar-item a {
 	font-size: 12px;
 	cursor: pointer;
 }
 
-.calendar_popup {
+.calendar-popup {
 	width: 150px;
 	position: absolute;
 	border: 1px solid lightgray;
 }
 
-.calendar_popup_title {
+.calendar-popup_title {
 	text-align: center;
 	background-color: gray;
 	color: white;
@@ -118,7 +108,7 @@
 	background-color: lightgray;
 }
 
-.calendar_popup_content {
+.calendar-popup_content {
 	min-height: 100px;
 	background-color: #fdfdfd;
 	padding-left: 5px;

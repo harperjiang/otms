@@ -21,7 +21,7 @@
 				<div class="page-block-title">${personal_info}</div>
 				<div class="container w-100">
 					<div class="row">
-						<div class="col-2 text-center" style="margin-bottom: 10px;">
+						<div class="col-sm-2 text-center" style="margin-bottom: 10px;">
 							<div
 								style="width: 120px; height: 120px; display: block; margin-left: auto; margin-right: auto;">
 								<img id="profile_img" src="resource/default_profile.jpg"
@@ -31,21 +31,21 @@
 								<button class="btn_small" id="btn_upload_image">${upload_photo}</button>
 							</div>
 						</div>
-						<div class="col-9 form-horizontal" style="margin-left: 20px;">
+						<div class="col-sm-9 form-horizontal" style="margin-left: 20px;">
 							<div class="form-group row">
-								<label for="username_span" class="col-3 col-form-label">${user_name}</label>
+								<label for="username_span" class="col-sm-3 col-form-label">${user_name}</label>
 
 								<span id="username_span"
-									class="form-control-static static-control col-3"
+									class="form-control-static static-control col-sm-3"
 									style="font-weight: bold">&nbsp;</span>
 
-								<label for="timezone_select" class="col-3 col-form-label">${time_zone}</label>
-								<div class="col-3">
+								<label for="timezone_select" class="col-sm-3 col-form-label">${time_zone}</label>
+								<div class="col-sm-3">
 									<select class="form-contorl custom-select" id="timezone_select"></select>
 								</div>
 							</div>
 							<div class='form-group row'>
-								<div class="col-12 input-group" title="${display_name}">
+								<div class="col-sm-12 input-group" title="${display_name}">
 									<span class="input-group-addon" id="btnGroupAddon">
 										<i class="fa fa-tv" aria-hidden="true"></i>
 									</span>
@@ -57,7 +57,7 @@
 							<div class="form-group row">
 								<label for="email_input"
 									class="sr-only col-form-label text-left">Email:</label>
-								<div class="col-12 input-group" title="${email_notification}">
+								<div class="col-sm-12 input-group" title="${email_notification}">
 									<span class="input-group-addon" id="btnGroupAddon">
 										<i class="fa fa-envelope-o" aria-hidden="true"></i>
 									</span>
@@ -72,8 +72,8 @@
 			<div class="page-block">
 				<div class="page-block-title">${email_pref}</div>
 				<div class="row container">
-					<div class="col-2"></div>
-					<div class="col-8">
+					<div class="col-sm-2">${email_receive}</div>
+					<div class="col-sm-8">
 						<div class="form-check">
 							<label class="form-check-label">
 								<input type="checkbox" class="form-check-input"
@@ -117,12 +117,14 @@
 				<div class="page-block container w-100">
 					<div class="page-block-title">${self_intro}</div>
 					<div class="form-group row">
-						<textarea id='tutor_desc_text' class='form-control'
-							placeholder='Write some words about yourself and let the potential client find you!'></textarea>
+						<div class="col-sm-12">
+							<textarea id='tutor_desc_text' class='form-control' rows="5"
+								placeholder='Write some words about yourself and let the potential client find you!'></textarea>
+						</div>
 					</div>
 					<div class="form-group row">${self_video}</div>
 					<div class="form-group row">
-						<div class="input-group col-12">
+						<div class="input-group col-sm-12">
 							<span class="input-group-addon" id="btnGroupAddon">
 								<i class="fa fa-video-camera" aria-hidden="true"></i>
 							</span>
@@ -133,13 +135,17 @@
 					</div>
 					<div class="page-block-title">${edu_background}</div>
 					<div class="form-group row">
-						<textarea id='tutor_edu_text' class="form-control"
-							placeholder='${edu_background_desc}'></textarea>
+						<div class="col-sm-12">
+							<textarea id='tutor_edu_text' class="form-control" rows="3"
+								placeholder='${edu_background_desc}'></textarea>
+						</div>
 					</div>
 					<div class="page-block-title">Working Experience</div>
 					<div class="form-group row">
-						<textarea id='tutor_working_text' class="form-control"
-							placeholder='${work_exp}'></textarea>
+						<div class="col-sm-12">
+							<textarea id='tutor_working_text' class="form-control" rows="3"
+								placeholder='${work_exp}'></textarea>
+						</div>
 					</div>
 				</div>
 

@@ -5,48 +5,10 @@
 <title>User Console</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/tab.js"></script>
+<script type="text/javascript" src="scripts/ui/timesheet.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
-<script>
-	$(function() {
-		var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId", false);
-		if (undefined === tutorId) {
-			// Display invalid access 
-			otms.ui.MessageBox.warning($('#errmsg_panel'), 'Invalid Access');
-			setTimeout(function() {
-				window.location = 'index.html';
-			}, 2000);
-		}
-
-		otms.namespace('otms.tutorInfoPage');
-
-		var vbm = new otms.validator.BeanManager();
-		vbm.reg('displayName', $('#name_span'));
-		vbm.reg('username', $('#username_span'));
-		vbm.reg('timezone', $('#timezone_span'));
-		vbm.reg('pictureUrl', $('#profile_img'));
-		vbm.reg('statement', $('#stmt_span'));
-		vbm.reg('description', $('#desc_span'));
-		vbm.reg('aboutMeInfo', $('#aboutme_span'));
-		vbm.reg('eduInfo', $('#edu_span'));
-		vbm.reg('workingInfo', $('#working_span'));
-		//vbm.reg('audioText', $('#eel_span'));
-		vbm.reg('videoIntroUrl', $('#video_frame'));
-		otms.tutorInfoPage.viewbm = vbm;
-
-		var req = otms.auth.req({
-			'tutorId' : tutorId
-		});
-		var callback = function(success, data) {
-			if (success) {
-				var tutorInfo = data.tutorInfo;
-				// Noneditable
-				otms.tutorInfoPage.viewbm.setBean(tutorInfo);
-			}
-		};
-		ProfileService.getTutorInfo(req, otms.ui.MessageBox.errhandler(
-				$('#errmsg_panel'), callback));
-	});
-</script>
+<script type='text/javascript' src='code/info_tutor.js'></script>
 <style>
 .right_button {
 	width: 85%;
@@ -66,80 +28,129 @@
 </style>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
+	<!--#include virtual="menu.html" -->
+	<div class="page-menu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content_nomenu">
-			<div id="profile_view_page">
-				<div style="margin-right: 20px; float: left;">
-					<div style="width: 200px; height: 200px; display: block;">
-						<img id="profile_img" src="resource/default_profile.jpg"
-							width="100%" height="100%" />
+		<div class="page-content">
+			<div id="profile_view_page" class="page-block container w-100">
+				<div class="row">
+					<div class="col-sm-2">
+						<img id="profile_img" class="rounded-image"
+							src="resource/default_profile.jpg" width="100%" />
+					</div>
+					<div class="col-sm-9 container">
+						<div class="row form-group">
+							<div class="col-sm-12">
+								<span id="name_span" class="form-control-static"
+									style="font-size: 25px; font-weight: bold">&nbsp;</span>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-3">
+								<label>User Name:</label>
+							</div>
+							<div class="col-sm-3">
+								<span id="username_span" class="form-control-static"
+									style="font-weight: bold">&nbsp;</span>
+								<span class="badge badge-info">Recommended</span>
+							</div>
+							<div class="col-sm-3">
+								<label>Time Zone:</label>
+							</div>
+							<div class="col-sm-3">
+								<span class="form-control-static" id="timezone_span"
+									style="font-weight: bold">&nbsp;</span>
+							</div>
+						</div>
+
+
+						<div class="row form-group">
+							<div class="col-sm-12">
+								<span id="desc_span" class="textarea_small">&nbsp;</span>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div style="display: block; overflow: hidden;">
-					<div style="float: left; min-height: 120px; width: 600px">
-						<div class='page_row '>
-							<span id="name_span" class="content"
-								style="font-size: 25px; font-weight: bold">&nbsp;</span>
-						</div>
-						<div class="page_row ">
-							<div style="display: inline-block; width: 49%">
-								<label>username:</label> <span id="username_span"
-									class="content" style="font-weight: bold">&nbsp;</span>
-							</div>
-							<div style="display: inline-block; width: 49%">
-								<label>timezone:</label> <span class="content"
-									id="timezone_span" style="font-weight: bold">&nbsp;</span>
-							</div>
-						</div>
-						<div class="page_row ">
-							<span id="desc_span" class="textarea_small">&nbsp;</span>
-						</div>
-					</div>
-					<div class="right_panel">
-						<div class="right_block">
-							<button class="btn_yellow right_button">View Available
-								Time</button>
-							<button class="btn_orange right_button">Request Trial
-								Lesson</button>
-							<button class="btn_normal right_button">Schedule Lesson</button>
-						</div>
-					</div>
-					<div style="clear: both"></div>
-					<div class="page_block">
-						<div class="page_row bg_green">
-							<span id="stmt_span">&nbsp;</span>
-						</div>
-					</div>
 
-					<div class="page_block">
-						<div class="page_block_title">About Me</div>
-						<span id="aboutme_span" class="textarea">&nbsp;</span>
-					</div>
+				<div class="row">
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a id="tab1"
+								class="nav-link tab-bar-item">Timesheet</a></li>
+						<li class="nav-item"><a id="tab2"
+								class="nav-link tab-bar-item">Self Introduction</a></li>
+						<li class="nav-item"><a id="tab3"
+								class="nav-link tab-bar-item">User Rate</a></li>
+					</ul>
+				</div>
 
-					<div class="page_block">
-						<div class="page_block_title">Video Introduction</div>
-						<div class="page_row">
-							<!-- iframe id="video_frame" width="280" height="200"
+				<div id="timesheet_panel">
+					<div>
+						<div class="btn-group" role="group" style="padding-left: 8%">
+							<button class="btn btn-link">
+								<i class="fa fa-chevron-left" aria-hidden="true"></i> Past Week
+							</button>
+							<button class="btn btn-link">Today</button>
+							<button class="btn btn-link">
+								Next Week <i class="fa fa-chevron-right" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+					<div id="timesheet_container"></div>
+				</div>
+				<div id="self_intro_panel">
+					<div style="margin-right: 20px; float: left;">
+						<div style="width: 200px; height: 200px; display: block;"></div>
+					</div>
+					<div style="display: block; overflow: hidden;">
+						<div style="float: left; min-height: 120px; width: 600px">
+							<div class='page_row '></div>
+							<div class="page_row "></div>
+
+						</div>
+						<div class="right_panel">
+							<div class="right_block">
+								<button class="btn_yellow right_button">View Available
+									Time</button>
+								<button class="btn_orange right_button">Request Trial
+									Lesson</button>
+								<button class="btn_normal right_button">Schedule Lesson</button>
+							</div>
+						</div>
+						<div style="clear: both"></div>
+						<div class="page_block">
+							<div class="page_row bg_green">
+								<span id="stmt_span">&nbsp;</span>
+							</div>
+						</div>
+
+						<div class="page_block">
+							<div class="page_block_title">About Me</div>
+							<span id="aboutme_span" class="textarea">&nbsp;</span>
+						</div>
+
+						<div class="page_block">
+							<div class="page_block_title">Video Introduction</div>
+							<div class="page_row">
+								<!-- iframe id="video_frame" width="280" height="200"
 								src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe -->
+							</div>
+						</div>
+
+						<div class="page_block">
+							<div class="page_block_title">Education</div>
+							<span id="edu_span" class="textarea">&nbsp;</span>
+						</div>
+
+						<div class="page_block">
+							<div class="page_block_title">Working Experience</div>
+							<span id="working_span" class="textarea">&nbsp;</span>
 						</div>
 					</div>
-
-					<div class="page_block">
-						<div class="page_block_title">Education</div>
-						<span id="edu_span" class="textarea">&nbsp;</span>
-					</div>
-
-					<div class="page_block">
-						<div class="page_block_title">Working Experience</div>
-						<span id="working_span" class="textarea">&nbsp;</span>
-					</div>
 				</div>
+				<div id="user_rate_panel"></div>
 
 			</div>
 		</div>
 	</div>
-	<!--#include virtual="footer.html" -->
 </body>
 </html>

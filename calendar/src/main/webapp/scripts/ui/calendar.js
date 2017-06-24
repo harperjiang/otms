@@ -133,7 +133,7 @@ otms.ui.calendar.ChooseEventDialog = otms.extend(otms.ui.dialog.Dialog,
 
 otms.ui.calendar.Calendar = function(container) {
 	this.container = container;
-	this.container.addClass('calendar_container');
+	this.container.addClass('calendar-container');
 
 	// Create Structure
 	this.initialize();
@@ -145,40 +145,64 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	var calendar = this;
 	var titleDiv = $(document.createElement("div"));
 	titleDiv.attr('itemId', 'titleDiv');
-	titleDiv.addClass('calendar_title');
+	titleDiv.addClass('calendar-title');
+
+	var buttonBar = $(document.createElement('div'));
+	buttonBar.addClass('btn-group');
+	buttonBar.addClass('calendar-btnbar');
+	buttonBar.addClass('mr-auto');
+	titleDiv.append(buttonBar);
 
 	var prevButton = $(document.createElement('button'));
-	prevButton.append('<');
-	prevButton.addClass('calendar_btn');
+	prevButton.append('<i class="fa fa-chevron-left" aria-hidden="true"></i>');
+	prevButton.append('&nbsp;')
+	prevButton.append('Last Month');
+	prevButton.addClass('calendar-btn');
+	prevButton.addClass('btn');
+	prevButton.addClass('btn-link');
+	prevButton.addClass('btn-sm');
 	prevButton.click(function() {
 		calendar.model.addDate("month", -1, calendar);
 	});
-	titleDiv.append(prevButton);
-
-	var nextButton = $(document.createElement('button'));
-	nextButton.append('>');
-	nextButton.addClass('calendar_btn');
-	nextButton.click(function() {
-		calendar.model.addDate("month", 1, calendar);
-	});
-	titleDiv.append(nextButton);
+	buttonBar.append(prevButton);
 
 	var todayButton = $(document.createElement('button'));
 	todayButton.append('Today');
-	todayButton.addClass('calendar_btn');
+	todayButton.addClass('calendar-btn');
+	todayButton.addClass('btn');
+	todayButton.addClass('btn-link');
+	todayButton.addClass('btn-sm');
 	todayButton.click(function() {
 		calendar.model.setDate(new Date(), calendar);
 	});
-	titleDiv.append(todayButton);
+	buttonBar.append(todayButton);
+
+	var nextButton = $(document.createElement('button'));
+	nextButton.append("Next Month");
+	nextButton.append('&nbsp;')
+	nextButton.append('<i class="fa fa-chevron-right" aria-hidden="true"></i>');
+	nextButton.addClass('calendar-btn');
+	nextButton.addClass('btn');
+	nextButton.addClass('btn-link');
+	nextButton.addClass('btn-sm');
+
+	nextButton.click(function() {
+		calendar.model.addDate("month", 1, calendar);
+	});
+	buttonBar.append(nextButton);
 
 	var titleLabel = $(document.createElement('span'));
 	titleLabel.attr('itemId', 'titleLabel');
 	titleDiv.append(titleLabel);
 
 	var addButton = $(document.createElement('button'));
-	addButton.append('+');
-	addButton.addClass('calendar_btn');
+	addButton.append('<i class="fa fa-plus" aria-hidden="true"></i>');
+	addButton.addClass('calendar-btn');
+	addButton.addClass('btn');
+	addButton.addClass('btn-sm');
+	addButton.addClass('btn-link');
 	addButton.css('float', 'right');
+	addButton.attr('title', 'Create New Event');
 	addButton.click(function(event) {
 		calendar.onAddButton();
 	});
@@ -190,38 +214,38 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	for (var i = 0; i < 7; i++) {
 		var columnDiv = $(document.createElement('div'));
 		columnDiv.attr('itemId', 'column_' + i);
-		columnDiv.addClass('calendar_column');
+		columnDiv.addClass('calendar-column');
 		this.container.append(columnDiv);
 
 		var columnTitleDiv = $(document.createElement('div'));
-		columnTitleDiv.addClass('calendar_column_header');
+		columnTitleDiv.addClass('calendar-column_header');
 		columnTitleDiv.append(otms.ui.calendar.weekName[i]);
 		columnDiv.append(columnTitleDiv);
 
 		if (i == 6) {
-			columnTitleDiv.addClass('calendar_item_end');
+			columnTitleDiv.addClass('calendar-item_end');
 		}
 
 		for (var j = 0; j < 6; j++) {
 			var itemDiv = $(document.createElement('div'));
-			itemDiv.addClass('calendar_item');
+			itemDiv.addClass('calendar-item');
 			itemDiv.attr('itemId', 'item_' + i + '_' + j);
 			itemDiv.prop('calendar', this);
 			var itemDateDiv = $(document.createElement('div'));
-			itemDateDiv.addClass('calendar_item_date');
+			itemDateDiv.addClass('calendar-item_date');
 
 			itemDateDiv.attr('itemId', 'dateDiv');
 
 			itemDiv.append(itemDateDiv);
 			if (i == 6) {
-				itemDiv.addClass('calendar_item_end');
+				itemDiv.addClass('calendar-item_end');
 			}
 
 			columnDiv.append(itemDiv);
 		}
 	}
 	this.popupDiv = $(document.createElement('div'));
-	this.popupDiv.addClass('calendar_popup');
+	this.popupDiv.addClass('calendar-popup');
 	this.popupDiv.attr('itemId', 'popupDiv');
 	this.popupDiv.css('z-index', '1');
 	this.popupDiv.css('visibility', 'hidden');
@@ -229,20 +253,21 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 
 	var popupTitleDiv = $(document.createElement('div'));
 	popupTitleDiv.attr('itemId', 'popupTitleDiv');
-	popupTitleDiv.addClass('calendar_popup_title');
+	popupTitleDiv.addClass('calendar-popup_title');
 	popupTitleDiv.append('Abc');
 	this.popupDiv.append(popupTitleDiv);
 
 	var popupContentDiv = $(document.createElement('div'));
 	popupContentDiv.attr('itemId', 'popupContentDiv');
-	popupContentDiv.addClass('calendar_popup_content');
+	popupContentDiv.addClass('calendar-popup_content');
 	this.popupDiv.append(popupContentDiv);
 };
 
 otms.ui.calendar.Calendar.prototype.eventRenderer = function(eventDiv, eventObj) {
-	/*eventContent = otms.DateUtil.formattime(eventObj.fromTime);
-	eventDiv.append(eventContent);
-	eventDiv.prop('title', eventContent);*/
+	/*
+	 * eventContent = otms.DateUtil.formattime(eventObj.fromTime);
+	 * eventDiv.append(eventContent); eventDiv.prop('title', eventContent);
+	 */
 };
 
 otms.ui.calendar.Calendar.prototype.refresh = function() {
@@ -277,11 +302,15 @@ otms.ui.calendar.Calendar.prototype.refresh = function() {
 					var eventObj = todayEvents[e];
 					var eventDiv = $(document.createElement('div'));
 					eventDiv.prop('eventData', eventObj);
-					eventDiv.addClass('calendar_event');
+					eventDiv.addClass('calendar-event');
 					eventDiv.click(function(event) {
 						calendar.onEventClick(this, event);
 					});
 					calendar.eventRenderer(eventDiv, eventObj);
+					// For event in the past, update background color
+					if (eventObj.past) {
+						eventDiv.addClass('calendar-event-past');
+					}
 					itemDiv.append(eventDiv);
 				}
 				// Add a 'View More' Link
@@ -299,21 +328,21 @@ otms.ui.calendar.Calendar.prototype.refresh = function() {
 
 			// Not current month
 			if (dtext.notcurrent) {
-				dateTextDiv.addClass('calendar_item_notcurrent');
+				dateTextDiv.addClass('calendar-item_notcurrent');
 			} else {
-				dateTextDiv.removeClass('calendar_item_notcurrent');
+				dateTextDiv.removeClass('calendar-item_notcurrent');
 			}
 			// Today
 			if (dtext.isToday) {
-				itemDiv.addClass('calendar_item_today');
+				itemDiv.addClass('calendar-item_today');
 			} else {
-				itemDiv.removeClass('calendar_item_today');
+				itemDiv.removeClass('calendar-item_today');
 			}
 			// Old days
 			if (dtext.isOld) {
-				itemDiv.addClass('calendar_item_old');
+				itemDiv.addClass('calendar-item_old');
 			} else {
-				itemDiv.removeClass('calendar_item_old');
+				itemDiv.removeClass('calendar-item_old');
 			}
 		}
 	}
@@ -348,7 +377,7 @@ otms.ui.calendar.Calendar.prototype.onItemClick = function(jqobj, event) {
 			for (var e = 0; e < todayEvents.length; e++) {
 				var eventObj = todayEvents[e];
 				var eventDiv = $(document.createElement('div'));
-				eventDiv.addClass('calendar_event');
+				eventDiv.addClass('calendar-event');
 				eventDiv.append(eventObj.text);
 				eventDiv.prop('eventId', eventObj.id);
 				eventDiv.click(function(event) {

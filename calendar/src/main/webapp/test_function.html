@@ -19,6 +19,12 @@
 				"last" : true
 			}, otms.ui.MessageBox.han());
 		});
+		$('#load_tutor').click(
+				function() {
+					otms.setPageParam("otms.tutorInfoPage.tutorId", $(
+							'#tutorId').val());
+					window.location = "info_tutor.html";
+				});
 	});
 </script>
 </head>
@@ -29,6 +35,10 @@
 	<input type="text" id="lessonId" />
 	<button id="confirm">Confirm</button>
 	<button id="confirmLast">Confirm Last</button>
+
+	<label>Tutor ID</label>
+	<input type="text" id="tutorId" />
+	<button id="load_tutor">Load Tutor</button>
 	<!--#include virtual="footer.html" -->
 </body>
 </html>

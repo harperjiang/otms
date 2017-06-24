@@ -1,7 +1,7 @@
 otms.namespace('otms.dashboardPage');
 
 otms.dashboardPage.todoMessage = {
-	"CLIENT_FEEDBACK" : "Comment on the lesson <span class='list_row_title'>{0}</span> you have attended with <a onclick='tutor_clicked(event, {5})'>{1}</a>, {3} to {4}, {2}"
+	"CLIENT_FEEDBACK" : "Comment on the lesson you have attended with <a onclick='tutor_clicked(event, {5})'>{1}</a>, {3} to {4}, {2}"
 };
 
 function todo_renderer(container, item) {

@@ -39,10 +39,6 @@ $(function() {
 		}
 		eventDiv.append(eventContent);
 		eventDiv.prop('title', eventContent);
-		// For event in the past, update background color
-		if (eventObj.past) {
-			eventDiv.addClass('calendar_event_past');
-		}
 	};
 
 	calendar.onEventClick = function(obj, event) {

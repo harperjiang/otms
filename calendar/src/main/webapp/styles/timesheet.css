@@ -1,41 +1,60 @@
-.timesheet_container {
-	float: left;
+.timesheet-container {
+	width: 100%;
+	position: relative;
+	/*padding-top: 51px; for the header*/
 }
 
-.timesheet_topleft {
-	width: 60px;
+.timesheet-header {
+	margin-right: 18px;
+}
+
+.timesheet-header-stick {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 18px; /*for the scroll bar*/
+	overflow: auto;
+}
+
+.timesheet-topleft {
+	margin-left: 1px;
+	margin-right: 1px;
+	float: left;
+	height: 3px;
+	width: 8%;
+}
+
+.timesheet-leftcol {
+	width: 8%;
 	float: left;
 	margin-left: 1px;
 	margin-right: 1px;
 }
 
-.timesheet_leftcol {
-	width: 60px;
-	float: left;
-	margin-left: 1px;
-	margin-right: 1px;
-}
-
-.timesheet_lefttime {
+.timesheet-lefttime {
 	text-align: right;
-	height: 60px;
+	height: 46px;
 	font-size: 25px;
-	padding-top: 1px;
-	padding-bottom: 1px;
+	padding-top: 10px;
+	border-width: 0px 0px 1px 0px;
+	border-color: lightgray;
+	border-style: solid;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
-
-.timesheet_leftflag {
+/*AM PM flag*/
+.timesheet-leftflag {
 	font-size: 15px;
 	color: #bbb;
 }
 
-.timesheet_column {
-	width: 60px;
+.timesheet-column {
+	width: 13%;
 	float: left;
 }
 
-.timesheet_title {
-	font-size: 14px;
+.timesheet-title {
 	text-align: center;
 	padding-top: 8px;
 	padding-bottom: 8px;
@@ -45,33 +64,45 @@
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	height: 100%;
+	color: #545;
 }
 
-.timesheet_end {
+.timesheet-title-week {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.timesheet-title-date {
+	font-size: 10px;
+}
+
+.timesheet-end {
 	border-right-width: 1px;
 }
 
-.timesheet_item {
+.timesheet-item {
 	text-align: center;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin-top: 1px;
 	margin-bottom: 1px;
+	margin-right: 1px;
 	font-size: 12px;
 	cursor: default;
 	background-color: #eee;
 	height: 22px;
 }
 
-.timesheet_item_na {
-	background-color: #fdf;
+.timesheet-item-na {
+	background-color: #dededc;
 }
 
-.timesheet_item_a {
-	background-color: #aea;
+.timesheet-item-a {
+	background-color: #54b4f5;
 }
 
-.timesheet_frame {
+.timesheet-frame {
 	width: 100%;
 	height: 500px;
 	overflow-y: scroll;

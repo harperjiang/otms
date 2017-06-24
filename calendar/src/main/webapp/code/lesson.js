@@ -19,8 +19,8 @@ function client_view() {
 }
 
 function admin_view() {
-	$('#tutor_ig').css('display', 'initial');
-	$('#client_ig').css('display', 'initial');
+	$('#tutor_ig').css('display', 'flex');
+	$('#client_ig').css('display', 'flex');
 }
 
 function mode_modify() {
