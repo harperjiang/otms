@@ -18,7 +18,7 @@ function switch_mode() {
 	}
 }
 
-function onload() {
+$(function() {
 	// Initialize to lesson_item mode
 	otms.namespace('otms.lessonItemPage');
 	otms.lessonItemPage.snapshotMode = false;
@@ -148,4 +148,4 @@ function onload() {
 	$('#calendar_btn').click(function(event) {
 		window.location = 'calendar.html';
 	});
-};
+});

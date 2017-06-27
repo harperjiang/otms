@@ -15,9 +15,11 @@ otms.validator.ValidatorBase = function(control) {
 	});
 };
 
+
+
 otms.validator.ValidatorBase.prototype.trigger = function() {
 	var control = this.control;
-	if (!this.check(control.val())) {
+	if (!this.check(this.extract())) {
 		control.addClass('validate_fail');
 		// this.oldTooltip = control.attr('title');
 		control.attr('title', this.message());
@@ -61,6 +63,21 @@ otms.validator.ValidatorBase.prototype.value = function(arg) {
 	this.val = arg;
 	return true;
 };
+
+otms.validator.ValidatorBase.prototype.extract = function() {
+	var tagName = this.control.prop('tagName');
+	if ($.inArray(tagName, [ 'INPUT', 'SELECT', 'TEXTAREA' ]) != -1) {
+		if (this.control.attr('type') === 'checkbox') {
+			return this.control.prop('checked');
+		} else {
+			return this.control.val();
+		}
+	} else if ($.inArray(tagName, [ 'SPAN', 'DIV' ]) != -1) {
+		return this.control.text();
+	} else {
+		return this.control.val();
+	}
+}
 
 otms.validator.ValidatorBase.prototype.assign = function(newval) {
 	if (otms.isEmpty(newval))

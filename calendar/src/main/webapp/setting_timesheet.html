@@ -6,6 +6,7 @@
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/ui/tab.js"></script>
 <script type="text/javascript" src="scripts/ui/timesheet.js"></script>
+<script type='text/javascript' src='dwr/interface/TutorService.js'></script>
 <script type="text/javascript" src="code/setting_timesheet.js"></script>
 <script>
 	
@@ -18,41 +19,55 @@
 		<div class="page-content">
 			<div class="page-title">${title}</div>
 			<div class="page-block container w-100">
-				<div class="page-block-title">Mark your available time.</div>
-				<div class="page-row page-note">Regular Timesheet marks your
-					available time in general. If you have temporary schedule changes,
-					you can specify that in "Specify By Date" timesheet.</div>
-				<div class="page-row page-note">The time you marked here will
-					be in your local time zone.</div>
+				<div class="page-block-title">${mark_available_time}</div>
+				<div class="page-row page-note">${mark_note_1}</div>
+				<div class="page-row page-note">${mark_note_2}</div>
 
 				<div class="row">
 					<div class="col-sm-12">
 						<ul class="nav nav-tabs">
 							<li class="nav-item"><a id="tab1"
-									class="nav-link tab-bar-item active">Regular Timesheet</a></li>
+									class="nav-link tab-bar-item active">${ts_regular}</a></li>
 							<li class="nav-item"><a id="tab2"
-									class="nav-link tab-bar-item">Specify By Date</a></li>
+									class="nav-link tab-bar-item">${ts_specify}</a></li>
 						</ul>
 					</div>
 				</div>
-				<div class="container w-100 mt-4">
-					<div class="row" id="regular_panel">
+				<div class="container w-100 mt-4" id="regular_panel">
+					<div class="row">
 						<div class="col-sm-12">
 							<div id="regular_container"></div>
 						</div>
 					</div>
+				</div>
 
-					<div class="row" id="specify_panel" style="display: none">
+				<div class="container w-100 mt-4" id="specify_panel"
+					style="display: none">
+					<div class="row">
+						<div class="col-sm-9 btn-group mx-auto">
+							<button class="btn btn-link" id="past_week_btn">
+								<i class="fa fa-chevron-left" aria-hidden="true">
+								</i> ${btn_past_week}
+							</button>
+							<button class="btn btn-link" id="today_btn">${btn_today}</button>
+							<button class="btn btn-link" id="reset_btn">${btn_reset}</button>
+							<button class="btn btn-link" id="next_week_btn">
+								${btn_next_week} <i class="fa fa-chevron-right"
+									aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-12">
 							<div id="specify_container"></div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="page-block container w-100">
-				<div class="row">
-					<div class="col-sm-12">
-						<button class="btn_large" id="save">${save}</button>
+				<div class="page-block container w-100">
+					<div class="row page-row">
+						<div class="col-sm-12">
+							<button class="btn_large" id="save_btn">${btn_save}</button>
+						</div>
 					</div>
 				</div>
 			</div>

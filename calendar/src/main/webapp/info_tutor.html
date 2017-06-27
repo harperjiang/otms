@@ -2,12 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>User Console</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/ui/tab.js"></script>
 <script type="text/javascript" src="scripts/ui/timesheet.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
+<script type='text/javascript' src='dwr/interface/TutorService.js'></script>
 <script type='text/javascript' src='code/info_tutor.js'></script>
 <style>
 .right_button {
@@ -24,6 +25,16 @@
 	background-color: #BFE9F1;
 	height: 210px;
 	text-align: center;
+}
+
+.legend {
+	width: 120px;
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	text-align: center;
+	margin-top: 2px;
 }
 </style>
 </head>
@@ -47,7 +58,7 @@
 						</div>
 						<div class="row form-group">
 							<div class="col-sm-3">
-								<label>User Name:</label>
+								<label>${usr_name}</label>
 							</div>
 							<div class="col-sm-3">
 								<span id="username_span" class="form-control-static"
@@ -55,7 +66,7 @@
 								<span class="badge badge-info">Recommended</span>
 							</div>
 							<div class="col-sm-3">
-								<label>Time Zone:</label>
+								<label>${time_zone}</label>
 							</div>
 							<div class="col-sm-3">
 								<span class="form-control-static" id="timezone_span"
@@ -75,29 +86,69 @@
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a id="tab1"
-								class="nav-link tab-bar-item">Timesheet</a></li>
+								class="nav-link tab-bar-item">${tab_timesheet}</a></li>
 						<li class="nav-item"><a id="tab2"
-								class="nav-link tab-bar-item">Self Introduction</a></li>
+								class="nav-link tab-bar-item">${tab_selfintro}</a></li>
 						<li class="nav-item"><a id="tab3"
-								class="nav-link tab-bar-item">User Rate</a></li>
+								class="nav-link tab-bar-item">${tab_rating}</a></li>
 					</ul>
 				</div>
 
 				<div id="timesheet_panel">
-					<div>
-						<div class="btn-group" role="group" style="padding-left: 8%">
-							<button class="btn btn-link">
-								<i class="fa fa-chevron-left" aria-hidden="true"></i> Past Week
-							</button>
-							<button class="btn btn-link">Today</button>
-							<button class="btn btn-link">
-								Next Week <i class="fa fa-chevron-right" aria-hidden="true"></i>
-							</button>
+					<div class="container w-100">
+						<div class="row">
+							<div class="btn-group mx-auto col-sm-6" role="group">
+								<button class="btn btn-link" id="pastweek_btn">
+									<i class="fa fa-chevron-left" aria-hidden="true"></i>
+									${btn_pastweek}
+								</button>
+								<button class="btn btn-link" id="today_btn">${btn_today}</button>
+								<button class="btn btn-link" id="nextweek_btn">
+									${btn_nextweek} <i class="fa fa-chevron-right"
+										aria-hidden="true"></i>
+								</button>
+
+							</div>
+							<div class="col-sm-3">
+								<div class="timesheet-item-old legend">${legend_past}</div>
+								<div class="timesheet-item-0 legend">${legend_na}</div>
+								<div class="timesheet-item-1 legend" style="color: #eee">${legend_a}</div>
+								<div class="timesheet-item-2 legend" style="color: #eee">${legend_hc}</div>
+							</div>
 						</div>
+
+						<div class="row">
+							<div id="timesheet_container"></div>
+						</div>
+
+						<div id="create_lesson_dialog" class="modal fade">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">${schedule_dialog_title}</h5>
+										<button type="button" class="close" data-dismiss="modal"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<p id="create_lesson_dialog_content"></p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-primary"
+											id="create_lesson_dialog_confirm_btn">${schedule_dialog_confirm}</button>
+										<button type="button" class="btn btn-secondary"
+											data-dismiss="modal">${schedule_dialog_cancel}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+
 					</div>
-					<div id="timesheet_container"></div>
+
+
 				</div>
-				<div id="self_intro_panel">
+				<div id="self_intro_panel" style="display: none">
 					<div style="margin-right: 20px; float: left;">
 						<div style="width: 200px; height: 200px; display: block;"></div>
 					</div>
@@ -131,8 +182,8 @@
 						<div class="page_block">
 							<div class="page_block_title">Video Introduction</div>
 							<div class="page_row">
-								<!-- iframe id="video_frame" width="280" height="200"
-								src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe -->
+								<iframe id="video_frame" width="280" height="200"
+									src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe>
 							</div>
 						</div>
 
@@ -147,7 +198,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="user_rate_panel"></div>
+				<div id="user_rate_panel" style="display: none"></div>
 
 			</div>
 		</div>

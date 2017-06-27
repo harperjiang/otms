@@ -61,12 +61,28 @@ otms.auth.req = function(request) {
 };
 
 otms.auth.filter = function(bean) {
+	var toString = Object.prototype.toString;
+
 	for (key in bean) {
-		if (Object.prototype.toString.call(bean[key]) === '[object Date]') {
+		if (toString.call(bean[key]) === '[object Date]') {
 			bean[key] = otms.DateUtil.serverformatdate(bean[key]);
 		}
-		if (Object.prototype.toString.call(bean[key]) == '[object Object]') {
+		if (toString.call(bean[key]) === '[object Object]') {
 			otms.auth.filter(bean[key]);
+		}
+		if (toString.call(bean[key]) === '[object Array]') {
+			var array = bean[key];
+			if (toString.call(array[0]) === '[object Date]') {
+				var filtered = [];
+				for ( var d in array) {
+					filtered.push(otms.DateUtil.serverformatdate(array[d]));
+				}
+				bean[key] = filtered;
+			} else {
+				for ( var x in array) {
+					otms.auth.filter(x);
+				}
+			}
 		}
 	}
 };

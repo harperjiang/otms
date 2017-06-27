@@ -115,6 +115,10 @@ otms.json = function(arg) {
 	}
 };
 
+otms.jsonClone = function(arg) {
+	return JSON.parse(JSON.stringify(arg));
+}
+
 otms.UIUtil = {};
 
 otms.UIUtil.hidden = function(element) {
@@ -159,8 +163,8 @@ otms.DateUtil.time = function(hour, min, am) {
 	}
 	return {
 		'hour' : hour,
-		'minute' : min,
-		'total' : hour * 60 + min
+		'minute' : min/*,
+		'total' : hour * 60 + min*/
 	};
 };
 
@@ -290,6 +294,16 @@ otms.DateUtil.comingweek = function() {
 		'fromDate' : now,
 		'toDate' : nextweek
 	};
+};
+
+otms.DateUtil.toSunday = function(date) {
+	var d = new Date(date);
+	d.setHours(0);
+	d.setMinutes(0);
+	d.setSeconds(0);
+	var day = date.getDay();
+	diff = date.getDate() - day;
+	return new Date(d.setDate(diff));
 };
 
 otms.tzData = [ 'US/Mountain', 'US/Central', 'US/Pacific', 'US/Eastern',

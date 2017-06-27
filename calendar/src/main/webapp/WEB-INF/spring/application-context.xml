@@ -102,7 +102,9 @@
 
 	<bean id="tutorService"
 		class="org.harper.otms.calendar.service.impl.DefaultTutorService">
+		<property name="userDao" ref="userDao" />
 		<property name="tutorDao" ref="tutorDao" />
+		<property name="lessonDao" ref="lessonDao" />
 	</bean>
 
 	<bean id="todoService"

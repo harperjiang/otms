@@ -20,12 +20,6 @@ public class ClientInfoDto {
 
 	private String statement;
 
-	private boolean emailClass;
-
-	private boolean emailSchedule;
-
-	private boolean emailBooking;
-
 	public void from(Client client) {
 		setClientId(client.getId());
 		setStatement(client.getStatement());
@@ -35,11 +29,6 @@ public class ClientInfoDto {
 		setEmail(client.getUser().getEmail());
 		setPictureUrl(client.getPictureUrl());
 
-		boolean[] emailPref = client.getEmailSettings();
-
-		setEmailClass(emailPref[0]);
-		setEmailSchedule(emailPref[1]);
-		setEmailBooking(emailPref[2]);
 	}
 
 	public void to(Client client) {
@@ -49,8 +38,6 @@ public class ClientInfoDto {
 
 		client.setStatement(getStatement());
 		client.setPictureUrl(getPictureUrl());
-
-		client.setEmailSetting(new boolean[] { isEmailClass(), isEmailSchedule(), isEmailBooking() });
 	}
 
 	public String getDisplayName() {
@@ -83,30 +70,6 @@ public class ClientInfoDto {
 
 	public void setStatement(String statement) {
 		this.statement = statement;
-	}
-
-	public boolean isEmailClass() {
-		return emailClass;
-	}
-
-	public void setEmailClass(boolean emailClass) {
-		this.emailClass = emailClass;
-	}
-
-	public boolean isEmailSchedule() {
-		return emailSchedule;
-	}
-
-	public void setEmailSchedule(boolean emailSchedule) {
-		this.emailSchedule = emailSchedule;
-	}
-
-	public boolean isEmailBooking() {
-		return emailBooking;
-	}
-
-	public void setEmailBooking(boolean emailBooking) {
-		this.emailBooking = emailBooking;
 	}
 
 	public String getPictureUrl() {

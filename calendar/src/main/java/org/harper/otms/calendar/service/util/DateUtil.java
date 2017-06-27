@@ -117,6 +117,13 @@ public class DateUtil {
 		return cal.get(Calendar.HOUR_OF_DAY) * 60 + cal.get(Calendar.MINUTE);
 	}
 
+	public static Date offset(Date date, int num) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DAY_OF_MONTH, num);
+		return cal.getTime();
+	}
+
 	public static Date offset(int num) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
@@ -135,5 +142,12 @@ public class DateUtil {
 
 	public static Date nowUTC() {
 		return DateUtil.convert(new Date(), TimeZone.getDefault(), TimeZone.getTimeZone("UTC"));
+	}
+	
+	public static Date toSunday(Date input) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(input);
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		return cal.getTime();
 	}
 }

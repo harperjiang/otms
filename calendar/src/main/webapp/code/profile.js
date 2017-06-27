@@ -48,9 +48,9 @@ $(function() {
 	commonbm.reg('timezone', $('#timezone_select'));
 	commonbm.reg('email', $('#email_input'));
 	commonbm.reg('pictureUrl', $('#profile_img'));
-	commonbm.reg('emailClass',$('#email_class_check'));
-	commonbm.reg('emailBooking',$('#email_booking_check'));
-	commonbm.reg('emailSchedule',$('#email_schedule_check'));
+//	commonbm.reg('emailClass',$('#email_class_check'));
+//	commonbm.reg('emailBooking',$('#email_booking_check'));
+//	commonbm.reg('emailSchedule',$('#email_schedule_check'));
 	otms.profilePage.commonbm = commonbm;
 
 	var clientbm = new otms.validator.BeanManager();

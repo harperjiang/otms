@@ -160,7 +160,7 @@ $(function() {
 
 	// Check storage for input parameter
 	var lessonId = otms.getPageParam('otms.lessonPage.id');
-	if (lessonId != undefined) {
+	if (!otms.isEmpty(lessonId)) {
 		mode_modify();
 		// Load data from server
 		var callback = function(success, data) {
@@ -179,11 +179,17 @@ $(function() {
 	} else {
 		// If tutor name is from other pages
 		var tutorName = otms.getPageParam('otms.lessonPage.tutorName');
-		if (tutorName != undefined) {
+		if (!otms.isEmpty(tutorName)) {
 			// Preset tutorName, not modifiable
 			$('#tutor_input').val(tutorName);
 			$('#tutor_input').attr('readonly', 'readonly');
 		}
+	}
+
+	var startTime = otms.getPageParam('otms.lessonPage.startTime');
+	if (!otms.isEmpty(startTime)) {
+		$('#timefrom_input').prop('validator').assign(parseInt(startTime));
+		$('#timeto_input').prop('validator').assign(parseInt(startTime) + 60);
 	}
 
 	switch (otms.auth.userType()) {
@@ -214,7 +220,9 @@ $(function() {
 				var bean = bm.getBean();
 				// Call Server
 				if (bean != null) {
-					bean.lessonId = lessonId;
+
+					bean.lessonId = otms.isEmpty(lessonId) ? 0 : lessonId;
+
 					$(this).attr('disabled', 'disabled');
 
 					switch (otms.auth.userType()) {
@@ -224,6 +232,7 @@ $(function() {
 						}), otms.ui.MessageBox.han(confirmCallback));
 						break;
 					default:
+						debugger;
 						LessonService.setupLesson(otms.auth.req({
 							"lesson" : bean
 						}), otms.ui.MessageBox.han(confirmCallback));

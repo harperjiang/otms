@@ -72,6 +72,8 @@
 
 		<create creator="spring" javascript="TutorService">
 			<param name="beanName" value="tutorService" />
+			<include method="getTimesheet" />
+			<include method="setupTimesheet" />
 			<include method="getPopularTutors" />
 		</create>
 
@@ -86,6 +88,11 @@
 			<include method="contactUs" />
 		</create>
 
+
+		<convert converter="bean" match="org.harper.otms.calendar.service.dto.TimeDto">
+			<param name="exclude" value="total" />
+		</convert>
+
 		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.common.dto.*" />
@@ -93,9 +100,11 @@
 		<convert converter="mydate" match="java.util.Date" />
 		<convert converter="file" match="java.awt.image.BufferedImage" />
 
+
 		<!-- this is a bad idea for live, but can be useful in testing -->
 		<convert converter="exception" match="java.lang.Exception" />
 		<convert converter="bean" match="java.lang.StackTraceElement" />
+
 
 	</allow>
 

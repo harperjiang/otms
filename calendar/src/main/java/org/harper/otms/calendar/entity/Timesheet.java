@@ -1,86 +1,53 @@
 package org.harper.otms.calendar.entity;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.ElementCollection;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
 
-@Embeddable
-public class Timesheet {
+import org.harper.otms.common.dao.Entity;
 
-	@Column(name="ts_mon")
-	private String mondayExpression;
+@javax.persistence.Entity
+@Table(name = "timesheet")
+public class Timesheet extends Entity {
 
-	@Column(name="ts_tue")
-	private String tuesdayExpression;
+	public static String DEFAULT = "";
 
-	@Column(name="ts_wed")
-	private String wednesdayExpression;
-
-	@Column(name="ts_thu")
-	private String thursdayExpression;
-
-	@Column(name="ts_fri")
-	private String fridayExpression;
-
-	@Column(name="ts_sat")
-	private String saturdayExpression;
-
-	@Column(name="ts_sun")
-	private String sundayExpression;
-
-	public String getMondayExpression() {
-		return mondayExpression;
+	static {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 48; j++) {
+				builder.append("0");
+			}
+		}
+		DEFAULT = builder.toString();
 	}
 
-	public void setMondayExpression(String mondayExpression) {
-		this.mondayExpression = mondayExpression;
+	@Column(name = "def_value")
+	private String defaultValue = DEFAULT;
+
+	@ElementCollection
+	@CollectionTable(name = "timesheet_item", joinColumns = @JoinColumn(name = "timesheet_id"))
+	@MapKeyColumn(name = "ref_date")
+	@Column(name = "value")
+	private Map<Date, String> values = new HashMap<Date, String>();
+
+	public String getDefaultValue() {
+		return defaultValue;
 	}
 
-	public String getTuesdayExpression() {
-		return tuesdayExpression;
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
-	public void setTuesdayExpression(String tuesdayExpression) {
-		this.tuesdayExpression = tuesdayExpression;
-	}
-
-	public String getWednesdayExpression() {
-		return wednesdayExpression;
-	}
-
-	public void setWednesdayExpression(String wednesdayExpression) {
-		this.wednesdayExpression = wednesdayExpression;
-	}
-
-	public String getThursdayExpression() {
-		return thursdayExpression;
-	}
-
-	public void setThursdayExpression(String thursdayExpression) {
-		this.thursdayExpression = thursdayExpression;
-	}
-
-	public String getFridayExpression() {
-		return fridayExpression;
-	}
-
-	public void setFridayExpression(String fridayExpression) {
-		this.fridayExpression = fridayExpression;
-	}
-
-	public String getSaturdayExpression() {
-		return saturdayExpression;
-	}
-
-	public void setSaturdayExpression(String saturdayExpression) {
-		this.saturdayExpression = saturdayExpression;
-	}
-
-	public String getSundayExpression() {
-		return sundayExpression;
-	}
-
-	public void setSundayExpression(String sundayExpression) {
-		this.sundayExpression = sundayExpression;
+	public Map<Date, String> getValues() {
+		return values;
 	}
 
 }

@@ -1,10 +1,35 @@
 otms.namespace('otms.ui.timesheet');
 
-otms.ui.timesheet.TimesheetModel = function() {
+otms.ui.timesheet.data2Str = function(data) {
+	var exp = "";
+	for (var i = 0; i < 7; i++) {
+		for (var j = 0; j < 48; j++) {
+			exp += data[i][j];
+		}
+	}
+	return exp;
+};
 
+otms.ui.timesheet.str2data = function(str) {
+	var data = [];
+	for (var i = 0; i < 7; i++) {
+		data[i] = [];
+		for (var j = 0; j < 48; j++) {
+			data[i][j] = parseInt(str.charAt(i * 48 + j));
+		}
+	}
+	return data;
+};
+
+otms.ui.timesheet.TimesheetModel = function() {
 	this.data = [];
+
 	for (var i = 0; i < 7; i++) {
 		this.data[i] = [];
+	}
+
+	this.subtitles = function() {
+		return undefined;
 	}
 
 	this.get = function(i, j) {
@@ -13,40 +38,106 @@ otms.ui.timesheet.TimesheetModel = function() {
 
 	this.set = function(i, j, value) {
 		this.data[i][j] = value;
-	};
 
-	this.setWithKey = function(key, value) {
-		var i = parseInt(key.substr(0, 1));
-		var j = parseInt(key.substr(2));
-		this.set(i, j, value);
-	};
-
-	// Convert data to string expressions
-	this.getData = function() {
-		var exps = [];
-		for (var i = 0; i < 7; i++) {
-			var exp = "";
-			for (var j = 0; j < 48; j++) {
-				exp += get(i, j);
-			}
-			exps[i] = exp;
-		}
-		return exps;
-	};
-
-	// Load data from string expressions
-	this.setData = function(exps) {
-		for (var i = 0; i < 7; i++) {
-			for (var j = 0; j < 48; j++) {
-				this.set(i, j, parseInt(exps[i].charAt(j)));
-			}
+		if (this.listener !== undefined) {
+			this.listener();
 		}
 	};
+
+	this.update = function(data) {
+		this.data = data;
+		if (this.view !== undefined)
+			this.view.refresh();
+	}
 };
 
-otms.ui.timesheet.Timesheet = function(container) {
+otms.ui.timesheet.TimesheetDateModel = function() {
+
+	this.data = {};
+
+	this.defaultData = undefined;
+
+	this.currentDate = otms.DateUtil.toSunday(new Date());
+
+	this.subtitles = function() {
+		var result = [];
+		for (var i = 0; i < 7; i++) {
+			result[i] = otms.DateUtil.formatdate(otms.DateUtil.offset(
+					this.currentDate, i));
+		}
+		return result;
+	};
+
+	this.currentData = function() {
+		if (otms.isEmpty(this.data[this.currentDate])) {
+			return this.defaultData;
+		} else {
+			return this.data[this.currentDate];
+		}
+	}
+
+	this.get = function(i, j) {
+		var curdata = this.currentData();
+		return curdata[i][j];
+	};
+
+	this.set = function(i, j, value) {
+		// Only update item in future time
+		var date = otms.DateUtil.form(
+				otms.DateUtil.offset(this.currentDate, i), j * 30);
+		if (date.getTime() < Date.now())
+			return;
+		if (!(this.currentDate in this.data)) {
+			this.data[this.currentDate] = otms.jsonClone(this.defaultData);
+		}
+		this.data[this.currentDate][i][j] = value;
+
+		if (this.listener !== undefined) {
+			this.listener();
+		}
+	};
+
+	this.update = function(data) {
+		this.data = data;
+		if (this.view !== undefined)
+			this.view.refresh();
+	}
+
+	this.updateDefault = function(data) {
+		this.defaultData = data;
+		if (this.view !== undefined)
+			this.view.refresh();
+	}
+
+	this.updateDate = function(date) {
+		this.currentDate = otms.DateUtil.toSunday(date);
+
+		if (this.view !== undefined)
+			this.view.refresh();
+	}
+
+	this.updateAll = function(data, dateData, date) {
+		if (data !== undefined)
+			this.defaultData = data;
+		if (dateData !== undefined)
+			this.data = dateData;
+		if (date !== undefined)
+			this.currentDate = date;
+		if (this.view !== undefined)
+			this.view.refresh();
+	}
+};
+
+otms.ui.timesheet.Timesheet = function(container, withdate) {
 	this.container = container;
-	this.model = new otms.ui.timesheet.TimesheetModel();
+	this.withDate = (withdate !== undefined && withdate);
+
+	if (this.withDate)
+		this.model = new otms.ui.timesheet.TimesheetDateModel();
+	else
+		this.model = new otms.ui.timesheet.TimesheetModel();
+
+	this.model.view = this;
 
 	this.timeFormat = function(input) {
 		var am = input < 12;
@@ -66,12 +157,26 @@ otms.ui.timesheet.Timesheet = function(container) {
 	}
 
 	this.update = function(item, value) {
-		this.renderer(item, value);
-		this.model.set(item.prop('timesheet_i'), item.prop('timesheet_j'),
-				value);
+		var i = item.prop('timesheet_i');
+		var j = item.prop('timesheet_j');
+		this.model.set(i, j, value);
+		this.renderer(item, this.model.get(i, j));
 	}
 
 	this.refresh = function() {
+		// Update subtitles
+		var subtitles = this.model.subtitles();
+		if (subtitles !== undefined) {
+			for (var i = 0; i < 7; i++) {
+				var id = '#' + this.container.attr('id')
+						+ '_timesheet_title_date_' + i;
+				var item = $(id);
+				item.empty();
+				item.append(subtitles[i]);
+			}
+		}
+
+		// Update Date Information
 		for (var i = 0; i < 7; i++) {
 			for (var j = 0; j < 48; j++) {
 				this.renderer(this.item(i, j), this.model.get(i, j));
@@ -88,7 +193,7 @@ otms.ui.timesheet.Timesheet = function(container) {
 	 */
 	this.itemClicked = function(item) {
 		if (!this._readonly) {
-			this.update(item, item.hasClass('timesheet-item-na'));
+			this.update(item, item.hasClass('timesheet-item-0') ? 1 : 0);
 		}
 	};
 
@@ -100,13 +205,30 @@ otms.ui.timesheet.Timesheet = function(container) {
 	 * Override this to customize the renderer
 	 */
 	this.renderer = function(item, value) {
-		item.removeClass('timesheet-item-a');
-		item.removeClass('timesheet-item-na');
-		if (value) {
-			item.addClass('timesheet-item-a');
-		} else {
-			item.addClass('timesheet-item-na');
+		item.removeClass('timesheet-item-0');
+		item.removeClass('timesheet-item-1');
+		item.removeClass('timesheet-item-2');
+		item.removeClass('timesheet-item-3');
+		item.removeClass('timesheet-item-old');
+		
+		// Determine date
+		var i = item.prop('timesheet_i');
+		var j = item.prop('timesheet_j');
+
+		var currentSunday = this.model.currentDate;
+		if (!otms.isEmpty(currentSunday)) {
+			var time = otms.DateUtil.form(otms.DateUtil
+					.offset(currentSunday, i), j * 30);
+			if (time.getTime() < Date.now()) {
+				item.addClass('timesheet-item-old');
+				return;
+			}
 		}
+
+		var idx = parseInt(value);
+		item.addClass('timesheet-item-' + idx);
+		item.prop('timesheet_value', idx);
+
 	};
 
 	// Initialize
@@ -144,12 +266,13 @@ otms.ui.timesheet.Timesheet = function(container) {
 			weeki.append(weekday[i]);
 			title.append(weeki);
 
-			var datei = $(document.createElement('div'));
-			datei.addClass('timesheet-title-date');
-			datei.attr('id', this.container.attr('id')
-					+ '_timesheet_title_date_' + i);
-			datei.append('01/21/2014');
-			// title.append(datei);
+			if (this.withDate) {
+				var datei = $(document.createElement('div'));
+				datei.addClass('timesheet-title-date');
+				datei.attr('id', this.container.attr('id')
+						+ '_timesheet_title_date_' + i);
+				title.append(datei);
+			}
 		}
 
 		var panel = $(document.createElement("div"));
@@ -189,7 +312,7 @@ otms.ui.timesheet.Timesheet = function(container) {
 						+ i + '_' + j);
 
 				var timeFormat = this.timeFormat(((j / 2) | 0));
-				item.addClass('timesheet-item-na');
+				item.addClass('timesheet-item-0');
 				item.attr('title', weekday[i] + ' ' + timeFormat.display
 						+ (j % 2 == 1 ? ':30' : ':00')
 						+ (timeFormat.am ? 'AM' : 'PM'));
@@ -210,13 +333,11 @@ otms.ui.timesheet.Timesheet = function(container) {
 					}
 
 				});
-
 				column.append(item);
 			}
 		}
 	};
 
 	this.initialize();
-	this.refresh();
 
 }

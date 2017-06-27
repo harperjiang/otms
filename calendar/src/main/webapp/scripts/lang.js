@@ -1,3 +1,14 @@
+otms.namespace('otms.lang');
+
+otms.lang.current = function(event) {
+	var lang = localStorage.getItem('otms.lang');
+
+	if (otms.isEmpty(lang)) {
+		lang = 'en_US';
+	}
+	return lang;
+};
+
 function requestWithLang(lang) {
 	// A flag for pages that cannot be executed twice
 	otms.headerPage.needReload = true;

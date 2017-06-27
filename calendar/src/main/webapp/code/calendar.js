@@ -42,25 +42,11 @@ $(function() {
 	};
 
 	calendar.onEventClick = function(obj, event) {
-		// Show a dialog
-		var dialog = new otms.ui.calendar.ChooseEventDialog($('#container'));
 		var event = obj.eventData;
 		if (event.type === 'lesson') {
-			dialog.onConfirm = function() {
-				var checked = dialog.panel.find(
-						'input[name="modify_type"]:checked').val();
-				if (checked == 'meeting') {
-					sessionStorage.setItem('otms.lessonPage.id', event.id);
-					window.location = 'lesson.html';
-				} else {
-					sessionStorage.setItem('otms.lessonItemPage.lessonId',
-							event.id);
-					sessionStorage.setItem('otms.lessonItemPage.lessonDate',
-							event.date.getTime());
-					window.location = 'lesson_item.html';
-				}
-			};
-			dialog.show();
+			var dialog = $('#open_lesson_dialog');
+			dialog.prop('event', event);
+			dialog.modal('show');
 		} else {
 			// Show lesson_item page
 			sessionStorage.setItem('otms.lessonItemPage.id', event.id);
@@ -87,4 +73,24 @@ $(function() {
 	};
 
 	calendar.model.setDate(new Date());
+
+	$('#create_lesson_dialog_confirm_btn').click(
+			function(e) {
+				var dialog = $('#open_lesson_dialog');
+				dialog.modal('hide');
+				var event = dialog.prop('event');
+				var checked = $('#open_lesson_dialog').find(
+						'input[name="openType"]:checked').val();
+				if (checked == 'lesson') {
+					sessionStorage.setItem('otms.lessonPage.id', event.id);
+					window.location = 'lesson.html';
+				} else {
+					sessionStorage.setItem('otms.lessonItemPage.lessonId',
+							event.id);
+					sessionStorage.setItem('otms.lessonItemPage.lessonDate',
+							event.date.getTime());
+					window.location = 'lesson_item.html';
+				}
+
+			});
 });

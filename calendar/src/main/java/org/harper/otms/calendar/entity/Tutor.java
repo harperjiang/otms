@@ -3,8 +3,8 @@ package org.harper.otms.calendar.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -42,7 +42,8 @@ public class Tutor extends Entity {
 	@Column(name = "info_edu")
 	private String eduInfo;
 
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "timesheet_id")
 	private Timesheet timesheet = new Timesheet();
 
 	@Transient

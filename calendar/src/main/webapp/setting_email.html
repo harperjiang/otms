@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${webpage_title}</title>
+<!--#include virtual="head.html" -->
+<script>
+	
+</script>
+</head>
+<body>
+	<!--#include virtual="menu.html" -->
+	<div class="page-menu">
+		<div id="errmsg_panel"></div>
+		<div class="page-content">
+
+			<div class="page-block">
+				<div class="page-title">${title}</div>
+
+				<div class="form-group row">
+					<label for="email_input" class="sr-only col-form-label text-left">Email:</label>
+					<div class="col-sm-12 input-group" title="${email_notification}">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						</span>
+						<input class="form-control" id="email_input"
+							placeholder="${email_notification}" type='text' />
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

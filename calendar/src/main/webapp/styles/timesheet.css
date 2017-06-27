@@ -94,12 +94,51 @@
 	height: 22px;
 }
 
-.timesheet-item-na {
+.timesheet-item-0 {
 	background-color: #dededc;
 }
 
-.timesheet-item-a {
+.timesheet-item-old {
+	background-color: #cececc;
+}
+
+.timesheet-item-1 {
 	background-color: #54b4f5;
+}
+
+.timesheet-item-1:hover {
+	z-index: 5;
+	position: relative;
+	top: -1px;
+	left: -1px;
+	box-shadow: 2px 2px 8px #000;
+	border-radius: 3px;
+}
+
+.timesheet-item-2 {
+	background-color: #cc0000;
+}
+
+.timesheet-item-2:hover {
+	z-index: 5;
+	position: relative;
+	top: -1px;
+	left: -1px;
+	box-shadow: 2px 2px 8px #000;
+	border-radius: 3px;
+}
+
+.timesheet-item-3 {
+	background-color: #c17d11;
+}
+
+.timesheet-item-3:hover {
+	z-index: 5;
+	position: relative;
+	top: -1px;
+	left: -1px;
+	box-shadow: 2px 2px 8px #000;
+	border-radius: 3px;
 }
 
 .timesheet-frame {

@@ -18,6 +18,9 @@
 	<table-generator name="lessonitemseq" table="seq_num"
 		pk-column-name="name" pk-column-value="lesson_item" value-column-name="value"
 		allocation-size="25" />
+	<table-generator name="timesheetseq" table="seq_num"
+		pk-column-name="name" pk-column-value="timesheet" value-column-name="value"
+		allocation-size="25" />
 
 
 	<entity class="org.harper.otms.auth.entity.User">
@@ -40,6 +43,14 @@
 		<attributes>
 			<id name="id">
 				<column name="id" />
+			</id>
+		</attributes>
+	</entity>
+	<entity class="org.harper.otms.calendar.entity.Timesheet">
+		<attributes>
+			<id name="id">
+				<column name="id" />
+				<generated-value strategy="TABLE" generator="timesheetseq" />
 			</id>
 		</attributes>
 	</entity>

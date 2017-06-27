@@ -2,15 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${webpage-title}</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
 <script type="text/javascript" src="code/lesson_item.js"></script>
-<script>
-	$(onload);
-</script>
+
 </head>
 <body>
 		<!--#include virtual="menu.html" -->
@@ -18,7 +16,7 @@
 		<div id="errmsg_panel"></div>
 		<div class="page-content">
 			<div id="modify_panel">
-				<div id="title_panel" class='page-title'>${update_lesson}</div>
+				<div id="title_panel" class='page-title'>${title}</div>
 				<div class="page-block">
 					<div class="page-block-title">${lesson_info}</div>
 					<!-- div class="page-row">

@@ -2,12 +2,21 @@ package org.harper.otms.calendar.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
+import org.harper.otms.auth.dao.UserDao;
+import org.harper.otms.auth.entity.User;
+import org.harper.otms.auth.service.ErrorCode;
+import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.dao.TutorDao;
+import org.harper.otms.calendar.entity.Lesson;
 import org.harper.otms.calendar.entity.Timesheet;
 import org.harper.otms.calendar.entity.Tutor;
 import org.harper.otms.calendar.service.TutorService;
+import org.harper.otms.calendar.service.dto.EventDto;
 import org.harper.otms.calendar.service.dto.FindTutorDto;
 import org.harper.otms.calendar.service.dto.FindTutorResponseDto;
 import org.harper.otms.calendar.service.dto.GetPopularTutorDto;
@@ -16,76 +25,97 @@ import org.harper.otms.calendar.service.dto.GetTimesheetDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetResponseDto;
+import org.harper.otms.calendar.service.dto.TimesheetDto;
 import org.harper.otms.calendar.service.dto.TutorBriefDto;
+import org.harper.otms.calendar.service.util.DateUtil;
+import org.harper.otms.common.service.DataException;
 
 public class DefaultTutorService implements TutorService {
 
+	protected static final char TS_LESSON_MARK = '2';
+
 	@Override
 	public GetTimesheetResponseDto getTimesheet(GetTimesheetDto request) {
-
+		User viewer = getUserDao().findById(request.getCurrentUser());
 		Tutor tutor = getTutorDao().findById(request.getTutorId());
+
 		Timesheet timesheet = tutor.getTimesheet();
+		if (timesheet == null) {
+			timesheet = new Timesheet();
+		}
+
+		final Timesheet tsref = timesheet;
+
+		// Load lesson range
+		if (request.getWeekStart() != null) {
+			TimeZone utc = TimeZone.getTimeZone("UTC");
+			Date fromDate = DateUtil.convert(request.getWeekStart(), viewer.getTimezone(), utc);
+			Date toDate = DateUtil.offset(fromDate, 7);
+
+			// The events in the indicated week
+			List<Lesson> lessons = getLessonDao().findWithin(tutor.getUser(), fromDate, toDate, Lesson.Status.VALID);
+			lessons.stream().flatMap((Lesson lesson) -> EventDto.fromLesson(lesson, fromDate, toDate).stream())
+					.sorted((EventDto a, EventDto b) -> {
+						Date aDate = DateUtil.form(a.getDate(), a.getFromTime());
+						Date bDate = DateUtil.form(b.getDate(), b.getFromTime());
+						return aDate.compareTo(bDate);
+					}).forEach((EventDto e) -> {
+						// Mark the event on timesheet
+						Date baseDate = DateUtil.toSunday(DateUtil.truncate(e.getDate()));
+						int i = DateUtil.offset(e.getDate(), baseDate);
+						int j0 = (int) Math.floor(e.getFromTime() / 30);
+						int j1 = (int) Math.ceil(e.getToTime() / 30);
+						if (!tsref.getValues().containsKey(baseDate)) {
+							tsref.getValues().put(baseDate, tsref.getDefaultValue());
+						}
+						StringBuilder valueb = new StringBuilder();
+						valueb.append(tsref.getValues().get(baseDate));
+
+						for (int j = j0; j <= j1; j++) {
+							valueb.setCharAt(i * 48 + j, TS_LESSON_MARK);
+						}
+						tsref.getValues().put(baseDate, valueb.toString());
+					});
+		}
 
 		GetTimesheetResponseDto result = new GetTimesheetResponseDto();
+		TimesheetDto tsDto = new TimesheetDto();
+		tsDto.from(timesheet, viewer);
 
-		String[] exps = new String[7];
-		exps[0] = timesheet.getSundayExpression();
-		exps[1] = timesheet.getMondayExpression();
-		exps[2] = timesheet.getTuesdayExpression();
-		exps[3] = timesheet.getWednesdayExpression();
-		exps[4] = timesheet.getThursdayExpression();
-		exps[5] = timesheet.getFridayExpression();
-		exps[6] = timesheet.getSaturdayExpression();
-
-		result.setExpressions(exps);
-
-		result.setHolidays(new Date[tutor.getHolidays().size()]);
-		tutor.getHolidays().toArray(result.getHolidays());
+		result.setTimesheet(tsDto);
 		return result;
 	}
-
+	
 	@Override
 	public SetupTimesheetResponseDto setupTimesheet(SetupTimesheetDto request) {
 
-		Tutor tutor = getTutorDao().findById(request.getTutorId());
+		Tutor tutor = getTutorDao().findById(request.getCurrentUser());
+		if (tutor == null)
+			throw new DataException(ErrorCode.SYSTEM_DATA_NOT_FOUND);
+
 		Timesheet timesheet = tutor.getTimesheet();
-
-		String[] exps = request.getExpressions();
-		if (exps != null) {
-			timesheet.setSundayExpression(exps[0]);
-			timesheet.setMondayExpression(exps[1]);
-			timesheet.setTuesdayExpression(exps[2]);
-			timesheet.setWednesdayExpression(exps[3]);
-			timesheet.setThursdayExpression(exps[4]);
-			timesheet.setFridayExpression(exps[5]);
-			timesheet.setSaturdayExpression(exps[6]);
+		if (null == timesheet) {
+			timesheet = new Timesheet();
+			tutor.setTimesheet(timesheet);
 		}
-		if (request.getHolidays() != null) {
-			List<Date> holidays = new ArrayList<Date>();
-			for (Date holiday : request.getHolidays()) {
-				holidays.add(holiday);
-			}
-			tutor.setHolidays(holidays);
-		}
+		request.getTimesheet().to(timesheet, tutor.getUser());
 
-		SetupTimesheetResponseDto result = new SetupTimesheetResponseDto();
-		return result;
+		return new SetupTimesheetResponseDto();
 	}
 
 	@Override
-	public GetPopularTutorResponseDto getPopularTutors(
-			GetPopularTutorDto request) {
+	public GetPopularTutorResponseDto getPopularTutors(GetPopularTutorDto request) {
 		GetPopularTutorResponseDto response = new GetPopularTutorResponseDto();
 
 		List<Tutor> populars = getTutorDao().findPopular();
 		List<TutorBriefDto> tbs = new ArrayList<TutorBriefDto>();
-		for(Tutor t:populars) {
+		for (Tutor t : populars) {
 			TutorBriefDto tbd = new TutorBriefDto();
 			tbd.from(t);
 			tbs.add(tbd);
 		}
 		response.setTutors(tbs);
-		
+
 		return response;
 	}
 
@@ -98,12 +128,32 @@ public class DefaultTutorService implements TutorService {
 
 	private TutorDao tutorDao;
 
+	private UserDao userDao;
+
+	private LessonDao lessonDao;
+
 	public TutorDao getTutorDao() {
 		return tutorDao;
 	}
 
 	public void setTutorDao(TutorDao tutorDao) {
 		this.tutorDao = tutorDao;
+	}
+
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+
+	public LessonDao getLessonDao() {
+		return lessonDao;
+	}
+
+	public void setLessonDao(LessonDao lessonDao) {
+		this.lessonDao = lessonDao;
 	}
 
 }

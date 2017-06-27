@@ -8,20 +8,20 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.directwebremoting.convert.BaseV20Converter;
-import org.directwebremoting.dwrp.ProtocolConstants;
+import org.directwebremoting.ConversionException;
 import org.directwebremoting.extend.Converter;
-import org.directwebremoting.extend.InboundContext;
+import org.directwebremoting.extend.ConverterManager;
 import org.directwebremoting.extend.InboundVariable;
-import org.directwebremoting.extend.MarshallException;
 import org.directwebremoting.extend.NonNestedOutboundVariable;
 import org.directwebremoting.extend.OutboundContext;
 import org.directwebremoting.extend.OutboundVariable;
+import org.directwebremoting.extend.ProtocolConstants;
 
-public class DateConverter extends BaseV20Converter implements Converter {
+public class DateConverter implements Converter {
 
-	public Object convertInbound(Class<?> paramType, InboundVariable data,
-			InboundContext inctx) throws MarshallException {
+	@Override
+	public Object convertInbound(Class<?> paramType, InboundVariable data) throws ConversionException {
+
 		String value = data.getValue();
 
 		// If the text is null then the whole bean is null
@@ -45,17 +45,16 @@ public class DateConverter extends BaseV20Converter implements Converter {
 				cal.setTime(date);
 				return cal;
 			} else {
-				throw new MarshallException(paramType);
+				throw new ConversionException(paramType);
 			}
-		} catch (MarshallException ex) {
+		} catch (ConversionException ex) {
 			throw ex;
 		} catch (Exception ex) {
-			throw new MarshallException(paramType, ex);
+			throw new ConversionException(paramType, ex);
 		}
 	}
 
-	public OutboundVariable convertOutbound(Object data, OutboundContext outctx)
-			throws MarshallException {
+	public OutboundVariable convertOutbound(Object data, OutboundContext outctx) throws ConversionException {
 
 		Calendar cal = null;
 		if (data instanceof Calendar) {
@@ -64,14 +63,17 @@ public class DateConverter extends BaseV20Converter implements Converter {
 			cal = Calendar.getInstance();
 			cal.setTime((Date) data);
 		} else {
-			throw new MarshallException(data.getClass());
+			throw new ConversionException(data.getClass());
 		}
-		String constructor = MessageFormat.format(
-				"new Date({0},{1},{2},{3},{4},{5})",
-				Integer.toString(cal.get(Calendar.YEAR)),
-				cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
-				cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),
-				cal.get(Calendar.SECOND));
+		String constructor = MessageFormat.format("new Date({0},{1},{2},{3},{4},{5})",
+				Integer.toString(cal.get(Calendar.YEAR)), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
+				cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 		return new NonNestedOutboundVariable(constructor);
 	}
+
+	@Override
+	public void setConverterManager(ConverterManager converterManager) {
+		
+	}
+
 }

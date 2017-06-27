@@ -3,11 +3,6 @@
  */
 otms.namespace('otms.ui.calendar');
 
-otms.ui.calendar.monthName = [ 'January', 'February', 'March', 'April', 'May',
-		'June', 'July', 'August', 'Sepetember', 'October', 'November',
-		'December' ];
-otms.ui.calendar.weekName = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ];
-
 otms.ui.calendar.CalendarModel = function(calendar) {
 	this.calendar = calendar;
 };
@@ -81,7 +76,8 @@ otms.ui.calendar.CalendarModel.prototype.addDate = function(type, offset,
 };
 
 otms.ui.calendar.CalendarModel.prototype.getMonthName = function() {
-	var month = otms.ui.calendar.monthName[this.date.getMonth()];
+	var month = otms.i18n.get('monthName', otms.lang.current())[this.date
+			.getMonth()];
 	var year = this.date.getFullYear();
 	return month + ' ' + year;
 };
@@ -153,10 +149,12 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	buttonBar.addClass('mr-auto');
 	titleDiv.append(buttonBar);
 
+	var btnNames = otms.i18n.get('calendarBtn', otms.lang.current());
+
 	var prevButton = $(document.createElement('button'));
 	prevButton.append('<i class="fa fa-chevron-left" aria-hidden="true"></i>');
 	prevButton.append('&nbsp;')
-	prevButton.append('Last Month');
+	prevButton.append(btnNames[0]);
 	prevButton.addClass('calendar-btn');
 	prevButton.addClass('btn');
 	prevButton.addClass('btn-link');
@@ -167,7 +165,7 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	buttonBar.append(prevButton);
 
 	var todayButton = $(document.createElement('button'));
-	todayButton.append('Today');
+	todayButton.append(btnNames[1]);
 	todayButton.addClass('calendar-btn');
 	todayButton.addClass('btn');
 	todayButton.addClass('btn-link');
@@ -178,7 +176,7 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	buttonBar.append(todayButton);
 
 	var nextButton = $(document.createElement('button'));
-	nextButton.append("Next Month");
+	nextButton.append(btnNames[2]);
 	nextButton.append('&nbsp;')
 	nextButton.append('<i class="fa fa-chevron-right" aria-hidden="true"></i>');
 	nextButton.addClass('calendar-btn');
@@ -202,7 +200,7 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 	addButton.addClass('btn-sm');
 	addButton.addClass('btn-link');
 	addButton.css('float', 'right');
-	addButton.attr('title', 'Create New Event');
+	addButton.attr('title', btnNames[3]);
 	addButton.click(function(event) {
 		calendar.onAddButton();
 	});
@@ -219,7 +217,7 @@ otms.ui.calendar.Calendar.prototype.initialize = function() {
 
 		var columnTitleDiv = $(document.createElement('div'));
 		columnTitleDiv.addClass('calendar-column_header');
-		columnTitleDiv.append(otms.ui.calendar.weekName[i]);
+		columnTitleDiv.append(otms.i18n.get('weekday', otms.lang.current())[i]);
 		columnDiv.append(columnTitleDiv);
 
 		if (i == 6) {
