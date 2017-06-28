@@ -1,8 +1,7 @@
 .starrate_panel {
 	display: inline-block;
 	vertical-align: middle;
-	width: 110px;
-	height: 25px;
+	font-size: 18px;
 	color: #54bcf5;
 }
 

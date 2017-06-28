@@ -5,15 +5,25 @@ otms.ui.StarRate = function(container) {
 
 	this.fixed = false;
 	this.rdonly = false;
-	// this.container.append("&nbsp;");
 	this.container.addClass('starrate_panel');
-	// this.container.addClass('starrate_0');
 	this.container.prop('starRateObj', this);
+
+	this.items = [];
+	for (var i = 0; i < 5; i++) {
+		var item = $(document.createElement('i'));
+		item.addClass('fa');
+		item.addClass('fa-star-o');
+		item.attr('aria-hidden', "true");
+		item.prop('starIndex', i + 1);
+		this.container.append(item);
+		this.items.push(item);
+	}
 
 	this.container.mousemove(this.refresh);
 	this.container.mouseleave(this.clear);
 	this.container.click(this.chooseRate);
 
+	this.setRate(0);
 };
 
 otms.ui.StarRate.prototype.readonly = function() {
@@ -23,52 +33,53 @@ otms.ui.StarRate.prototype.readonly = function() {
 
 otms.ui.StarRate.prototype.setRate = function(rate) {
 	this.rate = rate;
-	// var clazz = otms.FormatUtil.format('starrate_{0}', rate);
-	// this.container.removeClass();
-	// this.container.addClass('starrate_panel');
-	// this.container.addClass(clazz);
-	this.container.empty();
+
+	for (var i = 0; i < 5; i++) {
+		this.items[i].removeClass();
+		this.items[i].addClass('fa');
+	}
+
 	var full = Math.floor(rate);
 	var half = (rate - full) >= 0.5 ? 1 : 0;
 	var empty = 5 - full - half;
 
 	for (var i = 0; i < full; i++) {
-		this.container.append('<i class="fa fa-star" aria-hidden="true"></i>');
+		this.items[i].addClass('fa-star');
 	}
-	for (var i = 0; i < half; i++) {
-		this.container
-				.append('<i class="fa fa-star-half-o" aria-hidden="true"></i>');
+	for (var i = full; i < full + half; i++) {
+		this.items[i].addClass('fa-star-half-o');
 	}
-	for (var i = 0; i < empty; i++) {
-		this.container
-				.append('<i class="fa fa-star-o" aria-hidden="true"></i>');
+	for (var i = full + half; i < full + half + empty; i++) {
+		this.items[i].addClass('fa-star-o');
 	}
 	this.container.attr('title', otms.FormatUtil.format('{0}/5', rate));
 };
 
 otms.ui.StarRate.prototype.reset = function() {
-	if (this.readonly)
+	if (this.rdonly)
 		return;
 	this.fixed = false;
-	//	
 	this.setRate(0);
-	// this.container.removeClass();
-	// this.container.addClass('starrate_panel');
-	// this.container.addClass('starrate_0');
 };
 
-otms.ui.StarRate.index = function(offsetX) {
-	var offset = Math.ceil(offsetX / 20);
-	if (offset > 5)
-		offset = 5;
-	return offset;
-};
+otms.ui.StarRate.index = function(event) {
+	var target = $(event.target);
+	var tagname = target.prop('tagName');
+	if (target.prop('tagName') == 'I')
+		return target.prop('starIndex');
+	else {
+		var step = Math.floor(target.width() / 5);
+		return Math.min(Math.ceil(event.offsetX / step), 5);
+	}
+
+}
 
 otms.ui.StarRate.prototype.refresh = function(event) {
 	var rateobj = this.starRateObj;
 	if (rateobj.fixed == true)
 		return;
-	rateobj.setRate(otms.ui.StarRate.index(event.offsetX));
+
+	rateobj.setRate(otms.ui.StarRate.index(event));
 };
 
 otms.ui.StarRate.prototype.clear = function(event) {
@@ -82,7 +93,7 @@ otms.ui.StarRate.prototype.chooseRate = function(event) {
 	var rateobj = this.starRateObj;
 	if (rateobj.rdonly)
 		return;
-	rateobj.setRate(otms.ui.StarRate.index(event.offsetX));
+	rateobj.setRate(otms.ui.StarRate.index(event));
 	rateobj.fixed = true;
 };
 
