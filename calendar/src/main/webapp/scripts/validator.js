@@ -74,7 +74,9 @@ otms.validator.ValidatorBase.prototype.extract = function() {
 		}
 	} else if ($.inArray(tagName, [ 'SPAN', 'DIV' ]) != -1) {
 		return this.control.text();
-	} else {
+	} else if($.inArray(tagName,['IMG','IFRAME'])!=-1){
+		return this.control.attr('src');
+	}else {
 		return this.control.val();
 	}
 }
@@ -92,7 +94,9 @@ otms.validator.ValidatorBase.prototype.assign = function(newval) {
 	} else if ($.inArray(tagName, [ 'SPAN', 'DIV' ]) != -1) {
 		this.control.empty();
 		this.control.append(newval);
-	} else {
+	} else if($.inArray(tagName,['IMG', 'IFRAME']) !=-1) {
+		this.control.attr('src',newval);
+	}else {
 		this.control.val(newval);
 	}
 };

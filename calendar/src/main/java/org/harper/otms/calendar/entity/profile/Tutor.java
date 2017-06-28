@@ -26,7 +26,7 @@ public class Tutor extends Entity {
 	private String pictureUrl;
 
 	@Column(name = "rating")
-	private int rating;
+	private double rating;
 
 	@Column(name = "statement")
 	private String statement;
@@ -96,11 +96,11 @@ public class Tutor extends Entity {
 		this.pictureUrl = pictureUrl;
 	}
 
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 

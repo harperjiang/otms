@@ -28,7 +28,7 @@ public class TutorInfoDto {
 
 	private String videoIntroUrl;
 
-	private int rating;
+	private double rating;
 
 	private String imType;
 
@@ -183,11 +183,11 @@ public class TutorInfoDto {
 		this.phone = phone;
 	}
 
-	public int getRating() {
+	public double getRating() {
 		return rating;
 	}
 
-	public void setRating(int rating) {
+	public void setRating(double rating) {
 		this.rating = rating;
 	}
 

@@ -109,20 +109,29 @@ function setupRatingList() {
 	var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId", false);
 	var list = new otms.ui.list.List($('#rating_list_container'));
 	list.setRenderer(function(container, item) {
-		container.append(item.clientName);
-		container.append(otms.DateUtil.formatdate(item.createTime));
-		
-		var lessonRateSpan = $(document.createElement('span'));
-		var lessonRateCtrl = new otms.ui.StarRate(lessonRateSpan);
-		lessonRateCtrl.setRate(item.lessonRate);
-		container.append(lessonRateSpan);
+
+//		var lessonRateSpan = $(document.createElement('span'));
+//		var lessonRateCtrl = new otms.ui.StarRate(lessonRateSpan);
+//		lessonRateCtrl.setRate(item.lessonRate);
+//		lessonRateCtrl.readonly();
+//		container.append(lessonRateSpan);
+
+//		var tutorRateLabel = $(document.createElement('label'));
+//		tutorRateLabel.append('')
 		
 		var tutorRateSpan = $(document.createElement('span'));
 		var tutorRateCtrl = new otms.ui.StarRate(tutorRateSpan);
 		tutorRateCtrl.setRate(item.tutorRate);
+		tutorRateCtrl.readonly();
 		container.append(tutorRateSpan);
-		
-		container.append(item.comment);
+
+		container.append(otms.FormatUtil.format('By {0} at {1}',
+				item.clientName, otms.DateUtil.formatdate(item.createTime)));
+
+		var commentDiv = $(document.createElement('div'));
+		commentDiv.append(item.comment);
+		container.append(commentDiv);
+
 	});
 	list.rowClicked = function(event, item) {
 

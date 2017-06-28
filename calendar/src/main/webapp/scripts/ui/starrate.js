@@ -28,16 +28,22 @@ otms.ui.StarRate.prototype.setRate = function(rate) {
 	// this.container.addClass('starrate_panel');
 	// this.container.addClass(clazz);
 	this.container.empty();
-	for (var i = 0; i < 5; i++) {
-		if (i < rate) {
-			this.container
-					.append('<i class="fa fa-star" aria-hidden="true"></i>');
-		} else {
-			this.container
-					.append('<i class="fa fa-star-o" aria-hidden="true"></i>');
-		}
-	}
+	var full = Math.floor(rate);
+	var half = (rate - full) >= 0.5 ? 1 : 0;
+	var empty = 5 - full - half;
 
+	for (var i = 0; i < full; i++) {
+		this.container.append('<i class="fa fa-star" aria-hidden="true"></i>');
+	}
+	for (var i = 0; i < half; i++) {
+		this.container
+				.append('<i class="fa fa-star-half-o" aria-hidden="true"></i>');
+	}
+	for (var i = 0; i < empty; i++) {
+		this.container
+				.append('<i class="fa fa-star-o" aria-hidden="true"></i>');
+	}
+	this.container.attr('title', otms.FormatUtil.format('{0}/5', rate));
 };
 
 otms.ui.StarRate.prototype.reset = function() {
