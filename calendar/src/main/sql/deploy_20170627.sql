@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.17, for osx10.6 (i386)
 --
 -- Host: localhost    Database: otms
 -- ------------------------------------------------------
--- Server version	5.7.18-0ubuntu0.16.04.1
+-- Server version	5.7.18
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -155,7 +155,7 @@ CREATE TABLE `QRTZ_JOB_DETAILS` (
 
 LOCK TABLES `QRTZ_JOB_DETAILS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` DISABLE KEYS */;
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.calendar.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','�\�\0sr\0org.quartz.JobDataMap���迩�\�\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap�\�\��\�](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\�.�(v\n\�\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\��\�`\�\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
+INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.calendar.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','��\0sr\0org.quartz.JobDataMap���迩��\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap�����](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap�.�(v\n�\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap���`�\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +330,7 @@ CREATE TABLE `QRTZ_TRIGGERS` (
 
 LOCK TABLES `QRTZ_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498654800000,1498568400000,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'�\�\0sr\0org.quartz.JobDataMap���迩�\�\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap�\�\��\�](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\�.�(v\n\�\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMap\��\�`\�\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
+INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498654800000,1498568400000,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'��\0sr\0org.quartz.JobDataMap���迩��\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap�����](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap�.�(v\n�\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMap���`�\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -423,7 +423,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` VALUES (677,677,NULL,NULL,NULL),(727,727,NULL,NULL,NULL),(827,827,'http://qzapp.qlogo.cn/qzapp/101249406/B91C42FB989987093A0D5D53E56DD40D/100',NULL,NULL),(828,828,'https://lh5.googleusercontent.com/-hS6-rqQJ9KY/AAAAAAAAAAI/AAAAAAAAHnc/S1BxpeKhy0A/s96-c/photo.jpg',NULL,NULL);
+INSERT INTO `client` VALUES (677,677,'','',NULL),(727,727,NULL,NULL,NULL),(827,827,'http://qzapp.qlogo.cn/qzapp/101249406/B91C42FB989987093A0D5D53E56DD40D/100',NULL,NULL),(828,828,'https://lh5.googleusercontent.com/-hS6-rqQJ9KY/AAAAAAAAAAI/AAAAAAAAHnc/S1BxpeKhy0A/s96-c/photo.jpg',NULL,NULL);
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -680,15 +680,14 @@ CREATE TABLE `tutor` (
   `timesheet_id` int(11) DEFAULT NULL,
   `description` text,
   `picture_url` varchar(255) DEFAULT NULL,
-  `popular_level` int(10) NOT NULL DEFAULT '0',
+  `rating` int(10) NOT NULL DEFAULT '0',
   `statement` varchar(255) DEFAULT NULL,
-  `info_aboutme` text,
   `info_working` text,
   `info_edu` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id_UNIQUE` (`user_id`),
   KEY `FK_tutor_user_id_idx` (`user_id`),
-  KEY `INDX_popular_level` (`popular_level`),
+  KEY `INDX_popular_level` (`rating`),
   KEY `fk_tutor_timesheet_id_idx` (`timesheet_id`),
   CONSTRAINT `FK_tutor_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tutor_timesheet_id` FOREIGN KEY (`timesheet_id`) REFERENCES `timesheet` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -701,7 +700,7 @@ CREATE TABLE `tutor` (
 
 LOCK TABLES `tutor` WRITE;
 /*!40000 ALTER TABLE `tutor` DISABLE KEYS */;
-INSERT INTO `tutor` VALUES (27,27,2,'Thousands of people paraded shirt-free around the world Sunday to push for laws that would allow women to go topless in public. \"It\'s absurd that someone has judged topless women as obscene, and yet topless men is considered normal in our culture,\" said Carolyn Estes, a participant in Sunday\'s parade in Austin, Texas.','',0,'I am a native English speaker if you believe it','《相聲說垮鬼子們》	1997年05月於台北新舞臺首演\n演員：馮翊綱、宋少卿\n段目：上半場〈吐痰論〉〈如果我是委員長〉〈煎餅果子〉〈押寶〉；下半場〈演講比賽〉〈小放牛〉\n本劇是根據梁實秋先生所寫的《相聲記》做創意發想[4]，塑造出「梁小秋」與「蘇大春」兩個角色，道出時下人民的毛病與深刻命題。曾經發行過錄音卡帶，已絕版，2003年由迪卡唱片公司重新發行為4片裝CD。','','');
+INSERT INTO `tutor` VALUES (27,27,2,'Thousands of people paraded shirt-free around the world Sunday to push for laws that would allow women to go topless in public. \"It\'s absurd that someone has judged topless women as obscene, and yet topless men is considered normal in our culture,\" said Carolyn Estes, a participant in Sunday\'s parade in Austin, Texas.','',0,'I am a native English speaker if you believe it','','');
 /*!40000 ALTER TABLE `tutor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -724,6 +723,9 @@ CREATE TABLE `user` (
   `activate_code` varchar(128) DEFAULT NULL,
   `source_system` varchar(45) DEFAULT NULL,
   `source_id` varchar(100) DEFAULT NULL,
+  `im_type` varchar(45) DEFAULT NULL,
+  `im` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `name_UNIQUE` (`name`),
@@ -738,7 +740,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (20,'Admin','admin@tutorcan.com','admin','8e6be44b27123b18bc82832034dbee87','US/Central','admin',1,NULL,NULL,NULL),(27,'Cathy Yang','moodever@gmail.com','cathy','8e6be44b27123b18bc82832034dbee87','Asia/Shanghai','tutor',1,NULL,NULL,NULL),(677,'Harper Jiang','harperjiang@msn.com','harper','8e6be44b27123b18bc82832034dbee87','US/Central','client',1,NULL,NULL,NULL),(727,'Claire Ling Jiang','claire.ling.jiang@gmail.com','clairejiang','6a6ec27ab644fe6a76ea08d789f9b34','US/Mountain','client',0,'145c97a3-62a1-4027-ba6e-e6ea23edaded',NULL,NULL),(827,'Harper','1750082295@qq.com','harperqq',NULL,'US/Pacific','client',0,'b1475cf2-a756-415c-8d2b-e0f01fd706fb','QQ','B91C42FB989987093A0D5D53E56DD40D'),(828,'Hao Jiang','harperjiang@gmail.com','harpergoogle',NULL,'US/Central','client',1,NULL,'Google','111441969202729426236');
+INSERT INTO `user` VALUES (20,'Admin','admin@tutorcan.com','admin','8e6be44b27123b18bc82832034dbee87','US/Central','admin',1,NULL,NULL,NULL,NULL,NULL,NULL),(27,'Cathy Yang','moodever@gmail.com','cathy','8e6be44b27123b18bc82832034dbee87','Asia/Shanghai','tutor',1,NULL,NULL,NULL,NULL,NULL,NULL),(677,'Harper Jiang','harperjiang@msn.com','harper','8e6be44b27123b18bc82832034dbee87','US/Central','client',1,NULL,NULL,NULL,'wechat','harper','+13152676271'),(727,'Claire Ling Jiang','claire.ling.jiang@gmail.com','clairejiang','6a6ec27ab644fe6a76ea08d789f9b34','US/Mountain','client',0,'145c97a3-62a1-4027-ba6e-e6ea23edaded',NULL,NULL,NULL,NULL,NULL),(827,'Harper','1750082295@qq.com','harperqq',NULL,'US/Pacific','client',0,'b1475cf2-a756-415c-8d2b-e0f01fd706fb','QQ','B91C42FB989987093A0D5D53E56DD40D',NULL,NULL,NULL),(828,'Hao Jiang','harperjiang@gmail.com','harpergoogle',NULL,'US/Central','client',1,NULL,'Google','111441969202729426236',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -751,4 +753,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 12:40:46
+-- Dump completed on 2017-06-27 21:29:44

@@ -163,8 +163,10 @@ otms.DateUtil.time = function(hour, min, am) {
 	}
 	return {
 		'hour' : hour,
-		'minute' : min/*,
-		'total' : hour * 60 + min*/
+		'minute' : min
+	/*
+	 * , 'total' : hour * 60 + min
+	 */
 	};
 };
 
@@ -331,8 +333,15 @@ otms.getPageParam = function(key, remove) {
 	return value;
 };
 
+// Remove all keys starting with key
 otms.clearPageParam = function(key) {
-	sessionStorage.removeItem(key);
+	// sessionStorage.removeItem(key);
+	var allkeys = Object.keys(sessionStorage);
+	for ( var k in allkeys) {
+		if (allkeys[k].startsWith(key)) {
+			sessionStorage.removeItem(allkeys[k]);
+		}
+	}
 };
 
 otms.getUrlParam = function(sParam) {

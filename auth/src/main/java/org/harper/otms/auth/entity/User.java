@@ -27,6 +27,15 @@ public class User extends Entity {
 	@Column(name = "email")
 	private String email;
 
+	@Column(name = "im_type")
+	private String imType;
+
+	@Column(name = "im")
+	private String im;
+
+	@Column(name = "phone")
+	private String phone;
+
 	@Column(name = "type")
 	private String type;
 
@@ -128,6 +137,30 @@ public class User extends Entity {
 
 	public void setSourceId(String sourceId) {
 		this.sourceId = sourceId;
+	}
+
+	public String getImType() {
+		return imType;
+	}
+
+	public void setImType(String imType) {
+		this.imType = imType;
+	}
+
+	public String getIm() {
+		return im;
+	}
+
+	public void setIm(String im) {
+		this.im = im;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public static final String TYPE_ADMIN = "admin";

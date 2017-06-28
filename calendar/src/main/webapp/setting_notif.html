@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${webpage_title}</title>
+<!--#include virtual="head.html" -->
+<script>
+	
+</script>
+</head>
+<body>
+	<!--#include virtual="menu.html" -->
+	<div class="page-menu">
+		<div id="errmsg_panel"></div>
+		<div class="page-content">
+			<div class="page-title">${title}</div>
+
+
+			<div class="page-block">
+				<div class="page-block-title">${email_pref}</div>
+				<div class="row container">
+					<div class="col-sm-2">${email_receive}</div>
+					<div class="col-sm-8">
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="email_class_check" checked>
+								${email_before_class}
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="email_booking_check" checked>
+								${email_on_meeting_room}
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="email_schedule_check" checked>
+								${email_change_class}
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="page-block">
+				<div class="page-block-title">${im_pref}</div>
+				<div class="row page-row">
+					<div class="col-sm-12 page-note">
+					${im_info}
+					</div>
+				</div>
+				<div class="row container">
+					<div class="col-sm-2">${im_receive}</div>
+					<div class="col-sm-8">
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="im_class_check" checked>
+								${im_before_class}
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="im_booking_check" checked>
+								${im_on_meeting_room}
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label"> <input type="checkbox"
+								class="form-check-input" id="im_schedule_check" checked>
+								${im_change_class}
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="page-block">
+					<button id="confirm_btn" class="btn_large">${save}</button>
+				</div>
+			
+			
+		</div>
+	</div>
+</body>
+</html>

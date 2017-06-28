@@ -7,34 +7,29 @@
 		data-target="#menu-content"></i>
 	<div class="menu-list">
 		<ul id="menu-content" class="menu-content collapse out">
-			<li><a href='dashboard.html'>
-					<i class="fa fa-tachometer" aria-hidden="true"></i>
-					<span>${menu_dashboard}</span>
-				</a></li>
-			<li><a href='profile.html'>
-					<i class="fa fa-user" aria-hidden="true"></i>
-					<span>${menu_profile}</span>
-				</a></li>
-			<li><a href='calendar.html'>
-					<i class="fa fa-calendar" aria-hidden="true"></i>
-					<span>${menu_calendar}</span>
-				</a></li>
-			<li data-toggle="collapse" data-target="#menu-lesson"
-				class="collapsed"><i class="fa fa-book" aria-hidden="true"></i>
-				<span>${menu_lesson}</span> <span class="arrow"></span></li>
+			<li><a href='dashboard.html'> <i class="fa fa-tachometer"
+					aria-hidden="true"></i> <span>${menu_dashboard}</span>
+			</a></li>
+			<li><a href='profile.html'> <i class="fa fa-user"
+					aria-hidden="true"></i> <span>${menu_profile}</span>
+			</a></li>
+			<li><a href='calendar.html'> <i class="fa fa-calendar"
+					aria-hidden="true"></i> <span>${menu_calendar}</span>
+			</a></li>
+			<li show-on="client,tutor" data-toggle="collapse"
+				data-target="#menu-lesson" class="collapsed"><i
+				class="fa fa-book" aria-hidden="true"></i> <span>${menu_lesson}</span>
+				<span class="arrow"></span></li>
 			<ul id="menu-lesson" class="sub-menu collapse">
-				<li show-on="client"><a href="lesson.html">
-						<span>${menu_lesson_schedule}</span>
-					</a></li>
+				<li show-on="client"><a href="lesson.html"> <span>${menu_lesson_schedule}</span>
+				</a></li>
 				<li show-on="client,tutor"><a href="lesson_requested.html">
 						<span>${menu_lesson_requested}</span>
-					</a></li>
-				<li show-on="client,tutor"><a href="lesson_ongoing.html">
-						<span>${menu_lesson_ongoing}</span>
-					</a></li>
-				<li><a href="lesson_history.html">
-						<span>${menu_lesson_history}</span>
-					</a></li>
+				</a></li>
+				<li show-on="client,tutor"><a href="lesson_ongoing.html"> <span>${menu_lesson_ongoing}</span>
+				</a></li>
+				<li show-on="client,tutor"><a href="lesson_history.html"> <span>${menu_lesson_history}</span>
+				</a></li>
 			</ul>
 			<!--li class="menu_title"><span>Message</span></li>
 			<li class="menu_sub"><a href="message_inbox.html"> <span>Inbox</span></a></li>
@@ -43,27 +38,23 @@
 			<li data-toggle="collapse" data-target="#menu-account"
 				class="collapsed"><i class="fa fa-credit-card"
 				aria-hidden="true"></i> <span>${menu_account}</span> <span
-					class="arrow"></span></li>
+				class="arrow"></span></li>
 			<ul id="menu-account" class="sub-menu collapse">
-				<li><a href="account_summary.html">
-						<span>${menu_account_summary}</span>
-					</a></li>
+				<li><a href="account_summary.html"> <span>${menu_account_summary}</span>
+				</a></li>
 			</ul>
 			<li data-toggle="collapse" data-target="#menu-setting"
 				class="collapsed"><i class="fa fa-cog" aria-hidden="true"></i>
 				<span>${menu_setting}</span> <span class="arrow"></span></li>
 			<ul id="menu-setting" class="sub-menu collapse">
-				<li><a href="setting_email.html">
-						<span>${menu_setting_email}</span>
-					</a></li>
-				<li show-on="tutor"><a href="setting_timesheet.html">
-						<span>${menu_setting_timesheet}</span>
-					</a></li>
-			</ul>
-			<li><a href='help.html'>
-					<span class="glyphicon glyphicon-question-sign"></span>
-					<span>${menu_help}</span>
+				<li><a href="setting_notif.html"> <span>${menu_setting_notif}</span>
 				</a></li>
+				<li show-on="tutor"><a href="setting_timesheet.html"> <span>${menu_setting_timesheet}</span>
+				</a></li>
+			</ul>
+			<li><a href='help.html'> <i class="fa fa-question-circle-o"
+					aria-hidden="true"></i> <span>${menu_help}</span>
+			</a></li>
 			<hr>
 			<div class="container menu-bottom">
 				<hr>

@@ -5,7 +5,7 @@ import java.util.TimeZone;
 import org.harper.otms.calendar.entity.Tutor;
 
 public class TutorInfoDto {
-	
+
 	private int tutorId;
 
 	private String displayName;
@@ -19,16 +19,22 @@ public class TutorInfoDto {
 	private String pictureUrl;
 
 	private String description;
-	
+
 	private String statement;
-	
-	private String aboutMeInfo;
-	
+
 	private String workingInfo;
-	
+
 	private String eduInfo;
-	
+
 	private String videoIntroUrl;
+
+	private int rating;
+
+	private String imType;
+
+	private String im;
+
+	private String phone;
 
 	public void from(Tutor tutor) {
 		setTutorId(tutor.getId());
@@ -38,9 +44,14 @@ public class TutorInfoDto {
 		setDisplayName(tutor.getUser().getDisplayName());
 		setTimezone(tutor.getUser().getTimezone().getID());
 		setEmail(tutor.getUser().getEmail());
+		setImType(tutor.getUser().getImType());
+		setIm(tutor.getUser().getIm());
+		setPhone(tutor.getUser().getPhone());
+		
+		setRating(tutor.getRating());
+
 		setPictureUrl(tutor.getPictureUrl());
 		setStatement(tutor.getStatement());
-		setAboutMeInfo(tutor.getAboutMe());
 		setWorkingInfo(tutor.getWorkingInfo());
 		setEduInfo(tutor.getEduInfo());
 	}
@@ -49,12 +60,15 @@ public class TutorInfoDto {
 		tutor.setPictureUrl(getPictureUrl());
 		tutor.setStatement(getStatement());
 		tutor.setDescription(getDescription());
-		tutor.setAboutMe(getAboutMeInfo());
 		tutor.setWorkingInfo(getWorkingInfo());
 		tutor.setEduInfo(getEduInfo());
 		tutor.getUser().setDisplayName(getDisplayName());
 		tutor.getUser().setEmail(getEmail());
+		tutor.getUser().setImType(getImType());
+		tutor.getUser().setIm(getIm());
+		tutor.getUser().setPhone(getPhone());
 		tutor.getUser().setTimezone(TimeZone.getTimeZone(getTimezone()));
+		tutor.setRating(getRating());
 	}
 
 	public int getTutorId() {
@@ -129,14 +143,6 @@ public class TutorInfoDto {
 		this.videoIntroUrl = videoIntroUrl;
 	}
 
-	public String getAboutMeInfo() {
-		return aboutMeInfo;
-	}
-
-	public void setAboutMeInfo(String aboutMeInfo) {
-		this.aboutMeInfo = aboutMeInfo;
-	}
-
 	public String getWorkingInfo() {
 		return workingInfo;
 	}
@@ -151,6 +157,38 @@ public class TutorInfoDto {
 
 	public void setEduInfo(String eduInfo) {
 		this.eduInfo = eduInfo;
+	}
+
+	public String getImType() {
+		return imType;
+	}
+
+	public void setImType(String imType) {
+		this.imType = imType;
+	}
+
+	public String getIm() {
+		return im;
+	}
+
+	public void setIm(String im) {
+		this.im = im;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public int getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 }

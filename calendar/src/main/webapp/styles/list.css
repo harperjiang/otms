@@ -37,6 +37,14 @@
 	display: inline-block;
 }
 
+.list_row_content a {
+	color: #54b4f5 !important;
+}
+
+.list_row_content a:hover {
+	
+}
+
 .list_row:hover {
 	background-color: rgba(160, 214, 245, 0.2);
 }

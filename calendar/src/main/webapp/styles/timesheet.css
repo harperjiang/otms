@@ -5,14 +5,14 @@
 }
 
 .timesheet-header {
-	margin-right: 18px;
+	margin-right: 10px;
 }
 
 .timesheet-header-stick {
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	right: 18px; /*for the scroll bar*/
+	right: 10px; /*for the scroll bar*/
 	overflow: auto;
 }
 

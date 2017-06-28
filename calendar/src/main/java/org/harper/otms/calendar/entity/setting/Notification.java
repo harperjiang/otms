@@ -1,6 +1,6 @@
 package org.harper.otms.calendar.entity.setting;
 
-public class EmailSetting {
+public class Notification {
 
 	// Class change
 	private boolean emailClass;

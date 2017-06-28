@@ -1,12 +1,12 @@
 function client_clicked(event, client_id) {
 	otms.UIUtil.stopMessage(event);
-	sessionStorage.setItem("otms.clientInfoPage.clientId", client_id);
+	otms.setPageParam("otms.clientInfoPage.clientId", client_id);
 	window.location = 'info_client.html';
 };
 
 function tutor_clicked(event, tutor_id) {
 	otms.UIUtil.stopMessage(event);
-	sessionStorage.setItem("otms.tutorInfoPage.tutorId", tutor_id);
+	otms.setPageParam("otms.tutorInfoPage.tutorId", tutor_id);
 	window.location = 'info_tutor.html';
 };
 
@@ -212,6 +212,9 @@ function lessonEventListRenderer() {
 };
 
 function lessonEventClick(event, itemdata) {
+	otms.clearPageParam('otms.lessonItemPage');
+	otms.clearPageParam('otms.lessonPage');
+	
 	switch (itemdata.type) {
 	case 'lesson':
 		otms.setPageParam('otms.lessonItemPage.lessonId', itemdata.id);
@@ -225,7 +228,7 @@ function lessonEventClick(event, itemdata) {
 };
 
 function viewLessonDetail(event, lesson) {
-	debugger;
+	otms.clearParameter('otms.lessonPage');
 	otms.UIUtil.stopMessage(event);
 	otms.setPageParam('otms.lessonPage.id', lesson.lessonId)
 	window.location = 'lesson.html'

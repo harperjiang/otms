@@ -20,6 +20,12 @@ public class ClientInfoDto {
 
 	private String statement;
 
+	private String imType;
+
+	private String im;
+
+	private String phone;
+
 	public void from(Client client) {
 		setClientId(client.getId());
 		setStatement(client.getStatement());
@@ -28,13 +34,18 @@ public class ClientInfoDto {
 		setTimezone(client.getUser().getTimezone().getID());
 		setEmail(client.getUser().getEmail());
 		setPictureUrl(client.getPictureUrl());
-
+		setImType(client.getUser().getImType());
+		setIm(client.getUser().getIm());
+		setPhone(client.getUser().getPhone());
 	}
 
 	public void to(Client client) {
 		client.getUser().setDisplayName(getDisplayName());
 		client.getUser().setTimezone(TimeZone.getTimeZone(getTimezone()));
 		client.getUser().setEmail(getEmail());
+		client.getUser().setImType(getImType());
+		client.getUser().setIm(getIm());
+		client.getUser().setPhone(getPhone());
 
 		client.setStatement(getStatement());
 		client.setPictureUrl(getPictureUrl());
@@ -94,6 +105,30 @@ public class ClientInfoDto {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getImType() {
+		return imType;
+	}
+
+	public void setImType(String imType) {
+		this.imType = imType;
+	}
+
+	public String getIm() {
+		return im;
+	}
+
+	public void setIm(String im) {
+		this.im = im;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 }

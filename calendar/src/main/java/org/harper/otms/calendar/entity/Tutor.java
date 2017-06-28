@@ -24,17 +24,14 @@ public class Tutor extends Entity {
 	@Column(name = "picture_url")
 	private String pictureUrl;
 
-	@Column(name = "popular_level")
-	private int popularLevel;
+	@Column(name = "rating")
+	private int rating;
 
 	@Column(name = "statement")
 	private String statement;
 
 	@Column(name = "description")
 	private String description;
-
-	@Column(name = "info_aboutme")
-	private String aboutMe;
 
 	@Column(name = "info_working")
 	private String workingInfo;
@@ -98,20 +95,12 @@ public class Tutor extends Entity {
 		this.pictureUrl = pictureUrl;
 	}
 
-	public int getPopularLevel() {
-		return popularLevel;
+	public int getRating() {
+		return rating;
 	}
 
-	public void setPopularLevel(int popularLevel) {
-		this.popularLevel = popularLevel;
-	}
-
-	public String getAboutMe() {
-		return aboutMe;
-	}
-
-	public void setAboutMe(String aboutMe) {
-		this.aboutMe = aboutMe;
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public String getWorkingInfo() {

@@ -1,17 +1,22 @@
 function snapshot_mode() {
-	$('#view_panel').css('display', 'block');
-	$('#modify_panel').css('display', 'none');
+	$('#client_input').attr('readonly', 'readonly');
+	$('#tutor_input').attr('readonly', 'readonly');
+	$('#desc_text').attr('readonly', 'readonly');
+	$('#timefrom_input').attr('readonly', 'readonly');
+	$('#timeto_input').attr('readonly', 'readonly');
+	$('#date_input').attr('readonly', 'readonly');
+	$('#confirm_btn').css('display', 'none');
+	$('#delete_btn').css('display', 'none');
+	$('#feedback_btn').css('display', 'block');
 };
 
 function switch_mode() {
 	switch (otms.auth.userType()) {
 	case 'client':
-		$('#client_input').css('display', 'none');
-		$('#client_row').css('display', 'none');
+		$('#client_ig').css('display', 'none');
 		break;
 	case 'tutor':
-		$('#tutor_input').css('display', 'none');
-		$('#tutor_row').css('display', 'none');
+		$('#tutor_ig').css('display', 'none');
 		break;
 	case 'admin':
 		break;
@@ -45,21 +50,11 @@ $(function() {
 	mbm.reg('toTime', $('#timeto_input'));
 
 	otms.lessonItemPage.modifybm = mbm;
-
-	var vbm = new otms.validator.BeanManager();
-	// vbm.reg('title', $('#title_span'));
-	vbm.reg('tutorName', $('#tutor_span'));
-	vbm.reg('clientName', $('#client_span'));
-	vbm.reg('description', $('#desc_span'));
-	vbm.reg('date', $('#date_span'));
-	vbm.reg('fromTime', $('#timefrom_span'));
-	vbm.reg('toTime', $('#timeto_span'));
-	otms.lessonItemPage.viewbm = vbm;
-
+	
 	switch_mode();
 	// Check storage for input parameter
-	var eventId = otms.getPageParam('otms.lessonItemPage.id');
-	var lessonId = otms.getPageParam("otms.lessonItemPage.lessonId");
+	var eventId = otms.getPageParam('otms.lessonItemPage.id', false);
+	var lessonId = otms.getPageParam("otms.lessonItemPage.lessonId", false);
 	var date = new Date(parseInt(otms
 			.getPageParam("otms.lessonItemPage.lessonDate")));
 
@@ -72,10 +67,8 @@ $(function() {
 			if (success) {
 				if (data.lessonItem.status == 'SNAPSHOT') {
 					snapshot_mode();
-					vbm.setBean(data.lessonItem);
-				} else {
-					mbm.setBean(data.lessonItem);
 				}
+				mbm.setBean(data.lessonItem);
 			}
 		};
 		LessonService.getLessonItem(req, otms.ui.MessageBox.shan(callback));

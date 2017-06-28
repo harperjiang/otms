@@ -33,10 +33,15 @@ $(function() {
 		setTimeout(function() {
 			window.location = 'index.html';
 		}, 2000);
+		return;
 	}
 
 	otms.namespace('otms.tutorInfoPage');
 
+	// Star Rate
+	var usrRate = new otms.ui.StarRate($('#rate_span'));
+	usrRate.readonly();
+	
 	// Initialize Tab
 	otms.tutorInfoPage.tabControl = new otms.ui.tab.TabControl([ $('#tab1'),
 			$('#tab2'), $('#tab3') ], [ $('#timesheet_panel'),
@@ -81,7 +86,7 @@ $(function() {
 		var curdate = otms.tutorInfoPage.timesheet.model.currentDate;
 		var date = otms.DateUtil.form(otms.DateUtil.offset(curdate, itemI),
 				itemJ * 30);
-		if(date.getTime() < Date.now()) {
+		if (date.getTime() < Date.now()) {
 			return;
 		}
 
@@ -124,13 +129,14 @@ $(function() {
 	vbm.reg('username', $('#username_span'));
 	vbm.reg('timezone', $('#timezone_span'));
 	vbm.reg('pictureUrl', $('#profile_img'));
+	vbm.reg('rating', $('#rate_span'));
+
+	 vbm.reg('description', $('#desc_span'));
+	 
 	vbm.reg('statement', $('#stmt_span'));
-	vbm.reg('description', $('#desc_span'));
-	vbm.reg('aboutMeInfo', $('#aboutme_span'));
 	vbm.reg('eduInfo', $('#edu_span'));
 	vbm.reg('workingInfo', $('#working_span'));
-	// vbm.reg('audioText', $('#eel_span'));
-	// vbm.reg('videoIntroUrl', $('#video_frame'));
+	vbm.reg('videoIntroUrl', $('#video_frame'));
 	otms.tutorInfoPage.viewbm = vbm;
 
 	var req = otms.auth.req({

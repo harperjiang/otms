@@ -11,44 +11,74 @@
 
 </head>
 <body>
-		<!--#include virtual="menu.html" -->
+	<!--#include virtual="menu.html" -->
 	<div class="page-menu">
 		<div id="errmsg_panel"></div>
 		<div class="page-content">
 			<div id="modify_panel">
 				<div id="title_panel" class='page-title'>${title}</div>
-				<div class="page-block">
+				<div class="page-block container w-100">
 					<div class="page-block-title">${lesson_info}</div>
 					<!-- div class="page-row">
 						<input type="text" id='title_input' placeholder="Lesson Title">
 					</div-->
-					<div class="page-row">
-						<input type="text" id='tutor_input' placeholder="${tutor_id}"
-							disabled></input>
+					<div class="row form-group">
+						<div class="input-group" id="tutor_ig">
+							<span class="input-group-addon" id="btnGroupAddon"> <i
+								class="fa fa-graduation-cap" aria-hidden="true"></i>
+							</span> <input type="text" class="form-control" id='tutor_input'
+								placeholder="${tutor_id}" readonly></input>
+						</div>
 					</div>
-					<div class="page-row">
-						<input type="text" id="client_input" placeholder="${client_id}"
-							disabled></input>
+					<div class="row form-group">
+						<div class="input-group" id="client_ig">
+							<span class="input-group-addon" id="btnGroupAddon"> <i
+								class="fa fa-user" aria-hidden="true"></i>
+							</span> <input type="text" class="form-control" id='client_input'
+								placeholder="${client_id}" readonly></input>
+						</div>
 					</div>
-					<div class="page-row">
-						<textarea id="desc_text" placeholder="${lesson_desc}"></textarea>
+					<div class="row form-group">
+						<label for="desc_text" class="col-form-label">${lesson_desc}</label>
+						<textarea id='desc_text' class="form-control"
+							placeholder="${lesson_desc}"></textarea>
 					</div>
 				</div>
-				<div class="page-block">
+
+
+
+				<div class="page-block container w-100">
 					<div class="page-block-title">${lesson_time}</div>
-					<div class='page-row'>
-						<div style='display: inline-block; width: 49%'>
-							<label class='timelabel2'>From:</label> <input type='text'
-								placeholder='08:00' id='timefrom_input' class='timeinput2' />
+					<div class='row form-group'>
+						<div class="col-sm-2">
+							<label class='col-form-label' for="timefrom_input">${time_from}</label>
 						</div>
-						<div style='display: inline-block; width: 49%'>
-							<label class='timelabel2'>To:</label> <input type='text'
-								placeholder='09:00' id='timeto_input' class='timeinput2' />
+						<div class="col-sm-3 input-group">
+							<span class="input-group-addon" id="btnGroupAddon"> <i
+								class="fa fa-clock-o" aria-hidden="true"></i>
+							</span> <input type='text' placeholder='8:00' id='timefrom_input'
+								class='form-control' title='Example: 08:30 11AM 2pm' />
+						</div>
+						<div class="col-sm-2">
+							<label class='col-form-label' for="timeto_input">${time_to}</label>
+						</div>
+						<div class="col-sm-3 input-group">
+							<span class="input-group-addon" id="btnGroupAddon"> <i
+								class="fa fa-clock-o" aria-hidden="true"></i>
+							</span> <input type='text' placeholder='8:30' id='timeto_input'
+								class='form-control' title='Example: 08:30 11AM 2pm' />
 						</div>
 					</div>
-					<div class='page-row'>
-						<label>Meet On:</label> <input type='text' id='date_input'
-							placeholder='mm/dd/YYYY' class='timeinput' />
+					<div class="form-group row">
+						<div class="col-sm-2">
+							<label for="oneoff_date_input">${oneoff_meeton}</label>
+						</div>
+						<div class="input-group col-sm-4">
+							<span class="input-group-addon" id="btnGroupAddon"> <i
+								class="fa fa-calendar" aria-hidden="true"></i>
+							</span> <input type='text' id='date_input' placeholder='mm/dd/yyyy'
+								class='form-control timeinput' />
+						</div>
 					</div>
 				</div>
 				<div class="page-block">
@@ -56,59 +86,22 @@
 						<button id="confirm_btn" class="btn_large">${confirm}</button>
 						<button id="delete_btn" class="btn_danger"
 							style='margin-left: 20px;'>${cancel}</button>
+						<button id="feedback_btn" style="display: none" class="btn_large">${write_feedback}</button>
 					</div>
 				</div>
 			</div>
 			<div id="confirm_panel" style="display: none">
-				<div class="page-title">Lesson Setup Success!</div>
-				<div class="page-row">We have updated your lesson information.</div>
+				<div class="page-title">${success_title}</div>
+				<div class="page-row">${success_msg}</div>
 
 				<div class="page-row">
 					<button class="btn_large" id='calendar_btn'>${goto_calendar}</button>
 				</div>
 			</div>
-
-			<div id="view_panel" style="display: none;">
-				<div id="title_panel" class='page-title'>${view_lesson_history}</div>
-				<div class="page-block">
-					<div class="page-block-title">${lesson_info}</div>
-					<!-- div class="page-row">
-						<label>Title: </label><span id="title_span"></span>
-					</div-->
-					<div class="page-row" id="tutor_row">
-						<label>${tutor}:</label><span id="tutor_span"></span>
-					</div>
-					<div class="page-row" id="client_row">
-						<label>${client}:</label><span id="client_span"></span>
-					</div>
-					<div class="page-row">
-						<label class="textarea_label">${lesson_desc}</label> <span
-							id="desc_span" class="textarea"></span>
-					</div>
-				</div>
-				<div class="page-block">
-					<div class="page-block-title">${lesson_time}</div>
-					<div class='page-row'>
-						<div style='display: inline-block; width: 49%'>
-							<label class='timelabel2'>From:</label> <span id='timefrom_span'
-								class='timeinput2'></span>
-						</div>
-						<div style='display: inline-block; width: 49%'>
-							<label class='timelabel2'>To:</label> <span id='timeto_span'
-								class='timeinput2'></span>
-						</div>
-					</div>
-					<div class='page-row'>
-						<label>Meet On:</label> <span id='date_span' class='timeinput'></span>
-					</div>
-				</div>
-				<div class="page-block">
-					<div class="page-row">
-						<button id="feedback_btn" class="btn_large">${write_feedback}</button>
-					</div>
-				</div>
-			</div>
 		</div>
+
+
+	</div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

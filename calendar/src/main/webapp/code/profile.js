@@ -48,22 +48,24 @@ $(function() {
 	commonbm.reg('timezone', $('#timezone_select'));
 	commonbm.reg('email', $('#email_input'));
 	commonbm.reg('pictureUrl', $('#profile_img'));
+	commonbm.reg('imType',$('#imtype_select'));
+	commonbm.reg('im',$('#im_input'));
+	commonbm.reg('phone',$('#phone_input'));
 //	commonbm.reg('emailClass',$('#email_class_check'));
 //	commonbm.reg('emailBooking',$('#email_booking_check'));
 //	commonbm.reg('emailSchedule',$('#email_schedule_check'));
 	otms.profilePage.commonbm = commonbm;
 
 	var clientbm = new otms.validator.BeanManager();
-	clientbm.reg('statement', $('#client_intro_input'));
+	clientbm.reg('statement', $('#client_intro_text'));
 	otms.profilePage.clientbm = clientbm;
 
 	var tutorbm = new otms.validator.BeanManager();
-	tutorbm.reg('description', $('#tutor_desc_text'));
 	tutorbm.reg('statement', $('#tutor_stmt_input'));
+	tutorbm.reg('description', $('#tutor_desc_text'));
 	tutorbm.reg('videoIntroUrl', $('#tutor_video_input'));
 	tutorbm.reg('eduInfo', $('#tutor_edu_text'));
 	tutorbm.reg('workingInfo', $('#tutor_working_text'));
-	tutorbm.reg('aboutMeInfo', $('#tutor_aboutme_text'));
 	otms.profilePage.tutorbm = tutorbm;
 
 	$('#client_confirm_btn').click(function() {

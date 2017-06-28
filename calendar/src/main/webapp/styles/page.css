@@ -62,7 +62,8 @@
 .page-block {
 	font-size: 16px;
 	overflow: auto;
-	margin-bottom: 40px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .page-block-border {

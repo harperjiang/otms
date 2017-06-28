@@ -7,6 +7,7 @@
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/ui/tab.js"></script>
 <script type="text/javascript" src="scripts/ui/timesheet.js"></script>
+<script type="text/javascript" src="scripts/ui/starrate.js"></script>
 <script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script type='text/javascript' src='dwr/interface/TutorService.js'></script>
 <script type='text/javascript' src='code/info_tutor.js'></script>
@@ -53,7 +54,8 @@
 						<div class="row form-group">
 							<div class="col-sm-12">
 								<span id="name_span" class="form-control-static"
-									style="font-size: 25px; font-weight: bold">&nbsp;</span>
+									style="font-size: 25px; font-weight: bold">&nbsp;</span> <span
+									class="badge badge-info">Recommended</span>
 							</div>
 						</div>
 						<div class="row form-group">
@@ -63,7 +65,6 @@
 							<div class="col-sm-3">
 								<span id="username_span" class="form-control-static"
 									style="font-weight: bold">&nbsp;</span>
-								<span class="badge badge-info">Recommended</span>
 							</div>
 							<div class="col-sm-3">
 								<label>${time_zone}</label>
@@ -73,11 +74,18 @@
 									style="font-weight: bold">&nbsp;</span>
 							</div>
 						</div>
-
+						<div class="row form-group">
+							<div class="col-sm-3">
+								<label>${tutor_rate}</label>
+							</div>
+							<div class="col-sm-6">
+								<span id="rate_span"></span>
+							</div>
+						</div>
 
 						<div class="row form-group">
 							<div class="col-sm-12">
-								<span id="desc_span" class="textarea_small">&nbsp;</span>
+								<span id="stmt_span" class="textarea_small">&nbsp;</span>
 							</div>
 						</div>
 					</div>
@@ -86,16 +94,17 @@
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a id="tab1"
-								class="nav-link tab-bar-item">${tab_timesheet}</a></li>
+							class="nav-link tab-bar-item">${tab_timesheet}</a></li>
 						<li class="nav-item"><a id="tab2"
-								class="nav-link tab-bar-item">${tab_selfintro}</a></li>
+							class="nav-link tab-bar-item">${tab_selfintro}</a></li>
 						<li class="nav-item"><a id="tab3"
-								class="nav-link tab-bar-item">${tab_rating}</a></li>
+							class="nav-link tab-bar-item">${tab_rating}</a></li>
 					</ul>
 				</div>
 
 				<div id="timesheet_panel">
 					<div class="container w-100">
+						<div class="row page-row page-note">${timesheet_msg}</div>
 						<div class="row">
 							<div class="btn-group mx-auto col-sm-6" role="group">
 								<button class="btn btn-link" id="pastweek_btn">
@@ -149,58 +158,54 @@
 
 				</div>
 				<div id="self_intro_panel" style="display: none">
-					<div style="margin-right: 20px; float: left;">
-						<div style="width: 200px; height: 200px; display: block;"></div>
+					<div class="page-block">
+						<div class="page-block-title">Self Introduction</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<span id="desc_span" class="textarea">&nbsp;</span>
+							</div>
+						</div>
 					</div>
-					<div style="display: block; overflow: hidden;">
-						<div style="float: left; min-height: 120px; width: 600px">
-							<div class='page_row '></div>
-							<div class="page_row "></div>
 
-						</div>
-						<div class="right_panel">
-							<div class="right_block">
-								<button class="btn_yellow right_button">View Available
-									Time</button>
-								<button class="btn_orange right_button">Request Trial
-									Lesson</button>
-								<button class="btn_normal right_button">Schedule Lesson</button>
-							</div>
-						</div>
-						<div style="clear: both"></div>
-						<div class="page_block">
-							<div class="page_row bg_green">
-								<span id="stmt_span">&nbsp;</span>
-							</div>
-						</div>
-
-						<div class="page_block">
-							<div class="page_block_title">About Me</div>
-							<span id="aboutme_span" class="textarea">&nbsp;</span>
-						</div>
-
-						<div class="page_block">
-							<div class="page_block_title">Video Introduction</div>
-							<div class="page_row">
+					<div class="page-block">
+						<div class="page-block-title">Video Introduction</div>
+						<div class="row">
+							<div class="col-sm-12">
 								<iframe id="video_frame" width="280" height="200"
 									src="https://www.youtube.com/embed/9M-qUDmxQ2w" frameborder="0"></iframe>
 							</div>
 						</div>
+					</div>
 
-						<div class="page_block">
-							<div class="page_block_title">Education</div>
-							<span id="edu_span" class="textarea">&nbsp;</span>
-						</div>
-
-						<div class="page_block">
-							<div class="page_block_title">Working Experience</div>
-							<span id="working_span" class="textarea">&nbsp;</span>
+					<div class="page-block">
+						<div class="page-block-title">Education</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<span id="edu_span" class="textarea">&nbsp;</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div id="user_rate_panel" style="display: none"></div>
 
+					<div class="page-block">
+						<div class="page-block-title">Working Experience</div>
+						<span id="working_span" class="textarea">&nbsp;</span>
+					</div>
+
+					<!-- div class="right_panel">
+						<div class="right_block">
+							<button class="btn_yellow right_button">View Available
+								Time</button>
+							<button class="btn_orange right_button">Request Trial
+								Lesson</button>
+							<button class="btn_normal right_button">Schedule Lesson</button>
+						</div>
+					</div>
+					<div style="clear: both"></div -->
+
+				</div>
 			</div>
+			<div id="user_rate_panel" style="display: none"></div>
+
 		</div>
 	</div>
 </body>
