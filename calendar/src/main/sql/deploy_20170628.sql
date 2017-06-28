@@ -330,7 +330,7 @@ CREATE TABLE `QRTZ_TRIGGERS` (
 
 LOCK TABLES `QRTZ_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498654800000,1498568400000,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'¬í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚èÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
+INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498741200000,1498673784323,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'¬í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚èÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,7 +353,7 @@ CREATE TABLE `action_log` (
   KEY `INDX_action_date` (`action_date`),
   KEY `FK_action_log_operator_id_idx` (`operator_id`),
   CONSTRAINT `FK_action_log_operator_id` FOREIGN KEY (`operator_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,7 +362,7 @@ CREATE TABLE `action_log` (
 
 LOCK TABLES `action_log` WRITE;
 /*!40000 ALTER TABLE `action_log` DISABLE KEYS */;
-INSERT INTO `action_log` VALUES (15,'2017-06-11 17:28:00',27,'LESSON STATUS','REQUESTED','VALID','201'),(16,'2017-06-11 18:58:00',27,'LESSON STATUS','REQUESTED','VALID','226'),(17,'2017-06-11 19:07:00',27,'LESSON STATUS','REQUESTED','VALID','251'),(18,'2017-06-11 19:34:00',27,'LESSON STATUS','REQUESTED','VALID','276'),(20,'2017-06-11 21:47:00',27,'LESSON STATUS','REQUESTED','VALID','301'),(21,'2017-06-11 21:48:00',27,'LESSON STATUS','VALID','INVALID','201'),(22,'2017-06-11 21:51:00',27,'LESSON STATUS','VALID','INVALID','226'),(23,'2017-06-22 16:19:00',NULL,'LESSON TRIGGER',NULL,NULL,'251'),(24,'2017-06-22 16:19:00',NULL,'LESSON STATUS','VALID','INVALID','301'),(25,'2017-06-22 16:19:00',NULL,'LESSON STATUS','VALID','INVALID','251'),(26,'2017-06-22 16:19:00',NULL,'LESSON TRIGGER',NULL,NULL,'301'),(27,'2017-06-27 04:48:00',27,'LESSON STATUS','REQUESTED','VALID','326'),(28,'2017-06-27 13:00:00',NULL,'LESSON TRIGGER',NULL,NULL,'326');
+INSERT INTO `action_log` VALUES (15,'2017-06-11 17:28:00',27,'LESSON STATUS','REQUESTED','VALID','201'),(16,'2017-06-11 18:58:00',27,'LESSON STATUS','REQUESTED','VALID','226'),(17,'2017-06-11 19:07:00',27,'LESSON STATUS','REQUESTED','VALID','251'),(18,'2017-06-11 19:34:00',27,'LESSON STATUS','REQUESTED','VALID','276'),(20,'2017-06-11 21:47:00',27,'LESSON STATUS','REQUESTED','VALID','301'),(21,'2017-06-11 21:48:00',27,'LESSON STATUS','VALID','INVALID','201'),(22,'2017-06-11 21:51:00',27,'LESSON STATUS','VALID','INVALID','226'),(23,'2017-06-22 16:19:00',NULL,'LESSON TRIGGER',NULL,NULL,'251'),(24,'2017-06-22 16:19:00',NULL,'LESSON STATUS','VALID','INVALID','301'),(25,'2017-06-22 16:19:00',NULL,'LESSON STATUS','VALID','INVALID','251'),(26,'2017-06-22 16:19:00',NULL,'LESSON TRIGGER',NULL,NULL,'301'),(27,'2017-06-27 04:48:00',27,'LESSON STATUS','REQUESTED','VALID','326'),(28,'2017-06-27 13:00:00',NULL,'LESSON TRIGGER',NULL,NULL,'326'),(29,'2017-06-28 18:16:25',NULL,'LESSON TRIGGER',NULL,NULL,'326');
 /*!40000 ALTER TABLE `action_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,6 +510,7 @@ CREATE TABLE `lesson_feedback` (
   `tutor_rate` int(1) NOT NULL DEFAULT '0',
   `fail_reason` int(1) NOT NULL DEFAULT '1',
   `comment` text,
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_feedback_tutor_id_idx` (`tutor_id`),
   KEY `FK_feedback_client_id_idx` (`client_id`),
@@ -517,7 +518,7 @@ CREATE TABLE `lesson_feedback` (
   CONSTRAINT `FK_feedback_client_id` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_feedback_lesson_item_id` FOREIGN KEY (`lesson_item_id`) REFERENCES `lesson_item` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_feedback_tutor_id` FOREIGN KEY (`tutor_id`) REFERENCES `tutor` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -526,7 +527,7 @@ CREATE TABLE `lesson_feedback` (
 
 LOCK TABLES `lesson_feedback` WRITE;
 /*!40000 ALTER TABLE `lesson_feedback` DISABLE KEYS */;
-INSERT INTO `lesson_feedback` VALUES (1,27,677,177,1,0,0,0,''),(2,27,677,176,1,0,0,0,'');
+INSERT INTO `lesson_feedback` VALUES (1,27,677,177,1,0,0,0,'',NULL),(2,27,677,176,1,0,0,0,'',NULL),(3,27,677,226,1,5,4,0,'I really like the tutor!','2017-06-28 20:28:00');
 /*!40000 ALTER TABLE `lesson_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -550,7 +551,7 @@ CREATE TABLE `lesson_item` (
   PRIMARY KEY (`id`),
   KEY `FK_lesson_item_lesson_id` (`lesson_id`),
   CONSTRAINT `FK_lesson_item_lesson_id` FOREIGN KEY (`lesson_id`) REFERENCES `lesson` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=227 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -559,7 +560,7 @@ CREATE TABLE `lesson_item` (
 
 LOCK TABLES `lesson_item` WRITE;
 /*!40000 ALTER TABLE `lesson_item` DISABLE KEYS */;
-INSERT INTO `lesson_item` VALUES (176,'','2017-06-17 19:08:00','2017-06-17 19:10:00',NULL,251,'2017-06-22','SNAPSHOT','CLIENT_FEEDBACK'),(177,'','2017-06-17 14:00:00','2017-06-17 14:30:00',NULL,301,'2017-06-22','SNAPSHOT','CLIENT_FEEDBACK'),(201,'','2017-06-27 13:00:00','2017-06-27 13:30:00',NULL,326,'2017-06-27','SNAPSHOT','NO_FEEDBACK');
+INSERT INTO `lesson_item` VALUES (176,'','2017-06-17 19:08:00','2017-06-17 19:10:00',NULL,251,'2017-06-22','SNAPSHOT','CLIENT_FEEDBACK'),(177,'','2017-06-17 14:00:00','2017-06-17 14:30:00',NULL,301,'2017-06-22','SNAPSHOT','CLIENT_FEEDBACK'),(201,'','2017-06-27 13:00:00','2017-06-27 13:30:00',NULL,326,'2017-06-27','SNAPSHOT','NO_FEEDBACK'),(226,'','2017-06-28 13:00:00','2017-06-28 13:30:00',NULL,326,'2017-06-28','SNAPSHOT','CLIENT_FEEDBACK');
 /*!40000 ALTER TABLE `lesson_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -583,7 +584,7 @@ CREATE TABLE `seq_num` (
 
 LOCK TABLES `seq_num` WRITE;
 /*!40000 ALTER TABLE `seq_num` DISABLE KEYS */;
-INSERT INTO `seq_num` VALUES ('lesson',350),('lesson_item',225),('timesheet',26),('user',851);
+INSERT INTO `seq_num` VALUES ('lesson',350),('lesson_item',250),('timesheet',26),('user',851);
 /*!40000 ALTER TABLE `seq_num` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -654,7 +655,7 @@ CREATE TABLE `todo` (
   PRIMARY KEY (`id`),
   KEY `FK_todo_owner_id_idx` (`owner_id`),
   CONSTRAINT `FK_todo_owner_id` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -753,4 +754,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 21:29:44
+-- Dump completed on 2017-06-28 16:20:05
