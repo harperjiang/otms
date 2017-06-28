@@ -9,9 +9,7 @@ otms.lang.current = function(event) {
 	return lang;
 };
 
-function requestWithLang(lang) {
-	// A flag for pages that cannot be executed twice
-	otms.headerPage.needReload = true;
+otms.lang.requestWithLang = function(lang) {
 	localStorage.setItem("otms.lang", lang);
 	var locstring = window.location.toString().split('?');
 	var url = locstring[0];
@@ -30,14 +28,11 @@ function requestWithLang(lang) {
 	}
 };
 
-function changeLang(item) {
-	var lang = $(item).val();
-	requestWithLang(lang);
-};
-
-function handleLang() {
+otms.lang.handleLang = function(lang) {
 	// Set the language to be selected
-	var lang = localStorage.getItem('otms.lang');
+	if (lang === undefined)
+		lang = localStorage.getItem('otms.lang');
+		
 	var serverLang = $('meta[name=lang]').attr("content");
 
 	if (otms.isEmpty(lang)) {
@@ -49,11 +44,11 @@ function handleLang() {
 
 	if (lang != serverLang) {
 		// Always use local lang, Resend current request
-		requestWithLang(lang);
+		otms.lang.requestWithLang(lang);
 		return;
 	}
 
-	if (!otms.isEmpty(lang) && $('#language_select').val() != lang) {
-		$("#language_select").val(lang);
+	if (!otms.isEmpty(lang) && $('#menu_lang_select').val() != lang) {
+		$("#menu_lang_select").val(lang);
 	}
 };

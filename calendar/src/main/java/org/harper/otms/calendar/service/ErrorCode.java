@@ -19,4 +19,6 @@ public interface ErrorCode extends org.harper.otms.auth.service.ErrorCode {
 	int LESSON_IN_PAST = LESSON_SERVICE + 4;
 
 	int LESSON_INVALID_SCHEDULE = LESSON_SERVICE + 5;
+	
+	int LESSON_ITEM_HAS_FEEDBACK = LESSON_SERVICE + 6;
 }

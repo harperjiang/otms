@@ -28,6 +28,10 @@ public class DefaultFeedbackService implements FeedbackService {
 
 	@Override
 	public ClientFeedbackResponseDto clientFeedback(ClientFeedbackDto request) {
+		// Check if there is already a feedback
+		if (getFeedbackDao().findByLessonItemId(request.getLessonItemId()) != null) {
+			return new ClientFeedbackResponseDto(ErrorCode.LESSON_ITEM_HAS_FEEDBACK);
+		}
 		LessonItem item = getLessonItemDao().findById(request.getLessonItemId());
 		if (item == null) {
 			return new ClientFeedbackResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);

@@ -64,16 +64,17 @@
 						<label for="menu_lang" class="col-form-label">${menu_lang}</label>
 					</div>
 					<div class="col-sm-6">
-						<select id="menu_lang" class="input-sm form-control custom-select">
-							<option>English</option>
-							<option>简体中文</option>
+						<select id="menu_lang_select"
+							class="input-sm form-control custom-select">
+							<option value="en_US">English</option>
+							<option value="zh_CN">简体中文</option>
 						</select>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-5"></div>
 					<div class="col-sm-6">
-						<button class="btn btn-sm btn-secondary">${menu_logout}</button>
+						<button id="menu_logout_btn" class="btn btn-sm btn-secondary">${menu_logout}</button>
 					</div>
 				</div>
 			</div>
@@ -115,5 +116,13 @@
 		}
 		$('#menu-content li').each(update_menu);
 		$('#menu-content ul.sub-menu li').each(update_menu);
+		$('#menu_lang_select').change(function(event) {
+			otms.lang.handleLang($(this).val());
+		});
+		$('#menu_logout_btn').click(function(event) {
+			otms.auth.cleartoken();
+			window.location = 'index.html';
+		});
+		otms.lang.handleLang();
 	});
 </script>

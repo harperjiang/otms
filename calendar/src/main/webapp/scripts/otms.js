@@ -59,7 +59,6 @@ otms.get = function(object, key) {
 };
 
 otms.set = function(object, key, value) {
-	// debugger;
 	var parts = key.split('.');
 	var current = object;
 	for (var i = 0; i < parts.length; i++) {
@@ -398,7 +397,6 @@ otms.submitform = function(form, callback) {
 
 	$("#formiframe").load(function() {
 		var iframeContents = this.contentWindow.document.body.innerText;
-		debugger;
 		if (callback != null) {
 			callback(otms.json(iframeContents));
 		}

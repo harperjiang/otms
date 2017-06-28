@@ -23,15 +23,15 @@ $(function() {
 
 		switch (otms.auth.userType()) {
 		case 'tutor':
-			eventContent = otms.DateUtil.formattime(eventObj.fromTime)
+			eventContent += otms.DateUtil.formattime(eventObj.fromTime)
 					+ " with " + eventObj.clientName;
 			break;
 		case 'client':
-			eventContent = otms.DateUtil.formattime(eventObj.fromTime)
+			eventContent += otms.DateUtil.formattime(eventObj.fromTime)
 					+ " with " + eventObj.tutorName;
 			break;
 		case 'admin':
-			eventContent = otms.DateUtil.formattime(eventObj.fromTime) + ", "
+			eventContent += otms.DateUtil.formattime(eventObj.fromTime) + ", "
 					+ eventObj.tutorName + " with " + eventObj.clientName;
 			break;
 		default:
@@ -45,9 +45,16 @@ $(function() {
 		var event = obj.eventData;
 		debugger;
 		if (event.type === 'lesson') {
-			var dialog = $('#open_lesson_dialog');
-			dialog.prop('event', event);
-			dialog.modal('show');
+			if (event.oneoff) {
+				otms.clearPageParam('otms.lessonPage');
+				otms.setPageParam('otms.lessonPage.id', event.id);
+				window.location = 'lesson.html';
+
+			} else {
+				var dialog = $('#open_lesson_dialog');
+				dialog.prop('event', event);
+				dialog.modal('show');
+			}
 		} else {
 			// Show lesson_item page
 			otms.clearPageParam('otm.lessonItemPage');
@@ -81,7 +88,7 @@ $(function() {
 					function(e) {
 						otms.clearPageParam('otms.lessonItemPage');
 						otms.clearPageParam('otms.lessonPage');
-						
+
 						var dialog = $('#open_lesson_dialog');
 						dialog.modal('hide');
 						var event = dialog.prop('event');

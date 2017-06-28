@@ -43,12 +43,14 @@ public class EventDto {
 
 	private int clientId;
 
+	private boolean oneoff = false;
+
 	public EventDto() {
 
 	}
 
-	public EventDto(String type, int id, Date date, String title, int fromTime, int toTime, Tutor tutor,
-			Client client) {
+	public EventDto(String type, int id, Date date, String title, int fromTime, int toTime, Tutor tutor, Client client,
+			boolean oneoff) {
 		this.type = type;
 		this.id = id;
 		this.date = date;
@@ -59,12 +61,13 @@ public class EventDto {
 		this.tutorName = tutor.getUser().getName();
 		this.clientId = client.getId();
 		this.clientName = client.getUser().getName();
+		this.oneoff = oneoff;
 	}
 
 	public EventDto(LessonItem item) {
 		this(EventDto.LESSON_ITEM, item.getId(), DateUtil.truncate(item.getFromTime()), item.getTitle(),
 				DateUtil.extract(item.getFromTime()), DateUtil.extract(item.getToTime()), item.getLesson().getTutor(),
-				item.getLesson().getClient());
+				item.getLesson().getClient(), false);
 		setPast(item.getStatus() == LessonItem.Status.SNAPSHOT);
 	}
 
@@ -165,6 +168,14 @@ public class EventDto {
 		this.past = past;
 	}
 
+	public boolean isOneoff() {
+		return oneoff;
+	}
+
+	public void setOneoff(boolean oneoff) {
+		this.oneoff = oneoff;
+	}
+
 	public boolean within(Date fromDate, Date toDate) {
 		Date myfrom = DateUtil.form(getDate(), getFromTime());
 		Date myto = DateUtil.form(getDate(), getToTime());
@@ -177,7 +188,7 @@ public class EventDto {
 			OneoffEntry ofe = (OneoffEntry) lesson.getCalendar();
 			result.add(new EventDto(EventDto.LESSON, lesson.getId(), DateUtil.truncate(ofe.getFromTime()),
 					lesson.getTitle(), DateUtil.extract(ofe.getFromTime()), DateUtil.extract(ofe.getToTime()),
-					lesson.getTutor(), lesson.getClient()));
+					lesson.getTutor(), lesson.getClient(), true));
 		}
 		if (lesson.getCalendar() instanceof RepeatEntry) {
 			RepeatEntry rpe = (RepeatEntry) lesson.getCalendar();
@@ -186,14 +197,14 @@ public class EventDto {
 					// Has Item on this day, use item to replace this
 					// information
 					LessonItem item = lesson.getItems().get(date);
-					if (item.getStatus() != LessonItem.Status.DELETED) {
+					if (item.getStatus() == LessonItem.Status.VALID) {
 						EventDto event = new EventDto(item);
 						if (event.within(fromDate, toDate))
 							result.add(event);
 					}
 				} else {
 					EventDto event = new EventDto(EventDto.LESSON, lesson.getId(), date, lesson.getTitle(),
-							rpe.getFromTime(), rpe.getToTime(), lesson.getTutor(), lesson.getClient());
+							rpe.getFromTime(), rpe.getToTime(), lesson.getTutor(), lesson.getClient(), false);
 					if (event.within(fromDate, toDate))
 						result.add(event);
 				}

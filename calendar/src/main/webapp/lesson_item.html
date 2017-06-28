@@ -5,8 +5,10 @@
 <title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/LessonService.js'></script>
+<script type='text/javascript' src='dwr/interface/FeedbackService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/auth.js"></script>
+<script type="text/javascript" src="scripts/ui/starrate.js"></script>
 <script type="text/javascript" src="code/lesson_item.js"></script>
 
 </head>
@@ -45,8 +47,6 @@
 					</div>
 				</div>
 
-
-
 				<div class="page-block container w-100">
 					<div class="page-block-title">${lesson_time}</div>
 					<div class='row form-group'>
@@ -83,13 +83,13 @@
 				</div>
 				<div class="page-block">
 					<div class="page-row">
-						<button id="confirm_btn" class="btn_large">${confirm}</button>
+						<button id="confirm_btn" class="btn_large" style="display: none">${confirm}</button>
 						<button id="delete_btn" class="btn_danger"
-							style='margin-left: 20px;'>${cancel}</button>
-						<button id="feedback_btn" style="display: none" class="btn_large">${write_feedback}</button>
+							style='margin-left: 20px; display: none;'>${cancel}</button>
 					</div>
 				</div>
 			</div>
+
 			<div id="confirm_panel" style="display: none">
 				<div class="page-title">${success_title}</div>
 				<div class="page-row">${success_msg}</div>
@@ -98,11 +98,71 @@
 					<button class="btn_large" id='calendar_btn'>${goto_calendar}</button>
 				</div>
 			</div>
+
+			<div id="feedback_panel" class="page-block container w-100"
+				style="display: none">
+				<div class="row page-row form-group">
+					<label>${fb_text_attend}</label>
+				</div>
+				<div class="row page-row form-group">
+					<div class="form-check" style="margin-left: 5px">
+						<label class="form-check-label"> <input
+							class="form-check-input" type="radio" name="attend"
+							id="attend_yes_radio" value="yes" checked>
+							${fb_attend_yes}
+						</label> <label class="form-check-label"> <input
+							class="form-check-input" type="radio" name="attend"
+							id="attend_no_radio" value="no"> ${fb_attend_no}
+						</label>
+					</div>
+				</div>
+				<div id="fb_attend_panel">
+					<div class="row form-group">${fb_rate_lesson}</div>
+					<div class="row form-group">
+						<div id="lesson_rate"></div>
+					</div>
+					<div class="row form-group">${fb_rate_tutor}</div>
+					<div class="row form-group">
+						<div id="tutor_rate"></div>
+					</div>
+
+				</div>
+
+				<div id="fb_noattend_panel" style="display: none;">
+					<div class="row form-group">${fb_reason_missing}</div>
+					<div class="row form-group">
+						<select id="select_noattend_reason"
+							class="form-control custom-select">
+							<option value="1">${fb_reason_missing_1}</option>
+							<option value="2">${fb_reason_missing_2}</option>
+							<option value="3">${fb_reason_missing_3}</option>
+							<option value="4">${fb_reason_missing_4}</option>
+							<option value="5">${fb_reason_missing_5}</option>
+						</select>
+					</div>
+					<div class="row form-group">${fb_rate_tutor}</div>
+					<div class="row form-group">
+						<div id="tutor_noattend_rate"></div>
+					</div>
+
+				</div>
+				<div class="row form-group">
+					<label for="comment" class="col-form-label">${fb_label_comment}</label>
+					<textarea id="comment" class="form-control"></textarea>
+				</div>
+				<div class="row page-row">
+					<button id="btn_fb_submit" class="btn_normal">${fb_btn_submit}</button>
+					<button id="btn_fb_reset" class="btn_yellow ml-3">${fb_btn_reset}</button>
+				</div>
+			</div>
+
+			<div id="feedback_confirm_panel" style="display: none;">
+				<div class="form-group">${fb_msg_thank}</div>
+				<div class="form-group">
+					<button id="btn_dashboard" class="btn_normal">${fb_btn_viewdash}</button>
+				</div>
+			</div>
 		</div>
-
-
 	</div>
-	</div>
-	<!--#include virtual="footer.html" -->
 </body>
 </html>

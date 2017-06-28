@@ -6,16 +6,7 @@ function formatTitle(lessonItem) {
 					.formatdate(lessonItem.date));
 };
 
-function reset() {
-	$('input:radio[name=attend]').filter('[value=yes]').prop('checked', true);
-	$('#attend_panel').css('display', 'block');
-	$('#noattend_panel').css('display', 'none');
-	lessonRate.reset();
-	tutorRate.reset();
-	tutorNoRate.reset();
-	$('#select_noattend_reason').val(1);
-	$('#comment').val('');
-};
+
 
 function onload() {
 	var lessonItemId = otms.getPageParam('otms.feedbackPage.itemId', false);

@@ -324,7 +324,6 @@ otms.validator.BeanManager.prototype.getBean = function() {
 	// Collect data from each validator
 	for ( var key in this.components) {
 		var comp = this.components[key];
-		debugger;
 		if (otms.UIUtil.hidden(comp.val()))
 			continue;
 		var validator = comp.prop('validator');
