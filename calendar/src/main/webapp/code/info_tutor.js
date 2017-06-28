@@ -111,8 +111,17 @@ function setupRatingList() {
 	list.setRenderer(function(container, item) {
 		container.append(item.clientName);
 		container.append(otms.DateUtil.formatdate(item.createTime));
-		container.append(item.lessonRate);
-		container.append(item.tutorRate);
+		
+		var lessonRateSpan = $(document.createElement('span'));
+		var lessonRateCtrl = new otms.ui.StarRate(lessonRateSpan);
+		lessonRateCtrl.setRate(item.lessonRate);
+		container.append(lessonRateSpan);
+		
+		var tutorRateSpan = $(document.createElement('span'));
+		var tutorRateCtrl = new otms.ui.StarRate(tutorRateSpan);
+		tutorRateCtrl.setRate(item.tutorRate);
+		container.append(tutorRateSpan);
+		
 		container.append(item.comment);
 	});
 	list.rowClicked = function(event, item) {
