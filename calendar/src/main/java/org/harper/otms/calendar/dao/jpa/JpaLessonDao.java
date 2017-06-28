@@ -8,10 +8,10 @@ import javax.persistence.Query;
 
 import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.dao.LessonDao;
-import org.harper.otms.calendar.entity.Client;
-import org.harper.otms.calendar.entity.Lesson;
-import org.harper.otms.calendar.entity.Lesson.Status;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.lesson.Lesson;
+import org.harper.otms.calendar.entity.lesson.Lesson.Status;
+import org.harper.otms.calendar.entity.profile.Client;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.dao.JpaDao;
 

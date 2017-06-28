@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.entity;
+package org.harper.otms.calendar.entity.profile;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

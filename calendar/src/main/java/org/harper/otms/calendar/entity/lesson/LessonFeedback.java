@@ -1,10 +1,16 @@
-package org.harper.otms.calendar.entity;
+package org.harper.otms.calendar.entity.lesson;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+import org.harper.otms.calendar.entity.profile.Client;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
@@ -22,6 +28,10 @@ public class LessonFeedback extends Entity {
 	@OneToOne
 	@JoinColumn(name = "lesson_item_id")
 	private LessonItem lessonItem;
+
+	@Column(name = "create_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createTime;
 
 	@Column(name = "success")
 	private boolean success;
@@ -100,6 +110,14 @@ public class LessonFeedback extends Entity {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 }

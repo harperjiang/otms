@@ -1,14 +1,12 @@
 package org.harper.otms.calendar.service.dto;
 
-import java.util.Date;
-
 import org.harper.otms.common.dto.RequestDto;
 
-public class GetTimesheetDto extends RequestDto {
+public class GetTutorFeedbacksDto extends RequestDto {
 
 	private int tutorId;
 
-	private Date weekStart;
+	private int limit;
 
 	public int getTutorId() {
 		return tutorId;
@@ -18,12 +16,12 @@ public class GetTimesheetDto extends RequestDto {
 		this.tutorId = tutorId;
 	}
 
-	public Date getWeekStart() {
-		return weekStart;
+	public int getLimit() {
+		return limit;
 	}
 
-	public void setWeekStart(Date weekStart) {
-		this.weekStart = weekStart;
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
 
 	@Override

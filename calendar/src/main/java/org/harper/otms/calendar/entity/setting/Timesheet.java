@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.entity;
+package org.harper.otms.calendar.entity.setting;
 
 import java.util.Date;
 import java.util.HashMap;

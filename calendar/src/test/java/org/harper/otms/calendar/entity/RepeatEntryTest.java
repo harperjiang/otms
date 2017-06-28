@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.harper.otms.calendar.entity.lesson.RepeatEntry;
 import org.junit.Test;
 
 public class RepeatEntryTest extends RepeatEntry {

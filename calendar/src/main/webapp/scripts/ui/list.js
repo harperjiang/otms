@@ -20,6 +20,7 @@ otms.ui.list.ListModel.prototype.get = function(index) {
 otms.ui.list.List = function(container) {
 	this.model = new otms.ui.list.ListModel(this);
 	this.container = container;
+	this.container.prop('listControl', this);
 	this.initialize();
 };
 
@@ -90,7 +91,6 @@ otms.ui.list.List.prototype.refresh = function() {
 
 otms.ui.list.List.prototype.rowClicked = function(event, itemdata) {
 	// Do nothing
-	debugger;
 };
 
 otms.ui.list.List.prototype.hasPopup = function(data) {

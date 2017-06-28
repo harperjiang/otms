@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.harper.otms.auth.entity.User;
-import org.harper.otms.calendar.entity.Client;
-import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.LessonItem.Status;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.lesson.LessonItem;
+import org.harper.otms.calendar.entity.lesson.LessonItem.Status;
+import org.harper.otms.calendar.entity.profile.Client;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.common.dao.Dao;
 import org.harper.otms.common.dto.PagingDto;
 

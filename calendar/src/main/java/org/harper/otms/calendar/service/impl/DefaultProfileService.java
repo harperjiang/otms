@@ -17,15 +17,13 @@ import org.harper.otms.auth.service.dto.CreateUserResponseDto;
 import org.harper.otms.auth.service.util.CaptchaUtil;
 import org.harper.otms.calendar.dao.ClientDao;
 import org.harper.otms.calendar.dao.TutorDao;
-import org.harper.otms.calendar.entity.Client;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.profile.Client;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.calendar.service.ErrorCode;
 import org.harper.otms.calendar.service.ProfileService;
 import org.harper.otms.calendar.service.dto.ClientInfoDto;
 import org.harper.otms.calendar.service.dto.GetClientInfoDto;
 import org.harper.otms.calendar.service.dto.GetClientInfoResponseDto;
-import org.harper.otms.calendar.service.dto.GetTutorInfoDto;
-import org.harper.otms.calendar.service.dto.GetTutorInfoResponseDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoDto;
 import org.harper.otms.calendar.service.dto.LinkAddInfoResponseDto;
 import org.harper.otms.calendar.service.dto.LinkUserDto;
@@ -34,9 +32,6 @@ import org.harper.otms.calendar.service.dto.RegisterUserDto;
 import org.harper.otms.calendar.service.dto.RegisterUserResponseDto;
 import org.harper.otms.calendar.service.dto.SetupClientDto;
 import org.harper.otms.calendar.service.dto.SetupClientResponseDto;
-import org.harper.otms.calendar.service.dto.SetupTutorDto;
-import org.harper.otms.calendar.service.dto.SetupTutorResponseDto;
-import org.harper.otms.calendar.service.dto.TutorInfoDto;
 import org.harper.otms.calendar.service.dto.UploadProfileImageDto;
 import org.harper.otms.calendar.service.dto.UploadProfileImageResponseDto;
 import org.harper.otms.common.servlet.IPMonitorFilter;
@@ -51,8 +46,7 @@ public class DefaultProfileService implements ProfileService {
 	@Override
 	public RegisterUserResponseDto registerUser(RegisterUserDto request) {
 
-		if (!CaptchaUtil.verify(request.getCaptcha(),
-				IPMonitorFilter.ipAddress.get())) {
+		if (!CaptchaUtil.verify(request.getCaptcha(), IPMonitorFilter.ipAddress.get())) {
 			return new RegisterUserResponseDto(ErrorCode.SYSTEM_CAPTCHA_FAIL);
 		}
 		request.setVerifyEmail(true);
@@ -86,8 +80,7 @@ public class DefaultProfileService implements ProfileService {
 			return new LinkUserResponseDto(ErrorCode.USER_UNKNOWN_SOURCE);
 		}
 		// Verify User information first
-		String sourceId = TokenProcessor.getInstance(sourceSystem).process(
-				request.getSourceId());
+		String sourceId = TokenProcessor.getInstance(sourceSystem).process(request.getSourceId());
 		if (StringUtils.isEmpty(sourceId)) {
 			return new LinkUserResponseDto(ErrorCode.USER_LINK_FAILED);
 		}
@@ -96,8 +89,7 @@ public class DefaultProfileService implements ProfileService {
 		create.setDisplayName(request.getDisplayName());
 		create.setEmail(request.getEmail());
 		if (StringUtils.isEmpty(request.getUsername())) {
-			create.setUsername(MessageFormat.format("{0}-{1}",
-					request.getSourceSystem(), sourceId));
+			create.setUsername(MessageFormat.format("{0}-{1}", request.getSourceSystem(), sourceId));
 		} else {
 			create.setUsername(request.getUsername());
 		}
@@ -163,23 +155,9 @@ public class DefaultProfileService implements ProfileService {
 	}
 
 	@Override
-	public GetTutorInfoResponseDto getTutorInfo(GetTutorInfoDto request) {
-		Tutor tutor = getTutorDao().findById(request.getTutorId());
-
-		TutorInfoDto infoDto = new TutorInfoDto();
-		infoDto.from(tutor);
-
-		GetTutorInfoResponseDto result = new GetTutorInfoResponseDto();
-		result.setTutorInfo(infoDto);
-		return result;
-	}
-
-	@Override
-	public UploadProfileImageResponseDto uploadProfileImage(
-			UploadProfileImageDto request) {
+	public UploadProfileImageResponseDto uploadProfileImage(UploadProfileImageDto request) {
 		String uuid = UUID.randomUUID().toString();
-		String fileName = MessageFormat.format("{0}/{1}.jpg", getImageFolder(),
-				uuid);
+		String fileName = MessageFormat.format("{0}/{1}.jpg", getImageFolder(), uuid);
 		try {
 			FileUtil.copy(request.getImage(), new FileOutputStream(fileName));
 		} catch (IOException e) {
@@ -201,16 +179,6 @@ public class DefaultProfileService implements ProfileService {
 		Client client = getClientDao().findById(request.getCurrentUser());
 		request.getClientInfo().to(client);
 		return new SetupClientResponseDto();
-	}
-
-	@Override
-	public SetupTutorResponseDto setupTutor(SetupTutorDto request) {
-		if (request.getCurrentUser() != request.getTutorInfo().getTutorId()) {
-			return new SetupTutorResponseDto(ErrorCode.SYSTEM_NO_AUTH);
-		}
-		Tutor tutor = getTutorDao().findById(request.getCurrentUser());
-		request.getTutorInfo().to(tutor);
-		return new SetupTutorResponseDto();
 	}
 
 	private UserService userService;

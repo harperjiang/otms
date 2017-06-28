@@ -6,10 +6,11 @@
 <!--#include virtual="head.html" -->
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script type="text/javascript" src="scripts/ui/tab.js"></script>
+<script type="text/javascript" src="scripts/ui/list.js"></script>
 <script type="text/javascript" src="scripts/ui/timesheet.js"></script>
 <script type="text/javascript" src="scripts/ui/starrate.js"></script>
-<script type='text/javascript' src='dwr/interface/ProfileService.js'></script>
 <script type='text/javascript' src='dwr/interface/TutorService.js'></script>
+<script type='text/javascript' src='dwr/interface/FeedbackService.js'></script>
 <script type='text/javascript' src='code/info_tutor.js'></script>
 <style>
 .right_button {
@@ -54,8 +55,8 @@
 						<div class="row form-group">
 							<div class="col-sm-12">
 								<span id="name_span" class="form-control-static"
-									style="font-size: 25px; font-weight: bold">&nbsp;</span> <span
-									class="badge badge-info">Recommended</span>
+									style="font-size: 25px; font-weight: bold">&nbsp;</span>
+								<span class="badge badge-info">Recommended</span>
 							</div>
 						</div>
 						<div class="row form-group">
@@ -94,11 +95,11 @@
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a id="tab1"
-							class="nav-link tab-bar-item">${tab_timesheet}</a></li>
+								class="nav-link tab-bar-item">${tab_timesheet}</a></li>
 						<li class="nav-item"><a id="tab2"
-							class="nav-link tab-bar-item">${tab_selfintro}</a></li>
+								class="nav-link tab-bar-item">${tab_selfintro}</a></li>
 						<li class="nav-item"><a id="tab3"
-							class="nav-link tab-bar-item">${tab_rating}</a></li>
+								class="nav-link tab-bar-item">${tab_rating}</a></li>
 					</ul>
 				</div>
 
@@ -154,11 +155,9 @@
 						</div>
 
 					</div>
-
-
 				</div>
 				<div id="self_intro_panel" style="display: none">
-					<div class="page-block">
+					<div class="page-block container w-100">
 						<div class="page-block-title">Self Introduction</div>
 						<div class="row">
 							<div class="col-sm-12">
@@ -167,7 +166,7 @@
 						</div>
 					</div>
 
-					<div class="page-block">
+					<div class="page-block container w-100">
 						<div class="page-block-title">Video Introduction</div>
 						<div class="row">
 							<div class="col-sm-12">
@@ -177,7 +176,7 @@
 						</div>
 					</div>
 
-					<div class="page-block">
+					<div class="page-block container w-100">
 						<div class="page-block-title">Education</div>
 						<div class="row">
 							<div class="col-sm-12">
@@ -186,7 +185,7 @@
 						</div>
 					</div>
 
-					<div class="page-block">
+					<div class="page-block container w-100">
 						<div class="page-block-title">Working Experience</div>
 						<span id="working_span" class="textarea">&nbsp;</span>
 					</div>
@@ -203,9 +202,14 @@
 					<div style="clear: both"></div -->
 
 				</div>
-			</div>
-			<div id="user_rate_panel" style="display: none"></div>
 
+				<div id="user_rate_panel" style="display: none">
+					<div class="page-block">
+						<div id="rating_list_container"></div>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
 </body>

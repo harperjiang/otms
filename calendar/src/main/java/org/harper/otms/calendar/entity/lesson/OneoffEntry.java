@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.entity;
+package org.harper.otms.calendar.entity.lesson;
 
 import java.util.Date;
 import java.util.TimeZone;

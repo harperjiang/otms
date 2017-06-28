@@ -86,8 +86,8 @@ $(function() {
 		var tutorbean = tutorbm.getBean();
 		if (commonbean != null && tutorbean != null) {
 			var bean = otms.merge(pbean, commonbean, tutorbean);
-			debugger;
-			ProfileService.setupTutor(otms.auth.req({
+			
+			TutorService.setupTutor(otms.auth.req({
 				"tutorInfo" : bean
 			}), otms.ui.MessageBox.han());
 		}
@@ -124,13 +124,13 @@ $(function() {
 			if (success) {
 				var tutorInfo = data.tutorInfo;
 				// Noneditable
-				debugger;
+				
 				otms.profilePage.commonbm.setBean(tutorInfo);
 				otms.profilePage.tutorbm.setBean(tutorInfo);
 				otms.profilePage.preserveBean = tutorInfo;
 			}
 		};
-		ProfileService.getTutorInfo(req, otms.ui.MessageBox.shan(callback));
+		TutorService.getTutorInfo(req, otms.ui.MessageBox.shan(callback));
 		break;
 	}
 

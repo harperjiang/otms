@@ -1,4 +1,4 @@
-package org.harper.otms.calendar.entity;
+package org.harper.otms.calendar.entity.profile;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.harper.otms.auth.entity.User;
+import org.harper.otms.calendar.entity.setting.Timesheet;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity

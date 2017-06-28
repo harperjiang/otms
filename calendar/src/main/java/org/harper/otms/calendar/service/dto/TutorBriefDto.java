@@ -1,6 +1,6 @@
 package org.harper.otms.calendar.service.dto;
 
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.profile.Tutor;
 
 public class TutorBriefDto {
 

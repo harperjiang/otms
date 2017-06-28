@@ -2,7 +2,7 @@ package org.harper.otms.calendar.service.dto;
 
 import java.util.TimeZone;
 
-import org.harper.otms.calendar.entity.Client;
+import org.harper.otms.calendar.entity.profile.Client;
 
 public class ClientInfoDto {
 

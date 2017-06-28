@@ -5,12 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.harper.otms.calendar.entity.Client;
-import org.harper.otms.calendar.entity.Lesson;
-import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.OneoffEntry;
-import org.harper.otms.calendar.entity.RepeatEntry;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.lesson.Lesson;
+import org.harper.otms.calendar.entity.lesson.LessonItem;
+import org.harper.otms.calendar.entity.lesson.OneoffEntry;
+import org.harper.otms.calendar.entity.lesson.RepeatEntry;
+import org.harper.otms.calendar.entity.profile.Client;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.calendar.service.util.DateUtil;
 
 public class EventDto {

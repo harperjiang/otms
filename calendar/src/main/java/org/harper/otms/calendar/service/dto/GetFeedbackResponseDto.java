@@ -12,15 +12,15 @@ public class GetFeedbackResponseDto extends ResponseDto {
 		super(errcode);
 	}
 
-	private FeedbackDto feedback;
+	private LessonFeedbackDto feedback;
 
 	private LessonItemDto lessonItem;
 
-	public FeedbackDto getFeedback() {
+	public LessonFeedbackDto getFeedback() {
 		return feedback;
 	}
 
-	public void setFeedback(FeedbackDto feedback) {
+	public void setFeedback(LessonFeedbackDto feedback) {
 		this.feedback = feedback;
 	}
 

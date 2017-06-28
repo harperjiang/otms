@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.harper.otms.auth.entity.User;
-import org.harper.otms.calendar.entity.LessonItem;
+import org.harper.otms.calendar.entity.lesson.LessonItem;
 import org.harper.otms.calendar.service.util.DateUtil;
 
 public class LessonItemDto {

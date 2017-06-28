@@ -5,9 +5,9 @@ otms.ui.StarRate = function(container) {
 
 	this.fixed = false;
 	this.rdonly = false;
-	this.container.append("&nbsp;");
+	// this.container.append("&nbsp;");
 	this.container.addClass('starrate_panel');
-	this.container.addClass('starrate_0');
+	// this.container.addClass('starrate_0');
 	this.container.prop('starRateObj', this);
 
 	this.container.mousemove(this.refresh);
@@ -23,20 +23,32 @@ otms.ui.StarRate.prototype.readonly = function() {
 
 otms.ui.StarRate.prototype.setRate = function(rate) {
 	this.rate = rate;
-	var clazz = otms.FormatUtil.format('starrate_{0}', rate);
-	this.container.removeClass();
-	this.container.addClass('starrate_panel');
-	this.container.addClass(clazz);
+	// var clazz = otms.FormatUtil.format('starrate_{0}', rate);
+	// this.container.removeClass();
+	// this.container.addClass('starrate_panel');
+	// this.container.addClass(clazz);
+	this.container.empty();
+	for (var i = 0; i < 5; i++) {
+		if (i < rate) {
+			this.container
+					.append('<i class="fa fa-star" aria-hidden="true"></i>');
+		} else {
+			this.container
+					.append('<i class="fa fa-star-o" aria-hidden="true"></i>');
+		}
+	}
+
 };
 
 otms.ui.StarRate.prototype.reset = function() {
 	if (this.readonly)
 		return;
 	this.fixed = false;
-	this.rate = 0;
-	this.container.removeClass();
-	this.container.addClass('starrate_panel');
-	this.container.addClass('starrate_0');
+	//	
+	this.setRate(0);
+	// this.container.removeClass();
+	// this.container.addClass('starrate_panel');
+	// this.container.addClass('starrate_0');
 };
 
 otms.ui.StarRate.index = function(offsetX) {
@@ -76,7 +88,6 @@ otms.ui.StarRateValidator = otms.extend(otms.validator.ValidatorBase, function(
 		this.success = true;
 	},
 	value : function(val) {
-		debugger;
 		if (val === undefined) {
 			var rateobj = this.control.prop('starRateObj');
 			if (rateobj.fixed)

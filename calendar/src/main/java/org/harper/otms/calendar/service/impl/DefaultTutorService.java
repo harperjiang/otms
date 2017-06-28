@@ -2,9 +2,7 @@ package org.harper.otms.calendar.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import org.harper.otms.auth.dao.UserDao;
@@ -12,9 +10,9 @@ import org.harper.otms.auth.entity.User;
 import org.harper.otms.auth.service.ErrorCode;
 import org.harper.otms.calendar.dao.LessonDao;
 import org.harper.otms.calendar.dao.TutorDao;
-import org.harper.otms.calendar.entity.Lesson;
-import org.harper.otms.calendar.entity.Timesheet;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.lesson.Lesson;
+import org.harper.otms.calendar.entity.profile.Tutor;
+import org.harper.otms.calendar.entity.setting.Timesheet;
 import org.harper.otms.calendar.service.TutorService;
 import org.harper.otms.calendar.service.dto.EventDto;
 import org.harper.otms.calendar.service.dto.FindTutorDto;
@@ -23,10 +21,15 @@ import org.harper.otms.calendar.service.dto.GetPopularTutorDto;
 import org.harper.otms.calendar.service.dto.GetPopularTutorResponseDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetDto;
 import org.harper.otms.calendar.service.dto.GetTimesheetResponseDto;
+import org.harper.otms.calendar.service.dto.GetTutorInfoDto;
+import org.harper.otms.calendar.service.dto.GetTutorInfoResponseDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetDto;
 import org.harper.otms.calendar.service.dto.SetupTimesheetResponseDto;
+import org.harper.otms.calendar.service.dto.SetupTutorDto;
+import org.harper.otms.calendar.service.dto.SetupTutorResponseDto;
 import org.harper.otms.calendar.service.dto.TimesheetDto;
 import org.harper.otms.calendar.service.dto.TutorBriefDto;
+import org.harper.otms.calendar.service.dto.TutorInfoDto;
 import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.service.DataException;
 
@@ -36,8 +39,9 @@ public class DefaultTutorService implements TutorService {
 
 	@Override
 	public GetTimesheetResponseDto getTimesheet(GetTimesheetDto request) {
-		User viewer = getUserDao().findById(request.getCurrentUser());
 		Tutor tutor = getTutorDao().findById(request.getTutorId());
+
+		User viewer = request.getCurrentUser() == 0 ? tutor.getUser() : getUserDao().findById(request.getCurrentUser());
 
 		Timesheet timesheet = tutor.getTimesheet();
 		if (timesheet == null) {
@@ -85,7 +89,7 @@ public class DefaultTutorService implements TutorService {
 		result.setTimesheet(tsDto);
 		return result;
 	}
-	
+
 	@Override
 	public SetupTimesheetResponseDto setupTimesheet(SetupTimesheetDto request) {
 
@@ -124,6 +128,28 @@ public class DefaultTutorService implements TutorService {
 		FindTutorResponseDto response = new FindTutorResponseDto();
 
 		return response;
+	}
+
+	@Override
+	public GetTutorInfoResponseDto getTutorInfo(GetTutorInfoDto request) {
+		Tutor tutor = getTutorDao().findById(request.getTutorId());
+
+		TutorInfoDto infoDto = new TutorInfoDto();
+		infoDto.from(tutor);
+
+		GetTutorInfoResponseDto result = new GetTutorInfoResponseDto();
+		result.setTutorInfo(infoDto);
+		return result;
+	}
+
+	@Override
+	public SetupTutorResponseDto setupTutor(SetupTutorDto request) {
+		if (request.getCurrentUser() != request.getTutorInfo().getTutorId()) {
+			return new SetupTutorResponseDto(ErrorCode.SYSTEM_NO_AUTH);
+		}
+		Tutor tutor = getTutorDao().findById(request.getCurrentUser());
+		request.getTutorInfo().to(tutor);
+		return new SetupTutorResponseDto();
 	}
 
 	private TutorDao tutorDao;

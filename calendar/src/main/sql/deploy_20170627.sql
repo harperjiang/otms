@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.6.17, for osx10.6 (i386)
+-- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
 --
 -- Host: localhost    Database: otms
 -- ------------------------------------------------------
--- Server version	5.7.18
+-- Server version	5.7.18-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -155,7 +155,7 @@ CREATE TABLE `QRTZ_JOB_DETAILS` (
 
 LOCK TABLES `QRTZ_JOB_DETAILS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` DISABLE KEYS */;
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.calendar.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','¬í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚èÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
+INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.calendar.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','¬\í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°\Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚\è\Ãû\Å](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\æ.­(v\n\Î\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMap\ÚÁ\Ã`\Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -330,7 +330,7 @@ CREATE TABLE `QRTZ_TRIGGERS` (
 
 LOCK TABLES `QRTZ_TRIGGERS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` DISABLE KEYS */;
-INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498654800000,1498568400000,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'¬í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚èÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
+INSERT INTO `QRTZ_TRIGGERS` VALUES ('scheduler','trigger_Lesson_326','calendar','triggerLessonJob','calendar',NULL,1498654800000,1498568400000,5,'WAITING','CRON',1498521600000,1498867199999,NULL,0,'¬\í\0sr\0org.quartz.JobDataMapŸ°ƒè¿©°\Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMap‚\è\Ãû\Å](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMap\æ.­(v\n\Î\0Z\0dirtyL\0mapt\0Ljava/util/Map;xpsr\0java.util.HashMap\ÚÁ\Ã`\Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0t\0lessonIdt\0326x\0');
 /*!40000 ALTER TABLE `QRTZ_TRIGGERS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,6 +510,7 @@ CREATE TABLE `lesson_feedback` (
   `tutor_rate` int(1) NOT NULL DEFAULT '0',
   `fail_reason` int(1) NOT NULL DEFAULT '1',
   `comment` text,
+  `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_feedback_tutor_id_idx` (`tutor_id`),
   KEY `FK_feedback_client_id_idx` (`client_id`),
@@ -526,7 +527,7 @@ CREATE TABLE `lesson_feedback` (
 
 LOCK TABLES `lesson_feedback` WRITE;
 /*!40000 ALTER TABLE `lesson_feedback` DISABLE KEYS */;
-INSERT INTO `lesson_feedback` VALUES (1,27,677,177,1,0,0,0,''),(2,27,677,176,1,0,0,0,'');
+INSERT INTO `lesson_feedback` VALUES (1,27,677,177,1,5,4,0,'','2017-06-27 00:00:00'),(2,27,677,176,1,4,3,0,'','2017-06-27 00:00:00');
 /*!40000 ALTER TABLE `lesson_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -700,7 +701,7 @@ CREATE TABLE `tutor` (
 
 LOCK TABLES `tutor` WRITE;
 /*!40000 ALTER TABLE `tutor` DISABLE KEYS */;
-INSERT INTO `tutor` VALUES (27,27,2,'Thousands of people paraded shirt-free around the world Sunday to push for laws that would allow women to go topless in public. \"It\'s absurd that someone has judged topless women as obscene, and yet topless men is considered normal in our culture,\" said Carolyn Estes, a participant in Sunday\'s parade in Austin, Texas.','',0,'I am a native English speaker if you believe it','','');
+INSERT INTO `tutor` VALUES (27,27,2,'Thousands of people paraded shirt-free around the world Sunday to push for laws that would allow women to go topless in public. \"It\'s absurd that someone has judged topless women as obscene, and yet topless men is considered normal in our culture,\" said Carolyn Estes, a participant in Sunday\'s parade in Austin, Texas.','',4,'I am a native English speaker if you believe it','','');
 /*!40000 ALTER TABLE `tutor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -753,4 +754,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-06-27 21:29:44
+-- Dump completed on 2017-06-28  0:38:28

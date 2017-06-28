@@ -25,28 +25,7 @@ function refreshTimesheet(date) {
 	TutorService.getTimesheet(request, otms.ui.MessageBox.shan(loadTsCallback));
 };
 
-$(function() {
-	var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId", false);
-	if (otms.isEmpty(tutorId)) {
-		// Display invalid access
-		otms.ui.MessageBox.warning($('#errmsg_panel'), 'Invalid Access');
-		setTimeout(function() {
-			window.location = 'index.html';
-		}, 2000);
-		return;
-	}
-
-	otms.namespace('otms.tutorInfoPage');
-
-	// Star Rate
-	var usrRate = new otms.ui.StarRate($('#rate_span'));
-	usrRate.readonly();
-	
-	// Initialize Tab
-	otms.tutorInfoPage.tabControl = new otms.ui.tab.TabControl([ $('#tab1'),
-			$('#tab2'), $('#tab3') ], [ $('#timesheet_panel'),
-			$('#self_intro_panel'), $('#user_rate_panel') ]);
-
+function setupTimesheet() {
 	// Create Timesheet
 	otms.tutorInfoPage.timesheet = new otms.ui.timesheet.Timesheet(
 			$('#timesheet_container'), true);
@@ -124,6 +103,59 @@ $(function() {
 
 	refreshTimesheet(otms.DateUtil.toSunday(new Date()));
 
+};
+
+function setupRatingList() {
+	var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId", false);
+	var list = new otms.ui.list.List($('#rating_list_container'));
+	list.setRenderer(function(container, item) {
+		container.append(item.clientName);
+		container.append(otms.DateUtil.formatdate(item.createTime));
+		container.append(item.lessonRate);
+		container.append(item.tutorRate);
+		container.append(item.comment);
+	});
+	list.rowClicked = function(event, item) {
+
+	};
+
+	var listLoadCallback = function(success, data) {
+		if (success) {
+			list.model.setData(data.feedbacks);
+		}
+	};
+
+	FeedbackService.getTutorFeedbacks({
+		'tutorId' : tutorId,
+		'limit' : 10
+	}, otms.ui.MessageBox.shan(listLoadCallback));
+}
+
+$(function() {
+	var tutorId = otms.getPageParam("otms.tutorInfoPage.tutorId", false);
+	if (otms.isEmpty(tutorId)) {
+		// Display invalid access
+		otms.ui.MessageBox.warning($('#errmsg_panel'), 'Invalid Access');
+		setTimeout(function() {
+			window.location = 'index.html';
+		}, 2000);
+		return;
+	}
+
+	otms.namespace('otms.tutorInfoPage');
+
+	// Star Rate
+	var usrRate = new otms.ui.StarRate($('#rate_span'));
+	usrRate.readonly();
+
+	// Initialize Tab
+	otms.tutorInfoPage.tabControl = new otms.ui.tab.TabControl([ $('#tab1'),
+			$('#tab2'), $('#tab3') ], [ $('#timesheet_panel'),
+			$('#self_intro_panel'), $('#user_rate_panel') ]);
+
+	setupTimesheet();
+	setupRatingList();
+
 	var vbm = new otms.validator.BeanManager();
 	vbm.reg('displayName', $('#name_span'));
 	vbm.reg('username', $('#username_span'));
@@ -131,8 +163,8 @@ $(function() {
 	vbm.reg('pictureUrl', $('#profile_img'));
 	vbm.reg('rating', $('#rate_span'));
 
-	 vbm.reg('description', $('#desc_span'));
-	 
+	vbm.reg('description', $('#desc_span'));
+
 	vbm.reg('statement', $('#stmt_span'));
 	vbm.reg('eduInfo', $('#edu_span'));
 	vbm.reg('workingInfo', $('#working_span'));
@@ -149,6 +181,6 @@ $(function() {
 			otms.tutorInfoPage.viewbm.setBean(tutorInfo);
 		}
 	};
-	ProfileService.getTutorInfo(req, otms.ui.MessageBox.shan(callback));
+	TutorService.getTutorInfo(req, otms.ui.MessageBox.shan(callback));
 
 });

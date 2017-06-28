@@ -1,6 +1,6 @@
 package org.harper.otms.calendar.entity;
 
-import org.harper.otms.calendar.entity.RepeatEntry.DateExpression;
+import org.harper.otms.calendar.entity.lesson.RepeatEntry.DateExpression;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 
 import org.harper.otms.auth.entity.User;
-import org.harper.otms.calendar.entity.Timesheet;
+import org.harper.otms.calendar.entity.setting.Timesheet;
 import org.harper.otms.calendar.service.util.DateUtil;
 
 public class TimesheetDto {

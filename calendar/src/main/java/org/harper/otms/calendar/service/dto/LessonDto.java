@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.harper.otms.auth.entity.User;
-import org.harper.otms.calendar.entity.CalendarEntry;
-import org.harper.otms.calendar.entity.Lesson;
-import org.harper.otms.calendar.entity.OneoffEntry;
-import org.harper.otms.calendar.entity.RepeatEntry;
-import org.harper.otms.calendar.entity.RepeatEntry.DateExpression;
+import org.harper.otms.calendar.entity.lesson.CalendarEntry;
+import org.harper.otms.calendar.entity.lesson.Lesson;
+import org.harper.otms.calendar.entity.lesson.OneoffEntry;
+import org.harper.otms.calendar.entity.lesson.RepeatEntry;
+import org.harper.otms.calendar.entity.lesson.RepeatEntry.DateExpression;
 import org.harper.otms.calendar.service.util.DateUtil;
 import org.springframework.util.StringUtils;
 

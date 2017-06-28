@@ -4,10 +4,10 @@ import java.text.MessageFormat;
 import java.util.TimeZone;
 
 import org.harper.otms.calendar.dao.SchedulerDao;
-import org.harper.otms.calendar.entity.Lesson;
-import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.OneoffEntry;
-import org.harper.otms.calendar.entity.RepeatEntry;
+import org.harper.otms.calendar.entity.lesson.Lesson;
+import org.harper.otms.calendar.entity.lesson.LessonItem;
+import org.harper.otms.calendar.entity.lesson.OneoffEntry;
+import org.harper.otms.calendar.entity.lesson.RepeatEntry;
 import org.harper.otms.calendar.service.impl.TriggerLessonJobDetail;
 import org.harper.otms.calendar.service.util.DateUtil;
 import org.harper.otms.common.dao.Entity;

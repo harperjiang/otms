@@ -1,34 +1,36 @@
 package org.harper.otms.calendar.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.harper.otms.auth.dao.UserDao;
 import org.harper.otms.auth.entity.User;
 import org.harper.otms.calendar.dao.FeedbackDao;
 import org.harper.otms.calendar.dao.LessonItemDao;
 import org.harper.otms.calendar.dao.TodoDao;
-import org.harper.otms.calendar.entity.LessonFeedback;
-import org.harper.otms.calendar.entity.LessonItem;
-import org.harper.otms.calendar.entity.LessonItem.FeedbackStatus;
 import org.harper.otms.calendar.entity.Todo;
+import org.harper.otms.calendar.entity.lesson.LessonFeedback;
+import org.harper.otms.calendar.entity.lesson.LessonItem;
+import org.harper.otms.calendar.entity.lesson.LessonItem.FeedbackStatus;
 import org.harper.otms.calendar.service.ErrorCode;
 import org.harper.otms.calendar.service.FeedbackService;
 import org.harper.otms.calendar.service.dto.ClientFeedbackDto;
 import org.harper.otms.calendar.service.dto.ClientFeedbackResponseDto;
-import org.harper.otms.calendar.service.dto.FeedbackDto;
+import org.harper.otms.calendar.service.dto.LessonFeedbackDto;
 import org.harper.otms.calendar.service.dto.GetFeedbackDto;
 import org.harper.otms.calendar.service.dto.GetFeedbackResponseDto;
+import org.harper.otms.calendar.service.dto.GetTutorFeedbacksDto;
+import org.harper.otms.calendar.service.dto.GetTutorFeedbacksResponseDto;
 import org.harper.otms.calendar.service.dto.LessonItemDto;
-import org.harper.otms.calendar.service.dto.TutorFeedbackDto;
-import org.harper.otms.calendar.service.dto.TutorFeedbackResponseDto;
+import org.harper.otms.calendar.service.util.DateUtil;
 
 public class DefaultFeedbackService implements FeedbackService {
 
 	@Override
 	public ClientFeedbackResponseDto clientFeedback(ClientFeedbackDto request) {
-		LessonItem item = getLessonItemDao()
-				.findById(request.getLessonItemId());
+		LessonItem item = getLessonItemDao().findById(request.getLessonItemId());
 		if (item == null) {
-			return new ClientFeedbackResponseDto(
-					ErrorCode.SYSTEM_DATA_NOT_FOUND);
+			return new ClientFeedbackResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		}
 		if (item.getLesson().getClient().getId() != request.getCurrentUser()) {
 			return new ClientFeedbackResponseDto(ErrorCode.SYSTEM_NO_AUTH);
@@ -38,6 +40,7 @@ public class DefaultFeedbackService implements FeedbackService {
 		 * Save feedback item
 		 */
 		LessonFeedback feedback = new LessonFeedback();
+		feedback.setCreateTime(DateUtil.nowUTC());
 		feedback.setLessonItem(item);
 		feedback.setClient(item.getLesson().getClient());
 		feedback.setTutor(item.getLesson().getTutor());
@@ -61,8 +64,7 @@ public class DefaultFeedbackService implements FeedbackService {
 		/*
 		 * Remove related todo item
 		 */
-		Todo todo = getTodoDao().findByOwnerTypeAndRefId(
-				feedback.getClient().getUser(), Todo.Type.CLIENT_FEEDBACK,
+		Todo todo = getTodoDao().findByOwnerTypeAndRefId(feedback.getClient().getUser(), Todo.Type.CLIENT_FEEDBACK,
 				item.getId());
 		getTodoDao().delete(todo);
 
@@ -72,8 +74,7 @@ public class DefaultFeedbackService implements FeedbackService {
 	@Override
 	public GetFeedbackResponseDto getFeedback(GetFeedbackDto request) {
 		User currentUser = getUserDao().findById(request.getCurrentUser());
-		LessonFeedback feedback = getFeedbackDao().findByLessonItemId(
-				request.getLessonItemId());
+		LessonFeedback feedback = getFeedbackDao().findByLessonItemId(request.getLessonItemId());
 		if (feedback == null)
 			return new GetFeedbackResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
 		if (feedback.getTutor().getId() != request.getCurrentUser()
@@ -83,8 +84,8 @@ public class DefaultFeedbackService implements FeedbackService {
 
 		GetFeedbackResponseDto response = new GetFeedbackResponseDto();
 
-		FeedbackDto fdto = new FeedbackDto();
-		fdto.from(feedback);
+		LessonFeedbackDto fdto = new LessonFeedbackDto();
+		fdto.from(feedback, currentUser);
 
 		LessonItemDto ldto = new LessonItemDto();
 		ldto.from(feedback.getLessonItem(), currentUser);
@@ -96,9 +97,22 @@ public class DefaultFeedbackService implements FeedbackService {
 	}
 
 	@Override
-	public TutorFeedbackResponseDto tutorFeedback(TutorFeedbackDto request) {
-		// TODO Auto-generated method stub
-		return null;
+	public GetTutorFeedbacksResponseDto getTutorFeedbacks(GetTutorFeedbacksDto request) {
+		User tutor = getUserDao().findById(request.getTutorId());
+		if (tutor == null || !tutor.isTutor()) {
+			return new GetTutorFeedbacksResponseDto(ErrorCode.SYSTEM_DATA_NOT_FOUND);
+		}
+		List<LessonFeedback> feedbacks = getFeedbackDao().findByTutor(request.getTutorId(), request.getLimit());
+		List<LessonFeedbackDto> dtos = feedbacks.stream().map((LessonFeedback fb) -> {
+			LessonFeedbackDto fbdto = new LessonFeedbackDto();
+			fbdto.from(fb, tutor);
+			return fbdto;
+		}).collect(Collectors.toList());
+
+		GetTutorFeedbacksResponseDto response = new GetTutorFeedbacksResponseDto();
+		response.setFeedbacks(dtos);
+
+		return response;
 	}
 
 	private LessonItemDao lessonItemDao;

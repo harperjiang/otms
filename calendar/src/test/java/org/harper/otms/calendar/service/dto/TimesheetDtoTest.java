@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.harper.otms.auth.entity.User;
-import org.harper.otms.calendar.entity.Timesheet;
+import org.harper.otms.calendar.entity.setting.Timesheet;
 import org.junit.Test;
 
 public class TimesheetDtoTest {

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.harper.otms.calendar.entity.lesson.OneoffEntry;
 import org.junit.Assert;
 import org.junit.Test;
 

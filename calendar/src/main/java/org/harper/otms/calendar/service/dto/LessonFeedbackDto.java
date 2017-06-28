@@ -1,8 +1,13 @@
 package org.harper.otms.calendar.service.dto;
 
-import org.harper.otms.calendar.entity.LessonFeedback;
+import java.util.Date;
+import java.util.TimeZone;
 
-public class FeedbackDto {
+import org.harper.otms.auth.entity.User;
+import org.harper.otms.calendar.entity.lesson.LessonFeedback;
+import org.harper.otms.calendar.service.util.DateUtil;
+
+public class LessonFeedbackDto {
 
 	private int id;
 
@@ -16,13 +21,22 @@ public class FeedbackDto {
 
 	private String comment;
 
-	public void from(LessonFeedback fb) {
+	private Date createTime;
+
+	private String tutorName;
+	
+	private String clientName;
+	
+	public void from(LessonFeedback fb, User viewer) {
 		setId(fb.getId());
+		setTutorName(fb.getTutor().getUser().getName());
+		setClientName(fb.getClient().getUser().getName());
 		setSuccess(fb.isSuccess());
 		setFailReason(fb.getFailReason());
 		setTutorRate(fb.getTutorRate());
 		setLessonRate(fb.getLessonRate());
 		setComment(fb.getComment());
+		setCreateTime(DateUtil.convert(fb.getCreateTime(), TimeZone.getTimeZone("UTC"), viewer.getTimezone()));
 	}
 
 	public void to(LessonFeedback fb) {
@@ -75,6 +89,30 @@ public class FeedbackDto {
 
 	public void setFailReason(int failReason) {
 		this.failReason = failReason;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getTutorName() {
+		return tutorName;
+	}
+
+	public void setTutorName(String tutorName) {
+		this.tutorName = tutorName;
+	}
+
+	public String getClientName() {
+		return clientName;
+	}
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
 	}
 
 }

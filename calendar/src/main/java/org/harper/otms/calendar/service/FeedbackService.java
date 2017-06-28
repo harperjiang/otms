@@ -4,8 +4,8 @@ import org.harper.otms.calendar.service.dto.ClientFeedbackDto;
 import org.harper.otms.calendar.service.dto.ClientFeedbackResponseDto;
 import org.harper.otms.calendar.service.dto.GetFeedbackDto;
 import org.harper.otms.calendar.service.dto.GetFeedbackResponseDto;
-import org.harper.otms.calendar.service.dto.TutorFeedbackDto;
-import org.harper.otms.calendar.service.dto.TutorFeedbackResponseDto;
+import org.harper.otms.calendar.service.dto.GetTutorFeedbacksDto;
+import org.harper.otms.calendar.service.dto.GetTutorFeedbacksResponseDto;
 
 public interface FeedbackService {
 	/**
@@ -22,13 +22,13 @@ public interface FeedbackService {
 	 * @return
 	 */
 	GetFeedbackResponseDto getFeedback(GetFeedbackDto request);
-	
+
 	/**
-	 * Tutor leave feedback for a lesson
+	 * Get all feedbacks for a given tutor
 	 * 
 	 * @param request
 	 * @return
 	 */
-	TutorFeedbackResponseDto tutorFeedback(TutorFeedbackDto request);
+	GetTutorFeedbacksResponseDto getTutorFeedbacks(GetTutorFeedbacksDto request);
 
 }

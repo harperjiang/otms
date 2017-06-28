@@ -8,7 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 
 import org.harper.otms.calendar.dao.TutorDao;
-import org.harper.otms.calendar.entity.Tutor;
+import org.harper.otms.calendar.entity.profile.Tutor;
 import org.harper.otms.common.dao.JpaDao;
 
 public class JpaTutorDao extends JpaDao<Tutor> implements TutorDao {
