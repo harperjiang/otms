@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.harper.otms.auth.entity.User;
 
 @Entity
-@Table(name = "client")
+@Table(name = "profile_client")
 public class Client extends org.harper.otms.common.dao.Entity {
 
 	@OneToOne

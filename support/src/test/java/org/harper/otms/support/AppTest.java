@@ -1,4 +1,4 @@
-package org.support;
+package org.harper.otms.support;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

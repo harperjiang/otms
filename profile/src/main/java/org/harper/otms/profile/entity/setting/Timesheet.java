@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
-@Table(name = "timesheet")
+@Table(name = "profile_timesheet")
 public class Timesheet extends Entity {
 
 	public static String DEFAULT = "";
@@ -33,7 +33,7 @@ public class Timesheet extends Entity {
 	private String defaultValue = DEFAULT;
 
 	@ElementCollection
-	@CollectionTable(name = "timesheet_item", joinColumns = @JoinColumn(name = "timesheet_id"))
+	@CollectionTable(name = "profile_timesheet_item", joinColumns = @JoinColumn(name = "timesheet_id"))
 	@MapKeyColumn(name = "ref_date")
 	@Column(name = "value")
 	private Map<Date, String> values = new HashMap<Date, String>();

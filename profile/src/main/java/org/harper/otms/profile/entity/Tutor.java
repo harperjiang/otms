@@ -15,7 +15,7 @@ import org.harper.otms.common.dao.Entity;
 import org.harper.otms.profile.entity.setting.Timesheet;
 
 @javax.persistence.Entity
-@Table(name = "tutor")
+@Table(name = "profile_tutor")
 public class Tutor extends Entity {
 
 	@OneToOne

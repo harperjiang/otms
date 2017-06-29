@@ -94,13 +94,16 @@
 			match="org.harper.otms.lesson.service.dto.TimeDto">
 			<param name="exclude" value="total" />
 		</convert>
+		<convert converter="mydate" match="java.util.Date" />
+		<convert converter="file" match="java.awt.image.BufferedImage" />
 
+		<convert converter="bean" match="org.harper.otms.support.service.dto.*" />
+		<convert converter="bean" match="org.harper.otms.profile.service.dto.*" />
+		<convert converter="bean" match="org.harper.otms.accounting.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.lesson.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.common.dto.*" />
 
-		<convert converter="mydate" match="java.util.Date" />
-		<convert converter="file" match="java.awt.image.BufferedImage" />
 
 
 		<!-- this is a bad idea for live, but can be useful in testing -->

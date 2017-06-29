@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.harper.otms.common.dao.Entity;
 
 @javax.persistence.Entity
-@Table(name = "calendar_entry")
+@Table(name = "lesson_calendar")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "calendar_type")
 public abstract class CalendarEntry extends Entity {
