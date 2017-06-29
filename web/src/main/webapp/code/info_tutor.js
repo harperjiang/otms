@@ -54,6 +54,11 @@ function setupTimesheet() {
 		if (item.prop('timesheet_value') != 1) {
 			return;
 		}
+		if(otms.isEmpty(otms.auth.currentUser())) {
+			// Not logged in
+			$('#loginprompt_dialog').modal('show');
+			return;
+		}
 		// Set content
 		var dataBean = otms.tutorInfoPage.viewbm.getBean();
 		var tutorName = dataBean.username;

@@ -41,8 +41,8 @@
 </style>
 </head>
 <body>
-	<!--#include virtual="menu.html" -->
-	<div class="page-menu">
+	<!--#include virtual="navbar.html" -->
+	<div class="page-nomenu">
 		<div id="errmsg_panel"></div>
 		<div class="page-content">
 			<div id="profile_view_page" class="page-block container w-100">
@@ -211,26 +211,7 @@
 
 			</div>
 
-			<div id="loginprompt_dialog" class="modal fade">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">${prompt_notlogin_title}</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<p>${prompt_notlogin_msg}</p>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-primary"
-								data-dismiss="modal">${prompt_close}</button>
-						</div>
-					</div>
-				</div>
-			</div>
+
 		</div>
 	</div>
 </body>

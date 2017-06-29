@@ -1,7 +1,7 @@
 package org.harper.otms.profile.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.harper.otms.auth.dao.UserDao;
 import org.harper.otms.auth.entity.User;
@@ -70,14 +70,12 @@ public class DefaultTutorService implements TutorService {
 		GetPopularTutorResponseDto response = new GetPopularTutorResponseDto();
 
 		List<Tutor> populars = getTutorDao().findPopular();
-		List<TutorBriefDto> tbs = new ArrayList<TutorBriefDto>();
-		for (Tutor t : populars) {
+		List<TutorBriefDto> tbs = populars.stream().map((Tutor t) -> {
 			TutorBriefDto tbd = new TutorBriefDto();
 			tbd.from(t);
-			tbs.add(tbd);
-		}
+			return tbd;
+		}).collect(Collectors.toList());
 		response.setTutors(tbs);
-
 		return response;
 	}
 

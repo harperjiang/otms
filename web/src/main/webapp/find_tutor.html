@@ -6,80 +6,45 @@
 <!--#include virtual="head.html" -->
 <script type='text/javascript' src='dwr/interface/TutorService.js'></script>
 <script type="text/javascript" src="scripts/validator.js"></script>
+<script type="text/javascript" src="scripts/ui/starrate.js"></script>
 <script type="text/javascript" src="scripts/ui/list.js"></script>
 <script type="text/javascript" src="code/find_tutor.js"></script>
 
 <style>
-.tutor_block {
-	float: left;
-	width: 90%;
+.tutor-block {
 	margin: 10px;
 	cursor: pointer;
 	padding: 10px;
-	height: 160px;
-	position: relative;
 }
 
-.tutor_block:hover {
+.tutor-block:hover {
 	background-color: rgba(160, 214, 245, 0.2);
 }
 
-.tutor_photo_panel {
-	width: 100px;
-	height: 100px;
-	background-color: #ccc;
-	float: left;
-	margin-right: 20px;
+.tutor-photo-panel {
+	
 }
 
-.tutor_info_panel {
-	overflow: hidden;
+.tutor-photo-panel img {
+	border-radius: 50%;
 }
 
-.tutor_info_wrapper {
-	width: 100%;
-	float: left;
-	overflow: hidden;
-}
-
-.tutor_name_panel {
+.tutor-name {
 	font-weight: bold;
 	font-size: 24px;
-	margin-bottom: 5px;
 }
 
-.tutor_desc_panel {
+.tutor-desc {
 	font-size: 14px;
 	font-style: italic;
-	line-height: 160%;
-	height: 90px;
-	overflow: hidden;
 }
 
-.tutor_block_menu {
-	position: absolute;
-	height: 25px;
-	bottom: 0px;
-	left: 350px;
-}
-
-.tutor_block_menu a {
-	font-size: 14px;
-	display: inline-block;
-	margin: 5px;
-}
-</style>
-<script>
-
-</script>
-
-<style type="text/css">
-.intro_img {
+.intro-img {
 	float: left;
 	width: 40px;
 }
 
-.intro_text {
+.intro-text {
 	margin-left: 40px;
 	padding-left: 10px;
 }
@@ -93,22 +58,22 @@
 		<div class="page-block container w-100">
 			<div class="row">
 				<div class="col-sm-4">
-					<div class="intro_img">
+					<div class="intro-img">
 						<img src="resource/tutor_certification.png" width="100%" />
 					</div>
-					<div class="intro_text">持有儿童教育相关专业本科或硕士文凭，通过美国公立学校教师认证考试。</div>
+					<div class="intro-text">持有儿童教育相关专业本科或硕士文凭，通过美国公立学校教师认证考试。</div>
 				</div>
 				<div class="col-sm-4">
-					<div class="intro_img">
+					<div class="intro-img">
 						<img src="resource/tutor_experience.png" width="100%" />
 					</div>
-					<div class="intro_text">熟悉适合儿童的教学方式和课程安排，有丰富早教经验。对待孩子耐心且积极。</div>
+					<div class="intro-text">熟悉适合儿童的教学方式和课程安排，有丰富早教经验。对待孩子耐心且积极。</div>
 				</div>
 				<div class="col-sm-4">
-					<div class="intro_img">
+					<div class="intro-img">
 						<img src="resource/tutor_choice.png" width="100%" />
 					</div>
-					<div class="intro_text">熟悉网络教室环境，充分利用白板等电子教学工具引导并激发学生的学习兴趣。</div>
+					<div class="intro-text">熟悉网络教室环境，充分利用白板等电子教学工具引导并激发学生的学习兴趣。</div>
 				</div>
 			</div>
 		</div>
@@ -117,11 +82,9 @@
 			<div class="page-row row">
 				<div class="form-group col-sm-12">
 					<div class="input-group">
-						<span class="input-group-addon" id="btnGroupAddon">
-							<i class="fa fa-search" aria-hidden="true"></i>
-						</span>
-
-						<input type="text" id="keyword_input" class="form-control"
+						<span class="input-group-addon" id="btnGroupAddon"> <i
+							class="fa fa-search" aria-hidden="true"></i>
+						</span> <input type="text" id="keyword_input" class="form-control"
 							placeholder="关键字搜索（外教的名字，简介等）" />
 
 					</div>
@@ -132,24 +95,46 @@
 					<label class="col-form-label">接受学生年龄</label>
 				</div>
 				<div class="col-sm-8">
-					<select class="custom-select">
-						<option>所有</option>
-						<option>学前</option>
-						<option>小学</option>
-						<option>初，高中</option>
-						<option>成年</option>
+					<select class="custom-select" id="level_select">
+						<option value=0>所有</option>
+						<option value=1>学前</option>
+						<option value=2>小学</option>
+						<option value=3>初，高中</option>
+						<option value=4>成年</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="page-row">
-				<button id="find-btn" class="btn btn-nm btn-info">搜索外教</button>
-				<button id="lucky-btn" class="btn btn-nm btn-success">请帮我选择</button>
+				<button id="find_btn" class="btn btn-nm btn-info">搜索外教</button>
+				<button id="lucky_btn" class="btn btn-nm btn-success">请帮我选择</button>
 			</div>
 		</div>
 		<div class="page-block">
 			<div id="tutor_container"></div>
+			<div id="trial_lesson_dialog" class="modal fade"
+				style="margin-top: 100px">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">申请试听课</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<p>请先登录，然后申请试听课</p>
+						</div>
+						<div class="modal-footer">
+							<button type="button" data-dismiss="modal"
+								class="btn btn-primary">确定</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

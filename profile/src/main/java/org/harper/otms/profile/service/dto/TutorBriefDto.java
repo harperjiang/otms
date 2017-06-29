@@ -10,13 +10,19 @@ public class TutorBriefDto {
 
 	private String name;
 
-	private String description;
+	private String statement;
+	
+	private double rate;
+	
+	private String displayName;
 
 	public void from(Tutor tutor) {
 		setTutorId(tutor.getId());
 		setPictureUrl(tutor.getPictureUrl());
 		setName(tutor.getUser().getName());
-		setDescription(tutor.getDescription());
+		setStatement(tutor.getStatement());
+		setRate(tutor.getRating());
+		setDisplayName(tutor.getUser().getDisplayName());
 	}
 
 	public int getTutorId() {
@@ -43,12 +49,28 @@ public class TutorBriefDto {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getStatement() {
+		return statement;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setStatement(String statement) {
+		this.statement = statement;
+	}
+
+	public double getRate() {
+		return rate;
+	}
+
+	public void setRate(double rate) {
+		this.rate = rate;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 }

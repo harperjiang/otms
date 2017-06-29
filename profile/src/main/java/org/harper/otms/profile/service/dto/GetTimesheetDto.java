@@ -14,4 +14,9 @@ public class GetTimesheetDto extends RequestDto {
 		this.tutorId = tutorId;
 	}
 
+	@Override
+	public boolean needValidation() {
+		return false;
+	}
+
 }
