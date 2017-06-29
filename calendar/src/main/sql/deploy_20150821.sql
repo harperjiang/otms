@@ -154,7 +154,7 @@ CREATE TABLE `QRTZ_JOB_DETAILS` (
 
 LOCK TABLES `QRTZ_JOB_DETAILS` WRITE;
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` DISABLE KEYS */;
-INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.calendar.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','¬í\0sr\0org.quartz.JobDataMap°è¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapèÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
+INSERT INTO `QRTZ_JOB_DETAILS` VALUES ('scheduler','triggerLessonJob','calendar',NULL,'org.harper.otms.lesson.service.impl.TriggerLessonJobDetail$TriggerLessonJob','1','0','0','0','¬í\0sr\0org.quartz.JobDataMap°è¿©°Ë\0\0xr\0&org.quartz.utils.StringKeyDirtyFlagMapèÃûÅ](\0Z\0allowsTransientDataxr\0org.quartz.utils.DirtyFlagMapæ.­(v\nÎ\0Z\0dirtyL\0mapt\0Ljava/util/Map;xp\0sr\0java.util.HashMapÚÁÃ`Ñ\0F\0\nloadFactorI\0	thresholdxp?@\0\0\0\0\0w\0\0\0\0\0\0\0x\0');
 /*!40000 ALTER TABLE `QRTZ_JOB_DETAILS` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -7,9 +7,12 @@
   <packaging>pom</packaging>
   <name>Online Tutor Management System</name>
   <modules>
-    <module>calendar</module>
-    <module>auth</module>
-    <module>common</module>
-    <module>accounting</module>
+    <module>otms-web</module>
+    <module>otms-auth</module>
+    <module>otms-common</module>
+    <module>otms-accounting</module>
+    <module>otms-lesson</module>
+    <module>otms-profile</module>
+    <module>support</module>
   </modules>
 </project>

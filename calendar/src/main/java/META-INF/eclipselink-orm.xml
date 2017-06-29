@@ -32,21 +32,21 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.profile.Tutor">
+	<entity class="org.harper.otms.profile.entity.Tutor">
 		<attributes>
 			<id name="id">
 				<column name="id" />
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.profile.Client">
+	<entity class="org.harper.otms.profile.entity.Client">
 		<attributes>
 			<id name="id">
 				<column name="id" />
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.setting.Timesheet">
+	<entity class="org.harper.otms.profile.entity.setting.Timesheet">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -54,7 +54,7 @@
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.lesson.Lesson">
+	<entity class="org.harper.otms.lesson.entity.Lesson">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -62,7 +62,7 @@
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.lesson.CalendarEntry">
+	<entity class="org.harper.otms.lesson.entity.CalendarEntry">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -70,7 +70,7 @@
 			</id>
 		</attributes>
 	</entity>
-	<entity class="org.harper.otms.calendar.entity.lesson.LessonItem">
+	<entity class="org.harper.otms.lesson.entity.LessonItem">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -79,7 +79,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.ActionLog">
+	<entity class="org.harper.otms.support.entity.ActionLog">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -88,7 +88,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.Todo">
+	<entity class="org.harper.otms.support.entity.Todo">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -97,7 +97,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.lesson.LessonFeedback">
+	<entity class="org.harper.otms.lesson.entity.LessonFeedback">
 		<attributes>
 			<id name="id">
 				<column name="id" />
@@ -106,7 +106,7 @@
 		</attributes>
 	</entity>
 
-	<entity class="org.harper.otms.calendar.entity.ContactUs">
+	<entity class="org.harper.otms.support.entity.ContactUs">
 		<attributes>
 			<id name="id">
 				<column name="id" />

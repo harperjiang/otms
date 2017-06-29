@@ -5,19 +5,19 @@
 	<persistence-unit name="calendar" transaction-type="RESOURCE_LOCAL">
 		<non-jta-data-source>java:comp/env/jdbc/OTMSDatasource</non-jta-data-source>
 		<mapping-file>META-INF/eclipselink-orm.xml</mapping-file>
-		<class>org.harper.otms.calendar.entity.profile.Tutor</class>
-		<class>org.harper.otms.calendar.entity.profile.Client</class>
-		<class>org.harper.otms.calendar.entity.lesson.Lesson</class>
-		<class>org.harper.otms.calendar.entity.lesson.CalendarEntry</class>
-		<class>org.harper.otms.calendar.entity.lesson.RepeatEntry</class>
-		<class>org.harper.otms.calendar.entity.lesson.OneoffEntry</class>
-		<class>org.harper.otms.calendar.entity.lesson.LessonItem</class>
-		<class>org.harper.otms.calendar.entity.setting.Timesheet</class>
+		<class>org.harper.otms.profile.entity.Tutor</class>
+		<class>org.harper.otms.profile.entity.Client</class>
+		<class>org.harper.otms.lesson.entity.Lesson</class>
+		<class>org.harper.otms.lesson.entity.CalendarEntry</class>
+		<class>org.harper.otms.lesson.entity.RepeatEntry</class>
+		<class>org.harper.otms.lesson.entity.OneoffEntry</class>
+		<class>org.harper.otms.lesson.entity.LessonItem</class>
+		<class>org.harper.otms.profile.entity.setting.Timesheet</class>
 		<class>org.harper.otms.auth.entity.User</class>
-		<class>org.harper.otms.calendar.entity.ActionLog</class>
-		<class>org.harper.otms.calendar.entity.Todo</class>
-		<class>org.harper.otms.calendar.entity.lesson.LessonFeedback</class>
-		<class>org.harper.otms.calendar.entity.ContactUs</class>
+		<class>org.harper.otms.support.entity.ActionLog</class>
+		<class>org.harper.otms.support.entity.Todo</class>
+		<class>org.harper.otms.lesson.entity.LessonFeedback</class>
+		<class>org.harper.otms.support.entity.ContactUs</class>
 		<properties>
 			<property name="eclipselink.jdbc.batch-writing" value="JDBC" />
 			<property name="eclipselink.logging.level" value="ALL" />

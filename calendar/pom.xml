@@ -8,13 +8,13 @@
 		<artifactId>otms</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>otms-calendar</artifactId>
+	<artifactId>otms-web</artifactId>
 	<packaging>war</packaging>
-	<name>OTMS Calendar Webapp</name>
+	<name>OTMS Webapp</name>
 	<url>http://maven.apache.org</url>
 
 	<build>
-		<finalName>calendar</finalName>
+		<finalName>web</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -28,16 +28,7 @@
 	</build>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz</artifactId>
-			<version>2.2.1</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -52,6 +43,21 @@
 		<dependency>
 			<groupId>org.harper</groupId>
 			<artifactId>otms-auth</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-lesson</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-profile</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.harper</groupId>
+			<artifactId>otms-support</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

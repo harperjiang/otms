@@ -91,11 +91,11 @@
 
 
 		<convert converter="bean"
-			match="org.harper.otms.calendar.service.dto.TimeDto">
+			match="org.harper.otms.lesson.service.dto.TimeDto">
 			<param name="exclude" value="total" />
 		</convert>
 
-		<convert converter="bean" match="org.harper.otms.calendar.service.dto.*" />
+		<convert converter="bean" match="org.harper.otms.lesson.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.auth.service.dto.*" />
 		<convert converter="bean" match="org.harper.otms.common.dto.*" />
 
