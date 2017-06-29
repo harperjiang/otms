@@ -122,57 +122,57 @@
 </style>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
+	<!--#include virtual="navbar.html" -->
+	<div class="page-nomenu">
 		<div id="errmsg_panel"></div>
-		<div style="clear: both"></div>
-		<div id="page_content_nomenu">
-			<div class="page_title">寻找一位专业外教</div>
-			<div class="page_block">
-				<div class="intro_block">
-					<div class="intro_img">
-						<img src="resource/tutor_certification.png" width="100%" />
-					</div>
-					<div class="intro_text">持有儿童教育相关专业本科或硕士文凭，通过美国公立学校教师认证考试。</div>
+		<div class="page-title">寻找一位专业外教</div>
+		<div class="page-block">
+			<div class="intro_block">
+				<div class="intro_img">
+					<img src="resource/tutor_certification.png" width="100%" />
 				</div>
-				<div class="intro_block">
-					<div class="intro_img">
-						<img src="resource/tutor_experience.png" width="100%" />
-					</div>
-					<div class="intro_text">熟悉适合儿童的教学方式和课程安排，有丰富早教经验。对待孩子耐心且积极。</div>
-				</div>
-				<div class="intro_block">
-					<div class="intro_img">
-						<img src="resource/tutor_choice.png" width="100%" />
-					</div>
-					<div class="intro_text">熟悉网络教室环境，充分利用白板等电子教学工具引导并激发学生的学习兴趣。</div>
-				</div>
+				<div class="intro_text">持有儿童教育相关专业本科或硕士文凭，通过美国公立学校教师认证考试。</div>
 			</div>
-			<div class="page_block">
-				<div class="page_block_title">您想寻找这样的外教吗？</div>
-				<div class="page_row">
-					<input type="text" id="keyword_input"
-						placeholder="关键字搜索（外教的名字，简介等）" />
+			<div class="intro_block">
+				<div class="intro_img">
+					<img src="resource/tutor_experience.png" width="100%" />
 				</div>
-				<div class="page_row">
-					<label>擅长教授的学生年龄</label> <select>
-						<option>3-5岁</option>
-						<option>5-8岁</option>
-						<option>8-12岁</option>
-						<option>12-16岁</option>
-						<option>成年</option>
-					</select>
-				</div>
-				<div class="page_row">
-					<label><input id="favorite_check" type='checkbox' />只搜索我感兴趣的外教</label>
-				</div>
-				<div class="page_row">
-					<button id="btn_find" class="btn_normal">搜索外教</button>
-					<button id="btn_lucky" class="btn_normal">请帮我选择</button>
-				</div>
+				<div class="intro_text">熟悉适合儿童的教学方式和课程安排，有丰富早教经验。对待孩子耐心且积极。</div>
 			</div>
-			<div id="tutor_container"></div>
+			<div class="intro_block">
+				<div class="intro_img">
+					<img src="resource/tutor_choice.png" width="100%" />
+				</div>
+				<div class="intro_text">熟悉网络教室环境，充分利用白板等电子教学工具引导并激发学生的学习兴趣。</div>
+			</div>
 		</div>
+		<div class="page-block">
+			<div class="page-block_title">您想寻找这样的外教吗？</div>
+			<div class="page-row">
+				<input type="text" id="keyword_input" placeholder="关键字搜索（外教的名字，简介等）" />
+			</div>
+			<div class="page-row">
+				<label>擅长教授的学生年龄</label>
+				<select>
+					<option>3-5岁</option>
+					<option>5-8岁</option>
+					<option>8-12岁</option>
+					<option>12-16岁</option>
+					<option>成年</option>
+				</select>
+			</div>
+			<div class="page-row">
+				<label>
+					<input id="favorite_check" type='checkbox' />
+					只搜索我感兴趣的外教
+				</label>
+			</div>
+			<div class="page-row">
+				<button id="btn_find" class="btn_normal">搜索外教</button>
+				<button id="btn_lucky" class="btn_normal">请帮我选择</button>
+			</div>
+		</div>
+		<div id="tutor_container"></div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

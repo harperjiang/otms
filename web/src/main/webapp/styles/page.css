@@ -32,6 +32,12 @@
 		padding-left: 20px;
 		padding-right: 20px;
 	}
+	.page-nomenu {
+		padding-top: 50px;
+		max-width: 900px;
+		margin-left: auto;
+		margin-right: auto;
+	}
 }
 
 @media ( max-width : 767px) {
@@ -51,6 +57,11 @@
 	.page-content {
 		padding-left: 20px;
 		padding-right: 20px;
+	}
+	.page-nomenu {
+		padding-top: 20px;
+		margin-left: auto;
+		margin-right: auto;
 	}
 }
 

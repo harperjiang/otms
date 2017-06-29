@@ -29,7 +29,7 @@ public class JpaTutorDao extends JpaDao<Tutor> implements TutorDao {
 
 	@Override
 	public List<Tutor> findPopular() {
-		String sql = "select t from Tutor t order by t.popularLevel";
+		String sql = "select t from Tutor t order by t.rating desc";
 		return getEntityManager().createQuery(sql, Tutor.class)
 				.setMaxResults(10).getResultList();
 	}

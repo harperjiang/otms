@@ -54,6 +54,26 @@ textarea:disabled {
 	background: #dddddd;
 }
 
+.system-blue {
+	color: #54b4f5;
+}
+
+.system-lightblue {
+	color: #63bffd;
+}
+
+.system-white {
+	color: #eee;
+}
+
+.bg-system-blue {
+	background-color: #54b4f5;
+}
+
+.bg-system-lightblue {
+	background-color: #63bffd;
+}
+
 .bg_green {
 	background-color: #eafbea;
 }

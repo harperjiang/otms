@@ -145,6 +145,11 @@
 	width: 100%
 }
 
+.nav-side-menu .menu-bottom img {
+	width: 20px;
+	height: 15px;
+}
+
 @media ( max-width : 767px) {
 	.nav-side-menu {
 		position: relative;

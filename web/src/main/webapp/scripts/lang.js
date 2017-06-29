@@ -28,11 +28,13 @@ otms.lang.requestWithLang = function(lang) {
 	}
 };
 
+otms.lang.callbacks = [];
+
 otms.lang.handleLang = function(lang) {
 	// Set the language to be selected
 	if (lang === undefined)
 		lang = localStorage.getItem('otms.lang');
-		
+
 	var serverLang = $('meta[name=lang]').attr("content");
 
 	if (otms.isEmpty(lang)) {
@@ -48,7 +50,8 @@ otms.lang.handleLang = function(lang) {
 		return;
 	}
 
-	if (!otms.isEmpty(lang) && $('#menu_lang_select').val() != lang) {
-		$("#menu_lang_select").val(lang);
+	if (!otms.isEmpty(lang)) {
+		for ( var i in otms.lang.callbacks)
+			otms.lang.callbacks[i](lang);
 	}
 };

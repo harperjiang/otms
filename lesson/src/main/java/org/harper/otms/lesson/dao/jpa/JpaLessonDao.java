@@ -19,7 +19,7 @@ public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 
 	@SuppressWarnings("unchecked")
 	protected List<Lesson> findOneoffLessonWithin(User tutor, User client, Date fromDate, Date toDate, Status status) {
-		StringBuilder sql = new StringBuilder("select l.* from lesson l").append(" join calendar_entry ce")
+		StringBuilder sql = new StringBuilder("select l.* from lesson l").append(" join lesson_calendar ce")
 				.append(" on ce.id = l.calendar").append(" where l.status = ?")
 				.append(" and ce.calendar_type = 'ONEOFF'");
 
@@ -47,7 +47,7 @@ public class JpaLessonDao extends JpaDao<Lesson> implements LessonDao {
 	@SuppressWarnings("unchecked")
 	protected List<Lesson> findRepeatedLessonWithin(User tutor, User client, Date fromDate, Date toDate,
 			Status status) {
-		StringBuilder sql = new StringBuilder("select l.* from lesson l").append(" join calendar_entry ce")
+		StringBuilder sql = new StringBuilder("select l.* from lesson l").append(" join lesson_calendar ce")
 				.append(" on ce.id = l.calendar").append(" where l.status = ?")
 				.append(" and ce.calendar_type = 'REPEAT'");
 

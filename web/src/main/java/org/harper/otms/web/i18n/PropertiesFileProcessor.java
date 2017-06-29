@@ -14,7 +14,7 @@ import java.util.Properties;
 public class PropertiesFileProcessor {
 
 	public static void main(String[] args) throws Exception {
-		File folder = new File("src/main/java/org/harper/otms/calendar/i18n");
+		File folder = new File("src/main/java/org/harper/otms/web/i18n");
 		File[] props = folder.listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {

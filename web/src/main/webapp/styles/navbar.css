@@ -48,3 +48,12 @@
 	border-color: transparent;
 	color: #54b4f5;
 }
+
+.navbar-nav .nav-item img {
+	width: 20px;
+	height: 15px;
+}
+
+.dropdown-menu a {
+	cursor: pointer !important;
+}
