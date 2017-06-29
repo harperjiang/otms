@@ -106,3 +106,35 @@ function showTutor() {
 	sessionStorage.setItem('otms.tutorInfoPage.tutorId', dataItem.tutorId);
 	window.location = 'tutor_info.html';
 };
+
+$(function() {
+
+	otms.namespace('otms.findTutorPage');
+
+	var searchbm = new otms.validator.BeanManager();
+	searchbm.reg('keyword', $('#keyword_input'));
+	searchbm.reg('favorite', $('#favorite_check'));
+
+	otms.findTutorPage.searchbm = searchbm;
+
+	var list = new otms.ui.list.SimpleList($('#tutor_container'));
+	list.renderItem = renderTutorBlock;
+	list.finishRender = finishRender;
+
+	var callback = function(success, data) {
+		if (success) {
+			list.model.setData(data.tutors);
+		}
+	};
+
+	TutorService.getPopularTutors(otms.auth.req({}), otms.ui.MessageBox
+			.shan(callback));
+
+	$('#find-btn').click(function() {
+
+	});
+
+	$('#lucky-btn').click(function() {
+
+	});
+});
