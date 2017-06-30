@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Template</title>
+<title>${webpage_title}</title>
 <!--#include virtual="head.html" -->
 <script>
 	
@@ -13,8 +13,12 @@
 	<!--#include virtual="navbar.html" -->
 	<div class="page-nomenu">
 		<div id="errmsg_panel"></div>
-		
-		
+		<div class="page-title">${title}</div>
+		<div class="page-block">
+			<div class="page-block-title">课程费用</div>
+			<div class="page-block-title">预付费</div>
+			<div class="page-block-title">满意后付费</div>
+		</div>
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

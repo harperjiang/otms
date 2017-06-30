@@ -1,19 +1,12 @@
-function appendMenu() {
-	$(document).on('mouseenter', '.tutor_block', function(block) {
-		$(this).find('.tutor_block_menu').css('display', 'block');
-	});
-
-	$(document).on('mouseleave', '.tutor_block', function(block) {
-		$(this).find('.tutor_block_menu').css('display', 'none');
-	});
-};
-
 function renderTutorBlock(item) {
+	var container = $(document.createElement('div'));
+	container.addClass('tutor-block');
+	
 	var block = $(document.createElement('div'));
-	block.addClass('tutor-block');
 	block.addClass('container');
 	block.addClass('w-100');
-
+	container.append(block);
+	
 	var row = $(document.createElement('div'));
 	row.addClass('row');
 	block.append(row);
@@ -122,37 +115,8 @@ function renderTutorBlock(item) {
 };
 
 function finishRender() {
-	appendMenu();
-	$(document).on('click', '.tutor_block_menu a[itemId = "favLink"]',
-			setFavorite);
-	$(document).on('click', '.tutor_block_menu a[itemId = "tsLink"]',
-			viewTimesheet);
-	$(document).on('click', '.tutor_block_menu a[itemId = "sLink"]',
-			scheduleLesson);
-
-	$(document).on('click', '.tutor_block', showTutor);
+	$(document).on('click', '.tutor-block', showTutor);
 }
-
-function setFavorite(event) {
-	var block = $(this).parent('.tutor_block');
-	var dataItem = block.prop('dataItem');
-	event.stopPropagation();
-	alert('Not implemented');
-};
-
-function scheduleLesson(event) {
-	var block = $(this).parent('.tutor_block');
-	var dataItem = block.prop('dataItem');
-	event.stopPropagation();
-	alert('Not implemented');
-};
-
-function viewTimesheet(event) {
-	var block = $(this).parent('.tutor_block');
-	var dataItem = block.prop('dataItem');
-	event.stopPropagation();
-	alert('Not implemented');
-};
 
 function showTutor() {
 	var dataItem = $(this).prop('dataItem');
@@ -180,7 +144,6 @@ $(function() {
 			list.model.setData(data.tutors);
 		}
 	};
-
 	TutorService.getPopularTutors({}, otms.ui.MessageBox.shan(callback));
 
 	$('#find_btn').click(

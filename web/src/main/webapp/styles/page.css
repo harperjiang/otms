@@ -102,6 +102,16 @@
 .page-note {
 	color: gray;
 }
+
+.page-footer {
+	background-color: #f7f7f7;
+	text-align: center;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #aaa;
+}
 /*
 .page-row input[type='text'], .page-row input[type='password'],
 	.page-row textarea {
