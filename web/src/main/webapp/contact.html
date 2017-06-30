@@ -8,7 +8,6 @@
 <script type="text/javascript" src="scripts/validator.js"></script>
 <script>
 	$(function() {
-
 		new otms.validator.NonemptyValidator($('#from_text'));
 		new otms.validator.EmailValidator($('#email_text'));
 		new otms.validator.NonemptyValidator($('#context_text'));
@@ -22,56 +21,70 @@
 			if (success) {
 				$('#main_panel').css('display', 'none');
 				$('#success_panel').css('display', 'block');
+			} else {
+				$('#submit').prop('disabled', 'false');
 			}
 		};
 
 		var submitClick = function() {
-			debugger;
 			var bean = bm.getBean();
 			if (bean != null) {
+				$('#submit').prop('disabled', 'true');
 				MessageService.contactUs(otms.auth.req(bean),
 						otms.ui.MessageBox.shan(callback));
 			}
 		};
 		$('#submit').click(submitClick);
-		
 	});
 </script>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
+	<!--#include virtual="navbar.html" -->
+	<div class="page-nomenu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content_nomenu">
 
-			<div class="page_title">${pageTitle}</div>
-			<div id="main_panel">
-				<div class="page_block">${descText}</div>
-				<div id="message_panel" class="page_block">
-					<div class="page_row">
-						<input id="from_text" type="text" placeholder='${namePn}' />
-					</div>
-					<div class="page_row">
-						<input id="email_text" type="text" placeholder='${emailPn}' />
-					</div>
-					<div class="page_row">
-						<textarea id="content_text" placeholder="${problemPn}"></textarea>
-					</div>
-					<button id="submit" class="btn_normal">${submitBtn}</button>
-				</div>
-			</div>
-
-			<div id="success_panel" style="display: none;">
-				<div class="page_block">
-					<div class="page_row">${finishText1}</div>
-					<div class="page_row">${finishText2}</div>
-					<div class="page_row">
-						<button class="btn_green" onclick="window.location='help.html'">${helpBtn}</button>
+		<div class="page-title">${pageTitle}</div>
+		<div id="main_panel">
+			<div class="page-block">${descText}</div>
+			<div id="message_panel" class="page-block container w-100">
+				<div class="row form-group">
+					<div class="col-sm-12 input-group">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-user-o" aria-hidden="true"></i>
+						</span>
+						<input id="from_text" class="form-control" type="text"
+							placeholder='${namePn}' />
 					</div>
 				</div>
-
+				<div class="row form-group">
+					<div class="col-sm-12 input-group">
+						<span class="input-group-addon" id="btnGroupAddon">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+						</span>
+						<input id="email_text" class="form-control" type="text"
+							placeholder='${emailPn}' />
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-12">
+						<textarea id="content_text" class="form-control" rows=5
+							placeholder="${problemPn}"></textarea>
+					</div>
+				</div>
+				<button id="submit" class="btn_normal">${submitBtn}</button>
 			</div>
 		</div>
+
+		<div id="success_panel" style="display: none;">
+			<div class="page-block">
+				<div class="page-row">${finishText1}</div>
+				<div class="page-row">${finishText2}</div>
+				<div class="page-row">
+					<button class="btn_green" onclick="window.location='help.html'">${helpBtn}</button>
+				</div>
+			</div>
+		</div>
+		<!--#include virtual="dialog.html" -->
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>

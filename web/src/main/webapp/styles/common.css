@@ -37,6 +37,15 @@ a:hover {
 	text-decoration: underline;
 }
 
+a.link, a.link:visited, a.link:active {
+	color: #54b4f5 !important;
+	cursor: pointer;
+}
+
+a.link:hover {
+	color: ##63bffd !important;
+}
+
 .text_hl {
 	background-color: rgba(210, 210, 210, 0.6);
 	padding: 10px 20px;

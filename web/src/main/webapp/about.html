@@ -4,110 +4,74 @@
 <meta charset="UTF-8">
 <title>关于我们 - 乐教营</title>
 <!--#include virtual="head.html" -->
-<script>
-	
-</script>
-<style type="text/css">
-.left_text {
-	float: left;
-	width: 600px;
-}
-
-.right_pic {
-	float: right;
-	width: 400px;
-}
-
-.block_container {
-	margin-bottom: 20px;
-	overflow: auto;
-}
-
-.price_table {
-	border-collapse: collapse;
-}
-
-.price_table th, .price_table td {
-	border: 1px solid gray;
-}
-
-.price_table td {
-	text-align: center;
-}
-</style>
 </head>
 <body>
-	<div id="page">
-		<!--#include virtual="header.html" -->
+	<!--#include virtual="navbar.html" -->
+	<div class="page-nomenu">
 		<div id="errmsg_panel"></div>
-		<div id="page_content_nomenu">
-			<div class="page_title">关于我们</div>
-			<div class="block_container">
-				<div class="page_block left_text">
-					<div class="page_block_title">关于乐教营</div>
-					<div class="page_row">
-						乐教营相信，每一个学习英语的孩子都应该尽快接触只使用外语交流的环境。实践证明，在学习英语早期参与浸入式教学的孩子，不仅在口语和听力上远胜于只进行传统教学的对照组孩子，在阅读和写作水平上也有明显的提高。这都是受益于以英语为母语的思维方式。
+
+		<div class="page-title">关于我们</div>
+		<div class="block_container">
+			<div class="page-block">
+				<div class="page-block-title">关于乐教营</div>
+				<div class="container w-100">
+					<div class="row">
+						<div class="col-sm-8">
+							<p>
+								乐教营相信，每一个学习英语的孩子都应该尽快接触只使用外语交流的环境。实践证明，在学习英语早期参与浸入式教学的孩子，不仅在口语和听力上远胜于只进行传统教学的对照组孩子，在阅读和写作水平上也有明显的提高。这都是受益于以英语为母语的思维方式。
+							</p>
+							<p>乐教营致力于为家长及早教机构提供业界领先的全外教英语早教解决方案。我们精心打造了一支专业的教师队伍。教师们都拥有教育相关专业的学位，拥有丰富的早教经验，并对少儿教学拥有极大的热情。</p>
+							<p>乐教营聘请业内专家，精心打造具有独立知识产权的教学方案，涵盖0-12岁儿童需求。既与美国中小学教育接轨，又照顾到中国孩子的具体需求。让您的孩子和美国小学教育无缝同步。</p>
+
+						</div>
+						<div class="col-sm-4">
+							<img src="resource/about_teach_1.png" width="100%"
+								style="border-radius: 100%" />
+						</div>
 					</div>
-					<div class="page_row">乐教营致力于为家长及早教机构提供业界领先的全外教英语早教解决方案。我们精心打造了一支专业的教师队伍。教师们都拥有教育相关专业的学位，拥有丰富的早教经验，并对少儿教学拥有极大的热情。</div>
-					<div class="page_row">乐教营聘请业内专家，精心打造具有独立知识产权的教学方案，涵盖0-12岁儿童需求。既与美国中小学教育接轨，又照顾到中国孩子的具体需求。让您的孩子和美国小学教育无缝同步。</div>
-				</div>
-				<div class="right_pic">
-					<img src="resource/about_teach_1.png" width="100%" />
-				</div>
-			</div>
-			<div style="clear: both"></div>
-			<div class="block_container">
-				<div class="page_block left_text">
-					<div class="page_block_title">关于费用</div>
-					<div class="page_row">乐教营在保证教育质量的同时，致力于为中国家庭提供经济上容易负担的外教资源。得益于网络课堂等高科技手段，我们提供的外教服务即使对工薪家庭来说也是不算太大的支出。</div>
-					<div class="page_row">
-						<table class="price_table">
-							<tr>
-								<th style="width: 150px">每周上课次数</th>
-								<th style="width: 200px;">每月价格约（人民币）</th>
-							</tr>
-							<tr>
-								<td>每周两次课程</td>
-								<td>1500元</td>
-							</tr>
-							<tr>
-								<td>每周三次课程</td>
-								<td>1800元</td>
-							</tr>
-							<tr>
-								<td>每周五次课程</td>
-								<td>2500元</td>
-							</tr>
-						</table>
-					</div>
-					<div class="page_row">如果您有其他需求或者想要询价，请联系我们的销售团队。</div>
-					<button class="btn_green" onclick='window.location="contact.html"'>联系我们</button>
-				</div>
-				<div class="right_pic">
-					<img src="resource/about_price.png" width="100%" />
-				</div>
-			</div>
-			<div style="clear: both"></div>
-			<div class="block_container">
-				<div class="page_block left_text">
-					<div class="page_block_title">我们的团队</div>
-					<div class="page_row">
-						<b>Cathy Yang(CEO，联合创始人)</b>
-					</div>
-					<div class="page_row">Cathy是乐教营的CEO及联合创始人。负责公司的日常运营和发展。</div>
-					<div class="page_row">在创办公司前，Cathy曾有多年少儿英语教育的经验，并在这个过程中深刻认识到现有教育体系的不足。从公司创立起，便致力于以亲民的价格让更多中国孩子和外教进行接触，在原生的语言和文化环境中学习英文。</div>
-					<div class="page_row">Cathy在纽约州立大学波茨坦分校获得教育技术硕士学位。</div>
-					<div class="page_row">
-						<b>Harper Jiang(技术总监，联合创始人)</b>
-					</div>
-					<div class="page_row">Harper是乐教营的技术总监及联合创始人。负责产品实现和网站运营工作。</div>
-					<div class="page_row">Harper在芝加哥大学获得计算机科学博士学位。加入乐教营之前，曾在百度担任高级架构师职位。</div>
-				</div>
-				<div class="right_pic">
-					<img src="resource/about_teach_2.png" width="100%" />
 				</div>
 			</div>
 		</div>
+		<div class="block_container">
+			<div class="page-block">
+				<div class="page-block-title">关于费用</div>
+
+				<div class="container w-100">
+					<div class="row">
+						<div class="col-sm-8">
+							<p>乐教营在保证教育质量的同时，致力于为中国家庭提供经济上容易负担的外教资源。得益于网络课堂等高科技手段，我们提供的外教服务即使对工薪家庭来说也是不算太大的支出。</p>
+							<table class="price_table">
+								<tr>
+									<th style="width: 150px">每周上课次数</th>
+									<th style="width: 200px;">每月价格约（人民币）</th>
+								</tr>
+								<tr>
+									<td>每周两次课程</td>
+									<td>1500元</td>
+								</tr>
+								<tr>
+									<td>每周三次课程</td>
+									<td>1800元</td>
+								</tr>
+								<tr>
+									<td>每周五次课程</td>
+									<td>2500元</td>
+								</tr>
+							</table>
+							<p>
+								如果您有其他需求或者想要询价，请<a class="link"
+									onclick="$('#qr_service_panel').modal('show')">联系微信客服。</a>
+							</p>
+						</div>
+						<div class="col-sm-4">
+							<img src="resource/about_price.png" width="100%"
+								style="border-radius: 100%" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--#include virtual="dialog.html" -->
 	</div>
 	<!--#include virtual="footer.html" -->
 </body>
